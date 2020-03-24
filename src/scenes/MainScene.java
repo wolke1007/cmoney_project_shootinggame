@@ -11,6 +11,8 @@ import gameobj.TestObj;
 import java.awt.Graphics;
 import util.Delay;
 import util.Global;
+import util.CommandSolver;
+import java.awt.event.MouseEvent;
 
 /**
  *
@@ -22,6 +24,7 @@ public class MainScene extends Scene {
     TestObj obj2;
     Actor act1;
     Delay delay;
+    Delay changeSceneDelay;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -34,21 +37,26 @@ public class MainScene extends Scene {
         obj2 = new TestObj(0, 0, 350, 350, 150, 150, 150, 150);
         delay = new Delay(5);
         delay.start();
+//        changeSceneDelay = new Delay(180);
+//        changeSceneDelay.start();
     }
 
     @Override
     public void sceneUpdate() {
-        if (delay.isTrig()) {
-            act1.update();
+        if(delay.isTrig()){
             obj2.update();
             obj.update();
-            if (obj.isCollision(obj2)) {
+            if(obj.isCollision(obj2)){
             }
         }
+//        if(changeSceneDelay.isTrig()){
+//            sceneController.changeScene(new SecondScene(sceneController));
+//        }
     }
 
     @Override
     public void sceneEnd() {
+        System.out.println("main scene end");
     }
 
     @Override
@@ -58,4 +66,39 @@ public class MainScene extends Scene {
         obj2.paint(g);
     }
 
+    @Override
+    public CommandSolver.KeyListener getKeyListener() {
+        return new MyKeyListener();
+    }
+
+    @Override
+    public CommandSolver.MouseCommandListener getMouseListener() {
+        return new MyMouseListener();
+    }
+    
+    public static class MyKeyListener implements CommandSolver.KeyListener{
+
+        @Override
+        public void keyPressed(int commandCode, long trigTime) {
+            System.out.println("!");
+        }
+
+        @Override
+        public void keyReleased(int commandCode, long trigTime) {
+            System.out.println("?");
+        }
+
+        @Override
+        public void keyTyped(char c, long trigTime) {
+        }
+        
+    }
+    
+    public static class MyMouseListener implements CommandSolver.MouseCommandListener{
+
+        @Override
+        public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
+        }
+
+    }
 }

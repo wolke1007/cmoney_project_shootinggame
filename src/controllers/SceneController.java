@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package controllers;
+
+import util.CommandSolver.KeyListener;
+import util.CommandSolver.MouseCommandListener;
 import java.awt.Graphics;
 import scenes.Scene;
 /**
@@ -13,13 +16,25 @@ import scenes.Scene;
 public class SceneController {
     
     private Scene currentScene;
+    private KeyListener kl;
+    private MouseCommandListener ml;
     
     public void changeScene(Scene scene){
         if(currentScene != null){
             currentScene.sceneEnd();
         }
         currentScene = scene;
+        kl = currentScene.getKeyListener();
+        ml = currentScene.getMouseListener();
         currentScene.sceneBegin();
+    }
+    
+    public KeyListener getKL(){
+        return this.kl;
+    }
+    
+    public MouseCommandListener getML(){
+        return this.ml;
     }
     
     public void sceneUpdate(){

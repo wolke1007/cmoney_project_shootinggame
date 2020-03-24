@@ -5,12 +5,15 @@
  */
 package scenes;
 
+import controllers.SceneController;
+import util.CommandSolver.KeyListener;
+import util.CommandSolver.MouseCommandListener;
+import java.awt.Graphics;
 /**
  *
  * @author Cloud-Razer
  */
-import controllers.SceneController;
-import java.awt.Graphics;
+
 
 public abstract class Scene {
     protected SceneController sceneController;
@@ -22,4 +25,7 @@ public abstract class Scene {
     public abstract void sceneUpdate();
     public abstract void sceneEnd();
     public abstract void paint(Graphics g);
+    
+    public abstract KeyListener getKeyListener();
+    public abstract MouseCommandListener getMouseListener();
 }

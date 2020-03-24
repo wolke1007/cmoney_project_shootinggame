@@ -5,10 +5,11 @@
  */
 package shootinggame;
 
-import javax.swing.JFrame;
-import static util.Global.LIMIT_DELTA_TIME;
-import static util.Global.MILLISEC_PER_UPDATE;
+import util.CommandSolver;
+import shootinggame.GameJPanel;
 import util.Global;
+import java.awt.event.KeyEvent;
+import javax.swing.*;
 
 /**
  *
@@ -28,6 +29,19 @@ public class ShootingGame {
         f.add(jp);
         f.setVisible(true);
         
+        CommandSolver cs = new CommandSolver.Builder(jp, Global.MILLISEC_PER_UPDATE,
+            new int[][]{
+                {KeyEvent.VK_W, Global.UP},
+                {KeyEvent.VK_UP, Global.UP},
+                {KeyEvent.VK_A, Global.LEFT},
+                {KeyEvent.VK_S, Global.DOWN},
+                {KeyEvent.VK_D, Global.RIGHT}
+            }).enableMouseTrack(jp).enableKeyboardTrack(jp)
+                .keyCleanMode()
+//                .keyTypedMode().trackChar()
+                .gen();
+        cs.start();
+        
         long startTime = System.currentTimeMillis();
         long passedUpdated = 0;
         long lastRepaintTime = System.currentTimeMillis();
@@ -41,6 +55,7 @@ public class ShootingGame {
             // input end
             while (passedUpdated < targetTotalUpdated) {// 如果當前經過的次數小於實際應該要更新的次數
                 //update 更新追上當前次數
+                cs.update();
                 jp.update();
                 passedUpdated++;
             }

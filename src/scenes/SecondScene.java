@@ -6,49 +6,84 @@
 package scenes;
 
 import controllers.SceneController;
+import gameobj.TestObj;
+import graph.Rect;
+import util.CommandSolver;
+import util.Delay;
+import util.Global;
+import java.awt.Color;
+import java.awt.Graphics;
 import gameobj.Actor;
 import gameobj.Renderer;
-import java.awt.Graphics;
-import util.Delay;
 
 /**
  *
- * @author Cloud-Razer
+ * @author user1
  */
 public class SecondScene extends Scene{
 
-    Actor actor;
-    private Delay delay;
-
+    TestObj obj;
+    TestObj obj2;
+    Delay delay;
+    
     public SecondScene(SceneController sceneController) {
         super(sceneController);
     }
     
     @Override
     public void sceneBegin() {
-        actor = new Actor(5, Renderer.STEPS_WALK_NORMAL, 250, 250);
-        delay = new Delay(300);
+        obj = new TestObj(1, 1, 50, 50, 130, 130, 50, 50);
+        obj2 = new TestObj(0, 0, 350, 350, 150, 150, 150, 150);
+        delay = new Delay(5);
         delay.start();
     }
 
     @Override
     public void sceneUpdate() {
         if(delay.isTrig()){
-            sceneController.changeScene(new MainScene(sceneController));
+            obj2.update();
+            obj.update();
+            if(obj.isCollision(obj2)){
+            }
         }
-        actor.update();
     }
 
     @Override
     public void sceneEnd() {
-        delay.stop();
-        delay = null;
     }
 
     @Override
     public void paint(Graphics g) {
-        actor.paint(g);
+        obj.paint(g);
+        obj2.paint(g);
     }
 
-   
+    @Override
+    public CommandSolver.KeyListener getKeyListener() {
+        return new MyKeyListener();
+    }
+
+    @Override
+    public CommandSolver.MouseCommandListener getMouseListener() {
+        return null;
+    }
+    
+    public static class MyKeyListener implements CommandSolver.KeyListener{
+
+        @Override
+        public void keyPressed(int commandCode, long trigTime) {
+            System.out.println("~~~~");
+        }
+
+        @Override
+        public void keyReleased(int commandCode, long trigTime) {
+            System.out.println("1234");
+        }
+
+        @Override
+        public void keyTyped(char c, long trigTime) {
+            
+        }
+        
+    }
 }
