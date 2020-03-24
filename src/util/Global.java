@@ -18,8 +18,8 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 800;
-    public static final int FRAME_Y = 600;
+    public static final int FRAME_X = 1280;
+    public static final int FRAME_Y = 720;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 資料刷新時間
@@ -36,6 +36,9 @@ public class Global {
     public static final int LEFT = 1;
     public static final int RIGHT = 2;
     public static final int UP = 3;
+    // 步伐
+    public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
+    public static final int[] STEPS_WALK_SHORT = {0, 2};
 
     public static boolean random(int rate) {
         return random(1, 100) <= rate;

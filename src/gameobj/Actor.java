@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import util.Delay;
 import util.Global;
@@ -21,9 +22,18 @@ public class Actor extends GameObject {
     
     private Delay moveDelay;
     private int moveSpeed = 59; // per frame
+    
+    private int x;
+    private int y;
+    private int width;
+    private int height;
 
     public Actor(int serial, int[] steps, int x, int y) {
-        super(x, y, Global.UNIT_X, Global.UNIT_Y);
+        super(x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
+        this.x = x;
+        this.y = y;
+        this.width = Global.UNIT_X;
+        this.height = Global.UNIT_Y;
         this.renderer = new Renderer(serial, steps, 60 - moveSpeed);
         this.isStand = true;
         this.moveDelay = new Delay(60 - this.moveSpeed);
@@ -53,7 +63,6 @@ public class Actor extends GameObject {
     }
 
     private void move() {
-        System.out.println("debugd");
         switch (this.dir) {
             case Global.LEFT:
                 this.x -= Global.UNIT_X / 4;
@@ -71,7 +80,8 @@ public class Actor extends GameObject {
     }
     
     @Override
-    public void paint(Graphics g) {
-        this.renderer.paint(g, this.x, this.y, this.width, this.height);
+    public void paintComponent(Graphics g) {
+        this.renderer.paint(g, rect.left(), rect.top(), rect.width(), rect.height());
     }
+
 }

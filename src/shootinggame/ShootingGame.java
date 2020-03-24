@@ -19,7 +19,7 @@ public class ShootingGame {
     /**
      * @param args the command line arguments
      */
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         JFrame f = new JFrame();
         GameJPanel jp = new GameJPanel();
         f.setTitle("Game Test 6th");

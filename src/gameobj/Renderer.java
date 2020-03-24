@@ -18,8 +18,8 @@ import util.Global;
  */
 public class Renderer {
 
-    public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
-    public static final int[] STEPS_WALK_SHORT = {0, 2};
+//    public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
+//    public static final int[] STEPS_WALK_SHORT = {0, 2};
 
     private BufferedImage img; // 角色行走圖
     private int characterIndex; // 角色編號
@@ -37,7 +37,7 @@ public class Renderer {
 
     public Renderer(int characterIndex, int[] steps, int delay) {
         try {
-            img = ImageIO.read(getClass().getResource("/resources/Actor1.png"));
+            img = ImageIO.read(getClass().getResource("/resources/Actor.png"));
         } catch (IOException ex) {
         }
         this.characterIndex = 0; // 不會變動  一定要先定義
