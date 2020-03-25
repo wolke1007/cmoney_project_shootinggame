@@ -7,6 +7,7 @@ package scenes;
 
 import controllers.SceneController;
 import gameobj.Actor;
+import gameobj.Map;
 import gameobj.TestObj;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -14,6 +15,7 @@ import util.Delay;
 import util.Global;
 import util.CommandSolver;
 import java.awt.event.MouseEvent;
+
 
 /**
  *
@@ -24,6 +26,7 @@ public class MainScene extends Scene {
     TestObj obj;
     TestObj obj2;
     Actor actor;
+    Map map;
     Delay delay;
     Delay changeSceneDelay;
 
@@ -33,7 +36,8 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        actor = new Actor(1, Global.STEPS_WALK_NORMAL, 60, 60);
+        actor = new Actor(1, Global.STEPS_WALK_NORMAL, 0, 0);
+        map = new Map(0, 0, 0);
         delay = new Delay(1);
         delay.start();
 //        changeSceneDelay = new Delay(180);
@@ -46,6 +50,7 @@ public class MainScene extends Scene {
 //            obj2.update();
 //            obj.update();
             actor.update();
+            map.update();
         }
     }
 
@@ -56,6 +61,7 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
+        map.paint(g);
         actor.paint(g);
 //        obj.paint(g);
 //        obj2.paint(g);

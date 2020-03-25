@@ -34,7 +34,7 @@ public class Actor extends GameObject {
         this.y = y;
         this.width = Global.UNIT_X;
         this.height = Global.UNIT_Y;
-        this.renderer = new Renderer(serial, steps, 60 - moveSpeed);
+        this.renderer = new Renderer(serial, steps, 60 - moveSpeed, "/resources/Actor.png");
         this.isStand = true;
         this.moveDelay = new Delay(60 - this.moveSpeed);
         this.moveDelay.start();
@@ -60,8 +60,8 @@ public class Actor extends GameObject {
         if(!this.isStand && this.moveDelay.isTrig()){
             move();
             // 利用 setX setY 讓 debug 的方形碰撞偵測框跟著 Actor 實體移動
-            setX(this.x);
-            setY(this.y);
+            setX(this.x + this.width/ 2);
+            setY(this.y + this.height / 2);
         }
         
     }
@@ -85,7 +85,10 @@ public class Actor extends GameObject {
     
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, this.rect.left(), this.rect.top(), this.rect.width(), this.rect.height());
+//        this.renderer.paint(g, this.rect.left(), this.rect.top(), this.rect.width(), this.rect.height());
+        setX(this.x + this.width/ 2);
+        setY(this.y + this.height / 2);
+        this.renderer.paint(g, this.x, this.y, this.width, this.height);        
     }
 
 }

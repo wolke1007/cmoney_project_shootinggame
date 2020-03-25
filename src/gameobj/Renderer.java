@@ -35,9 +35,9 @@ public class Renderer {
     private Delay delay;
     // 動畫Delay end
 
-    public Renderer(int characterIndex, int[] steps, int delay) {
+    public Renderer(int characterIndex, int[] steps, int delay, String src) {
         try {
-            img = ImageIO.read(getClass().getResource("/resources/Actor.png"));
+            img = ImageIO.read(getClass().getResource(src));
         } catch (IOException ex) {
         }
         this.characterIndex = 0; // 不會變動  一定要先定義
