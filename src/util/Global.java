@@ -32,10 +32,10 @@ public class Global {
     public static final int UNIT_X = 32;
     public static final int UNIT_Y = 32;
     // 方向
-    public static final int DOWN = 0;
-    public static final int LEFT = 1;
-    public static final int RIGHT = 2;
-    public static final int UP = 3;
+    public static final int UP = 0;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int RIGHT = 3;
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};
