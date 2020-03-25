@@ -34,7 +34,7 @@ public class Actor extends GameObject {
         this.y = y;
         this.width = Global.UNIT_X;
         this.height = Global.UNIT_Y;
-        this.renderer = new Renderer(serial, steps, 60 - moveSpeed, "/resources/Actor.png");
+        this.renderer = new Renderer(serial, steps, 60 - moveSpeed, Global.ACTOR);
         this.isStand = true;
         this.moveDelay = new Delay(60 - this.moveSpeed);
         this.moveDelay.start();

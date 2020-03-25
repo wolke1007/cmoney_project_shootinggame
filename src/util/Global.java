@@ -39,6 +39,9 @@ public class Global {
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};
+    // 圖片庫    
+    public static final String BACKGROUND = "/resources/background1.png";
+    public static final String ACTOR = "/resources/Actor.png";
 
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
