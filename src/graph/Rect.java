@@ -23,7 +23,7 @@ public class Rect {
     }
     
     public static Rect genWithCenter(int x, int y, int width, int height){
-        int left = x - width / 2;
+        int left = x - width / 2; 
         int right = left + width;
         int top = y - height / 2;
         int bottom = top + height;

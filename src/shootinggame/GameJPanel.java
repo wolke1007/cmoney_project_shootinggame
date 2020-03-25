@@ -39,7 +39,6 @@ public class GameJPanel extends javax.swing.JPanel implements KeyListener, Mouse
     public void keyPressed(int commandCode, long trigTime) {
         if (sceneController.getKL() != null) {
             sceneController.getKL().keyPressed(commandCode, trigTime);
-            System.out.println("keyPressed commandCode: " + commandCode);
         }
     }
 
@@ -47,7 +46,6 @@ public class GameJPanel extends javax.swing.JPanel implements KeyListener, Mouse
     public void keyReleased(int commandCode, long trigTime) {
         if (sceneController.getKL() != null) {
             sceneController.getKL().keyReleased(commandCode, trigTime);
-            System.out.println("keyReleased commandCode: " + commandCode);
         }
     }
 
@@ -55,7 +53,6 @@ public class GameJPanel extends javax.swing.JPanel implements KeyListener, Mouse
     public void keyTyped(char c, long trigTime) {
         if (sceneController.getKL() != null) {
             sceneController.getKL().keyTyped(c, trigTime);
-            System.out.println("keyReleased c: " + c);
         }
     }
 
@@ -63,7 +60,6 @@ public class GameJPanel extends javax.swing.JPanel implements KeyListener, Mouse
     public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
         if (state != null && sceneController.getML() != null) {
             sceneController.getML().mouseTrig(e, state, trigTime);
-            System.out.println("mouse state: " + state + " type:" + e);
         }
     }
 }

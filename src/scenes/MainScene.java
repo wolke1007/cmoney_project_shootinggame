@@ -9,6 +9,7 @@ import controllers.SceneController;
 import gameobj.Actor;
 import gameobj.TestObj;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
 import util.Delay;
 import util.Global;
 import util.CommandSolver;
@@ -22,7 +23,7 @@ public class MainScene extends Scene {
 
     TestObj obj;
     TestObj obj2;
-    Actor act1;
+    Actor actor;
     Delay delay;
     Delay changeSceneDelay;
 
@@ -32,10 +33,8 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        act1 = new Actor(1, Global.STEPS_WALK_NORMAL, 60, 60);
-        obj = new TestObj(1, 1, 50, 50, 130, 130, 50, 50);
-        obj2 = new TestObj(0, 0, 350, 350, 150, 150, 150, 150);
-        delay = new Delay(5);
+        actor = new Actor(1, Global.STEPS_WALK_NORMAL, 60, 60);
+        delay = new Delay(1);
         delay.start();
 //        changeSceneDelay = new Delay(180);
 //        changeSceneDelay.start();
@@ -44,14 +43,10 @@ public class MainScene extends Scene {
     @Override
     public void sceneUpdate() {
         if(delay.isTrig()){
-            obj2.update();
-            obj.update();
-            if(obj.isCollision(obj2)){
-            }
+//            obj2.update();
+//            obj.update();
+            actor.update();
         }
-//        if(changeSceneDelay.isTrig()){
-//            sceneController.changeScene(new SecondScene(sceneController));
-//        }
     }
 
     @Override
@@ -61,9 +56,9 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        act1.paint(g);
-        obj.paint(g);
-        obj2.paint(g);
+        actor.paint(g);
+//        obj.paint(g);
+//        obj2.paint(g);
     }
 
     @Override
@@ -76,16 +71,31 @@ public class MainScene extends Scene {
         return new MyMouseListener();
     }
     
-    public static class MyKeyListener implements CommandSolver.KeyListener{
+    public class MyKeyListener implements CommandSolver.KeyListener{
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-            System.out.println("!");
+            System.out.println("commandCode:" + commandCode);
+            actor.setStand(false);
+            switch (commandCode) {
+                case 1:
+                    actor.setDir(Global.LEFT);
+                    break;
+                case 3:
+                    actor.setDir(Global.UP);
+                    break;
+                case 0:
+                    actor.setDir(Global.DOWN);
+                    break;
+                case 2:
+                    actor.setDir(Global.RIGHT);
+                    break;
+            }
         }
 
         @Override
         public void keyReleased(int commandCode, long trigTime) {
-            System.out.println("?");
+            actor.setStand(true);
         }
 
         @Override
@@ -98,6 +108,7 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
+            System.out.println("mouse state:" + state);
         }
 
     }

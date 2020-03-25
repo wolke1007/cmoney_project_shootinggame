@@ -18,8 +18,8 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 1280;
-    public static final int FRAME_Y = 720;
+    public static final int FRAME_X = 600;
+    public static final int FRAME_Y = 500;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 資料刷新時間

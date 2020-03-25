@@ -59,7 +59,11 @@ public class Actor extends GameObject {
         renderer.update();
         if(!this.isStand && this.moveDelay.isTrig()){
             move();
+            // 利用 setX setY 讓 debug 的方形碰撞偵測框跟著 Actor 實體移動
+            setX(this.x);
+            setY(this.y);
         }
+        
     }
 
     private void move() {
@@ -81,7 +85,7 @@ public class Actor extends GameObject {
     
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, rect.left(), rect.top(), rect.width(), rect.height());
+        this.renderer.paint(g, this.rect.left(), this.rect.top(), this.rect.width(), this.rect.height());
     }
 
 }
