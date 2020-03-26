@@ -9,6 +9,7 @@ import controllers.SceneController;
 import gameobj.Actor;
 import gameobj.Map;
 import gameobj.TestObj;
+import gameobj.View;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import util.Delay;
@@ -27,6 +28,7 @@ public class MainScene extends Scene {
     TestObj obj2;
     Actor actor;
     Map map;
+    View view;
     Delay delay;
     Delay changeSceneDelay;
 
@@ -36,7 +38,10 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        actor = new Actor(1, Global.STEPS_WALK_NORMAL, 0, 0);
+        // view 的 x , y 正式時會是 0, 0，為方便 debug 所以設成其他
+        // view 的大小width , height 正式時會是SCREEN_X, SCREEN_Y，為方便 debug 所以設成其他
+        view = new View(100, 100, 300, 300, 300, 300);
+        actor = new Actor(1, Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, view);
         map = new Map(0, 0, 0);
         delay = new Delay(1);
         delay.start();
@@ -50,6 +55,7 @@ public class MainScene extends Scene {
 //            obj2.update();
 //            obj.update();
             actor.update();
+            view.update();
             map.update();
         }
     }
@@ -63,6 +69,7 @@ public class MainScene extends Scene {
     public void paint(Graphics g) {
         map.paint(g);
         actor.paint(g);
+        view.paint(g);
 //        obj.paint(g);
 //        obj2.paint(g);
     }

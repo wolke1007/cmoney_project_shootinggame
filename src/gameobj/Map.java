@@ -67,17 +67,17 @@ public class Map extends GameObject {
 
     private void move() {
         switch (this.dir) {
-            case Global.LEFT:
-                this.x -= Global.UNIT_X / 4;
-                break;
             case Global.UP:
                 this.y -= Global.UNIT_Y / 4;
                 break;
-            case Global.RIGHT:
-                this.x += Global.UNIT_X / 4;
-                break;
             case Global.DOWN:
                 this.y += Global.UNIT_Y / 4;
+                break;
+            case Global.LEFT:
+                this.x -= Global.UNIT_X / 4;
+                break;
+            case Global.RIGHT:
+                this.x += Global.UNIT_X / 4;
                 break;
         }
     }

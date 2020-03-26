@@ -5,6 +5,8 @@
  */
 package graph;
 
+import util.Global;
+
 /**
  *
  * @author Cloud-Razer
@@ -44,6 +46,21 @@ public class Rect {
             return false;
         }
         return true;
+    }
+    
+    public boolean screenEdgeCheck(String side){
+        switch(side){
+            case "up":
+                return this.top < 0 ? true : false;
+            case "down":
+                return this.bottom > Global.SCREEN_Y ? true : false;
+            case "left":
+                return this.left < 0 ? true : false;
+            case "right":
+                return this.right > Global.SCREEN_X ? true : false;
+            default:
+                return false;
+        }
     }
     
     public static boolean intersects(Rect a, Rect b){
