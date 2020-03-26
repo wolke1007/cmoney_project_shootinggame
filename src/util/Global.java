@@ -10,10 +10,13 @@ package util;
  * @author Cloud-Razer
  */
 public class Global {
+
     // Debug Mode
+
     public static final boolean IS_DEBUG = true;
-    public static void log(String str){
-        if(IS_DEBUG){
+
+    public static void log(String str) {
+        if (IS_DEBUG) {
             System.out.println(str);
         }
     }
@@ -42,11 +45,15 @@ public class Global {
     // 圖片庫    
     public static final String BACKGROUND = "/resources/background1.png";
     public static final String ACTOR = "/resources/Actor.png";
+    //角度需求
+    public static final float PI = 3.14f;
 
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
     }
+
     //////yrt
+
     public static int random(int min, int max) {
         return (int) (Math.random() * (max - min + 1) + min);
     }

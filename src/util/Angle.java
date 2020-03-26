@@ -61,13 +61,13 @@ public class Angle {
         return this.angle;
     }
 
-    public void AngleReatan() {
+    public void angleReatan() {
         double dx = this.mouseX - this.centerX;
         double dy = this.mouseY - this.centerY;
         this.angle = Math.atan(dx / dy) / Global.PI * 180;
     }
 
-    public void getAngleATan() {
+    public void angleATan() {
         double dx = this.mouseX - this.centerX;
         double dy = this.mouseY - this.centerY;
         this.angle = Math.atan(dy / dx) / Global.PI * 180;
