@@ -10,41 +10,45 @@ package util;
  * @author Cloud-Razer
  */
 public class Delay {
+
     private int delayFrame;
     private int counter;
     private boolean isPause;
-    
-    public Delay(int delayFrame){
+
+    public Delay(int delayFrame) {
         this.delayFrame = delayFrame;
         this.counter = 0;
         this.isPause = true;
     }
 
-    public void start(){
+    public void setDelayFrame(int delayFrame) {
+        this.delayFrame = delayFrame;
+    }
+
+    public void start() {
         this.isPause = false;
     }
-    
-    public void stop(){
+
+    public void stop() {
         pause();
         this.counter = delayFrame;
     }
 
-    public void restart(){
+    public void restart() {
         stop();
         start();
     }
 
-    public void pause(){
+    public void pause() {
         this.isPause = true;
     }
-    
-    public boolean isTrig(){
-        if(!this.isPause && this.counter++ == this.delayFrame){
+
+    public boolean isTrig() {
+        if (!this.isPause && this.counter++ == this.delayFrame) {
             this.counter = 0;
             return true;
         }
         return false;
     }
-    
-}
 
+}
