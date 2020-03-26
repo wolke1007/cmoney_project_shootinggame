@@ -84,16 +84,16 @@ public class MainScene extends Scene {
             System.out.println("commandCode:" + commandCode);
             actor.setStand(false);
             switch (commandCode) {
-                case 1:
-                    actor.setDir(Global.LEFT);
-                    break;
-                case 3:
+                case 0:
                     actor.setDir(Global.UP);
                     break;
-                case 0:
+                case 1:
                     actor.setDir(Global.DOWN);
                     break;
                 case 2:
+                    actor.setDir(Global.LEFT);
+                    break;
+                case 3:
                     actor.setDir(Global.RIGHT);
                     break;
             }
