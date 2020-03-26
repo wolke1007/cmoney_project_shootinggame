@@ -14,42 +14,47 @@ import util.Global;
  * @author Cloud-Razer
  */
 public class Map extends GameObject {
-    
+
     private int dir;
     private Renderer renderer;
     private boolean isStand;
-    
+
     private Delay moveDelay;
     private int moveSpeed = 59; // per frame
-    
+
     private int x;
     private int y;
     private int width;
     private int height;
     
-    public Map(int serial, int x, int y){
+    private Map upMap;
+    private Map downMap;
+    private Map leftMap;
+    private Map rightMap;
+
+    public Map(String src, int x, int y, int width, int height) {
 //        super(x, y, Global.FRAME_X, Global.FRAME_Y, Global.FRAME_X, Global.FRAME_Y);
-        super(x, y, Global.SCREEN_X - 2, Global.SCREEN_Y - 2, Global.SCREEN_X - 2, Global.SCREEN_Y - 2);
+        super(x, y, width - 2, height - 2, width - 2, height - 2);
         this.x = x;
         this.y = y;
-        this.width = Global.SCREEN_X;
-        this.height = Global.SCREEN_Y;
+        this.width = width;
+        this.height = height;
 //        this.renderer = new Renderer(0, new int[]{0}, 60 - moveSpeed, Global.BACKGROUND);
-        this.renderer = r( Global.BACKGROUND);
+        this.renderer = r(src);
         this.isStand = true;
         this.moveDelay = new Delay(60 - this.moveSpeed);
         this.moveDelay.start();
     }
-    
-    public static Renderer r(String src){
+
+    public static Renderer r(String src) {
         return new Renderer(0, new int[]{0}, 0, src);
     }
 
-    public void setStand(boolean isStand){
+    public void setStand(boolean isStand) {
         this.isStand = isStand;
-        if(this.isStand){
+        if (this.isStand) {
             this.moveDelay.stop();
-        }else{
+        } else {
             this.moveDelay.start();
         }
     }
@@ -59,13 +64,45 @@ public class Map extends GameObject {
         this.renderer.setDir(dir);
     }
 
+    public void setUpMap(Map map){
+        this.upMap = map;
+    }
+
+    public void setDownMap(Map map){
+        this.downMap = map;
+    }
+
+    public void setLeftMap(Map map){
+        this.leftMap = map;
+    }
+
+    public void setRightMap(Map map){
+        this.rightMap = map;
+    }
+    
+    public Map getUpMap(){
+        return this.upMap;
+    }
+    
+    public Map getDownMap(){
+        return this.downMap;
+    }
+    
+    public Map getLeftMap(){
+        return this.leftMap;
+    }
+    
+    public Map getRightMap(){
+        return this.rightMap;
+    }
+
     @Override
     public void update() {
         renderer.update();
-        if(!this.isStand && this.moveDelay.isTrig()){
+        if (!this.isStand && this.moveDelay.isTrig()) {
             move();
             // 利用 setX setY 讓 debug 的方形碰撞偵測框跟著 Actor 實體移動
-            setX(this.x + this.width/ 2);
+            setX(this.x + this.width / 2);
             setY(this.y + this.height / 2);
         }
     }
@@ -89,7 +126,7 @@ public class Map extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        setX(this.x + this.width/ 2);
+        setX(this.x + this.width / 2);
         setY(this.y + this.height / 2);
         this.renderer.paint(g, this.x, this.y, this.width, this.height);
     }

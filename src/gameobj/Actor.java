@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
 import util.Delay;
@@ -70,36 +71,38 @@ public class Actor extends GameObject {
 
     private void move() {
         int speed = 4;
+        Rect act = this.rect;
+        Rect view = this.view.rect;
         switch (this.dir) {
             case Global.UP:
-                if(!this.rect.screenEdgeCheck("up")){
+                if(!act.screenEdgeCheck("up")){
                     this.y -= Global.UNIT_Y / speed;
                 }
-                if(!this.view.rect.screenEdgeCheck("up")){
+                if(!view.screenEdgeCheck("up")){
                     this.view.move(this.dir);
                 }                
                 break;
             case Global.DOWN:
-                if(!this.rect.screenEdgeCheck("down")){
+                if(!act.screenEdgeCheck("down")){
                     this.y += Global.UNIT_Y / speed;
                 }
-                if(!this.view.rect.screenEdgeCheck("down")){
+                if(!view.screenEdgeCheck("down")){
                     this.view.move(this.dir);
                 }   
                 break;
             case Global.LEFT:
-                if(!this.rect.screenEdgeCheck("left")){
+                if(!act.screenEdgeCheck("left")){
                     this.x -= Global.UNIT_X / speed;
                 }
-                if(!this.view.rect.screenEdgeCheck("left")){
+                if(!view.screenEdgeCheck("left")){
                     this.view.move(this.dir);
                 }   
                 break;
             case Global.RIGHT:
-                if(!this.rect.screenEdgeCheck("right")){
+                if(!act.screenEdgeCheck("right")){
                     this.x += Global.UNIT_X / speed;
                 }
-                if(!this.view.rect.screenEdgeCheck("right")){
+                if(!view.screenEdgeCheck("right")){
                     this.view.move(this.dir);
                 }   
                 break;

@@ -17,32 +17,99 @@ import util.Global;
 import util.CommandSolver;
 import java.awt.event.MouseEvent;
 
-
 /**
  *
  * @author Cloud-Razer
  */
 public class MainScene extends Scene {
 
-    TestObj obj;
-    TestObj obj2;
     Actor actor;
-    Map map;
+    Map map_LU;
+    Map map_RU;
+    Map map_LD;
+    Map map_RD;
+    Map[] viewMaps = new Map[4];
     View view;
     Delay delay;
     Delay changeSceneDelay;
+    double mapLength = Math.sqrt(Global.MAP_QTY);
+    Map[][] allMaps = new Map[(int) mapLength][(int) mapLength];
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
+        settingMaps(300, 300);
     }
 
+    private void settingMaps(int width, int height){
+        // 這邊希望地圖數能為 3x3 or 4x4 這樣的形式
+        int map_x = width;
+        int map_y = height;
+        if (mapLength % 1d == 0d && mapLength >= 3d) {
+            Global.log("地圖數量: " + (int) mapLength + "x" + (int) mapLength);
+            // 不同位置的地圖使用不同的圖片
+            for (int x = 0; x < allMaps.length; x++) {
+                for (int y = 0; y < allMaps[x].length; y++) {
+                    int whichMap = x;
+                    switch(whichMap){
+                        case 0:
+                            allMaps[x][y] = new Map(Global.BACKGROUND_1, map_x * y, map_y * x, map_x, map_y);
+                            break;
+                        case 1:
+                            allMaps[x][y] = new Map(Global.BACKGROUND_2, map_x * y, map_y * x, map_x, map_y);
+                            break;
+                        case 2:
+                            allMaps[x][y] = new Map(Global.BACKGROUND_3, map_x * y, map_y * x, map_x, map_y);
+                            break;
+                    }
+                    
+                }
+            }
+            //  設定每張地圖的鄰居地圖是誰
+            for (int x = 0; x < allMaps.length; x++) {
+                for (int y = 0; y < allMaps[x].length; y++) {
+                    if (x == 0) {
+                        allMaps[x][y].setUpMap(null);
+                    } else {
+                        allMaps[x][y].setUpMap(allMaps[x - 1][y]);
+                    }
+                    if (x == allMaps[x].length - 1) {
+                        allMaps[x][y].setDownMap(null);
+                    } else {
+                        allMaps[x][y].setDownMap(allMaps[x + 1][y]);
+                    }
+                    if (y == 0) {
+                        allMaps[x][y].setLeftMap(null);
+                    } else {
+                        allMaps[x][y].setLeftMap(allMaps[x][y - 1]);
+                    }
+                    if (y == allMaps[x].length - 1) {
+                        allMaps[x][y].setRightMap(null);
+                    } else {
+                        allMaps[x][y].setRightMap(allMaps[x][y + 1]);
+                    }
+                }
+            }
+            // 設定當前要 paint 出來的四張地圖，目前預設視窗最多會出現就 4 張地圖
+            this.map_LU = allMaps[0][0];
+            this.map_RU = map_LU.getRightMap();
+            this.map_LD = map_LU.getDownMap();
+            this.map_RD = map_LD.getRightMap();
+            viewMaps[0] = map_LU;
+            viewMaps[1] = map_RU;
+            viewMaps[2] = map_LD;
+            viewMaps[3] = map_RD;
+        } else {
+            Global.log("地圖數量: " + mapLength);
+            Global.log("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
+        }
+    }
+    
     @Override
     public void sceneBegin() {
         // view 的 x , y 正式時會是 0, 0，為方便 debug 所以設成其他
         // view 的大小width , height 正式時會是SCREEN_X, SCREEN_Y，為方便 debug 所以設成其他
         view = new View(100, 100, 300, 300, 300, 300);
         actor = new Actor(1, Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, view);
-        map = new Map(0, 0, 0);
         delay = new Delay(1);
         delay.start();
 //        changeSceneDelay = new Delay(180);
@@ -51,12 +118,14 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneUpdate() {
-        if(delay.isTrig()){
-//            obj2.update();
-//            obj.update();
+        if (delay.isTrig()) {
             actor.update();
             view.update();
-            map.update();
+            for (int i = 0; i < viewMaps.length; i++) {
+                if (viewMaps[i] != null) {
+                    viewMaps[i].update();
+                }
+            }
         }
     }
 
@@ -67,11 +136,13 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        map.paint(g);
+        for (int i = 0; i < viewMaps.length; i++) {
+            if (viewMaps[i] != null) {
+                viewMaps[i].paint(g);
+            }
+        }
         actor.paint(g);
         view.paint(g);
-//        obj.paint(g);
-//        obj2.paint(g);
     }
 
     @Override
@@ -83,8 +154,8 @@ public class MainScene extends Scene {
     public CommandSolver.MouseCommandListener getMouseListener() {
         return new MyMouseListener();
     }
-    
-    public class MyKeyListener implements CommandSolver.KeyListener{
+
+    public class MyKeyListener implements CommandSolver.KeyListener {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
@@ -114,14 +185,14 @@ public class MainScene extends Scene {
         @Override
         public void keyTyped(char c, long trigTime) {
         }
-        
+
     }
-    
-    public static class MyMouseListener implements CommandSolver.MouseCommandListener{
+
+    public static class MyMouseListener implements CommandSolver.MouseCommandListener {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            System.out.println("mouse state:" + state);
+//            System.out.println("mouse state:" + state);
         }
 
     }
