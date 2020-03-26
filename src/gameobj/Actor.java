@@ -80,7 +80,7 @@ public class Actor extends GameObject {
                 }
                 if(!view.screenEdgeCheck("up")){
                     this.view.move(this.dir);
-                }                
+                }
                 break;
             case Global.DOWN:
                 if(!act.screenEdgeCheck("down")){

@@ -106,9 +106,10 @@ public class MainScene extends Scene {
     
     @Override
     public void sceneBegin() {
-        // view 的 x , y 正式時會是 0, 0，為方便 debug 所以設成其他
-        // view 的大小width , height 正式時會是SCREEN_X, SCREEN_Y，為方便 debug 所以設成其他
-        view = new View(100, 100, 300, 300, 300, 300);
+        view = new View(Global.ACTOR_X - (Global.VIEW_SIZE / 2 - 16),
+                        Global.ACTOR_Y - (Global.VIEW_SIZE / 2 - 16),
+                        Global.VIEW_SIZE, Global.VIEW_SIZE,
+                        Global.VIEW_SIZE, Global.VIEW_SIZE);
         actor = new Actor(1, Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, view);
         delay = new Delay(1);
         delay.start();
