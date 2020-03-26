@@ -1,1 +1,4 @@
-/build/
+build/
+nbproject/
+build.xml
+mainfest.mf

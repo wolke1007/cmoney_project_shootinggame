@@ -11,6 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import util.Delay;
 import util.Global;
+import util.Rotate;
 
 /**
  *
@@ -20,10 +21,9 @@ public class Renderer {
 
 //    public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
 //    public static final int[] STEPS_WALK_SHORT = {0, 2};
-
     private BufferedImage img; // 角色行走圖
     private int characterIndex; // 角色編號
-    private int dir = 0; // 角色面對方向
+    private int dir; // 角色面對方向
 
     // 動作控制
     private int currentStep = 1;
@@ -34,22 +34,35 @@ public class Renderer {
     // 動畫Delay
     private Delay delay;
     // 動畫Delay end
-
+    
+    private BufferedImage testImg;
+    
     public Renderer(int characterIndex, int[] steps, int delay, String src) {
         try {
             img = ImageIO.read(getClass().getResource(src));
+            this.testImg = ImageIO.read(getClass().getResource("/resources/Actor_sample.png"));
         } catch (IOException ex) {
         }
         this.characterIndex = 0; // 不會變動  一定要先定義
         this.steps = steps;
-        
+
         this.dir = 0;
         this.currentStep = 0;
         this.stepIndex = 0;
-        
+
         this.delay = new Delay(delay);
         this.delay.start();
-    }
+    }//老師版本 (未來可以改圖及呈現方式)
+
+    public Renderer(int[] steps, int delay, String src) {
+        try {
+            img = ImageIO.read(getClass().getResource(src));
+        } catch (IOException ex) {
+        }
+        this.steps = steps;//預留步伐接口 //暫時不用
+        setDir(0);//待修改
+        setRenderDelay(delay);
+    }//多載 建構子 當前版本
 
     public void update() {
         if (delay.isTrig()) {
@@ -57,25 +70,38 @@ public class Renderer {
             currentStep = steps[stepIndex];
         }
     }
-    
-    public void setDir(int dir){
-        this.dir = dir;
-    }
 
-    public void pause(){
-        this.delay.pause();
-    }
-    
-    public void start(){
+    private void setRenderDelay(int delay) {
+        this.delay = new Delay(delay);
         this.delay.start();
     }
-    
+
+    public void setDelay(int delay) {
+        this.delay.setDelayFrame(delay);
+    }
+
+    public void setDir(int dir) {
+        this.dir = dir;
+    }//待修改
+
+    public void pause() {
+        this.delay.pause();
+    }
+
+    public void start() {
+        this.delay.start();
+    }
+    private int testAngle = 0;
     public void paint(Graphics g, int x, int y, int w, int h) {
 //        g.drawImage(img, 0, 0, null);
         g.drawImage(img, x, y, x + w, y + h,
-            (Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),
-            (Global.UNIT_Y * dir) + (characterIndex / 4) * (Global.UNIT_Y * 4),
-            (Global.UNIT_X + Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),
-            (Global.UNIT_Y + Global.UNIT_Y * dir) + (characterIndex / 4) * (Global.UNIT_Y * 4), null);
+                (Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),
+                (Global.UNIT_Y * dir) + (characterIndex / 4) * (Global.UNIT_Y * 4),
+                (Global.UNIT_X + Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),
+                (Global.UNIT_Y + Global.UNIT_Y * dir) + (characterIndex / 4) * (Global.UNIT_Y * 4), null);
+        this.testAngle += 1;
+        if(this.testAngle == 360) this.testAngle = 0;
+        Rotate r = new Rotate(this.testImg, this.testAngle);
+        r.paintComponent(g);
     }
 }
