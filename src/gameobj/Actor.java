@@ -19,6 +19,7 @@ public class Actor extends GameObject {
     private int dir;
     private Renderer renderer;
     private boolean isStand;
+    private View view;
     
     private Delay moveDelay;
     private int moveSpeed = 59; // per frame
@@ -28,14 +29,15 @@ public class Actor extends GameObject {
     private int width;
     private int height;
 
-    public Actor(int serial, int[] steps, int x, int y) {
+    public Actor(int serial, int[] steps, int x, int y, View view) {
         super(x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         this.x = x;
         this.y = y;
         this.width = Global.UNIT_X;
         this.height = Global.UNIT_Y;
-        this.renderer = new Renderer(serial, steps, 60 - moveSpeed, Global.ACTOR);
+        this.renderer = new Renderer(serial, steps, 60 - this.moveSpeed, Global.ACTOR);
         this.isStand = true;
+        this.view = view;
         this.moveDelay = new Delay(60 - this.moveSpeed);
         this.moveDelay.start();
     }
@@ -52,6 +54,7 @@ public class Actor extends GameObject {
     public void setDir(int dir) {
         this.dir = dir;
         this.renderer.setDir(dir);
+        this.view.setDir(dir);
     }
 
     @Override
@@ -63,32 +66,51 @@ public class Actor extends GameObject {
             setX(this.x + this.width/ 2);
             setY(this.y + this.height / 2);
         }
-        
     }
 
     private void move() {
+        int speed = 4;
         switch (this.dir) {
             case Global.UP:
-                this.y -= Global.UNIT_Y / 4;
+                if(!this.rect.screenEdgeCheck("up")){
+                    this.y -= Global.UNIT_Y / speed;
+                }
+                if(!this.view.rect.screenEdgeCheck("up")){
+                    this.view.move(this.dir);
+                }                
                 break;
             case Global.DOWN:
-                this.y += Global.UNIT_Y / 4;
+                if(!this.rect.screenEdgeCheck("down")){
+                    this.y += Global.UNIT_Y / speed;
+                }
+                if(!this.view.rect.screenEdgeCheck("down")){
+                    this.view.move(this.dir);
+                }   
                 break;
             case Global.LEFT:
-                this.x -= Global.UNIT_X / 4;
+                if(!this.rect.screenEdgeCheck("left")){
+                    this.x -= Global.UNIT_X / speed;
+                }
+                if(!this.view.rect.screenEdgeCheck("left")){
+                    this.view.move(this.dir);
+                }   
                 break;
             case Global.RIGHT:
-                this.x += Global.UNIT_X / 4;
+                if(!this.rect.screenEdgeCheck("right")){
+                    this.x += Global.UNIT_X / speed;
+                }
+                if(!this.view.rect.screenEdgeCheck("right")){
+                    this.view.move(this.dir);
+                }   
                 break;
         }
     }
     
     @Override
     public void paintComponent(Graphics g) {
-//        this.renderer.paint(g, this.rect.left(), this.rect.top(), this.rect.width(), this.rect.height());
         setX(this.x + this.width/ 2);
         setY(this.y + this.height / 2);
-        this.renderer.paint(g, this.x, this.y, this.width, this.height);        
+        this.renderer.paint(g, this.x, this.y, this.width, this.height);
     }
 
 }

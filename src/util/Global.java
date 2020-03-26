@@ -25,6 +25,9 @@ public class Global {
     public static final int FRAME_Y = 600;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
+    // 角色
+    public static final int ACTOR_X = 300;
+    public static final int ACTOR_Y = 300;
     // 資料刷新時間
     public static final int UPDATE_TIMES_PER_SEC = 60;// 每秒更新60次遊戲邏輯
     public static final int MILLISEC_PER_UPDATE = 1000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數

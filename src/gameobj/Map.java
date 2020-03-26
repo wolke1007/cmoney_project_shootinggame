@@ -34,10 +34,15 @@ public class Map extends GameObject {
         this.y = y;
         this.width = Global.SCREEN_X;
         this.height = Global.SCREEN_Y;
-        this.renderer = new Renderer(serial, new int[]{0}, 60 - moveSpeed, Global.BACKGROUND);
+//        this.renderer = new Renderer(0, new int[]{0}, 60 - moveSpeed, Global.BACKGROUND);
+        this.renderer = r( Global.BACKGROUND);
         this.isStand = true;
         this.moveDelay = new Delay(60 - this.moveSpeed);
         this.moveDelay.start();
+    }
+    
+    public static Renderer r(String src){
+        return new Renderer(0, new int[]{0}, 0, src);
     }
 
     public void setStand(boolean isStand){
