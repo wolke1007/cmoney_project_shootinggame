@@ -30,7 +30,7 @@ public class Move {
 
     public void doMoving() {
         int dir = movingDir();
-        int speed = 20; // 一次走幾個 pixel，越少看起來越滑順但走越慢
+        int speed = 3; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.UP: // go up
                 if (!this.obj.getRect().screenEdgeCheck("up")) {
@@ -123,62 +123,3 @@ public class Move {
     }
 
 }
-
-        //        switch (this.dir) {
-//            case Global.UP: // go up
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.DOWN: // go down
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.LEFT: // go left
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.RIGHT: // go right
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.UP_LEFT: // go up-left
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("left")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("left")){ moveFourWay(4); }
-//                }else{
-//                    this.offset(this.x -= Global.UNIT_X / speed, this.y -= Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//            case Global.UP_RIGHT: // go up-right
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("right")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("right")){ moveFourWay(7); }
-//                }else{
-//                    this.offset(this.x += Global.UNIT_X / speed, this.y += Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//            case Global.DOWN_LEFT: // go down-left
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("right")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("right")){ moveFourWay(7); }
-//                }else{
-//                    this.offset(this.x += Global.UNIT_X / speed, this.y += Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//            case Global.DOWN_RIGHT: // go down-right
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("right")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("right")){ moveFourWay(7); }
-//                }else{
-//                    this.offset(this.x += Global.UNIT_X / speed, this.y += Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//        }

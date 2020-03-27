@@ -113,7 +113,7 @@ public class MainScene extends Scene {
     
     @Override
     public void sceneBegin() {
-        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 59, Global.ACTOR);
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 60, Global.ACTOR);
         this.delay = new Delay(1);
         this.delay.start();
 //        changeSceneDelay = new Delay(180);
@@ -134,7 +134,7 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneEnd() {
-        System.out.println("main scene end");
+        Global.log("main scene end");
     }
 
     @Override
@@ -165,19 +165,19 @@ public class MainScene extends Scene {
             switch (commandCode) {
                 case Global.UP:
                     actor.setDir(Global.UP);
-                    actor.movement().setPressedStatus(Global.UP, true);
+                    actor.setMovementPressedStatus(Global.UP, true);
                     break;
                 case Global.DOWN:
                     actor.setDir(Global.DOWN);
-                    actor.movement().setPressedStatus(Global.DOWN, true);
+                    actor.setMovementPressedStatus(Global.DOWN, true);
                     break;
                 case Global.LEFT:
                     actor.setDir(Global.LEFT);
-                    actor.movement().setPressedStatus(Global.LEFT, true);
+                    actor.setMovementPressedStatus(Global.LEFT, true);
                     break;
                 case Global.RIGHT:
                     actor.setDir(Global.RIGHT);
-                    actor.movement().setPressedStatus(Global.RIGHT, true);
+                    actor.setMovementPressedStatus(Global.RIGHT, true);
                     break;
             }
         }
@@ -188,19 +188,19 @@ public class MainScene extends Scene {
             switch (commandCode) {
                 case Global.UP:
                     actor.setDir(Global.UP);
-                    actor.movement().setPressedStatus(Global.UP, false);
+                    actor.setMovementPressedStatus(Global.UP, false);
                     break;
                 case Global.DOWN:
                     actor.setDir(Global.DOWN);
-                    actor.movement().setPressedStatus(Global.DOWN, false);
+                    actor.setMovementPressedStatus(Global.DOWN, false);
                     break;
                 case Global.LEFT:
                     actor.setDir(Global.LEFT);
-                    actor.movement().setPressedStatus(Global.LEFT, false);
+                    actor.setMovementPressedStatus(Global.LEFT, false);
                     break;
                 case Global.RIGHT:
                     actor.setDir(Global.RIGHT);
-                    actor.movement().setPressedStatus(Global.RIGHT, false);
+                    actor.setMovementPressedStatus(Global.RIGHT, false);
                     break;
             }
         }

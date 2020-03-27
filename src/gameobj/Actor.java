@@ -47,10 +47,6 @@ public class Actor extends GameObject {
         movement = new Move(this);
     }//多載 建構子 當前版本
     
-    public Move movement(){
-        return this.movement;
-    }
-
     @Override
     public void setX(int x) {
         super.setX(x);
@@ -116,6 +112,11 @@ public class Actor extends GameObject {
         return this.getY() + this.height / 2;
     }
     
+    public void setMovementPressedStatus(int dir, boolean status){
+        this.movement.setPressedStatus(dir, status);
+        this.view.movement().setPressedStatus(dir, status);
+    }
+    
     @Override
     public void update() {
         this.renderer.setCenterX(super.getX());
@@ -133,6 +134,8 @@ public class Actor extends GameObject {
     private void move() {
         this.movement.doMoving();
         this.view.move();
+        Global.log("actor x:" + super.getX());
+        Global.log("actor y:" + super.getY());
     }
 
     @Override

@@ -23,8 +23,6 @@ public class View extends GameObject{
 //    private Delay moveDelay;
 //    private int moveSpeed = 59; // per frame
     
-    private int x;
-    private int y;
     private int width;
     private int height;
 
@@ -32,12 +30,14 @@ public class View extends GameObject{
     
     public View(int x, int y, int width, int height) {
         super(x, y, width, height, width, height);
-        this.x = x;
-        this.y = y;
         this.width = width;
         this.height = height;
         this.isStand = true;
         movement = new Move(this);
+    }
+
+    public Move movement(){
+        return this.movement;
     }
 
     public boolean isMeetScreenEdge(){
@@ -54,12 +54,12 @@ public class View extends GameObject{
     
     public void move(){
         this.movement.doMoving();
+        Global.log("view x:" + super.getX());
+        Global.log("view y:" + super.getY());
     }
     
     @Override
     public void update() {
-        setX(this.x + this.width/ 2);
-        setY(this.y + this.height / 2);
     }
 
     @Override
