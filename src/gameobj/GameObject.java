@@ -17,6 +17,8 @@ import java.awt.Color;
 public abstract class GameObject {
     private Rect collider;
     protected Rect rect;
+    private int x;
+    private int y;
     
     public GameObject(int x, int y, int width, int height, int colliderWidth, int colliderHeight){
         this.rect = Rect.genWithCenter(x, y, width, height);
@@ -31,11 +33,16 @@ public abstract class GameObject {
             this.collider = new Rect(x, y, width, height);
         }
     }
-    
     public int getX(){
-        return this.rect.centerX();
+        return this.x;
     }
     public int getY(){
+        return this.y;
+    }
+    public int getCenterX(){
+        return this.rect.centerX();
+    }
+    public int getCenterY(){
         return this.rect.centerY();
     }
     public int width(){
@@ -44,17 +51,23 @@ public abstract class GameObject {
     public int height(){
         return this.rect.height();
     }
+    public void setX(int x){
+        this.x = x;
+    }
+    public void setY(int y){
+        this.y = y;
+    }
     
     public void offset(int dx, int dy){
         this.rect.offset(dx, dy);
         this.collider.offset(dx, dy);
     }
     
-    public void setX(int x){
+    public void offsetX(int x){
         this.rect.offset(x - this.rect.centerX(), 0);
         this.collider.offset(x - this.collider.centerX(), 0);
     }
-    public void setY(int y){
+    public void offsetY(int y){
         this.rect.offset(0, y - this.rect.centerY());
         this.collider.offset(0, y - this.collider.centerY());
     }

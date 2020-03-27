@@ -18,52 +18,40 @@ public class Rotate {
 
     private BufferedImage img;
     private double angle;
-    public BufferedImage rotateImg;
+    private int x;
+    private int y;
 
-    public Rotate(BufferedImage img, double angle) {
+    public Rotate(BufferedImage img, double angle, int x, int y) {
         setImg(img);
         setAngle(angle);
-        setRotateImg();
+        setX(x);
+        setY(y);
     }
-    private void setRotateImg(){
-        this.rotateImg = getRotateImage(this.img,this.angle);
+
+    public void setX(int x) {
+        this.x = x;
     }
-    private void setImg(BufferedImage img){
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    private void setImg(BufferedImage img) {
         this.img = img;
     }
-    private void setAngle(double angle){
+
+    public void setAngle(double angle) {
         this.angle = angle;
     }
-    
-
-    private BufferedImage getRotateImage(BufferedImage img, double angle) {
-        double rads = Math.toRadians(angle);
-        double sin = Math.abs(Math.sin(rads));
-        double cos = Math.abs(Math.cos(rads));
-        int w = img.getWidth();
-        int h = img.getHeight();
-        int newWidth = (int) (Math.floor(w * cos + h * sin));
-        int newHeight = (int) (Math.floor(h * cos + w * sin));
+    public void update(){
         
-        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = rotated.createGraphics();//
-        AffineTransform at = new AffineTransform();
-        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
-
-        int x = w / 2;
-        int y = h / 2;
-
-        at.rotate(rads, x, y);
-        g2d.setTransform(at);
-        g2d.drawImage(img, null, 0, 0);
-        
-        g2d.dispose();
-        return rotated;
     }
-    public void paintComponent(Graphics g){
-        Graphics2D g2d = (Graphics2D) g.create();
-        int x = (this.img.getWidth() - rotateImg.getWidth()) / 2; 
-        int y = (this.img.getHeight() - rotateImg.getHeight()) / 2; 
-        g2d.drawImage(this.rotateImg, null, x, y);
+
+    public void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
+        AffineTransform oldXForm = g2d.getTransform();
+        g2d.rotate(Math.toRadians(this.angle), (this.img.getWidth() / 2) + this.x, (this.img.getHeight() / 2) + this.y);
+        g2d.drawImage(this.img, this.x, this.y, this.img.getWidth(), this.img.getHeight(), null);
+        g2d.setTransform(oldXForm);
     }
 }

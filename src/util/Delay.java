@@ -31,7 +31,7 @@ public class Delay {
 
     public void stop() {
         pause();
-        this.counter = delayFrame;
+        this.counter = this.delayFrame;
     }
 
     public void restart() {

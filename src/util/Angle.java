@@ -13,32 +13,32 @@ public class Angle {
 
     private int centerX;
     private int centerY;
-    private int mouseX;
-    private int mouseY;
+    private int goalCenterX;
+    private int goalCenterY;
     private double angle;
 
-    public Angle(int centerX, int centerY, int mouseX, int mouseY) {
+    public Angle(int centerX, int centerY, int goalCenterX, int goalCenterY) {
         setCenterX(centerX);
         setCenterY(centerY);
-        setMouseX(mouseX);
-        setMouseY(mouseY);
+        setGoalCenterX(goalCenterX);
+        setGoalCenterY(goalCenterY);
         this.angle = 0d;
     }
 
-    private void setCenterX(int centerX) {
+    public void setCenterX(int centerX) {
         this.centerX = centerX;
     }
 
-    private void setCenterY(int centerY) {
+    public void setCenterY(int centerY) {
         this.centerY = centerY;
     }
 
-    private void setMouseX(int mouseX) {
-        this.mouseX = mouseX;
+    public void setGoalCenterX(int goalCenterX) {
+        this.goalCenterX = goalCenterX;
     }
 
-    private void setMouseY(int mouseY) {
-        this.mouseY = mouseY;
+    public void setGoalCenterY(int goalCenterY) {
+        this.goalCenterY = goalCenterY;
     }
 
     private int getCenterX() {
@@ -49,27 +49,31 @@ public class Angle {
         return this.centerY;
     }
 
-    private int getMouseX() {
-        return this.mouseX;
+    private int getGoalCenterX() {
+        return this.goalCenterX;
     }
 
-    private int getMouseY() {
-        return this.mouseY;
+    private int getGoalCenterY() {
+        return this.goalCenterY;
     }
-    
-    public double getAngle(){
+
+    public double getAngle() {
+        angleReATan();
         return this.angle;
     }
 
-    public void angleReatan() {
-        double dx = this.mouseX - this.centerX;
-        double dy = this.mouseY - this.centerY;
-        this.angle = Math.atan(dx / dy) / Global.PI * 180;
-    }
-
-    public void angleATan() {
-        double dx = this.mouseX - this.centerX;
-        double dy = this.mouseY - this.centerY;
-        this.angle = Math.atan(dy / dx) / Global.PI * 180;
+    private void angleReATan() {
+        double dx = getGoalCenterX() - getCenterX();
+        double dy = getCenterY() - getGoalCenterY();
+        this.angle = Math.atan(Math.abs(dx) / Math.abs(dy)) / Global.PI * 180;
+        if (dx < 0 && dy > 0) {
+            this.angle = 360 - this.angle;
+        }
+        if (dx > 0 && dy < 0) {
+            this.angle = 180 - this.angle;
+        }
+        if (dx < 0 && dy < 0) {
+            this.angle = 180 + this.angle;
+        }
     }
 }

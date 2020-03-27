@@ -52,11 +52,16 @@ public class Global {
     public static final String BACKGROUND_1 = "/resources/background1.png";
     public static final String BACKGROUND_2 = "/resources/background2.png";
     public static final String BACKGROUND_3 = "/resources/background3.png";
-    public static final String ACTOR = "/resources/Actor.png";
+//    public static final String ACTOR = "/resources/Actor.png";
+    public static final String ACTOR = "/resources/Actor_sample.png";
     //角度需求
     public static final float PI = 3.14f;
     // 地圖數量
     public static final float MAP_QTY = 9;
+    
+    //滑鼠當前的座標
+    public static int mouseX;
+    public static int mouseY;
  
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
