@@ -119,16 +119,16 @@ public class Actor extends GameObject {
     
     @Override
     public void update() {
+        if (!this.isStand && this.moveDelay.isTrig()) {
+            move();
+        }
+        // 需要先移動再 RenderToRotate 避免 Actor 的圖片跟不上碰撞框的移動
+        // 以下一定要更新
         this.renderer.setCenterX(super.getX());
         this.renderer.setCenterY(super.getY());
         this.renderer.setGoalCenterX(Global.mouseX);
         this.renderer.setGoalCenterY(Global.mouseY);
         renderer.update();
-        //以上一定要更新
-        
-        if (!this.isStand && this.moveDelay.isTrig()) {
-            move();
-        }
     }
 
     private void move() {
