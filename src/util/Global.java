@@ -40,10 +40,14 @@ public class Global {
     public static final int ACTOR_X = FRAME_X / 2 - UNIT_X /2;
     public static final int ACTOR_Y = FRAME_Y / 2 - UNIT_Y /2;    
     // 方向
-    public static final int UP = 0;
-    public static final int DOWN = 1;
-    public static final int LEFT = 2;
-    public static final int RIGHT = 3;
+    public static final int UP = 1;
+    public static final int DOWN = 2;
+    public static final int LEFT = 4;
+    public static final int RIGHT = 7;
+    public static final int UP_RIGHT = UP + RIGHT;
+    public static final int DOWN_RIGHT = DOWN + RIGHT;
+    public static final int UP_LEFT = UP + LEFT;
+    public static final int DOWN_LEFT = DOWN + LEFT;
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};

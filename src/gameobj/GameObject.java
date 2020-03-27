@@ -23,10 +23,14 @@ public abstract class GameObject {
     public GameObject(int x, int y, int width, int height, int colliderWidth, int colliderHeight){
         this.rect = Rect.genWithCenter(x, y, width, height);
         this.collider = Rect.genWithCenter(x, y, colliderWidth, colliderHeight);
+        this.x = x;
+        this.y = y;
     }
     
     public GameObject(int x, int y, int width, int height, boolean isBindCollider){
         this.rect = Rect.genWithCenter(x, y, width, height);
+        this.x = x;
+        this.y = y;
         if(isBindCollider){
             this.collider = this.rect;
         }else{
@@ -66,6 +70,11 @@ public abstract class GameObject {
     public void offsetX(int x){
         this.rect.offset(x - this.rect.centerX(), 0);
         this.collider.offset(x - this.collider.centerX(), 0);
+    public Rect getRect(){
+        return this.rect;
+    }
+    public void setX(int x){
+        this.x = x;
     }
     public void offsetY(int y){
         this.rect.offset(0, y - this.rect.centerY());
