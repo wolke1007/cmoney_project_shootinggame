@@ -30,34 +30,100 @@ public class Move {
 
     public void doMoving() {
         int dir = movingDir();
-        int speed = 4;
+        int speed = 20; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
-            case 1: // go up
+            case Global.UP: // go up
                 if (!this.obj.getRect().screenEdgeCheck("up")) {
-                    Global.log("obj y " + this.obj.getY());
-                    this.obj.setY(this.obj.getY() - Global.UNIT_Y / speed);
-                    this.obj.offset(this.obj.getX(), this.obj.getY());
+                    this.obj.offset(0, -speed);
                 }
                 break;
-            case 2: // go down
+            case Global.DOWN: // go down
                 if (!this.obj.getRect().screenEdgeCheck("down")) {
-                    this.obj.setY(this.obj.getY() + Global.UNIT_Y / speed);
-                    this.obj.offset(this.obj.getX(), this.obj.getY() + Global.UNIT_Y / speed);
+                    this.obj.offset(0, speed);
                 }
                 break;
-            case 4: // go left
+            case Global.LEFT: // go left
                 if (!this.obj.getRect().screenEdgeCheck("left")) {
-                    this.obj.setX(this.obj.getX() - Global.UNIT_X / speed);
-                    this.obj.offset(this.obj.getX() - Global.UNIT_X / speed, this.obj.getY());
+                    this.obj.offset(-speed, 0);
                 }
                 break;
-            case 7: // go right
+            case Global.RIGHT: // go right
                 if (!this.obj.getRect().screenEdgeCheck("right")) {
-                    this.obj.setX(this.obj.getX() + Global.UNIT_X / speed);
-                    this.obj.offset(this.obj.getX() + Global.UNIT_X / speed, this.obj.getY());
+                    this.obj.offset(speed, 0);
+                }
+                break;
+            case Global.UP_LEFT: // go up-left
+                if(this.obj.getRect().screenEdgeCheck("up") || this.obj.getRect().screenEdgeCheck("left")){
+                    // 如果撞到上面，但依然在往右上走，則應該要往右走
+                    if(!this.obj.getRect().screenEdgeCheck("up")){ this.obj.offset(0, -speed); }
+                    if(!this.obj.getRect().screenEdgeCheck("left")){ this.obj.offset(-speed, 0); }
+                }else{
+                    Global.log("dir is UP_LEFT:" + Global.UP_LEFT);
+                    this.obj.offset(-speed, -speed);
+                }
+                break;
+            case Global.UP_RIGHT: // go up-right
+                if(this.obj.getRect().screenEdgeCheck("up") || this.obj.getRect().screenEdgeCheck("right")){
+                    if(!this.obj.getRect().screenEdgeCheck("up")){ this.obj.offset(0, -speed); }
+                    if(!this.obj.getRect().screenEdgeCheck("right")){ this.obj.offset(speed, 0); }
+                }else{
+                    Global.log("dir is UP_RIGHT:" + Global.UP_RIGHT);
+                    this.obj.offset(speed, -speed);
+                }
+                break;
+            case Global.DOWN_LEFT: // go down-left
+                if(this.obj.getRect().screenEdgeCheck("down") || this.obj.getRect().screenEdgeCheck("left")){
+                    if(!this.obj.getRect().screenEdgeCheck("down")){ 
+                        this.obj.offset(0, speed); }
+                    if(!this.obj.getRect().screenEdgeCheck("left")){ 
+                        this.obj.offset(-speed, 0); }
+                }else{
+                    Global.log("dir is DOWN_LEFT:" + Global.DOWN_LEFT);
+                    this.obj.offset(-speed, speed);
+                }
+                break;
+            case Global.DOWN_RIGHT: // go down-right
+                if(this.obj.getRect().screenEdgeCheck("down") || this.obj.getRect().screenEdgeCheck("right")){
+                    if(!this.obj.getRect().screenEdgeCheck("down")){ this.obj.offset(0, speed); }
+                    if(!this.obj.getRect().screenEdgeCheck("right")){ this.obj.offset(speed, 0); }
+                }else{
+                    Global.log("dir is DOWN_RIGHT:" + Global.DOWN_RIGHT);
+                    this.obj.offset(speed, speed);
                 }
                 break;
         }
+
+    }
+
+    public void setPressedStatus(int pressedBtn, boolean status) {
+        switch (pressedBtn) {
+            case Global.UP:
+                upPressed = status;
+                break;
+            case Global.DOWN:
+                downPressed = status;
+                break;
+            case Global.LEFT:
+                leftPressed = status;
+                break;
+            case Global.RIGHT:
+                rightPressed = status;
+                break;
+        }
+    }
+
+    private int movingDir() {
+        int dir = 0;
+        dir += this.upPressed ? Global.UP : 0;
+        dir += this.downPressed ? Global.DOWN : 0;
+        dir += this.leftPressed ? Global.LEFT : 0;
+        dir += this.rightPressed ? Global.RIGHT : 0;
+        Global.log("dir: " + dir);
+        return dir;
+    }
+
+}
+
         //        switch (this.dir) {
 //            case Global.UP: // go up
 //                moveFourWay(this.dir);
@@ -116,32 +182,3 @@ public class Move {
 //                }
 //                break;
 //        }
-    }
-
-    public void setPressedStatus(int pressedBtn, boolean status) {
-        switch (pressedBtn) {
-            case Global.UP:
-                upPressed = status;
-                break;
-            case Global.DOWN:
-                downPressed = status;
-                break;
-            case Global.LEFT:
-                leftPressed = status;
-                break;
-            case Global.RIGHT:
-                rightPressed = status;
-                break;
-        }
-    }
-
-    private int movingDir() {
-        int dir = 0;
-        dir += this.upPressed ? Global.UP : 0;
-        dir += this.downPressed ? Global.DOWN : 0;
-        dir += this.leftPressed ? Global.LEFT : 0;
-        dir += this.rightPressed ? Global.RIGHT : 0;
-        return dir;
-    }
-
-}

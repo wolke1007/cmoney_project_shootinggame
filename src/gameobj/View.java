@@ -8,6 +8,7 @@ package gameobj;
 import java.awt.Graphics;
 import util.Delay;
 import util.Global;
+import util.Move;
 
 /**
  *
@@ -27,6 +28,7 @@ public class View extends GameObject{
     private int width;
     private int height;
 
+    private Move movement;
     
     public View(int x, int y, int width, int height) {
         super(x, y, width, height, width, height);
@@ -35,6 +37,7 @@ public class View extends GameObject{
         this.width = width;
         this.height = height;
         this.isStand = true;
+        movement = new Move(this);
     }
 
     public boolean isMeetScreenEdge(){
@@ -47,36 +50,10 @@ public class View extends GameObject{
     
     public void setStand(boolean isStand){
         this.isStand = isStand;
-//        if(this.isStand){
-//            this.moveDelay.stop();
-//        }else{
-//            this.moveDelay.start();
-//        }
     }
     
-    public void move(int dir){
-        switch (dir) {
-            case Global.UP:
-                this.y -= Global.UNIT_Y / 4;
-                setY(this.y + this.height/ 2);
-                Global.log(this.y+"y");
-                break;
-            case Global.DOWN:
-                this.y += Global.UNIT_Y / 4;
-                setY(this.y + this.height/ 2);
-                Global.log(this.y+"y");
-                break;
-            case Global.LEFT:
-                this.x -= Global.UNIT_X / 4;
-                setY(this.y + this.width/ 2);
-                Global.log(this.x+"x");
-                break;
-            case Global.RIGHT:
-                this.x += Global.UNIT_X / 4;
-                setY(this.y + this.width/ 2);
-                Global.log(this.x+"x");
-                break;
-        }
+    public void move(){
+        this.movement.doMoving();
     }
     
     @Override

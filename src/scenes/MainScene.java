@@ -29,7 +29,6 @@ public class MainScene extends Scene {
     Map map_LD;
     Map map_RD;
     Map[] viewMaps = new Map[4];
-    View view;
     Delay delay;
     Delay changeSceneDelay;
     double mapLength = Math.sqrt(Global.MAP_QTY);
@@ -53,12 +52,15 @@ public class MainScene extends Scene {
                     switch(whichMap){
                         case 0:
                             this.allMaps[x][y] = new Map(Global.BACKGROUND_1, map_x * y, map_y * x, map_x, map_y);
+                            Global.log("x , y " + map_x * y + " " + map_y * x);
                             break;
                         case 1:
                             this.allMaps[x][y] = new Map(Global.BACKGROUND_2, map_x * y, map_y * x, map_x, map_y);
+                            Global.log("x , y " + map_x * y + " " + map_y * x);
                             break;
                         case 2:
                             this.allMaps[x][y] = new Map(Global.BACKGROUND_3, map_x * y, map_y * x, map_x, map_y);
+                            Global.log("x , y " + map_x * y + " " + map_y * x);
                             break;
                     }
                     
@@ -98,6 +100,11 @@ public class MainScene extends Scene {
             this.viewMaps[1] = this.map_RU;
             this.viewMaps[2] = this.map_LD;
             this.viewMaps[3] = this.map_RD;
+//            // 關掉地圖
+//            this.viewMaps[0] = null;
+//            this.viewMaps[1] = null;
+//            this.viewMaps[2] = null;
+//            this.viewMaps[3] = null;
         } else {
             Global.log("地圖數量: " + this.mapLength);
             Global.log("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
@@ -106,11 +113,7 @@ public class MainScene extends Scene {
     
     @Override
     public void sceneBegin() {
-        this.view = new View(Global.ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                        Global.ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
-                        Global.VIEW_WIDTH, Global.VIEW_HEIGHT
-                        );
-        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 4, Global.ACTOR);
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 59, Global.ACTOR);
         this.delay = new Delay(1);
         this.delay.start();
 //        changeSceneDelay = new Delay(180);
@@ -121,7 +124,6 @@ public class MainScene extends Scene {
     public void sceneUpdate() {
         if (delay.isTrig()) {
             actor.update();
-            view.update();
             for (int i = 0; i < viewMaps.length; i++) {
                 if (viewMaps[i] != null) {
                     viewMaps[i].update();
@@ -143,7 +145,6 @@ public class MainScene extends Scene {
             }
         }
         this.actor.paint(g);
-        this.view.paint(g);
     }
 
     @Override
@@ -160,7 +161,6 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-            System.out.println("commandCode:" + commandCode);
             actor.setStand(false);
             switch (commandCode) {
                 case Global.UP:

@@ -22,8 +22,6 @@ public class Map extends GameObject {
     private Delay moveDelay;
     private int moveSpeed = 59; // per frame
 
-    private int x;
-    private int y;
     private int width;
     private int height;
     
@@ -33,10 +31,8 @@ public class Map extends GameObject {
     private Map rightMap;
 
     public Map(String src, int x, int y, int width, int height) {
-//        super(x, y, Global.FRAME_X, Global.FRAME_Y, Global.FRAME_X, Global.FRAME_Y);
         super(x, y, width - 2, height - 2, width - 2, height - 2);
-        this.x = x;
-        this.y = y;
+        Global.log("");
         this.width = width;
         this.height = height;
 //        this.renderer = new Renderer(0, new int[]{0}, 60 - moveSpeed, Global.BACKGROUND);
@@ -99,36 +95,35 @@ public class Map extends GameObject {
     @Override
     public void update() {
         renderer.update();
-        if (!this.isStand && this.moveDelay.isTrig()) {
-            move();
-            // 利用 setX setY 讓 debug 的方形碰撞偵測框跟著 Actor 實體移動
-            setX(this.x + this.width / 2);
-            setY(this.y + this.height / 2);
-        }
+//        if (!this.isStand && this.moveDelay.isTrig()) {
+//            move();
+//            setX(this.x + this.width / 2);
+//            setY(this.y + this.height / 2);
+//        }
     }
 
-    private void move() {
-        switch (this.dir) {
-            case Global.UP:
-                this.y -= Global.UNIT_Y / 4;
-                break;
-            case Global.DOWN:
-                this.y += Global.UNIT_Y / 4;
-                break;
-            case Global.LEFT:
-                this.x -= Global.UNIT_X / 4;
-                break;
-            case Global.RIGHT:
-                this.x += Global.UNIT_X / 4;
-                break;
-        }
-    }
+//    private void move() {
+//        switch (this.dir) {
+//            case Global.UP:
+//                this.y -= Global.UNIT_Y / 4;
+//                break;
+//            case Global.DOWN:
+//                this.y += Global.UNIT_Y / 4;
+//                break;
+//            case Global.LEFT:
+//                this.x -= Global.UNIT_X / 4;
+//                break;
+//            case Global.RIGHT:
+//                this.x += Global.UNIT_X / 4;
+//                break;
+//        }
+//    }
 
     @Override
     public void paintComponent(Graphics g) {
-        setX(this.x + this.width / 2);
-        setY(this.y + this.height / 2);
-        this.renderer.paint(g, this.x, this.y, this.width, this.height);
+//        setX(this.x + this.width / 2);
+//        setY(this.y + this.height / 2);
+        this.renderer.paint(g, super.getX(), super.getY(), this.width, this.height);
     }
 
 }

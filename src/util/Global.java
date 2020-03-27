@@ -44,7 +44,7 @@ public class Global {
     public static final int UP = 1;
     public static final int DOWN = 2;
     public static final int LEFT = 4;
-    public static final int RIGHT = 7;
+    public static final int RIGHT = 8;
     public static final int UP_RIGHT = UP + RIGHT;
     public static final int DOWN_RIGHT = DOWN + RIGHT;
     public static final int UP_LEFT = UP + LEFT;

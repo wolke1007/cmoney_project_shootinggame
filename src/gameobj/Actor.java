@@ -39,7 +39,10 @@ public class Actor extends GameObject {
         setHeight(Global.UNIT_Y);
         this.renderer = new RendererToRotate(src, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         this.isStand = true;
-        this.view = new View(x, y, Global.VIEW_WIDTH, Global.VIEW_HEIGHT);
+        this.view = new View(Global.ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                            Global.ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
+                            Global.VIEW_WIDTH, Global.VIEW_HEIGHT
+                            );
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
     }//多載 建構子 當前版本
@@ -124,123 +127,18 @@ public class Actor extends GameObject {
         
         if (!this.isStand && this.moveDelay.isTrig()) {
             move();
-            // 利用 setX setY 讓 debug 的方形碰撞偵測框跟著 Actor 實體移動
-            super.offset(centerX(), centerY());
         }
     }
 
     private void move() {
-        int speed = 4; // 這邊 hardcode  寫死了，如果未來有需要這邊要開接口出來調整速度
-        Rect act = this.rect;
-        Rect view = this.view.rect;
-//        this.movement.doMoving();
-
-//        switch (this.dir) {
-//            case Global.UP: // go up
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.DOWN: // go down
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.LEFT: // go left
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.RIGHT: // go right
-//                moveFourWay(this.dir);
-//                break;
-//            case Global.UP_LEFT: // go up-left
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("left")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("left")){ moveFourWay(4); }
-//                }else{
-//                    this.offset(this.x -= Global.UNIT_X / speed, this.y -= Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//            case Global.UP_RIGHT: // go up-right
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("right")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("right")){ moveFourWay(7); }
-//                }else{
-//                    this.offset(this.x += Global.UNIT_X / speed, this.y += Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//            case Global.DOWN_LEFT: // go down-left
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("right")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("right")){ moveFourWay(7); }
-//                }else{
-//                    this.offset(this.x += Global.UNIT_X / speed, this.y += Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//            case Global.DOWN_RIGHT: // go down-right
-//                if(act.screenEdgeCheck("up") || act.screenEdgeCheck("right")){
-//                    if(!act.screenEdgeCheck("up")){ moveFourWay(1); }
-//                    if(!act.screenEdgeCheck("right")){ moveFourWay(7); }
-//                }else{
-//                    this.offset(this.x += Global.UNIT_X / speed, this.y += Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//        }
+        this.movement.doMoving();
+        this.view.move();
     }
-    
-//    private void moveFourWay(int dir){
-//        Rect act = this.rect;
-//        Rect view = this.view.rect;
-//        switch (this.dir) {
-//            case 1: // go up
-//                if(!act.screenEdgeCheck("up")){
-//                    this.offset(this.x, this.y -= Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("up")){
-//                    this.view.move(this.dir);
-//                }
-//                break;
-//            case 2: // go down
-//                if(!act.screenEdgeCheck("down")){
-//                    this.offset(this.x, this.y += Global.UNIT_Y / speed);
-//                }
-//                if(!view.screenEdgeCheck("down")){
-//                    this.view.move(this.dir);
-//                }   
-//                break;
-//            case 4: // go left
-//                if(!act.screenEdgeCheck("left")){
-//                    this.offset(this.x -= Global.UNIT_X / speed, this.y);
-//                }
-//                if(!view.screenEdgeCheck("left")){
-//                    this.view.move(this.dir);
-//                }   
-//                break;
-//            case 7: // go right
-//                if(!act.screenEdgeCheck("right")){
-//                    this.offset(this.x += Global.UNIT_X / speed, this.y);
-//                }
-//                if(!view.screenEdgeCheck("right")){
-//                    this.view.move(this.dir);
-//                }   
-//                break;
-//        }
-//    }
-    
-//    private boolean isTwoTrigger(){
-//        return true;
-//    }
 
     @Override
     public void paintComponent(Graphics g) {
         this.renderer.paint(g, super.getX(), super.getY(), this.width, this.height);
+        this.view.paint(g);
     }
 
 }
