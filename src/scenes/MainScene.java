@@ -44,75 +44,75 @@ public class MainScene extends Scene {
         // 這邊希望地圖數能為 3x3 or 4x4 這樣的形式
         int map_x = width;
         int map_y = height;
-        if (mapLength % 1d == 0d && mapLength >= 3d) {
-            Global.log("地圖數量: " + (int) mapLength + "x" + (int) mapLength);
+        if (this.mapLength % 1d == 0d && this.mapLength >= 3d) {
+            Global.log("地圖數量: " + (int) this.mapLength + "x" + (int) this.mapLength);
             // 不同位置的地圖使用不同的圖片
-            for (int x = 0; x < allMaps.length; x++) {
-                for (int y = 0; y < allMaps[x].length; y++) {
+            for (int x = 0; x < this.allMaps.length; x++) {
+                for (int y = 0; y < this.allMaps[x].length; y++) {
                     int whichMap = x;
                     switch(whichMap){
                         case 0:
-                            allMaps[x][y] = new Map(Global.BACKGROUND_1, map_x * y, map_y * x, map_x, map_y);
+                            this.allMaps[x][y] = new Map(Global.BACKGROUND_1, map_x * y, map_y * x, map_x, map_y);
                             break;
                         case 1:
-                            allMaps[x][y] = new Map(Global.BACKGROUND_2, map_x * y, map_y * x, map_x, map_y);
+                            this.allMaps[x][y] = new Map(Global.BACKGROUND_2, map_x * y, map_y * x, map_x, map_y);
                             break;
                         case 2:
-                            allMaps[x][y] = new Map(Global.BACKGROUND_3, map_x * y, map_y * x, map_x, map_y);
+                            this.allMaps[x][y] = new Map(Global.BACKGROUND_3, map_x * y, map_y * x, map_x, map_y);
                             break;
                     }
                     
                 }
             }
             //  設定每張地圖的鄰居地圖是誰
-            for (int x = 0; x < allMaps.length; x++) {
-                for (int y = 0; y < allMaps[x].length; y++) {
+            for (int x = 0; x < this.allMaps.length; x++) {
+                for (int y = 0; y < this.allMaps[x].length; y++) {
                     if (x == 0) {
-                        allMaps[x][y].setUpMap(null);
+                        this.allMaps[x][y].setUpMap(null);
                     } else {
-                        allMaps[x][y].setUpMap(allMaps[x - 1][y]);
+                        this.allMaps[x][y].setUpMap(this.allMaps[x - 1][y]);
                     }
-                    if (x == allMaps[x].length - 1) {
-                        allMaps[x][y].setDownMap(null);
+                    if (x == this.allMaps[x].length - 1) {
+                        this.allMaps[x][y].setDownMap(null);
                     } else {
-                        allMaps[x][y].setDownMap(allMaps[x + 1][y]);
+                        this.allMaps[x][y].setDownMap(this.allMaps[x + 1][y]);
                     }
                     if (y == 0) {
-                        allMaps[x][y].setLeftMap(null);
+                        this.allMaps[x][y].setLeftMap(null);
                     } else {
-                        allMaps[x][y].setLeftMap(allMaps[x][y - 1]);
+                        this.allMaps[x][y].setLeftMap(allMaps[x][y - 1]);
                     }
-                    if (y == allMaps[x].length - 1) {
-                        allMaps[x][y].setRightMap(null);
+                    if (y == this.allMaps[x].length - 1) {
+                        this.allMaps[x][y].setRightMap(null);
                     } else {
-                        allMaps[x][y].setRightMap(allMaps[x][y + 1]);
+                        this.allMaps[x][y].setRightMap(this.allMaps[x][y + 1]);
                     }
                 }
             }
             // 設定當前要 paint 出來的四張地圖，目前預設視窗最多會出現就 4 張地圖
-            this.map_LU = allMaps[0][0];
-            this.map_RU = map_LU.getRightMap();
-            this.map_LD = map_LU.getDownMap();
-            this.map_RD = map_LD.getRightMap();
-            viewMaps[0] = map_LU;
-            viewMaps[1] = map_RU;
-            viewMaps[2] = map_LD;
-            viewMaps[3] = map_RD;
+            this.map_LU = this.allMaps[0][0];
+            this.map_RU = this.map_LU.getRightMap();
+            this.map_LD = this.map_LU.getDownMap();
+            this.map_RD = this.map_LD.getRightMap();
+            this.viewMaps[0] = this.map_LU;
+            this.viewMaps[1] = this.map_RU;
+            this.viewMaps[2] = this.map_LD;
+            this.viewMaps[3] = this.map_RD;
         } else {
-            Global.log("地圖數量: " + mapLength);
+            Global.log("地圖數量: " + this.mapLength);
             Global.log("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
         }
     }
     
     @Override
     public void sceneBegin() {
-        view = new View(Global.ACTOR_X - (Global.VIEW_SIZE / 2 - 16),
-                        Global.ACTOR_Y - (Global.VIEW_SIZE / 2 - 16),
-                        Global.VIEW_SIZE, Global.VIEW_SIZE,
-                        Global.VIEW_SIZE, Global.VIEW_SIZE);
-        actor = new Actor(1, Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, view);
-        delay = new Delay(1);
-        delay.start();
+        this.view = new View(Global.ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                        Global.ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
+                        Global.VIEW_WIDTH, Global.VIEW_HEIGHT
+                        );
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 4, Global.ACTOR);
+        this.delay = new Delay(1);
+        this.delay.start();
 //        changeSceneDelay = new Delay(180);
 //        changeSceneDelay.start();
     }
@@ -137,13 +137,13 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        for (int i = 0; i < viewMaps.length; i++) {
-            if (viewMaps[i] != null) {
-                viewMaps[i].paint(g);
+        for (int i = 0; i < this.viewMaps.length; i++) {
+            if (this.viewMaps[i] != null) {
+                this.viewMaps[i].paint(g);
             }
         }
-        actor.paint(g);
-        view.paint(g);
+        this.actor.paint(g);
+        this.view.paint(g);
     }
 
     @Override
@@ -163,17 +163,21 @@ public class MainScene extends Scene {
             System.out.println("commandCode:" + commandCode);
             actor.setStand(false);
             switch (commandCode) {
-                case 0:
+                case Global.UP:
                     actor.setDir(Global.UP);
+                    actor.movement().setPressedStatus(Global.UP, true);
                     break;
-                case 1:
+                case Global.DOWN:
                     actor.setDir(Global.DOWN);
+                    actor.movement().setPressedStatus(Global.DOWN, true);
                     break;
-                case 2:
+                case Global.LEFT:
                     actor.setDir(Global.LEFT);
+                    actor.movement().setPressedStatus(Global.LEFT, true);
                     break;
-                case 3:
+                case Global.RIGHT:
                     actor.setDir(Global.RIGHT);
+                    actor.movement().setPressedStatus(Global.RIGHT, true);
                     break;
             }
         }
@@ -181,6 +185,24 @@ public class MainScene extends Scene {
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             actor.setStand(true);
+            switch (commandCode) {
+                case Global.UP:
+                    actor.setDir(Global.UP);
+                    actor.movement().setPressedStatus(Global.UP, false);
+                    break;
+                case Global.DOWN:
+                    actor.setDir(Global.DOWN);
+                    actor.movement().setPressedStatus(Global.DOWN, false);
+                    break;
+                case Global.LEFT:
+                    actor.setDir(Global.LEFT);
+                    actor.movement().setPressedStatus(Global.LEFT, false);
+                    break;
+                case Global.RIGHT:
+                    actor.setDir(Global.RIGHT);
+                    actor.movement().setPressedStatus(Global.RIGHT, false);
+                    break;
+            }
         }
 
         @Override

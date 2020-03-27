@@ -28,8 +28,8 @@ public class View extends GameObject{
     private int height;
 
     
-    public View(int x, int y, int width, int height, int colliderWidth, int colliderHeight) {
-        super(x, y, width, height, colliderWidth, colliderHeight);
+    public View(int x, int y, int width, int height) {
+        super(x, y, width, height, width, height);
         this.x = x;
         this.y = y;
         this.width = width;
