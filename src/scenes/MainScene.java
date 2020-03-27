@@ -106,11 +106,11 @@ public class MainScene extends Scene {
     
     @Override
     public void sceneBegin() {
-        this.view = new View(Global.ACTOR_X - (Global.VIEW_SIZE / 2 - 16),
-                        Global.ACTOR_Y - (Global.VIEW_SIZE / 2 - 16),
-                        Global.VIEW_SIZE, Global.VIEW_SIZE,
-                        Global.VIEW_SIZE, Global.VIEW_SIZE);
-        this.actor = new Actor(1, Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, view);
+        this.view = new View(Global.ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                        Global.ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
+                        Global.VIEW_WIDTH, Global.VIEW_HEIGHT
+                        );
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 4, Global.ACTOR);
         this.delay = new Delay(1);
         this.delay.start();
 //        changeSceneDelay = new Delay(180);

@@ -70,12 +70,12 @@ public abstract class GameObject {
     public void offsetX(int x){
         this.rect.offset(x - this.rect.centerX(), 0);
         this.collider.offset(x - this.collider.centerX(), 0);
+    }
+    
     public Rect getRect(){
         return this.rect;
     }
-    public void setX(int x){
-        this.x = x;
-    }
+
     public void offsetY(int y){
         this.rect.offset(0, y - this.rect.centerY());
         this.collider.offset(0, y - this.collider.centerY());
