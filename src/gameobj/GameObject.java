@@ -33,23 +33,13 @@ public abstract class GameObject {
                 Global.log("create circle");
                 break;
             case "rect":
-                this.graph = Rect.genWithCenter(x, y, x + width, y + height);
-                this.collider = Rect.genWithCenter(x, y, x + width, y + height);
+                this.graph = new Rect(x, y, x + width, y + height);
+                this.collider = new Rect(x, y, x + width, y + height);
                 Global.log("create rect");
                 break;
         }
     }
 
-//    public GameObject(int x, int y, int width, int height, boolean isBindCollider){
-//        this.graph = new Rect(x , y, x + width, y + height);
-//        this.x = x;
-//        this.y = y;
-//        if(isBindCollider){
-//            this.collider = this.graph;
-//        }else{
-//            this.collider = new Rect(x, y, width, height);
-//        }
-//    }
     public int getX() {
         return this.x;
     }
@@ -97,12 +87,11 @@ public abstract class GameObject {
     }
     
     public Graph getGraph() {
-        //TODO
         return this.graph;
     }
 
     public Graph getCollider() {
-        return (this.graph instanceof Circle) ? this.graph : this.collider;
+        return this.collider;
     }
 
     public void offsetY(int y) {

@@ -30,24 +30,29 @@ public class Actor extends GameObject {
 
     private int width;
     private int height;
-    
-    private Move movement;
 
-    public Actor(int[] steps,int x, int y, int moveSpeed, String src) {//src => Global.ACTOR
-//        super(x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
-        super("circle", x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
+    private Move movement;
+    private Map[] currentViewMap;
+
+    public Actor(int[] steps, int x, int y, int moveSpeed, String src, Map[] currentViewMap) {//src => Global.ACTOR
+        super("rect", x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setWidth(Global.UNIT_X);
         setHeight(Global.UNIT_Y);
+        this.currentViewMap = currentViewMap;
         this.renderer = new RendererToRotate(src, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         this.isStand = true;
-        this.view = new View(Global.ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                            Global.ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
-                            Global.VIEW_WIDTH, Global.VIEW_HEIGHT
-                            );
+
+        this.view = new View(x - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                y + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
+                Global.VIEW_WIDTH, Global.VIEW_HEIGHT
+        );
+
+        Global.log("actor right:" + this.getGraph().right());
+        Global.log("view right:" + this.view.getGraph().right());
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
     }//多載 建構子 當前版本
-    
+
     @Override
     public void setX(int x) {
         super.setX(x);
@@ -57,7 +62,7 @@ public class Actor extends GameObject {
     public void setY(int y) {
         super.setY(y);
     }
-    
+
     public void setWidth(int width) {
         this.width = width;
     }
@@ -105,19 +110,20 @@ public class Actor extends GameObject {
         this.dir = dir;
         this.view.setDir(dir);
     }
-    
-    public int centerX(){
+
+    public int centerX() {
         return super.getX() + this.width / 2;
     }
-    public int centerY(){
+
+    public int centerY() {
         return this.getY() + this.height / 2;
     }
-    
-    public void setMovementPressedStatus(int dir, boolean status){
+
+    public void setMovementPressedStatus(int dir, boolean status) {
         this.movement.setPressedStatus(dir, status);
         this.view.movement().setPressedStatus(dir, status);
     }
-    
+
     @Override
     public void update() {
         if (!this.isStand && this.moveDelay.isTrig()) {
@@ -133,8 +139,13 @@ public class Actor extends GameObject {
     }
 
     private void move() {
-        this.movement.doMoving();
-        this.view.move();
+        //TODO 實作如果視窗沒碰到底則移動的是地圖的座標而不是角色的座標
+        if (this.view.getCollider().intersects(Global.MAP_LEFT, Global.UP, Global.MAP_RIGHT, Global.MAP_DOWN)) {
+            this.movement.moving();
+            this.view.move();
+        } else {
+            Global.log("not touch edge");
+        }
         Global.log("actor x:" + super.getX());
         Global.log("actor y:" + super.getY());
     }

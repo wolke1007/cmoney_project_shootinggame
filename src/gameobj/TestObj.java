@@ -133,7 +133,7 @@ public class TestObj extends GameObject {
     }
 
     private void move() {
-        this.movement.doMoving();
+        this.movement.moving();
         this.view.move();
         Global.log("actor x:" + super.getX());
         Global.log("actor y:" + super.getY());

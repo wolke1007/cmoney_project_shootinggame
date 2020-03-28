@@ -8,6 +8,7 @@ package gameobj;
 import java.awt.Graphics;
 import util.Delay;
 import util.Global;
+import util.Move;
 
 /**
  *
@@ -29,20 +30,22 @@ public class Map extends GameObject {
     private Map downMap;
     private Map leftMap;
     private Map rightMap;
+    
+    private Move movement;
 
     public Map(String src, int x, int y, int width, int height) {
         super("rect", x, y, width - 2, height - 2, width - 2, height - 2);
         this.width = width;
         this.height = height;
-//        this.renderer = new Renderer(0, new int[]{0}, 60 - moveSpeed, Global.BACKGROUND);
         this.renderer = r(src);
         this.isStand = true;
+        movement = new Move(this);
         this.moveDelay = new Delay(60 - this.moveSpeed);
         this.moveDelay.start();
     }
 
     public static Renderer r(String src) {
-        return new Renderer(0, new int[]{0}, 0, src);
+        return new Renderer(new int[]{0}, 0, src);
     }
 
     public void setStand(boolean isStand) {
@@ -101,22 +104,10 @@ public class Map extends GameObject {
 //        }
     }
 
-//    private void move() {
-//        switch (this.dir) {
-//            case Global.UP:
-//                this.y -= Global.UNIT_Y / 4;
-//                break;
-//            case Global.DOWN:
-//                this.y += Global.UNIT_Y / 4;
-//                break;
-//            case Global.LEFT:
-//                this.x -= Global.UNIT_X / 4;
-//                break;
-//            case Global.RIGHT:
-//                this.x += Global.UNIT_X / 4;
-//                break;
-//        }
-//    }
+    // TODO 需實作地圖的移動
+    private void move() {
+        this.movement.moving();
+    }
 
     @Override
     public void paintComponent(Graphics g) {

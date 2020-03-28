@@ -29,8 +29,8 @@ public class View extends GameObject{
     private Move movement;
     
     public View(int x, int y, int width, int height) {
-//        super(x, y, width, height, width, height);
         super("rect", x, y, width, height, width, height);
+        Global.log("rec x" + x + " ,y" + y + " ,width:" + width + " ,height:" + height);
         this.width = width;
         this.height = height;
         this.isStand = true;
@@ -54,7 +54,7 @@ public class View extends GameObject{
     }
     
     public void move(){
-        this.movement.doMoving();
+        this.movement.moving();
         Global.log("view x:" + super.getX());
         Global.log("view y:" + super.getY());
     }

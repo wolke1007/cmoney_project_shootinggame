@@ -25,46 +25,46 @@ public class MainScene extends Scene {
 
     Actor actor;
     TestObj testobj;
-    Map map_LU;
-    Map map_RU;
-    Map map_LD;
-    Map map_RD;
-    Map[] viewMaps = new Map[4];
+    Map map_LeftUp;
+    Map map_RightUp;
+    Map map_LeftDown;
+    Map map_RightDown;
+    Map[] viewMaps;
     Delay delay;
     Delay changeSceneDelay;
-    double mapLength = Math.sqrt(Global.MAP_QTY);
-    Map[][] allMaps = new Map[(int) mapLength][(int) mapLength];
+    int mapLength;
+    Map[][] allMaps;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
-        settingMaps(300, 300);
+        this.viewMaps = new Map[6]; // 預計一個畫面最多看見 4 張地圖
+        this.mapLength = (int) Math.sqrt(Global.MAP_QTY); // 全地圖的地圖邊長為總數開根號
+        Global.log("this.mapLength: " + this.mapLength);
+        this.allMaps = new Map[this.mapLength][this.mapLength];
+        settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
     }
 
     private void settingMaps(int width, int height){
         // 這邊希望地圖數能為 3x3 or 4x4 這樣的形式
         int map_x = width;
         int map_y = height;
-        if (this.mapLength % 1d == 0d && this.mapLength >= 3d) {
-            Global.log("地圖數量: " + (int) this.mapLength + "x" + (int) this.mapLength);
-            // 不同位置的地圖使用不同的圖片
+        if (this.mapLength % 1 == 0 && this.mapLength >= 3) {
+            Global.log("地圖數量: " + this.mapLength + "x" + this.mapLength);
+            // 不同位置的地圖使用不同的圖片，之後需做成從地圖池中取隨機 pattern 來用
             for (int x = 0; x < this.allMaps.length; x++) {
                 for (int y = 0; y < this.allMaps[x].length; y++) {
                     int whichMap = x;
                     switch(whichMap){
                         case 0:
-                            this.allMaps[x][y] = new Map(Global.BACKGROUND_1, map_x * y, map_y * x, map_x, map_y);
-                            Global.log("x , y " + map_x * y + " " + map_y * x);
+                            this.allMaps[x][y] = new Map(Global.BACKGROUND_1, map_x * y, map_y * x, width, height);
                             break;
                         case 1:
-                            this.allMaps[x][y] = new Map(Global.BACKGROUND_2, map_x * y, map_y * x, map_x, map_y);
-                            Global.log("x , y " + map_x * y + " " + map_y * x);
+                            this.allMaps[x][y] = new Map(Global.BACKGROUND_2, map_x * y, map_y * x, width, height);
                             break;
                         case 2:
-                            this.allMaps[x][y] = new Map(Global.BACKGROUND_3, map_x * y, map_y * x, map_x, map_y);
-                            Global.log("x , y " + map_x * y + " " + map_y * x);
+                            this.allMaps[x][y] = new Map(Global.BACKGROUND_3, map_x * y, map_y * x, width, height);
                             break;
                     }
-                    
                 }
             }
             //  設定每張地圖的鄰居地圖是誰
@@ -93,29 +93,34 @@ public class MainScene extends Scene {
                 }
             }
             // 設定當前要 paint 出來的四張地圖，目前預設視窗最多會出現就 4 張地圖
-            this.map_LU = this.allMaps[0][0];
-            this.map_RU = this.map_LU.getRightMap();
-            this.map_LD = this.map_LU.getDownMap();
-            this.map_RD = this.map_LD.getRightMap();
-            this.viewMaps[0] = this.map_LU;
-            this.viewMaps[1] = this.map_RU;
-            this.viewMaps[2] = this.map_LD;
-            this.viewMaps[3] = this.map_RD;
+            // 預設為設定左上這張地圖，並將玩家設定至此地圖
+            this.map_LeftUp = this.allMaps[0][0];
+            this.map_RightUp = this.map_LeftUp.getRightMap();
+            this.map_LeftDown = this.map_LeftUp.getDownMap();
+            this.map_RightDown = this.map_LeftDown.getRightMap();
+            this.viewMaps[0] = this.map_LeftUp;
+            this.viewMaps[1] = this.map_RightUp;
+            this.viewMaps[2] = this.map_LeftDown;
+            this.viewMaps[3] = this.map_RightDown;
+            this.viewMaps[4] = this.map_RightUp.getRightMap(); // DEBUG
+            this.viewMaps[5] = this.map_RightDown.getRightMap(); // DEBUG
+            
+            
+//            Global.ACTOR_X = this.allMaps[0][0].getCenterX();
+//            Global.ACTOR_Y = this.allMaps[0][0].getCenterY();
 //            // 關掉地圖
 //            this.viewMaps[0] = null;
 //            this.viewMaps[1] = null;
 //            this.viewMaps[2] = null;
 //            this.viewMaps[3] = null;
         } else {
-            Global.log("地圖數量: " + this.mapLength);
             Global.log("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
         }
     }
     
     @Override
     public void sceneBegin() {
-        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 60, Global.ACTOR);
-        this.testobj = new TestObj(Global.STEPS_WALK_NORMAL, 100, 100, 60, Global.ACTOR);  // DEBUG
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 60, Global.ACTOR, this.viewMaps);
         this.delay = new Delay(1);
         this.delay.start();
 //        changeSceneDelay = new Delay(180);
@@ -132,7 +137,6 @@ public class MainScene extends Scene {
                 }
             }
         }
-        Global.log(""+actor.getGraph().intersects(this.testobj.getGraph()));
     }
 
     @Override
@@ -148,7 +152,6 @@ public class MainScene extends Scene {
             }
         }
         this.actor.paint(g);
-        this.testobj.paint(g);
     }
 
     @Override

@@ -26,8 +26,11 @@ public class Global {
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 角色視野大小
-    public static final int VIEW_WIDTH = 500;
-    public static final int VIEW_HEIGHT = 500;
+    public static final int VIEW_WIDTH = 100;
+    public static final int VIEW_HEIGHT = 100;
+    // 地圖大小
+    public static final int MAP_WIDTH = 300;
+    public static final int MAP_HEIGHT = 300;
     // 資料刷新時間
     public static final int UPDATE_TIMES_PER_SEC = 60;// 每秒更新60次遊戲邏輯
     public static final int MILLISEC_PER_UPDATE = 1000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數
@@ -37,9 +40,9 @@ public class Global {
     // 遊戲單位大小
     public static final int UNIT_X = 32;
     public static final int UNIT_Y = 32;
-    // 角色
-    public static final int ACTOR_X = FRAME_X / 2 - UNIT_X /2;
-    public static final int ACTOR_Y = FRAME_Y / 2 - UNIT_Y /2;    
+    // 角色於地圖位置
+    public static int ACTOR_X = FRAME_X / 2 - UNIT_X /2;
+    public static int ACTOR_Y = FRAME_Y / 2 - UNIT_Y /2;    
     // 方向
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -62,8 +65,12 @@ public class Global {
     //角度需求
     public static final float PI = 3.14f;
     // 地圖數量
-    public static final float MAP_QTY = 9;
-    
+    public static final int MAP_QTY = 9;
+    // 地圖邊界
+    public static int MAP_UP = 0;
+    public static int MAP_DOWN = (int) Math.sqrt(MAP_QTY) * MAP_WIDTH;
+    public static int MAP_LEFT = 0;
+    public static int MAP_RIGHT = (int) Math.sqrt(MAP_QTY) * MAP_HEIGHT;
     //滑鼠當前的座標
     public static int mouseX;
     public static int mouseY;
