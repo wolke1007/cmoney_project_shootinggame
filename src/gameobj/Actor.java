@@ -34,7 +34,8 @@ public class Actor extends GameObject {
     private Move movement;
 
     public Actor(int[] steps,int x, int y, int moveSpeed, String src) {//src => Global.ACTOR
-        super(x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
+//        super(x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
+        super("circle", x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setWidth(Global.UNIT_X);
         setHeight(Global.UNIT_Y);
         this.renderer = new RendererToRotate(src, super.getX(), super.getY(), Global.mouseX, Global.mouseY);

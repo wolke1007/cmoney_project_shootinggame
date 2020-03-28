@@ -31,8 +31,7 @@ public class Map extends GameObject {
     private Map rightMap;
 
     public Map(String src, int x, int y, int width, int height) {
-        super(x, y, width - 2, height - 2, width - 2, height - 2);
-        Global.log("");
+        super("rect", x, y, width - 2, height - 2, width - 2, height - 2);
         this.width = width;
         this.height = height;
 //        this.renderer = new Renderer(0, new int[]{0}, 60 - moveSpeed, Global.BACKGROUND);

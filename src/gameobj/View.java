@@ -29,7 +29,8 @@ public class View extends GameObject{
     private Move movement;
     
     public View(int x, int y, int width, int height) {
-        super(x, y, width, height, width, height);
+//        super(x, y, width, height, width, height);
+        super("rect", x, y, width, height, width, height);
         this.width = width;
         this.height = height;
         this.isStand = true;
@@ -41,7 +42,7 @@ public class View extends GameObject{
     }
 
     public boolean isMeetScreenEdge(){
-        return this.rect.intersects(0, 0, Global.FRAME_X, Global.FRAME_Y);
+        return this.graph.intersects(0, 0, Global.FRAME_X, Global.FRAME_Y);
     }
     
     public void setDir(int dir) {

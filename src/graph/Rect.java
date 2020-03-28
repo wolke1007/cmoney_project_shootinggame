@@ -11,28 +11,41 @@ import util.Global;
  *
  * @author Cloud-Razer
  */
-public class Rect {
+public class Rect extends Graph {
+
     private int left;
     private int top;
     private int right;
     private int bottom;
-    
+
     public Rect(int left, int top, int right, int bottom) {
         this.left = left;
         this.top = top;
         this.right = right;
         this.bottom = bottom;
+        super.x = left;
+        super.y = top;
     }
-    
-    public static Rect genWithCenter(int x, int y, int width, int height){
-        int left = x - width / 2; 
+
+    public static Rect genWithCenter(int x, int y, int width, int height) {
+        int left = x ;
         int right = left + width;
-        int top = y - height / 2;
+        int top = y ;
         int bottom = top + height;
         return new Rect(left, top, right, bottom);
     }
-    
-    public boolean intersects(int left, int top, int right, int bottom){
+
+    @Override
+    public boolean intersects(Graph target) {
+        if (target instanceof Rect) { // TODO這邊只有做與長方形的碰撞，應該要做與圓形的碰撞
+            return intersects(target.left, target.top, target.right, target.bottom);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean intersects(int left, int top, int right, int bottom) {
         if (this.left() > right) {
             return false;
         }
@@ -47,9 +60,10 @@ public class Rect {
         }
         return true;
     }
-    
-    public boolean screenEdgeCheck(String side){
-        switch(side){
+
+    @Override
+    public boolean screenEdgeCheck(String side) {
+        switch (side) {
             case "up":
                 return this.top < 0 ? true : false;
             case "down":
@@ -62,69 +76,88 @@ public class Rect {
                 return false;
         }
     }
-    
-    public static boolean intersects(Rect a, Rect b){
+
+//    public static boolean intersects(Rect a, Rect b){
+    public static boolean intersects(Graph a, Graph b) {
         return a.intersects(b.left, b.top, b.right, b.bottom);
     }
-    
-    public int centerX(){
+
+    @Override
+    public int centerX() {
         return (left + right) / 2;
     }
-    public int centerY(){
+
+    @Override
+    public int centerY() {
         return (top + bottom) / 2;
     }
-    public float exactCenterX(){
-        return (left + right) / 2f;
+
+    @Override
+    public double exactCenterX() {
+        return (left + right) / 2d;
     }
-    public float exactCenterY(){
-        return (top + bottom) / 2f;
+
+    @Override
+    public double exactCenterY() {
+        return (top + bottom) / 2d;
     }
-    
-    public void offset(int dx, int dy){
+
+    @Override
+    public void offset(int dx, int dy) {
         this.left += dx;
         this.right += dx;
         this.top += dy;
         this.bottom += dy;
     }
-    
+
+    @Override
     public int left() {
         return left;
     }
 
+    @Override
     public void setLeft(int left) {
         this.left = left;
     }
 
+    @Override
     public int top() {
         return top;
     }
 
+    @Override
     public void setTop(int top) {
         this.top = top;
     }
 
+    @Override
     public int right() {
         return right;
     }
 
+    @Override
     public void setRight(int right) {
         this.right = right;
     }
 
+    @Override
     public int bottom() {
         return bottom;
     }
 
+    @Override
     public void setBottom(int bottom) {
         this.bottom = bottom;
     }
-    
-    public int width(){
+
+    @Override
+    public int width() {
         return this.right - this.left;
     }
-    
-    public int height(){
+
+    @Override
+    public int height() {
         return this.bottom - this.top;
     }
-}
 
+}

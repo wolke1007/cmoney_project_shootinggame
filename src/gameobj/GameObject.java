@@ -5,6 +5,8 @@
  */
 package gameobj;
 
+import graph.Circle;
+import graph.Graph;
 import graph.Rect;
 import java.awt.Graphics;
 import util.Global;
@@ -15,94 +17,125 @@ import java.awt.Color;
  * @author Cloud-Razer
  */
 public abstract class GameObject {
-    private Rect collider;
-    protected Rect rect;
+
+    private Graph collider;
+    protected Graph graph;
     private int x;
     private int y;
-    
-    public GameObject(int x, int y, int width, int height, int colliderWidth, int colliderHeight){
-        this.rect = new Rect(x , y, x + width, y + height);
-        this.collider = new Rect(x , y, x + width, y + height);
+
+    public GameObject(String colliderType, int x, int y, int width, int height, int colliderWidth, int colliderHeight) {
         this.x = x;
         this.y = y;
-    }
-    
-    public GameObject(int x, int y, int width, int height, boolean isBindCollider){
-        this.rect = new Rect(x , y, x + width, y + height);
-        this.x = x;
-        this.y = y;
-        if(isBindCollider){
-            this.collider = this.rect;
-        }else{
-            this.collider = new Rect(x, y, width, height);
+        switch(colliderType){
+            case "circle":
+                this.graph = Circle.genWithCenter(x, y, width, height);
+                this.collider = Circle.genWithCenter(x, y, width, height);
+                Global.log("create circle");
+                break;
+            case "rect":
+                this.graph = Rect.genWithCenter(x, y, x + width, y + height);
+                this.collider = Rect.genWithCenter(x, y, x + width, y + height);
+                Global.log("create rect");
+                break;
         }
     }
-    public int getX(){
+
+//    public GameObject(int x, int y, int width, int height, boolean isBindCollider){
+//        this.graph = new Rect(x , y, x + width, y + height);
+//        this.x = x;
+//        this.y = y;
+//        if(isBindCollider){
+//            this.collider = this.graph;
+//        }else{
+//            this.collider = new Rect(x, y, width, height);
+//        }
+//    }
+    public int getX() {
         return this.x;
     }
-    public int getY(){
+
+    public int getY() {
         return this.y;
     }
-    public int getCenterX(){
-        return this.rect.centerX();
+
+    public int getCenterX() {
+        return this.graph.centerX();
     }
-    public int getCenterY(){
-        return this.rect.centerY();
+
+    public int getCenterY() {
+        return this.graph.centerY();
     }
-    public int width(){
-        return this.rect.width();
+
+    public int width() {
+        return this.graph.width();
     }
-    public int height(){
-        return this.rect.height();
+
+    public int height() {
+        return this.graph.height();
     }
-    public void setX(int x){
+
+    public void setX(int x) {
         this.x = x;
     }
-    public void setY(int y){
+
+    public void setY(int y) {
         this.y = y;
     }
-    
-    public void offset(int dx, int dy){
+
+    public void offset(int dx, int dy) {
         this.x += dx;
         this.y += dy;
         Global.log("dx:" + dx);
         Global.log("dy:" + dy);
-        this.rect.offset(dx, dy);
+        this.graph.offset(dx, dy);
         this.collider.offset(dx, dy);
     }
-    
-    public void offsetX(int x){
-        this.rect.offset(x - this.rect.centerX(), 0);
+
+    public void offsetX(int x) {
+        this.graph.offset(x - this.graph.centerX(), 0);
         this.collider.offset(x - this.collider.centerX(), 0);
     }
     
-    public Rect getRect(){
-        return this.rect;
+    public Graph getGraph() {
+        //TODO
+        return this.graph;
     }
 
-    public void offsetY(int y){
-        this.rect.offset(0, y - this.rect.centerY());
+    public Graph getCollider() {
+        return (this.graph instanceof Circle) ? this.graph : this.collider;
+    }
+
+    public void offsetY(int y) {
+        this.graph.offset(0, y - this.graph.centerY());
         this.collider.offset(0, y - this.collider.centerY());
     }
-    
-    public boolean isCollision(GameObject obj){
-        if(this.collider == null || obj.collider == null){
+
+    public boolean isCollision(GameObject obj) {
+        if (this.collider == null || obj.collider == null) {
             return false;
         }
         return Rect.intersects(this.collider, obj.collider);
     }
-    
-    public void paint(Graphics g){
+
+    public void paint(Graphics g) {
         paintComponent(g);
-        if(Global.IS_DEBUG){
+        if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Circle) {
             g.setColor(Color.RED);
-            g.drawRect(this.rect.left(), this.rect.top(), this.rect.width(), this.rect.height());
+            g.drawOval(this.graph.left(), this.graph.top(), this.graph.width(), this.graph.height());
+            g.setColor(Color.BLUE);
+            g.drawOval(this.collider.left(), this.collider.top(), this.collider.width(), this.collider.height());
+            g.setColor(Color.BLACK);
+        }
+        if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Rect) {
+            g.setColor(Color.RED);
+            g.drawRect(this.graph.left(), this.graph.top(), this.graph.width(), this.graph.height());
             g.setColor(Color.BLUE);
             g.drawRect(this.collider.left(), this.collider.top(), this.collider.width(), this.collider.height());
             g.setColor(Color.BLACK);
         }
     }
-    
+
     public abstract void update();
+
     public abstract void paintComponent(Graphics g);
 }

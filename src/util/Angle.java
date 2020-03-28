@@ -65,7 +65,7 @@ public class Angle {
     private void angleReATan() {
         double dx = getGoalCenterX() - getCenterX();
         double dy = getCenterY() - getGoalCenterY();
-        this.angle = Math.atan(Math.abs(dx) / Math.abs(dy)) / Global.PI * 180;
+        this.angle = Math.atan(Math.abs(dx) / Math.abs(dy)) / Global.PI * 180d;
         if (dx < 0 && dy > 0) {
             this.angle = 360 - this.angle;
         }

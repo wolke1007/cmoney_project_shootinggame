@@ -24,6 +24,7 @@ import java.awt.event.MouseEvent;
 public class MainScene extends Scene {
 
     Actor actor;
+    TestObj testobj;
     Map map_LU;
     Map map_RU;
     Map map_LD;
@@ -114,6 +115,7 @@ public class MainScene extends Scene {
     @Override
     public void sceneBegin() {
         this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 60, Global.ACTOR);
+        this.testobj = new TestObj(Global.STEPS_WALK_NORMAL, 100, 100, 60, Global.ACTOR);  // DEBUG
         this.delay = new Delay(1);
         this.delay.start();
 //        changeSceneDelay = new Delay(180);
@@ -130,6 +132,7 @@ public class MainScene extends Scene {
                 }
             }
         }
+        Global.log(""+actor.getGraph().intersects(this.testobj.getGraph()));
     }
 
     @Override
@@ -145,6 +148,7 @@ public class MainScene extends Scene {
             }
         }
         this.actor.paint(g);
+        this.testobj.paint(g);
     }
 
     @Override

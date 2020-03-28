@@ -32,7 +32,7 @@ public class Global {
     public static final int UPDATE_TIMES_PER_SEC = 60;// 每秒更新60次遊戲邏輯
     public static final int MILLISEC_PER_UPDATE = 1000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數
     // 畫面更新時間
-    public static final int FRAME_LIMIT = 60;
+    public static final int FRAME_LIMIT = 80;
     public static final int LIMIT_DELTA_TIME = 1000 / FRAME_LIMIT;
     // 遊戲單位大小
     public static final int UNIT_X = 32;
