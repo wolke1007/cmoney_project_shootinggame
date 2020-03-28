@@ -32,8 +32,8 @@ public class SecondScene extends Scene{
     
     @Override
     public void sceneBegin() {
-        obj = new TestObj(1, 1, 50, 50, 130, 130, 50, 50);
-        obj2 = new TestObj(0, 0, 350, 350, 150, 150, 150, 150);
+//        obj = new TestObj(1, 1, 50, 50, 130, 130, 50, 50);
+//        obj2 = new TestObj(0, 0, 350, 350, 150, 150, 150, 150);
         delay = new Delay(5);
         delay.start();
     }

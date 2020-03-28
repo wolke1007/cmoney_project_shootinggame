@@ -26,15 +26,15 @@ public abstract class GameObject {
     public GameObject(String colliderType, int x, int y, int width, int height, int colliderWidth, int colliderHeight) {
         this.x = x;
         this.y = y;
-        switch(colliderType){
+        switch (colliderType) {
             case "circle":
                 this.graph = Circle.genWithCenter(x, y, width, height);
                 this.collider = Circle.genWithCenter(x, y, width, height);
                 Global.log("create circle");
                 break;
             case "rect":
-                this.graph = new Rect(x, y, x + width, y + height);
-                this.collider = new Rect(x, y, x + width, y + height);
+                this.graph = Rect.genWithCenter(x, y, width, height);
+                this.collider = Rect.genWithCenter(x, y, width, height);
                 Global.log("create rect");
                 break;
         }
@@ -85,7 +85,7 @@ public abstract class GameObject {
         this.graph.offset(x - this.graph.centerX(), 0);
         this.collider.offset(x - this.collider.centerX(), 0);
     }
-    
+
     public Graph getGraph() {
         return this.graph;
     }

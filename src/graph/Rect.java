@@ -27,10 +27,10 @@ public class Rect extends Graph {
         super.y = top;
     }
 
-    public static Rect genWithCenter(int centerX, int centerY, int width, int height) {
-        int left = centerX - width / 2;
+    public static Rect genWithCenter(int x, int y, int width, int height) {
+        int left = x;
         int right = left + width;
-        int top = centerY - height / 2;
+        int top = y;
         int bottom = top + height;
         return new Rect(left, top, right, bottom);
     }
