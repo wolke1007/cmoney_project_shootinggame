@@ -123,8 +123,16 @@ public abstract class GameObject {
             g.setColor(Color.BLACK);
         }
     }
+    
+    public boolean isMeetMapEdge(){
+        return this.graph.intersects(Global.MAP_RIGHT, Global.MAP_BOTTOM, Global.MAP_LEFT, Global.MAP_TOP);
+    }
 
     public abstract void update();
 
+    public abstract void setDir(int dir);
+    
+    public abstract void setMovementPressedStatus(int dir, boolean status);
+    
     public abstract void paintComponent(Graphics g);
 }
