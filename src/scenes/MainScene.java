@@ -26,10 +26,10 @@ public class MainScene extends Scene {
 
     Actor actor;
     TestObj testobj;
-    Map map_LeftUp;
-    Map map_RightUp;
-    Map map_LeftDown;
-    Map map_RightDown;
+    Map mapLeftUp;
+    Map mapRightUp;
+    Map mapLeftDown;
+    Map mapRightDown;
     Map[] viewMaps;
     Delay delay;
     Delay changeSceneDelay;
@@ -95,19 +95,22 @@ public class MainScene extends Scene {
             }
             // 設定當前要 paint 出來的四張地圖，目前預設視窗最多會出現就 4 張地圖
             // 預設為設定左上這張地圖，並將玩家設定至此地圖
-            this.map_LeftUp = this.allMaps[0][0];
-            this.map_RightUp = this.map_LeftUp.getRightMap();
-            this.map_LeftDown = this.map_LeftUp.getDownMap();
-            this.map_RightDown = this.map_LeftDown.getRightMap();
-            this.viewMaps[0] = this.map_LeftUp;
-            this.viewMaps[1] = this.map_RightUp;
-            this.viewMaps[2] = this.map_LeftDown;
-            this.viewMaps[3] = this.map_RightDown;
-            this.viewMaps[4] = this.map_RightUp.getRightMap(); // DEBUG
-            this.viewMaps[5] = this.map_RightDown.getRightMap(); // DEBUG
-
-//            Global.ACTOR_X = this.allMaps[0][0].getCenterX();
-//            Global.ACTOR_Y = this.allMaps[0][0].getCenterY();
+            this.mapLeftUp = this.allMaps[0][0];
+            this.mapRightUp = this.mapLeftUp.getRightMap();
+            this.mapLeftDown = this.mapLeftUp.getDownMap();
+            this.mapRightDown = this.mapLeftDown.getRightMap();
+            this.viewMaps[0] = this.mapLeftUp;
+            this.viewMaps[1] = this.mapRightUp;
+            this.viewMaps[2] = this.mapLeftDown;
+            this.viewMaps[3] = this.mapRightDown;
+            this.viewMaps[4] = this.mapRightUp.getRightMap(); // DEBUG
+            this.viewMaps[5] = this.mapRightDown.getRightMap(); // DEBUG
+            Global.mapEdgeUp = this.allMaps[0][0].getY();
+            Global.mapEdgeDown = this.allMaps[0][this.allMaps.length - 1].getY() + Global.MAP_HEIGHT;
+            Global.mapEdgeLeft = this.allMaps[0][0].getX();
+            Global.mapEdgeRight = this.allMaps[0][this.allMaps.length - 1].getX() + Global.MAP_WIDTH;
+//            Global.actor_x = this.allMaps[0][0].getCenterX();
+//            Global.actor_y = this.allMaps[0][0].getCenterY();
 //            // 關掉地圖
 //            this.viewMaps[0] = null;
 //            this.viewMaps[1] = null;
@@ -120,7 +123,7 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 60, Global.ACTOR, this.viewMaps);
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.actor_x, Global.actor_y, 60, Global.ACTOR, this.viewMaps);
         this.view = new View(this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
                 this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
                 60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT);
@@ -133,14 +136,9 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneUpdate() {
-        // 平常是地圖在移動，而當地圖移動到最後邊際碰到了 View 的時候則改成動角色
-        if (this.delay.isTrig() && !this.view.isMeetMapEdge()) {
-//            Global.log("this.view.isMeetMapEdge()" + this.view.isMeetMapEdge());
-            this.actor.update();
-            this.view.update();
-        } else {
-            allMapsUpdate();
-        }
+        this.actor.update();
+        this.view.update();
+        allMapsUpdate();
     }
 
     private void allMapsUpdate() {
@@ -181,6 +179,68 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
+            moveRule_1(commandCode);
+        }
+
+        @Override
+        public void keyReleased(int commandCode, long trigTime) {
+            stopRule(commandCode);
+        }
+
+        private void setDirAndPressedStatus(GameObject obj, int dir, boolean status) {
+            obj.setDir(dir);
+            obj.setMovementPressedStatus(dir, status);
+        }
+
+        private void moveRule_1(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
+            actor.setStand(!view.isMeetMapEdge());
+            view.setStand(!view.isMeetMapEdge());
+            for(int i = 0; i < allMaps.length; i++){
+                for(int j = 0; j < allMaps[i].length; j++){
+                    allMaps[i][j].setStand(false);
+                }
+            }
+            switch (commandCode) {
+                case Global.UP:
+                    setDirAndPressedStatus(actor, Global.UP, true);
+                    setDirAndPressedStatus(view, Global.UP, true);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.UP, true);
+                        }
+                    }
+                    break;
+                case Global.DOWN:
+                    setDirAndPressedStatus(actor, Global.DOWN, true);
+                    setDirAndPressedStatus(view, Global.DOWN, true);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.DOWN, true);
+                        }
+                    }
+                    break;
+                case Global.LEFT:
+                    setDirAndPressedStatus(actor, Global.LEFT, true);
+                    setDirAndPressedStatus(view, Global.LEFT, true);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.LEFT, true);
+                        }
+                    }
+                    break;
+                case Global.RIGHT:
+                    setDirAndPressedStatus(actor, Global.RIGHT, true);
+                    setDirAndPressedStatus(view, Global.RIGHT, true);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.RIGHT, true);
+                        }
+                    }
+                    break;
+            }
+        } // 當角色的視野沒碰到牆壁時移動邏輯
+
+        private void mvoeRule_2(int commandCode){ // 當角色的視野碰到牆壁時移動邏輯
             actor.setStand(false);
             view.setStand(false);
             switch (commandCode) {
@@ -201,37 +261,56 @@ public class MainScene extends Scene {
                     setDirAndPressedStatus(view, Global.RIGHT, true);
                     break;
             }
-        }
-
-        @Override
-        public void keyReleased(int commandCode, long trigTime) {
+        } // 當角色的視野碰到牆壁時移動邏輯
+        
+        private void stopRule(int commandCode) {
             actor.setStand(true);
             view.setStand(true);
+            for(int i = 0; i < allMaps.length; i++){
+                for(int j = 0; j < allMaps[i].length; j++){
+                    allMaps[i][j].setStand(true);
+                }
+            }
             switch (commandCode) {
                 case Global.UP:
                     setDirAndPressedStatus(actor, Global.UP, false);
                     setDirAndPressedStatus(view, Global.UP, false);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.UP, false);
+                        }
+                    }
                     break;
                 case Global.DOWN:
                     setDirAndPressedStatus(actor, Global.DOWN, false);
                     setDirAndPressedStatus(view, Global.DOWN, false);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.DOWN, false);
+                        }
+                    }
                     break;
                 case Global.LEFT:
                     setDirAndPressedStatus(actor, Global.LEFT, false);
                     setDirAndPressedStatus(view, Global.LEFT, false);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.LEFT, false);
+                        }
+                    }
                     break;
                 case Global.RIGHT:
                     setDirAndPressedStatus(actor, Global.RIGHT, false);
                     setDirAndPressedStatus(view, Global.RIGHT, false);
+                    for(int i = 0; i < allMaps.length; i++){
+                        for(int j = 0; j < allMaps[i].length; j++){
+                            setDirAndPressedStatus(allMaps[i][j], Global.RIGHT, false);
+                        }
+                    }
                     break;
             }
         }
-        
-        private void setDirAndPressedStatus(GameObject obj, int dir, boolean status){
-            obj.setDir(dir);
-            obj.setMovementPressedStatus(dir, status);
-        }
-        
+
         @Override
         public void keyTyped(char c, long trigTime) {
         }

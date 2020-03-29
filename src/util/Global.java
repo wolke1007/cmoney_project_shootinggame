@@ -41,8 +41,8 @@ public class Global {
     public static final int UNIT_X = 32;
     public static final int UNIT_Y = 32;
     // 角色於地圖位置
-    public static int ACTOR_X = FRAME_X / 2 - UNIT_X /2;
-    public static int ACTOR_Y = FRAME_Y / 2 - UNIT_Y /2;    
+    public static int actor_x = FRAME_X / 2 - UNIT_X /2;
+    public static int actor_y = FRAME_Y / 2 - UNIT_Y /2;    
     // 方向
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -67,10 +67,10 @@ public class Global {
     // 地圖數量
     public static final int MAP_QTY = 9;
     // 地圖邊界
-    public static int MAP_TOP = 0;
-    public static int MAP_BOTTOM = (int) Math.sqrt(MAP_QTY) * MAP_WIDTH;
-    public static int MAP_LEFT = 0;
-    public static int MAP_RIGHT = (int) Math.sqrt(MAP_QTY) * MAP_HEIGHT;
+    public static int mapEdgeUp;
+    public static int mapEdgeDown;
+    public static int mapEdgeLeft;
+    public static int mapEdgeRight;
     //滑鼠當前的座標
     public static int mouseX;
     public static int mouseY;

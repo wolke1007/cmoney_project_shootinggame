@@ -75,8 +75,6 @@ public abstract class GameObject {
     public void offset(int dx, int dy) {
         this.x += dx;
         this.y += dy;
-        Global.log("dx:" + dx);
-        Global.log("dy:" + dy);
         this.graph.offset(dx, dy);
         this.collider.offset(dx, dy);
     }
@@ -125,7 +123,11 @@ public abstract class GameObject {
     }
     
     public boolean isMeetMapEdge(){
-        return this.graph.intersects(Global.MAP_RIGHT, Global.MAP_BOTTOM, Global.MAP_LEFT, Global.MAP_TOP);
+        Global.log("mapEdgeUp" + Global.mapEdgeUp);
+        Global.log("mapEdgeDown" + Global.mapEdgeDown);
+        Global.log("mapEdgeLeft" + Global.mapEdgeLeft);
+        Global.log("mapEdgeRight" + Global.mapEdgeRight);
+        return this.graph.intersects(Global.mapEdgeRight, Global.mapEdgeDown, Global.mapEdgeLeft, Global.mapEdgeUp);
     }
 
     public abstract void update();

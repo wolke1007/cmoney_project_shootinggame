@@ -101,7 +101,6 @@ public class Map extends GameObject {
         }
     }
 
-    // TODO 需實作地圖的移動
     private void move() {
         this.movement.movingIgnoreEdge();
     }
@@ -115,7 +114,7 @@ public class Map extends GameObject {
 
     @Override
     public void setMovementPressedStatus(int dir, boolean status) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.movement.setPressedStatus(dir, status);
     }
 
 }
