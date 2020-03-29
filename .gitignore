@@ -2,5 +2,3 @@ build/
 nbproject/
 build.xml
 mainfest.mf
-*.xml
-*.properties
