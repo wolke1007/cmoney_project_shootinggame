@@ -81,6 +81,8 @@ public abstract class GameObject {
     }
     
     public void offset(Point dest) {
+        Global.log("offset x: "+ dest.getX());
+        Global.log("offset y: "+ dest.getY());
         this.x += dest.getX();
         this.y += dest.getY();
         this.graph.offset(dest.getX(), dest.getY());

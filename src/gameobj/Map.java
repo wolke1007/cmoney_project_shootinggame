@@ -103,7 +103,7 @@ public class Map extends GameObject {
     }
 
     public void move() {
-        Point destination = this.movement.moving(true);
+        Point destination = this.movement.getDestination(true);
         if(destination != null){
             this.offset(destination);
         }

@@ -28,7 +28,7 @@ public class Move {
         this.obj = obj;
     }
 
-    public Point moving(boolean reverse) { // 此移動可以穿牆，目前只有地圖使用 ，上下左右邏輯完全與角色移動顛倒
+    public Point getDestination(boolean reverse) { // 此移動可以穿牆，目前只有地圖使用 ，上下左右邏輯完全與角色移動顛倒
         int dir = movingDir();
         int speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         Point ret = null;
@@ -65,7 +65,7 @@ public class Move {
         this.obj.offset(point);
     }
 
-    public Point correctDest(Point point) {
+    public Point correctedDest(Point point) {
         int x = 0;
         int y = 0;
         Global.log("point.getX(): " + point.getX());
@@ -76,27 +76,23 @@ public class Move {
         Global.log("Global.mapEdgeLeft: " + Global.mapEdgeLeft);
         Global.log("Global.mapEdgeUp: " + Global.mapEdgeUp);
         Global.log("Global.mapEdgeDown: " + Global.mapEdgeDown);
-        if (point.getX() + this.obj.getX() + this.obj.width() > Global.mapEdgeRight) {
-            Global.log("right");
-            Global.log("x + w:" + ( point.getX() + this.obj.width()));
-            //TODO 切入點!!
-            x = this.obj.getX() - Global.mapEdgeRight - this.obj.width();
+        if (point.getX() + this.obj.getGraph().right() >= Global.mapEdgeRight) {
+            x = Global.mapEdgeRight - this.obj.getGraph().right() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
         }
-        if (point.getX() < Global.mapEdgeLeft) {
-            Global.log("left");
-            x = Global.mapEdgeLeft; // 不確定要不要 + 1
+        if (point.getX() + this.obj.getGraph().left() <= Global.mapEdgeLeft) {
+            x = Global.mapEdgeLeft - this.obj.getGraph().left() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
         }
-        if (point.getY() < Global.mapEdgeUp) {
-            Global.log("up");
-            Global.log("point.getY():" + point.getY());
-            Global.log("Global.mapEdgeUp:" + Global.mapEdgeUp);
-            y = Global.mapEdgeUp; // 不確定要不要 + 1
+        if (point.getY() + this.obj.getGraph().top() <= Global.mapEdgeUp) {
+            y = Global.mapEdgeUp - this.obj.getGraph().top() - 2;  //  造成在牆壁邊抖動，且隨機會人卡進牆中
         }
-        if (point.getY() + this.obj.height() > Global.mapEdgeDown) {
-            Global.log("down");
-            y = Global.mapEdgeDown - this.obj.height(); // 不確定要不要 - 1
+        Global.log("this.obj.getGraph().bottom() " + this.obj.getGraph().bottom());
+        if (point.getY() + this.obj.getGraph().bottom() >= Global.mapEdgeDown) {
+            y = Global.mapEdgeDown - this.obj.getGraph().bottom() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
         }
-        Global.log("x " + x + ", y  " + y);
+        if(x == 0 && y == 0){
+            Global.log("move return null");
+            return null;
+        }
         return new Point(x, y);
     }
 

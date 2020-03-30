@@ -83,7 +83,7 @@ public class View extends GameObject{
     }
     
     public void move(){
-        Point destination = this.movement.moving(false);
+        Point destination = this.movement.getDestination(false);
         if(destination != null){
             this.offset(destination);
         }
