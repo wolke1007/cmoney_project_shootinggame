@@ -119,7 +119,7 @@ public class Circle extends Graph {
     }//圓形與矩形相交
 
     @Override
-    public boolean screenEdgeCheck(String side) {
+    public boolean sideScreenEdgeCheck(String side) {
         switch (side) {
             case "up":
                 return this.top < 0 ? true : false;
@@ -134,6 +134,12 @@ public class Circle extends Graph {
         }
     }
 
+    @Override
+    public boolean screenEdgeCheck() {
+        //TODO implement
+        return true;
+    }
+    
     @Override
     public int centerX() {
         return (left + right) / 2;

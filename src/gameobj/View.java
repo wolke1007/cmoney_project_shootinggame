@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import util.Delay;
 import util.Global;
 import util.Move;
+import util.Point;
 
 /**
  *
@@ -82,9 +83,12 @@ public class View extends GameObject{
     }
     
     public void move(){
-        this.movement.moving();
+        Point destination = this.movement.moving(false);
+        if(destination != null){
+            this.offset(destination);
+        }
     }
-
+    
     @Override
     public void paintComponent(Graphics g) {
         return;

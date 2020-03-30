@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import util.Delay;
 import util.Global;
 import util.Move;
+import util.Point;
 
 /**
  *
@@ -101,8 +102,11 @@ public class Map extends GameObject {
         }
     }
 
-    private void move() {
-        this.movement.movingIgnoreEdge();
+    public void move() {
+        Point destination = this.movement.moving(true);
+        if(destination != null){
+            this.offset(destination);
+        }
     }
 
     @Override

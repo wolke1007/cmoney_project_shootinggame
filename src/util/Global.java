@@ -29,8 +29,8 @@ public class Global {
     public static final int VIEW_WIDTH = 100;
     public static final int VIEW_HEIGHT = 100;
     // 地圖大小
-    public static final int MAP_WIDTH = 300;
-    public static final int MAP_HEIGHT = 300;
+    public static final int MAP_WIDTH = 200;
+    public static final int MAP_HEIGHT = 200;
     // 資料刷新時間
     public static final int UPDATE_TIMES_PER_SEC = 60;// 每秒更新60次遊戲邏輯
     public static final int MILLISEC_PER_UPDATE = 1000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數

@@ -24,7 +24,9 @@ public abstract class Graph {
 
     public abstract boolean intersects(int left, int top, int right, int bottom);
 
-    public abstract boolean screenEdgeCheck(String side);
+    public abstract boolean screenEdgeCheck();
+    
+    public abstract boolean sideScreenEdgeCheck(String side);
 
     public abstract int centerX();
 

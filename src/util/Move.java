@@ -28,116 +28,76 @@ public class Move {
         this.obj = obj;
     }
 
-    public void moving() {
+    public Point moving(boolean reverse) { // 此移動可以穿牆，目前只有地圖使用 ，上下左右邏輯完全與角色移動顛倒
         int dir = movingDir();
         int speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
+        Point ret = null;
         switch (dir) {
-            case Global.UP: // go up
-                if (!this.obj.getCollider().screenEdgeCheck("up")) {
-                    this.obj.offset(0, -speed);
-                }
+            case Global.DOWN: // go up
+                ret = reverse ? new Point(0, -speed) : new Point(0, speed);
                 break;
-            case Global.DOWN: // go down
-                if (!this.obj.getCollider().screenEdgeCheck("down")) {
-                    this.obj.offset(0, speed);
-                }
+            case Global.UP: // go down
+                ret = reverse ? new Point(0, speed) : new Point(0, -speed);
                 break;
-            case Global.LEFT: // go left
-                if (!this.obj.getCollider().screenEdgeCheck("left")) {
-                    this.obj.offset(-speed, 0);
-                }
+            case Global.RIGHT: // go left
+                ret = reverse ? new Point(-speed, 0) : new Point(speed, 0);
                 break;
-            case Global.RIGHT: // go right
-                if (!this.obj.getCollider().screenEdgeCheck("right")) {
-                    this.obj.offset(speed, 0);
-                }
+            case Global.LEFT: // go right
+                ret = reverse ? new Point(speed, 0) : new Point(-speed, 0);
                 break;
-            case Global.UP_LEFT: // go up-left
-                if (this.obj.getCollider().screenEdgeCheck("up") || this.obj.getCollider().screenEdgeCheck("left")) {
-                    // 如果撞到上面，但依然在往右上走，則應該要往右走
-                    if (!this.obj.getCollider().screenEdgeCheck("up")) {
-                        this.obj.offset(0, -speed);
-                    }
-                    if (!this.obj.getCollider().screenEdgeCheck("left")) {
-                        this.obj.offset(-speed, 0);
-                    }
-                } else {
-                    Global.log("dir is UP_LEFT:" + Global.UP_LEFT);
-                    this.obj.offset(-speed, -speed);
-                }
+            case Global.DOWN_RIGHT: // go up-left
+                ret = reverse ? new Point(-speed, -speed) : new Point(speed, speed);
                 break;
-            case Global.UP_RIGHT: // go up-right
-                if (this.obj.getCollider().screenEdgeCheck("up") || this.obj.getCollider().screenEdgeCheck("right")) {
-                    if (!this.obj.getCollider().screenEdgeCheck("up")) {
-                        this.obj.offset(0, -speed);
-                    }
-                    if (!this.obj.getCollider().screenEdgeCheck("right")) {
-                        this.obj.offset(speed, 0);
-                    }
-                } else {
-                    Global.log("dir is UP_RIGHT:" + Global.UP_RIGHT);
-                    this.obj.offset(speed, -speed);
-                }
+            case Global.DOWN_LEFT: // go up-right
+                ret = reverse ? new Point(speed, -speed) : new Point(-speed, speed);
                 break;
-            case Global.DOWN_LEFT: // go down-left
-                if (this.obj.getCollider().screenEdgeCheck("down") || this.obj.getCollider().screenEdgeCheck("left")) {
-                    if (!this.obj.getCollider().screenEdgeCheck("down")) {
-                        this.obj.offset(0, speed);
-                    }
-                    if (!this.obj.getCollider().screenEdgeCheck("left")) {
-                        this.obj.offset(-speed, 0);
-                    }
-                } else {
-                    Global.log("dir is DOWN_LEFT:" + Global.DOWN_LEFT);
-                    this.obj.offset(-speed, speed);
-                }
+            case Global.UP_RIGHT: // go down-left
+                ret = reverse ? new Point(-speed, speed) : new Point(speed, -speed);
                 break;
-            case Global.DOWN_RIGHT: // go down-right
-                if (this.obj.getCollider().screenEdgeCheck("down") || this.obj.getCollider().screenEdgeCheck("right")) {
-                    if (!this.obj.getCollider().screenEdgeCheck("down")) {
-                        this.obj.offset(0, speed);
-                    }
-                    if (!this.obj.getCollider().screenEdgeCheck("right")) {
-                        this.obj.offset(speed, 0);
-                    }
-                } else {
-                    Global.log("dir is DOWN_RIGHT:" + Global.DOWN_RIGHT);
-                    this.obj.offset(speed, speed);
-                }
+            case Global.UP_LEFT: // go down-right
+                ret = reverse ? new Point(speed, speed) : new Point(-speed, -speed);
                 break;
         }
+        return ret;
+    } // 此移動可以穿牆，目前只有地圖使用，上下左右邏輯完全與角色移動顛倒
 
+    public void moving(Point point) {
+        this.obj.offset(point);
     }
 
-    public void movingIgnoreEdge() {
-        int dir = movingDir();
-        int speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
-        switch (dir) {
-            case Global.UP: // go up
-                this.obj.offset(0, -speed);
-                break;
-            case Global.DOWN: // go down
-                this.obj.offset(0, speed);
-                break;
-            case Global.LEFT: // go left
-                this.obj.offset(-speed, 0);
-                break;
-            case Global.RIGHT: // go right
-                this.obj.offset(speed, 0);
-                break;
-            case Global.UP_LEFT: // go up-left
-                this.obj.offset(-speed, -speed);
-                break;
-            case Global.UP_RIGHT: // go up-right
-                this.obj.offset(speed, -speed);
-                break;
-            case Global.DOWN_LEFT: // go down-left
-                this.obj.offset(-speed, speed);
-                break;
-            case Global.DOWN_RIGHT: // go down-right
-                this.obj.offset(speed, speed);
-                break;
+    public Point correctDest(Point point) {
+        int x = 0;
+        int y = 0;
+        Global.log("point.getX(): " + point.getX());
+        Global.log("point.getY(): " + point.getY());
+        Global.log("this.obj.getX(): " + this.obj.getX());
+        Global.log("this.obj.getY(): " + this.obj.getY());
+        Global.log("Global.mapEdgeRight: " + Global.mapEdgeRight);
+        Global.log("Global.mapEdgeLeft: " + Global.mapEdgeLeft);
+        Global.log("Global.mapEdgeUp: " + Global.mapEdgeUp);
+        Global.log("Global.mapEdgeDown: " + Global.mapEdgeDown);
+        if (point.getX() + this.obj.getX() + this.obj.width() > Global.mapEdgeRight) {
+            Global.log("right");
+            Global.log("x + w:" + ( point.getX() + this.obj.width()));
+            //TODO 切入點!!
+            x = this.obj.getX() - Global.mapEdgeRight - this.obj.width();
         }
+        if (point.getX() < Global.mapEdgeLeft) {
+            Global.log("left");
+            x = Global.mapEdgeLeft; // 不確定要不要 + 1
+        }
+        if (point.getY() < Global.mapEdgeUp) {
+            Global.log("up");
+            Global.log("point.getY():" + point.getY());
+            Global.log("Global.mapEdgeUp:" + Global.mapEdgeUp);
+            y = Global.mapEdgeUp; // 不確定要不要 + 1
+        }
+        if (point.getY() + this.obj.height() > Global.mapEdgeDown) {
+            Global.log("down");
+            y = Global.mapEdgeDown - this.obj.height(); // 不確定要不要 - 1
+        }
+        Global.log("x " + x + ", y  " + y);
+        return new Point(x, y);
     }
 
     public void setPressedStatus(int pressedBtn, boolean status) {
@@ -163,7 +123,6 @@ public class Move {
         dir += this.downPressed ? Global.DOWN : 0;
         dir += this.leftPressed ? Global.LEFT : 0;
         dir += this.rightPressed ? Global.RIGHT : 0;
-        Global.log("dir: " + dir);
         return dir;
     }
 

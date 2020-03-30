@@ -61,22 +61,40 @@ public class Rect extends Graph {
         return true;
     }
 
-    @Override
-    public boolean screenEdgeCheck(String side) {
+    public boolean sideScreenEdgeCheck(String side) {
+        // TODO 這邊如果確定實作方式了 Circle 的 screenEdgeCheck 也必須一併修改
+        boolean result;
         switch (side) {
             case "up":
-                return this.top < 0 ? true : false;
+                result = this.top < Global.mapEdgeUp ? true : false;
+                break;
             case "down":
-                return this.bottom > Global.SCREEN_Y ? true : false;
+                result = this.bottom > Global.mapEdgeDown ? true : false;
+                break;
             case "left":
-                return this.left < 0 ? true : false;
+                result = (this.left < Global.mapEdgeLeft) ? true : false;
+                break;
             case "right":
-                return this.right > Global.SCREEN_X ? true : false;
+                result =  this.right > Global.mapEdgeRight? true : false;
+                break;
             default:
-                return false;
+                result = false;
+                break;
         }
+        return result;
     }
 
+    @Override
+    public boolean screenEdgeCheck(){
+        String[] arr = {"up", "down", "left", "right"};
+        for(int i = 0; i < arr.length; i++){
+            if (sideScreenEdgeCheck(arr[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+    
 //    public static boolean intersects(Rect a, Rect b){
     public static boolean intersects(Graph a, Graph b) {
         return a.intersects(b.left, b.top, b.right, b.bottom);

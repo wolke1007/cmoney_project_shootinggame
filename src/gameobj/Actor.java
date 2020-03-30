@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import util.Delay;
 import util.Global;
 import util.Move;
+import util.Point;
 
 /**
  *
@@ -103,11 +104,11 @@ public class Actor extends GameObject {
         this.dir = dir;
     }
 
-    public int centerX() {
+    public int getCenterX() {
         return super.getX() + this.width / 2;
     }
 
-    public int centerY() {
+    public int getCenterY() {
         return this.getY() + this.height / 2;
     }
 
@@ -131,7 +132,11 @@ public class Actor extends GameObject {
     }
 
     private void move() {
-        this.movement.moving();
+        Point destination = this.movement.moving(false);
+        if(destination != null){
+            destination = this.movement.correctDest(destination); // 如果移動會超過要阻止
+            this.movement.moving(destination);
+        }
     }
 
     @Override

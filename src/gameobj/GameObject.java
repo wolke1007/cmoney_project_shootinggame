@@ -11,6 +11,7 @@ import graph.Rect;
 import java.awt.Graphics;
 import util.Global;
 import java.awt.Color;
+import util.Point;
 
 /**
  *
@@ -29,12 +30,12 @@ public abstract class GameObject {
         switch (colliderType) {
             case "circle":
                 this.graph = Circle.genWithCenter(x, y, width, height);
-                this.collider = Circle.genWithCenter(x, y, width, height);
+                this.collider = Circle.genWithCenter(x, y, colliderWidth, colliderHeight);
                 Global.log("create circle");
                 break;
             case "rect":
                 this.graph = Rect.genWithCenter(x, y, width, height);
-                this.collider = Rect.genWithCenter(x, y, width, height);
+                this.collider = Rect.genWithCenter(x, y, colliderWidth, colliderHeight);
                 Global.log("create rect");
                 break;
         }
@@ -77,6 +78,13 @@ public abstract class GameObject {
         this.y += dy;
         this.graph.offset(dx, dy);
         this.collider.offset(dx, dy);
+    }
+    
+    public void offset(Point dest) {
+        this.x += dest.getX();
+        this.y += dest.getY();
+        this.graph.offset(dest.getX(), dest.getY());
+        this.collider.offset(dest.getX(), dest.getY());
     }
 
     public void offsetX(int x) {
@@ -122,13 +130,13 @@ public abstract class GameObject {
         }
     }
     
-    public boolean isMeetMapEdge(){
-        Global.log("mapEdgeUp" + Global.mapEdgeUp);
-        Global.log("mapEdgeDown" + Global.mapEdgeDown);
-        Global.log("mapEdgeLeft" + Global.mapEdgeLeft);
-        Global.log("mapEdgeRight" + Global.mapEdgeRight);
-        return this.graph.intersects(Global.mapEdgeRight, Global.mapEdgeDown, Global.mapEdgeLeft, Global.mapEdgeUp);
-    }
+//    public boolean isMeetMapEdge(){
+//        Global.log("mapEdgeUp" + Global.mapEdgeUp);
+//        Global.log("mapEdgeDown" + Global.mapEdgeDown);
+//        Global.log("mapEdgeLeft" + Global.mapEdgeLeft);
+//        Global.log("mapEdgeRight" + Global.mapEdgeRight);
+//        return this.graph.intersects(Global.mapEdgeRight, Global.mapEdgeDown, Global.mapEdgeLeft, Global.mapEdgeUp);
+//    }
 
     public abstract void update();
 
