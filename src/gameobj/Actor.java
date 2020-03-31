@@ -103,12 +103,14 @@ public class Actor extends GameObject {
     public void setDir(int dir) {
         this.dir = dir;
     }
-
-    public int getCenterX() {
+    
+    @Override
+    public float getCenterX() {
         return super.getX() + this.width / 2;
     }
 
-    public int getCenterY() {
+    @Override
+    public float getCenterY() {
         return this.getY() + this.height / 2;
     }
 

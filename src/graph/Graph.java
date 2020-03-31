@@ -91,6 +91,5 @@ public abstract class Graph {
 
     public abstract boolean intersects(float x, float y, float r);
 
-    public abstract boolean screenEdgeCheck(String side);
 
 }

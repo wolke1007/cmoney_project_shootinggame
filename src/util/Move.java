@@ -183,8 +183,8 @@ public class Move {
 
     public Point correctedDest(Point destPoint) {
 //        int colliderUp, int colliderDown, int colliderLeft, int colliderRight
-        int x = 0;
-        int y = 0;
+        float x = 0;
+        float y = 0;
 //        Global.log("point.getX(): " + point.getX());
 //        Global.log("point.getY(): " + point.getY());
 //        Global.log("this.obj.getX(): " + this.obj.getX());
@@ -210,7 +210,7 @@ public class Move {
             Global.log("move return null");
             return null;
         }
-        return new Point(x, y);
+        return new Point((int)x, (int)y);
     }
 
     public void setPressedStatus(int pressedBtn, boolean status) {

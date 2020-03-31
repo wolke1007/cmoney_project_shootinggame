@@ -106,20 +106,4 @@ public class Circle extends Graph {
         return false;
     }
 
-    @Override
-    public boolean sideScreenEdgeCheck(String side) {
-        switch (side) {
-            case "up":
-                return super.top() < 0 ? true : false;
-            case "down":
-                return super.bottom() > Global.SCREEN_Y ? true : false;
-            case "left":
-                return super.left() < 0 ? true : false;
-            case "right":
-                return super.right() > Global.SCREEN_X ? true : false;
-            default:
-                return false;
-        }
-    }
-
 }

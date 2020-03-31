@@ -138,10 +138,10 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
 
     private void allMapsUpdate() {
         this.maps.update();
-        Global.mapEdgeUp = this.maps.get(0).getGraph().top();
-        Global.mapEdgeDown = this.maps.get(this.maps.getMaps().size() - 1).getGraph().top();
-        Global.mapEdgeLeft = this.maps.get(0).getGraph().left();
-        Global.mapEdgeRight = this.maps.get(this.maps.getMaps().size() - 1).getGraph().right();
+        Global.mapEdgeUp = (int)(this.maps.get(0).getGraph().top());
+        Global.mapEdgeDown = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().top());
+        Global.mapEdgeLeft = (int)(this.maps.get(0).getGraph().left());
+        Global.mapEdgeRight = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
     }
     
     @Override

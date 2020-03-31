@@ -103,23 +103,4 @@ public class Rect extends Graph {
         return true;
     }
 
-    public boolean sideScreenEdgeCheck(String side) {
-        // TODO 這邊如果確定實作方式了 Circle 的 screenEdgeCheck 也必須一併修改
-        boolean result;
-        switch (side) {
-            case "up":
-                return super.top() < 0 ? true : false;
-            case "down":
-                return super.bottom() > Global.SCREEN_Y ? true : false;
-            case "left":
-                return super.left() < 0 ? true : false;
-            case "right":
-                return super.right() > Global.SCREEN_X ? true : false;
-            default:
-                result = false;
-                break;
-        }
-        return result;
-    }
-
 }
