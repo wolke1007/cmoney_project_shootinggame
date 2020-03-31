@@ -40,8 +40,8 @@ public class TestObj extends GameObject {
         setHeight(Global.UNIT_Y);
         this.renderer = new RendererToRotate(src, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         this.isStand = true;
-        this.view = new View(Global.actor_x - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                            Global.actor_y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
+        this.view = new View(Global.DEFAULT_ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                            Global.DEFAULT_ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
                             59, Global.VIEW_WIDTH, Global.VIEW_HEIGHT
                             );
         setActorMoveSpeedDetail(moveSpeed);
@@ -133,8 +133,8 @@ public class TestObj extends GameObject {
     }
 
     private void move() {
-        this.movement.moving();
-        this.view.move();
+//        this.movement.moving();
+//        this.view.move();
         Global.log("actor x:" + super.getX());
         Global.log("actor y:" + super.getY());
     }

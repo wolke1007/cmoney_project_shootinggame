@@ -59,5 +59,7 @@ public abstract class Graph {
     public abstract int width();
 
     public abstract int height();
+    
+    public abstract boolean mapActorEdgeCheck(String side, Graph actor);
 
 }

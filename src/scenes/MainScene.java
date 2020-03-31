@@ -9,6 +9,7 @@ import controllers.SceneController;
 import gameobj.Actor;
 import gameobj.GameObject;
 import gameobj.Map;
+import gameobj.Maps;
 import gameobj.TestObj;
 import gameobj.View;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import util.Delay;
 import util.Global;
 import util.CommandSolver;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 /**
  *
@@ -34,6 +36,7 @@ public class MainScene extends Scene {
     Delay delay;
     Delay changeSceneDelay;
     int mapLength;
+    Maps maps;
     Map[][] allMaps;
     View view;
     boolean actorEdgeTouched;
@@ -43,8 +46,11 @@ public class MainScene extends Scene {
         super(sceneController);
         this.viewMaps = new Map[6]; // 預計一個畫面最多看見 4 張地圖
         this.mapLength = (int) Math.sqrt(Global.MAP_QTY); // 全地圖的地圖邊長為總數開根號
-        Global.log("this.mapLength: " + this.mapLength);
-        this.allMaps = new Map[this.mapLength][this.mapLength];
+        this.maps = new Maps(0, 0, this.mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT);
+Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
+        Global.log("debug map_h:" + Global.MAP_HEIGHT); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
+//        Global.log("this.mapLength: " + this.mapLength);
+//        this.allMaps = new Map[this.mapLength][this.mapLength];
     }
 
     private void settingMaps(int width, int height) {
@@ -54,63 +60,51 @@ public class MainScene extends Scene {
         if (this.mapLength % 1 == 0 && this.mapLength >= 3) {
             Global.log("地圖數量: " + this.mapLength + "x" + this.mapLength);
             // 不同位置的地圖使用不同的圖片，之後需做成從地圖池中取隨機 pattern 來用
-            for (int x = 0; x < this.allMaps.length; x++) {
-                for (int y = 0; y < this.allMaps[x].length; y++) {
+            for (int x = 0; x < this.mapLength; x++) {
+                for (int y = 0; y < this.mapLength; y++) {
                     int whichMap = x;
                     switch (whichMap) {
                         case 0:
-                            this.allMaps[x][y] = new Map(Global.BACKGROUND_1, map_x * y, map_y * x, width, height);
+                            maps.add(new Map(Global.BACKGROUND_1, map_x * y, map_y * x, width, height));
                             break;
                         case 1:
-                            this.allMaps[x][y] = new Map(Global.BACKGROUND_2, map_x * y, map_y * x, width, height);
+                            maps.add(new Map(Global.BACKGROUND_2, map_x * y, map_y * x, width, height));
                             break;
                         case 2:
-                            this.allMaps[x][y] = new Map(Global.BACKGROUND_3, map_x * y, map_y * x, width, height);
+                            maps.add(new Map(Global.BACKGROUND_3, map_x * y, map_y * x, width, height));
                             break;
                     }
                 }
             }
-            //  設定每張地圖的鄰居地圖是誰
-            for (int x = 0; x < this.allMaps.length; x++) {
-                for (int y = 0; y < this.allMaps[x].length; y++) {
-                    if (x == 0) {
-                        this.allMaps[x][y].setUpMap(null);
-                    } else {
-                        this.allMaps[x][y].setUpMap(this.allMaps[x - 1][y]);
-                    }
-                    if (x == this.allMaps[x].length - 1) {
-                        this.allMaps[x][y].setDownMap(null);
-                    } else {
-                        this.allMaps[x][y].setDownMap(this.allMaps[x + 1][y]);
-                    }
-                    if (y == 0) {
-                        this.allMaps[x][y].setLeftMap(null);
-                    } else {
-                        this.allMaps[x][y].setLeftMap(allMaps[x][y - 1]);
-                    }
-                    if (y == this.allMaps[x].length - 1) {
-                        this.allMaps[x][y].setRightMap(null);
-                    } else {
-                        this.allMaps[x][y].setRightMap(this.allMaps[x][y + 1]);
-                    }
-                }
+            //  設定每張地圖的鄰居地圖是誰 //TODO exception here
+            for (int i = 0; i < this.maps.getMaps().size(); i++) {
+                Global.log("" + i);
+                maps.get(i).setUpMap(maps.get(i - this.mapLength));
+                maps.get(i).setDownMap(maps.get(i + this.mapLength));
+                maps.get(i).setLeftMap(maps.get(i - 1));
+                maps.get(i).setRightMap(maps.get(i + 1));
             }
             // 設定當前要 paint 出來的四張地圖，目前預設視窗最多會出現就 4 張地圖
             // 預設為設定左上這張地圖，並將玩家設定至此地圖
-            this.mapLeftUp = this.allMaps[0][0];
+            this.mapLeftUp = this.maps.get(0);
             this.mapRightUp = this.mapLeftUp.getRightMap();
             this.mapLeftDown = this.mapLeftUp.getDownMap();
             this.mapRightDown = this.mapLeftDown.getRightMap();
-            this.viewMaps[0] = this.mapLeftUp;
-            this.viewMaps[1] = this.mapRightUp;
-            this.viewMaps[2] = this.mapLeftDown;
-            this.viewMaps[3] = this.mapRightDown;
-            this.viewMaps[4] = this.mapRightUp.getRightMap(); // DEBUG
-            this.viewMaps[5] = this.mapRightDown.getRightMap(); // DEBUG
-            Global.mapEdgeUp = this.allMaps[0][0].getY();
-            Global.mapEdgeDown = this.allMaps[this.allMaps.length - 1][0].getY() + Global.MAP_HEIGHT;
-            Global.mapEdgeLeft = this.allMaps[0][0].getX();
-            Global.mapEdgeRight = this.allMaps[0][this.allMaps.length - 1].getX() + Global.MAP_WIDTH;
+//            this.viewMaps[0] = this.mapLeftUp;
+//            this.viewMaps[1] = this.mapRightUp;
+//            this.viewMaps[2] = this.mapLeftDown;
+//            this.viewMaps[3] = this.mapRightDown;
+//            this.viewMaps[4] = this.mapRightUp.getRightMap(); // DEBUG
+//            this.viewMaps[5] = this.mapRightDown.getRightMap(); // DEBUG
+            Global.mapEdgeUp = this.maps.get(0).getY();
+            Global.mapEdgeDown = this.maps.get(this.maps.getMaps().size() - 1).getY() + Global.MAP_HEIGHT;
+            Global.mapEdgeLeft = this.maps.get(0).getX();
+            Global.mapEdgeRight = this.maps.get(this.maps.getMaps().size() - 1).getX() + Global.MAP_WIDTH;
+            
+//            Global.log(""+Global.mapEdgeUp);
+//            Global.log(""+Global.mapEdgeDown);
+//            Global.log(""+Global.mapEdgeLeft);
+//            Global.log(""+Global.mapEdgeRight);
 //            Global.actor_x = this.allMaps[0][0].getCenterX();
 //            Global.actor_y = this.allMaps[0][0].getCenterY();
 //            // 關掉地圖
@@ -125,9 +119,9 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        Global.log("actor_x: " + Global.actor_x);
-        Global.log("actor_y: " + Global.actor_y);
-        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.actor_x, Global.actor_y, 60, Global.ACTOR, this.viewMaps);
+        Global.log("actor_x: " + Global.DEFAULT_ACTOR_X);
+        Global.log("actor_y: " + Global.DEFAULT_ACTOR_Y);
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.DEFAULT_ACTOR_X, Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR, this.viewMaps);
         Global.log("debug w:" + Global.VIEW_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
         Global.log("debug h:" + Global.VIEW_HEIGHT); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
         Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
@@ -142,25 +136,19 @@ public class MainScene extends Scene {
 //        changeSceneDelay.start();
     }
 
+    private void allMapsUpdate() {
+        this.maps.update();
+        Global.mapEdgeUp = this.maps.get(0).getGraph().top();
+        Global.mapEdgeDown = this.maps.get(this.maps.getMaps().size() - 1).getGraph().top();
+        Global.mapEdgeLeft = this.maps.get(0).getGraph().left();
+        Global.mapEdgeRight = this.maps.get(this.maps.getMaps().size() - 1).getGraph().right();
+    }
+    
     @Override
     public void sceneUpdate() {
         this.actor.update();
         this.view.update();
         allMapsUpdate();
-        this.viewEdgeTouched = view.getCollider().screenEdgeCheck();
-        this.actorEdgeTouched = actor.getCollider().screenEdgeCheck();
-    }
-
-    private void allMapsUpdate() {
-        for (int i = 0; i < allMaps.length; i++) {
-            for (int j = 0; j < allMaps[i].length; j++) {
-                allMaps[i][j].update();
-            }
-        }
-        Global.mapEdgeUp = this.allMaps[0][0].getY();
-        Global.mapEdgeDown = this.allMaps[this.allMaps.length - 1][0].getY() + Global.MAP_HEIGHT;
-        Global.mapEdgeLeft = this.allMaps[0][0].getX();
-        Global.mapEdgeRight = this.allMaps[0][this.allMaps.length - 1].getX() + Global.MAP_WIDTH;
     }
 
     @Override
@@ -170,11 +158,7 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        for (int i = 0; i < this.viewMaps.length; i++) {
-            if (this.viewMaps[i] != null) {
-                this.viewMaps[i].paint(g);
-            }
-        }
+        this.maps.paint(g);
         this.actor.paint(g);
         this.view.paint(g);
     }
@@ -197,17 +181,15 @@ public class MainScene extends Scene {
             Global.log("actorEdgeTouched: " + actorEdgeTouched);
             // TODO 如果超出邊界要讓角色退回去
             if (!viewEdgeTouched) {
-                //  如果 view 沒有碰到地圖邊際
+                //  如果 view 沒有碰到地圖邊際 // 這部分目前沒問題
                 Global.log("map move");
                 mapMoveRule(commandCode);
             } else {
-                //  如果 view 有碰到地圖邊際
-                if (!actorEdgeTouched) {
-                    //  但 actor 沒碰到地圖邊際
-                    Global.log("actor move");
-                    actorMoveRule(commandCode);
-                }
-
+                //  如果 view 有碰到地圖邊際 // TODO 目前 map 會繼續移動
+                Global.log("view and actor move");
+                // 手動讓地圖停下來
+                maps.setStand(true);
+                actorMoveRule(commandCode);
             }
 
 //                Global.log("move 2");
@@ -225,11 +207,8 @@ public class MainScene extends Scene {
         }
 
         private void allMapSetDirAndPressedStatus(int dir, boolean status) {
-            for (int i = 0; i < allMaps.length; i++) {
-                for (int j = 0; j < allMaps[i].length; j++) {
-                    setDirAndPressedStatus(allMaps[i][j], dir, status);
-                }
-            }
+            maps.setDir(dir);
+            maps.setMovementPressedStatus(dir, status);
         }
 
         private void viewMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
@@ -270,14 +249,14 @@ public class MainScene extends Scene {
 
         private void mapMoveRule(int commandCode) { // 當角色的視野碰到牆壁時移動邏輯
             //TODO 若 view 碰到牆壁而停止角色繼續前進，但角色如果回頭時 view 必須等角色回到正中心後才能跟著移動
-            for (int i = 0; i < allMaps.length; i++) {
-                for (int j = 0; j < allMaps[i].length; j++) {
-                    allMaps[i][j].setStand(false);
-                }
-            }
+            maps.setStand(false);
             switch (commandCode) {
                 case Global.UP:
-                    allMapSetDirAndPressedStatus(Global.UP, true);
+                    if (!(actor.getX() < Global.mapEdgeUp)) {
+                        Global.log("actor.getX()" + actor.getX());
+                        Global.log("Global.mapEdgeUp" + Global.mapEdgeUp);
+                        allMapSetDirAndPressedStatus(Global.UP, true);
+                    }
                     break;
                 case Global.DOWN:
                     allMapSetDirAndPressedStatus(Global.DOWN, true);
@@ -294,11 +273,7 @@ public class MainScene extends Scene {
         private void stopRule(int commandCode) {
             actor.setStand(true);
             view.setStand(true);
-            for (int i = 0; i < allMaps.length; i++) {
-                for (int j = 0; j < allMaps[i].length; j++) {
-                    allMaps[i][j].setStand(true);
-                }
-            }
+            maps.setStand(true);
             switch (commandCode) {
                 case Global.UP:
                     setDirAndPressedStatus(actor, Global.UP, false);

@@ -21,28 +21,28 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 1000;
-    public static final int FRAME_Y = 600;
+    public static final int FRAME_X = 1280;
+    public static final int FRAME_Y = 720;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 角色視野大小
     public static final int VIEW_WIDTH = 100;
     public static final int VIEW_HEIGHT = 100;
     // 地圖大小
-    public static final int MAP_WIDTH = 200;
-    public static final int MAP_HEIGHT = 200;
+    public static final int MAP_WIDTH = 700;
+    public static final int MAP_HEIGHT = 600;
     // 資料刷新時間
     public static final int UPDATE_TIMES_PER_SEC = 60;// 每秒更新60次遊戲邏輯
     public static final int MILLISEC_PER_UPDATE = 1000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數
     // 畫面更新時間
-    public static final int FRAME_LIMIT = 80;
+    public static final int FRAME_LIMIT = 60;
     public static final int LIMIT_DELTA_TIME = 1000 / FRAME_LIMIT;
     // 遊戲單位大小
     public static final int UNIT_X = 32;
     public static final int UNIT_Y = 32;
     // 角色於地圖位置
-    public static int actor_x = FRAME_X / 2 - UNIT_X /2;
-    public static int actor_y = FRAME_Y / 2 - UNIT_Y /2;    
+    public static final int DEFAULT_ACTOR_X = FRAME_X / 2 - UNIT_X /2;
+    public static final int DEFAULT_ACTOR_Y = FRAME_Y / 2 - UNIT_Y /2;    
     // 方向
     public static final int UP = 1;
     public static final int DOWN = 2;

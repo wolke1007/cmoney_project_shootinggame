@@ -77,16 +77,17 @@ public class View extends GameObject{
 
     @Override
     public void update() {
-        if (!this.isStand && this.moveDelay.isTrig()) {
-            move();
-        }
+//        if (!this.isStand && this.moveDelay.isTrig()) {
+//            move();
+//        }
     }
     
     public void move(){
-        Point destination = this.movement.getDestination(false);
-        if(destination != null){
-            this.offset(destination);
-        }
+        // view 其實不需要移動
+//        Point destination = this.movement.getDestination(false);
+//        if(destination != null){
+//            this.offset(destination);
+//        }
     }
     
     @Override

@@ -90,6 +90,7 @@ public class Maps extends GameObject {
     }
     
     public void move(){
+        // 移動大地圖，然後讓所有小地圖一起動
         for(int i = 0; i < this.maps.size(); i++){
             this.maps.get(i).move();
         }
