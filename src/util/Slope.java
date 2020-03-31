@@ -11,48 +11,48 @@ package util;
  */
 public class Slope {//斜率計算
 
-    private int centerX;
-    private int centerY;
-    private int goalCenterX;
-    private int goalCenterY;
+    private double centerX;
+    private double centerY;
+    private double goalCenterX;
+    private double goalCenterY;
     private double slope;
 
-    public Slope(int centerX, int centerY, int goalCenterX, int goalCenterY) {
+    public Slope(double centerX, double centerY, double goalCenterX, double goalCenterY) {
         setCenterX(centerX);
         setCenterY(centerY);
         setGoalCenterX(goalCenterX);
         setGoalCenterY(goalCenterY);
     }
 
-    public void setCenterX(int centerX) {
+    public void setCenterX(double centerX) {
         this.centerX = centerX;
     }
 
-    public void setCenterY(int centerY) {
+    public void setCenterY(double centerY) {
         this.centerY = centerY;
     }
 
-    public void setGoalCenterX(int goalCenterX) {
+    public void setGoalCenterX(double goalCenterX) {
         this.goalCenterX = goalCenterX;
     }
 
-    public void setGoalCenterY(int goalCenterY) {
+    public void setGoalCenterY(double goalCenterY) {
         this.goalCenterY = goalCenterY;
     }
 
-    private int getCenterX() {
+    private double getCenterX() {
         return this.centerX;
     }
 
-    private int getCenterY() {
+    private double getCenterY() {
         return this.centerY;
     }
 
-    private int getGoalCenterX() {
+    private double getGoalCenterX() {
         return this.goalCenterX;
     }
 
-    private int getGoalCenterY() {
+    private double getGoalCenterY() {
         return this.goalCenterY;
     }
 
