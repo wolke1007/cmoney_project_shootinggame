@@ -13,11 +13,7 @@ import util.Global;
  */
 public class Circle extends Graph {
 
-    private double r;
-    private int left;
-    private int top;
-    private int right;
-    private int bottom;
+    private float r;
 
     public Circle(int left, int top, int right, int bottom, float r) {
         super(left, top, right, bottom);
@@ -26,8 +22,6 @@ public class Circle extends Graph {
 
     public void setR(float r) {
         this.r = r;
-        super.x = left;
-        super.y = top;
     }
 
     public float r() {
@@ -48,16 +42,11 @@ public class Circle extends Graph {
         float dx = Math.abs(super.centerX() - x);
         float dy = Math.abs(super.centerY() - y);
         double distance = Math.sqrt(dx * dx + dy * dy);
-        Global.log("!!" + distance);
         if (distance < (this.r + r)) {
             return true;
         }
         return false;
     }
-
-    public boolean intersectsOfCircle(Circle a, Circle b) {
-        return a.intersectsOfCircle(b.exactCenterX(), b.exactCenterY(), b.r());
-    }//圓形相交
 
     @Override
     public boolean intersects(Graph target) {
@@ -121,130 +110,16 @@ public class Circle extends Graph {
     public boolean sideScreenEdgeCheck(String side) {
         switch (side) {
             case "up":
-                return this.top < 0 ? true : false;
+                return super.top() < 0 ? true : false;
             case "down":
-                return this.bottom > Global.SCREEN_Y ? true : false;
+                return super.bottom() > Global.SCREEN_Y ? true : false;
             case "left":
-                return this.left < 0 ? true : false;
+                return super.left() < 0 ? true : false;
             case "right":
-                return this.right > Global.SCREEN_X ? true : false;
+                return super.right() > Global.SCREEN_X ? true : false;
             default:
                 return false;
         }
     }
 
-    @Override
-    public boolean screenEdgeCheck() {
-        //TODO implement
-        return true;
-    }
-    
-    @Override
-    public int centerX() {
-        return (left + right) / 2;
-    }
-
-    @Override
-    public int centerY() {
-        return (top + bottom) / 2;
-    }
-
-    @Override
-    public double exactCenterX() {
-        return (left + right) / 2;
-    }
-
-    @Override
-    public double exactCenterY() {
-        return (top + bottom) / 2;
-    }
-
-    @Override
-    public void offset(int dx, int dy) {
-        this.left += dx;
-        this.right += dx;
-        this.top += dy;
-        this.bottom += dy;
-    }
-
-    @Override
-    public int left() {
-        return left;
-    }
-
-    @Override
-    public void setLeft(int left) {
-        this.left = left;
-    }
-
-    @Override
-    public int top() {
-        return top;
-    }
-
-    @Override
-    public void setTop(int top) {
-        this.top = top;
-    }
-
-    @Override
-    public int right() {
-        return right;
-    }
-
-    @Override
-    public void setRight(int right) {
-        this.right = right;
-    }
-
-    @Override
-    public int bottom() {
-        return bottom;
-    }
-
-    @Override
-    public void setBottom(int bottom) {
-        this.bottom = bottom;
-    }
-
-    public void setR(double r) {
-        this.r = r;
-    }
-
-    public double r() {
-        return this.r;
-    }
-
-    @Override
-    public int width() {
-        return this.right - this.left;
-    }
-
-    @Override
-    public int height() {
-        return this.bottom - this.top;
-    }
-    
-    @Override
-    public boolean mapActorEdgeCheck(String side, Graph actor) {
-        boolean result;
-        switch (side) {
-            case "up":
-                result = this.top > actor.top ? true : false;
-                break;
-            case "down":
-                result = this.bottom < actor.bottom ? true : false;
-                break;
-            case "left":
-                result = this.left > actor.left ? true : false;
-                break;
-            case "right":
-                result =  this.right < actor.right ? true : false;
-                break;
-            default:
-                result = false;
-                break;
-        }
-        return result;
-    }
 }

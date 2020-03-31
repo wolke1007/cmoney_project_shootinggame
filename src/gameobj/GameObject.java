@@ -29,13 +29,13 @@ public abstract class GameObject {
         this.y = y;
         switch (colliderType) {
             case "circle":
-                this.graph = Circle.genWithCenter(x, y, width, height);
-                this.collider = Circle.genWithCenter(x, y, colliderWidth, colliderHeight);
+                this.graph = new Circle(x, y, x + width, y + height, width / 2f);
+                this.collider = new Circle(x, y, x + width, y + height, width / 2f);
                 Global.log("create circle");
                 break;
             case "rect":
-                this.graph = Rect.genWithCenter(x, y, width, height);
-                this.collider = Rect.genWithCenter(x, y, colliderWidth, colliderHeight);
+                this.graph = new Rect(x, y, x + width, y + height);
+                this.collider = new Rect(x, y, x + width, y + height);
                 Global.log("create rect");
                 break;
         }
@@ -49,19 +49,19 @@ public abstract class GameObject {
         return this.y;
     }
 
-    public int getCenterX() {
+    public float getCenterX() {
         return this.graph.centerX();
     }
 
-    public int getCenterY() {
+    public float getCenterY() {
         return this.graph.centerY();
     }
 
-    public int width() {
+    public float width() {
         return this.graph.width();
     }
 
-    public int height() {
+    public float height() {
         return this.graph.height();
     }
 
@@ -111,23 +111,23 @@ public abstract class GameObject {
         if (this.collider == null || obj.collider == null) {
             return false;
         }
-        return Rect.intersects(this.collider, obj.collider);
+        return this.collider.intersects(obj.collider);
     }
 
     public void paint(Graphics g) {
         paintComponent(g);
         if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Circle) {
             g.setColor(Color.RED);
-            g.drawOval(this.graph.left(), this.graph.top(), this.graph.width(), this.graph.height());
+            g.drawOval((int) this.graph.left(), (int) this.graph.top(), (int) this.graph.width(), (int) this.graph.height());
             g.setColor(Color.BLUE);
-            g.drawOval(this.collider.left(), this.collider.top(), this.collider.width(), this.collider.height());
+            g.drawOval((int) this.collider.left(), (int) this.collider.top(), (int) this.collider.width(), (int) this.collider.height());
             g.setColor(Color.BLACK);
         }
         if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Rect) {
             g.setColor(Color.RED);
-            g.drawRect(this.graph.left(), this.graph.top(), this.graph.width(), this.graph.height());
+            g.drawRect((int) this.graph.left(), (int) this.graph.top(), (int) this.graph.width(), (int) this.graph.height());
             g.setColor(Color.BLUE);
-            g.drawRect(this.collider.left(), this.collider.top(), this.collider.width(), this.collider.height());
+            g.drawRect((int) this.collider.left(), (int) this.collider.top(), (int) this.collider.width(), (int) this.collider.height());
             g.setColor(Color.BLACK);
         }
     }

@@ -40,10 +40,10 @@ public class TestObj extends GameObject {
         setHeight(Global.UNIT_Y);
         this.renderer = new RendererToRotate(src, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         this.isStand = true;
-        this.view = new View(Global.DEFAULT_ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                            Global.DEFAULT_ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
-                            59, Global.VIEW_WIDTH, Global.VIEW_HEIGHT
-                            );
+//        this.view = new View(Global.ACTOR_X - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+//                            Global.ACTOR_Y - (Global.VIEW_HEIGHT / 2 - Global.UNIT_X / 2),
+//                            Global.VIEW_WIDTH, Global.VIEW_HEIGHT
+//                            );
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
     }//多載 建構子 當前版本

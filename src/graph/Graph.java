@@ -11,55 +11,86 @@ package graph;
  */
 public abstract class Graph {
 
-    protected int x;
-    protected int y;
-    protected double r;
-    protected int left;
-    protected int top;
-    protected int right;
-    protected int bottom;
+    private float x;
+    private float y;
+    private float left;
+    private float top;
+    private float right;
+    private float bottom;
+
+    public Graph(float left, float top, float right, float bottom) {
+        setLeft(left);
+        setTop(top);
+        setRight(right);
+        setBottom(bottom);
+    }
+
+    public void setLeft(float left) {
+        this.left = left;
+        this.x = this.left;
+    }
+
+    public void setTop(float top) {
+        this.top = top;
+        this.y = this.top;
+    }
+
+    public void setRight(float right) {
+        this.right = right;
+    }
+
+    public void setBottom(float bottom) {
+        this.bottom = bottom;
+    }
+
+    public float left() {
+        return this.left;
+    }
+
+    public float top() {
+        return this.top;
+    }
+
+    public float right() {
+        return this.right;
+    }
+
+    public float bottom() {
+        return this.bottom;
+    }
+
+    public float width() {
+        return right() - left();
+    }
+
+    public float height() {
+        return bottom() - top();
+    }
+
+    public float centerX() {
+        return (left() + right()) / 2;
+    }
+
+    public float centerY() {
+        return (top() + bottom()) / 2;
+    }
+
+    public void offset(float dx, float dy) {
+        setLeft(left() + dx);
+        setRight(right() + dx);
+        setTop(top() + dy);
+        setBottom(bottom() + dy);
+    }
 
 //    public abstract boolean intersects(int left, int top, int right, int bottom);
     public abstract boolean intersects(Graph graph);
-
-    public abstract boolean intersects(int left, int top, int right, int bottom);
-
-    public abstract boolean screenEdgeCheck();
-    
-    public abstract boolean sideScreenEdgeCheck(String side);
-
-    public abstract int centerX();
-
-    public abstract int centerY();
-
-    public abstract double exactCenterX();
-
-    public abstract double exactCenterY();
-
-    public abstract void offset(int dx, int dy);
-
-    public abstract int left();
-
-    public abstract void setLeft(int left);
-
-    public abstract int top();
-
-    public abstract void setTop(int top);
-
-    public abstract int right();
-
-    public abstract void setRight(int right);
-
-    public abstract int bottom();
 
     public abstract boolean intersects(Graph a, Graph b);
 
     public abstract boolean intersects(float left, float top, float right, float bottom);
 
-    public abstract int width();
+    public abstract boolean intersects(float x, float y, float r);
 
-    public abstract int height();
-    
-    public abstract boolean mapActorEdgeCheck(String side, Graph actor);
+    public abstract boolean screenEdgeCheck(String side);
 
 }

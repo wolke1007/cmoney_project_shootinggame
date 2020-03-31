@@ -13,10 +13,9 @@ import util.Global;
  */
 public class Rect extends Graph {
 
-    private int left;
-    private int top;
-    private int right;
-    private int bottom;
+    public Rect(float left, float top, float right, float bottom) {
+        super(left, top, right, bottom);
+    }
 
     @Override
     public boolean intersects(Graph a, Graph b) {
@@ -82,12 +81,13 @@ public class Rect extends Graph {
         if (target instanceof Rect) {
             return intersects(target.left(), target.top(), target.right(), target.bottom());
         } else {
-            return false;
+            Circle tmp = (Circle) target;
+            return intersects(tmp.centerX(), tmp.centerY(), tmp.r());
         }
     }
 
     @Override
-    public boolean intersects(int left, int top, int right, int bottom) {
+    public boolean intersects(float left, float top, float right, float bottom) {
         if (this.left() > right) {
             return false;
         }
@@ -108,63 +108,13 @@ public class Rect extends Graph {
         boolean result;
         switch (side) {
             case "up":
-                result = this.top < Global.mapEdgeUp ? true : false;
-                break;
+                return super.top() < 0 ? true : false;
             case "down":
-                result = this.bottom > Global.mapEdgeDown ? true : false;
-                break;
+                return super.bottom() > Global.SCREEN_Y ? true : false;
             case "left":
-                result = this.left < Global.mapEdgeLeft ? true : false;
-                break;
+                return super.left() < 0 ? true : false;
             case "right":
-                result =  this.right > Global.mapEdgeRight? true : false;
-                break;
-            default:
-                result = false;
-                break;
-        }
-        return result;
-    }
-    
-    @Override
-    public boolean mapActorEdgeCheck(String side, Graph actor) {
-        boolean result;
-        switch (side) {
-            case "up":
-                result = this.top > actor.top ? true : false;
-                break;
-            case "down":
-                result = this.bottom < actor.bottom ? true : false;
-                break;
-            case "left":
-                result = this.left > actor.left ? true : false;
-                break;
-            case "right":
-                result =  this.right < actor.right ? true : false;
-                break;
-            default:
-                result = false;
-                break;
-        }
-        return result;
-    }
-
-    @Override
-    public boolean mapActorEdgeCheck(String side, Graph actor) {
-        boolean result;
-        switch (side) {
-            case "up":
-                result = this.top > actor.top ? true : false;
-                break;
-            case "down":
-                result = this.bottom < actor.bottom ? true : false;
-                break;
-            case "left":
-                result = this.left > actor.left ? true : false;
-                break;
-            case "right":
-                result =  this.right < actor.right ? true : false;
-                break;
+                return super.right() > Global.SCREEN_X ? true : false;
             default:
                 result = false;
                 break;
