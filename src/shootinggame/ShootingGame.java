@@ -59,7 +59,7 @@ public class ShootingGame {
                 passedUpdated++;
             }
             if(currentTime - timer >= 1000){
-                Global.log("FPS: " + paintTimes);
+//                Global.log("FPS: " + paintTimes);
                 paintTimes = 0;
                 timer = currentTime;
             }

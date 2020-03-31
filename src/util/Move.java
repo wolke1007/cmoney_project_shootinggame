@@ -63,7 +63,7 @@ public class Move {
 
     public void mapMoving() {
         int dir = movingDir();
-        int speed = 20; // 一次走幾個 pixel，越少看起來越滑順但走越慢
+        int speed = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.DOWN: // go up
                 this.obj.offset(0, -speed);

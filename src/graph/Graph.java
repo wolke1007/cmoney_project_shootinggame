@@ -5,6 +5,8 @@
  */
 package graph;
 
+import util.Global;
+
 /**
  *
  * @author Cloud-Razer
@@ -76,6 +78,8 @@ public abstract class Graph {
     }
 
     public void offset(float dx, float dy) {
+        Global.log("left(): " + left());
+        Global.log("dx: " + dx);
         setLeft(left() + dx);
         setRight(right() + dx);
         setTop(top() + dy);
