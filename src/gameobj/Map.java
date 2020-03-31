@@ -96,17 +96,14 @@ public class Map extends GameObject {
 
     @Override
     public void update() {
-        renderer.update();
-//        if (!this.isStand && this.moveDelay.isTrig()) {
-//            move();
-//            setX(this.x + this.width / 2);
-//            setY(this.y + this.height / 2);
-//        }
+        if (!this.isStand & this.moveDelay.isTrig()) {
+            move();
+        }
     }
 
     // TODO 需實作地圖的移動
     private void move() {
-        this.movement.moving();
+        this.movement.movingIgnoreEdge();
     }
 
     @Override
@@ -114,6 +111,11 @@ public class Map extends GameObject {
 //        setX(this.x + this.width / 2);
 //        setY(this.y + this.height / 2);
         this.renderer.paint(g, super.getX(), super.getY(), this.width, this.height);
+    }
+
+    @Override
+    public void setMovementPressedStatus(int dir, boolean status) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

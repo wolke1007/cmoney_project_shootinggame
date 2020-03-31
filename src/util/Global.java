@@ -67,8 +67,8 @@ public class Global {
     // 地圖數量
     public static final int MAP_QTY = 9;
     // 地圖邊界
-    public static int MAP_UP = 0;
-    public static int MAP_DOWN = (int) Math.sqrt(MAP_QTY) * MAP_WIDTH;
+    public static int MAP_TOP = 0;
+    public static int MAP_BOTTOM = (int) Math.sqrt(MAP_QTY) * MAP_WIDTH;
     public static int MAP_LEFT = 0;
     public static int MAP_RIGHT = (int) Math.sqrt(MAP_QTY) * MAP_HEIGHT;
     //滑鼠當前的座標
