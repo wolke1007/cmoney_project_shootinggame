@@ -61,7 +61,7 @@ public class Renderer {
         }
         this.steps = steps;//預留步伐接口 //暫時不用
         setDir(0);//待修改
-        setRenderDelay(delay);
+//        setRenderDelay(delay);
     }//多載 建構子 當前版本
 
     public void update() {
@@ -71,10 +71,10 @@ public class Renderer {
 //        }
     }
 
-    private void setRenderDelay(float delay) {
-        this.delay = new Delay(delay);
-        this.delay.start();
-    }
+//    private void setRenderDelay(float delay) {
+//        this.delay = new Delay(delay);
+//        this.delay.start();
+//    }
 
     public void setDelay(int delay) {
 //        this.delay.setDelayFrame(delay);

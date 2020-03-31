@@ -36,7 +36,6 @@ public abstract class GameObject {
             case "rect":
                 this.graph = new Rect(x, y, x + width, y + height);
                 this.collider = new Rect(x, y, x + width, y + height);
-                Global.log("create rect");
                 break;
         }
     }

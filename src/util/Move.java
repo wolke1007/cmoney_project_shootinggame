@@ -29,37 +29,37 @@ public class Move {
         this.obj = obj;
     }
 
-    public Point getDestination(boolean reverse) { // 此移動可以穿牆，目前只有地圖使用 ，上下左右邏輯完全與角色移動顛倒
-        int dir = movingDir();
-        float speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
-        switch (dir) {
-            case Global.DOWN: // go up
-                ret = reverse ? new Point(0, -speed) : new Point(0, speed);
-                break;
-            case Global.UP: // go down
-                ret = reverse ? new Point(0, speed) : new Point(0, -speed);
-                break;
-            case Global.RIGHT: // go left
-                ret = reverse ? new Point(-speed, 0) : new Point(speed, 0);
-                break;
-            case Global.LEFT: // go right
-                ret = reverse ? new Point(speed, 0) : new Point(-speed, 0);
-                break;
-            case Global.DOWN_RIGHT: // go up-left
-                ret = reverse ? new Point(-speed, -speed) : new Point(speed, speed);
-                break;
-            case Global.DOWN_LEFT: // go up-right
-                ret = reverse ? new Point(speed, -speed) : new Point(-speed, speed);
-                break;
-            case Global.UP_RIGHT: // go down-left
-                ret = reverse ? new Point(-speed, speed) : new Point(speed, -speed);
-                break;
-            case Global.UP_LEFT: // go down-right
-                ret = reverse ? new Point(speed, speed) : new Point(-speed, -speed);
-                break;
-        }
-        return ret;
-    } // 此移動可以穿牆，目前只有地圖使用，上下左右邏輯完全與角色移動顛倒
+//    public Point getDestination(boolean reverse) { // 此移動可以穿牆，目前只有地圖使用 ，上下左右邏輯完全與角色移動顛倒
+//        int dir = movingDir();
+//        float speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
+//        switch (dir) {
+//            case Global.DOWN: // go up
+//                ret = reverse ? new Point(0, -speed) : new Point(0, speed);
+//                break;
+//            case Global.UP: // go down
+//                ret = reverse ? new Point(0, speed) : new Point(0, -speed);
+//                break;
+//            case Global.RIGHT: // go left
+//                ret = reverse ? new Point(-speed, 0) : new Point(speed, 0);
+//                break;
+//            case Global.LEFT: // go right
+//                ret = reverse ? new Point(speed, 0) : new Point(-speed, 0);
+//                break;
+//            case Global.DOWN_RIGHT: // go up-left
+//                ret = reverse ? new Point(-speed, -speed) : new Point(speed, speed);
+//                break;
+//            case Global.DOWN_LEFT: // go up-right
+//                ret = reverse ? new Point(speed, -speed) : new Point(-speed, speed);
+//                break;
+//            case Global.UP_RIGHT: // go down-left
+//                ret = reverse ? new Point(-speed, speed) : new Point(speed, -speed);
+//                break;
+//            case Global.UP_LEFT: // go down-right
+//                ret = reverse ? new Point(speed, speed) : new Point(-speed, -speed);
+//                break;
+//        }
+//        return ret;
+//    } // 此移動可以穿牆，目前只有地圖使用，上下左右邏輯完全與角色移動顛倒
 
     public void mapMoving() {
         int dir = movingDir();
