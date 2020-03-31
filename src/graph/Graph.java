@@ -85,6 +85,8 @@ public abstract class Graph {
 //    public abstract boolean intersects(int left, int top, int right, int bottom);
     public abstract boolean intersects(Graph graph);
 
+    public abstract boolean intersects(Graph a, Graph b);
+
     public abstract boolean intersects(float left, float top, float right, float bottom);
 
     public abstract boolean intersects(float x, float y, float r);

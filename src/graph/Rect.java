@@ -17,6 +17,7 @@ public class Rect extends Graph {
         super(left, top, right, bottom);
     }
 
+    @Override
     public boolean intersects(Graph a, Graph b) {
         if (b instanceof Circle) {
             Circle tmp = (Circle) b;
@@ -26,12 +27,18 @@ public class Rect extends Graph {
         }
     }
 
+    @Override
     public boolean intersects(float x, float y, float r) {
         if (x > left() && x < right() && y > top() && y < bottom()) {
             return true;
         }
-        if (x < left()) {
-            float dx = Math.abs(x - left());
+        if (x < left() || x > right()) {
+            float dx;
+            if (x < left()) {
+                dx = Math.abs(x - left());
+            } else {
+                dx = Math.abs(x - right());
+            }
             float tmp;
             if (y < top()) {
                 tmp = top();
@@ -45,47 +52,22 @@ public class Rect extends Graph {
             if (distance < r) {
                 return true;
             }
-        } else if (x > right()) {
-            float dx = Math.abs(x - right());
+        } else if (y < top() || y > bottom()) {
             float tmp;
+            if (x < left()) {
+                tmp = left();
+            } else if (x > right()) {
+                tmp = right();
+            } else {
+                tmp = x;
+            }
+            float dx = Math.abs(x - tmp);
+            float dy;
             if (y < top()) {
-                tmp = top();
-            } else if (y > bottom()) {
-                tmp = bottom();
+                dy = Math.abs(y - top());
             } else {
-                tmp = y;
+                dy = Math.abs(y - bottom());
             }
-            float dy = Math.abs(y - tmp);
-            double distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r) {
-                return true;
-            }
-        } else if (y < top()) {
-            float tmp;
-            if (x < left()) {
-                tmp = left();
-            } else if (x > right()) {
-                tmp = right();
-            } else {
-                tmp = x;
-            }
-            float dx = Math.abs(x - tmp);
-            float dy = Math.abs(y - top());
-            double distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r) {
-                return true;
-            }
-        } else if (y > bottom()) {
-            float tmp;
-            if (x < left()) {
-                tmp = left();
-            } else if (x > right()) {
-                tmp = right();
-            } else {
-                tmp = x;
-            }
-            float dx = Math.abs(x - tmp);
-            float dy = Math.abs(y - bottom());
             double distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < r) {
                 return true;
@@ -96,7 +78,7 @@ public class Rect extends Graph {
 
     @Override
     public boolean intersects(Graph target) {
-        if (target instanceof Rect) { // TODO這邊只有做與長方形的碰撞，應該要做與圓形的碰撞
+        if (target instanceof Rect) {
             return intersects(target.left(), target.top(), target.right(), target.bottom());
         } else {
             Circle tmp = (Circle) target;
@@ -137,5 +119,4 @@ public class Rect extends Graph {
         }
     }
 
-//    public static boolean intersects(Rect a, Rect b){
 }
