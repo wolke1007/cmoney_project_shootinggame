@@ -32,7 +32,7 @@ public class Renderer {
     // 動作控制 end
 
     // 動畫Delay
-    private Delay delay;
+//    private Delay delay;
     // 動畫Delay end
     
     private BufferedImage testImg;
@@ -50,8 +50,8 @@ public class Renderer {
         this.currentStep = 0;
         this.stepIndex = 0;
 
-        this.delay = new Delay(delay);
-        this.delay.start();
+//        this.delay = new Delay(delay);
+//        this.delay.start();
     }//老師版本 (未來可以改圖及呈現方式)
 
     public Renderer(int[] steps, int delay, String src) {
@@ -65,19 +65,19 @@ public class Renderer {
     }//多載 建構子 當前版本
 
     public void update() {
-        if (delay.isTrig()) {
-            stepIndex = (stepIndex + 1) % steps.length;
-            currentStep = steps[stepIndex];
-        }
+//        if (delay.isTrig()) {
+//            stepIndex = (stepIndex + 1) % steps.length;
+//            currentStep = steps[stepIndex];
+//        }
     }
 
     private void setRenderDelay(int delay) {
-        this.delay = new Delay(delay);
-        this.delay.start();
+//        this.delay = new Delay(delay);
+//        this.delay.start();
     }
 
     public void setDelay(int delay) {
-        this.delay.setDelayFrame(delay);
+//        this.delay.setDelayFrame(delay);
     }
 
     public void setDir(int dir) {
@@ -85,11 +85,11 @@ public class Renderer {
     }//待修改
 
     public void pause() {
-        this.delay.pause();
+//        this.delay.pause();
     }
 
     public void start() {
-        this.delay.start();
+//        this.delay.start();
     }
 //    private int testAngle = 0;
     public void paint(Graphics g, int x, int y, int w, int h) {

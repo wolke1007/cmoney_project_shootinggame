@@ -21,8 +21,8 @@ public class Map extends GameObject {
     private Renderer renderer;
     private boolean isStand;
 
-    private Delay moveDelay;
-    private int moveSpeed = 59; // per frame
+//    private Delay moveDelay;
+//    private int moveSpeed = 59; // per frame
 
     private int width;
     private int height;
@@ -41,8 +41,8 @@ public class Map extends GameObject {
         this.renderer = r(src);
         this.isStand = true;
         movement = new Move(this);
-        this.moveDelay = new Delay(60 - this.moveSpeed);
-        this.moveDelay.start();
+//        this.moveDelay = new Delay(60 - this.moveSpeed);
+//        this.moveDelay.start();
     }
 
     public static Renderer r(String src) {
@@ -51,11 +51,11 @@ public class Map extends GameObject {
 
     public void setStand(boolean isStand) {
         this.isStand = isStand;
-        if (this.isStand) {
-            this.moveDelay.stop();
-        } else {
-            this.moveDelay.start();
-        }
+//        if (this.isStand) {
+//            this.moveDelay.stop();
+//        } else {
+//            this.moveDelay.start();
+//        }
     }
 
     public void setDir(int dir) {
@@ -97,12 +97,15 @@ public class Map extends GameObject {
 
     @Override
     public void update() {
-        if (!this.isStand & this.moveDelay.isTrig()) {
+//        if (!this.isStand & this.moveDelay.isTrig()) {
+        if (!this.isStand){    
             move();
         }
+//        }
     }
 
     public void move() {
+        // TODO
         this.movement.mapMoving();
     }
 
