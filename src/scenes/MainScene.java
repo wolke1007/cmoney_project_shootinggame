@@ -96,11 +96,11 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
 //            this.viewMaps[3] = this.mapRightDown;
 //            this.viewMaps[4] = this.mapRightUp.getRightMap(); // DEBUG
 //            this.viewMaps[5] = this.mapRightDown.getRightMap(); // DEBUG
-            Global.mapEdgeUp = (int)this.maps.get(0).getY();
-            Global.mapEdgeDown = (int)(this.maps.get(this.maps.getMaps().size() - 1).getY()) + Global.MAP_HEIGHT;
-            Global.mapEdgeLeft = (int)this.maps.get(0).getX();
-            Global.mapEdgeRight = (int)(this.maps.get(this.maps.getMaps().size() - 1).getX()) + Global.MAP_WIDTH;
-            
+            Global.mapEdgeUp = (int)(this.maps.get(0).getGraph().top());
+            Global.mapEdgeDown = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().bottom());
+            Global.mapEdgeLeft = (int)(this.maps.get(0).getGraph().left());
+            Global.mapEdgeRight = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
+            Global.log("DEBUG2 maps.get(0).getGraph().top():" +maps.get(0).getGraph().top());
 //            Global.log(""+Global.mapEdgeUp);
 //            Global.log(""+Global.mapEdgeDown);
 //            Global.log(""+Global.mapEdgeLeft);
@@ -133,7 +133,7 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
     private void allMapsUpdate() {
         this.maps.update();
         Global.mapEdgeUp = (int)(this.maps.get(0).getGraph().top());
-        Global.mapEdgeDown = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().top());
+        Global.mapEdgeDown = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().bottom());
         Global.mapEdgeLeft = (int)(this.maps.get(0).getGraph().left());
         Global.mapEdgeRight = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
     }
