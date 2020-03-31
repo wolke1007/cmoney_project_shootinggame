@@ -52,7 +52,9 @@ public abstract class Graph {
 
     public abstract int bottom();
 
-    public abstract void setBottom(int bottom);
+    public abstract boolean intersects(Graph a, Graph b);
+
+    public abstract boolean intersects(float left, float top, float right, float bottom);
 
     public abstract int width();
 
