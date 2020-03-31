@@ -25,17 +25,17 @@ public class Actor extends GameObject {
 
     private Delay moveDelay;
 
-    private int moveSpeed; // per frame
-    private int actMoveSpeed;
+    private float moveSpeed; // per frame
+    private float actMoveSpeed;
 
-    private int width;
-    private int height;
+    private float width;
+    private float height;
 
     private Move movement;
     private Map[] currentViewMap;
 
     public Actor(int[] steps, int x, int y, int moveSpeed, String src, Map[] currentViewMap) {//src => Global.ACTOR
-        super("rect", x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
+        super("circle", x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setWidth(Global.UNIT_X);
         setHeight(Global.UNIT_Y);
         this.currentViewMap = currentViewMap;
@@ -46,31 +46,31 @@ public class Actor extends GameObject {
     }//多載 建構子 當前版本
 
     @Override
-    public void setX(int x) {
+    public void setX(float x) {
         super.setX(x);
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(float y) {
         super.setY(y);
     }
 
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
-    private void setActorMoveSpeedDetail(int moveSpeed) {
+    private void setActorMoveSpeedDetail(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
         this.moveDelay = new Delay(this.actMoveSpeed);
         this.moveDelay.start();
     }//初始化用
 
-    private int limitRange(int range) {
+    private float limitRange(float range) {
         if (range < 0) {
             return range = 0;
         } else if (range > 60) {
@@ -79,13 +79,13 @@ public class Actor extends GameObject {
         return range;
     }//限制範圍 0-60
 
-    public void setMoveSpeed(int moveSpeed) {
+    public void setMoveSpeed(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
         this.moveDelay.setDelayFrame(this.actMoveSpeed);
     }//修改角色移動速度
 
-    public int getMoveSpeed() {
+    public float getMoveSpeed() {
         return this.moveSpeed;
     }//取得目前的速度設定
 
@@ -103,12 +103,12 @@ public class Actor extends GameObject {
         this.dir = dir;
     }
 
-    public int centerX() {
-        return super.getX() + this.width / 2;
+    public float centerX() {
+        return super.getX() + this.width / 2f;
     }
 
-    public int centerY() {
-        return this.getY() + this.height / 2;
+    public float centerY() {
+        return this.getY() + this.height / 2f;
     }
 
     @Override
@@ -136,7 +136,7 @@ public class Actor extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, super.getX(), super.getY(), this.width, this.height);
+        this.renderer.paint(g);
     }
 
 }

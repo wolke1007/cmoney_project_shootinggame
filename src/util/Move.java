@@ -30,7 +30,7 @@ public class Move {
 
     public void moving() {
         int dir = movingDir();
-        int speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
+        float speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.UP: // go up
                 if (!this.obj.getCollider().screenEdgeCheck("up")) {

@@ -20,12 +20,12 @@ public abstract class GameObject {
 
     private Graph collider;
     protected Graph graph;
-    private int x;
-    private int y;
+    private float x;
+    private float y;
 
     public GameObject(String colliderType, int x, int y, int width, int height, int colliderWidth, int colliderHeight) {
-        this.x = x;
-        this.y = y;
+        setX(x);
+        setY(y);
         switch (colliderType) {
             case "circle":
                 this.graph = new Circle(x, y, x + width, y + height, width / 2f);
@@ -40,11 +40,11 @@ public abstract class GameObject {
         }
     }
 
-    public int getX() {
+    public float getX() {
         return this.x;
     }
 
-    public int getY() {
+    public float getY() {
         return this.y;
     }
 
@@ -64,15 +64,15 @@ public abstract class GameObject {
         return this.graph.height();
     }
 
-    public void setX(int x) {
+    public void setX(float x) {
         this.x = x;
     }
 
-    public void setY(int y) {
+    public void setY(float y) {
         this.y = y;
     }
 
-    public void offset(int dx, int dy) {
+    public void offset(float dx, float dy) {
         this.x += dx;
         this.y += dy;
         Global.log("dx:" + dx);
@@ -81,7 +81,7 @@ public abstract class GameObject {
         this.collider.offset(dx, dy);
     }
 
-    public void offsetX(int x) {
+    public void offsetX(float x) {
         this.graph.offset(x - this.graph.centerX(), 0);
         this.collider.offset(x - this.collider.centerX(), 0);
     }
@@ -94,7 +94,7 @@ public abstract class GameObject {
         return this.collider;
     }
 
-    public void offsetY(int y) {
+    public void offsetY(float y) {
         this.graph.offset(0, y - this.graph.centerY());
         this.collider.offset(0, y - this.collider.centerY());
     }
@@ -123,16 +123,16 @@ public abstract class GameObject {
             g.setColor(Color.BLACK);
         }
     }
-    
-    public boolean isMeetMapEdge(){
+
+    public boolean isMeetMapEdge() {
         return this.graph.intersects(Global.MAP_RIGHT, Global.MAP_BOTTOM, Global.MAP_LEFT, Global.MAP_TOP);
     }
 
     public abstract void update();
 
     public abstract void setDir(int dir);
-    
+
     public abstract void setMovementPressedStatus(int dir, boolean status);
-    
+
     public abstract void paintComponent(Graphics g);
 }

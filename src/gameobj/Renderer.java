@@ -71,7 +71,7 @@ public class Renderer {
         }
     }
 
-    private void setRenderDelay(int delay) {
+    private void setRenderDelay(float delay) {
         this.delay = new Delay(delay);
         this.delay.start();
     }

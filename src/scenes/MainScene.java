@@ -121,8 +121,8 @@ public class MainScene extends Scene {
     @Override
     public void sceneBegin() {
         this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 60, Global.ACTOR, this.viewMaps);
-        this.view = new View(this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
+        this.view = new View((int)this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                (int)this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
                 60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT);
         settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
         this.delay = new Delay(1);

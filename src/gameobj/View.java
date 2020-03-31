@@ -21,11 +21,11 @@ public class View extends GameObject{
     
     private Delay moveDelay;
     
-    private int moveSpeed; // per frame
-    private int actMoveSpeed;
+    private float moveSpeed; // per frame
+    private float actMoveSpeed;
     
-    private int width;
-    private int height;
+    private float width;
+    private float height;
 
     private Move movement;
     

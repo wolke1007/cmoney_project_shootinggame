@@ -21,10 +21,10 @@ public class Map extends GameObject {
     private boolean isStand;
 
     private Delay moveDelay;
-    private int moveSpeed = 59; // per frame
+    private float moveSpeed = 59; // per frame
 
-    private int width;
-    private int height;
+    private float width;
+    private float height;
     
     private Map upMap;
     private Map downMap;
@@ -110,7 +110,7 @@ public class Map extends GameObject {
     public void paintComponent(Graphics g) {
 //        setX(this.x + this.width / 2);
 //        setY(this.y + this.height / 2);
-        this.renderer.paint(g, super.getX(), super.getY(), this.width, this.height);
+        this.renderer.paint(g, (int)super.getX(), (int)super.getY(), (int)this.width, (int)this.height);
     }
 
     @Override
