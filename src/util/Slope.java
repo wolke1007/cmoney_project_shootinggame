@@ -11,48 +11,48 @@ package util;
  */
 public class Slope {//斜率計算
 
-    private double centerX;
-    private double centerY;
-    private double goalCenterX;
-    private double goalCenterY;
+    private float centerX;
+    private float centerY;
+    private float goalCenterX;
+    private float goalCenterY;
     private double slope;
 
-    public Slope(double centerX, double centerY, double goalCenterX, double goalCenterY) {
+    public Slope(float centerX, float centerY, float goalCenterX, float goalCenterY) {
         setCenterX(centerX);
         setCenterY(centerY);
         setGoalCenterX(goalCenterX);
         setGoalCenterY(goalCenterY);
     }
 
-    public void setCenterX(double centerX) {
+    public void setCenterX(float centerX) {
         this.centerX = centerX;
     }
 
-    public void setCenterY(double centerY) {
+    public void setCenterY(float centerY) {
         this.centerY = centerY;
     }
 
-    public void setGoalCenterX(double goalCenterX) {
+    public void setGoalCenterX(float goalCenterX) {
         this.goalCenterX = goalCenterX;
     }
 
-    public void setGoalCenterY(double goalCenterY) {
+    public void setGoalCenterY(float goalCenterY) {
         this.goalCenterY = goalCenterY;
     }
 
-    private double getCenterX() {
+    private float getCenterX() {
         return this.centerX;
     }
 
-    private double getCenterY() {
+    private float getCenterY() {
         return this.centerY;
     }
 
-    private double getGoalCenterX() {
+    private float getGoalCenterX() {
         return this.goalCenterX;
     }
 
-    private double getGoalCenterY() {
+    private float getGoalCenterY() {
         return this.goalCenterY;
     }
 
@@ -62,8 +62,8 @@ public class Slope {//斜率計算
     }
 
     private void slopeValue() {
-        double dx = getGoalCenterX() - getCenterX();
-        double dy = getCenterY() - getGoalCenterY();
+        float dx = getGoalCenterX() - getCenterX();
+        float dy = getCenterY() - getGoalCenterY();
         this.slope = dy / dx;
         if (dx < 0 && dy < 0) {
             this.slope *= -1;

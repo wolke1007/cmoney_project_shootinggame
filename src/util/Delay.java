@@ -11,17 +11,17 @@ package util;
  */
 public class Delay {
 
-    private int delayFrame;
-    private int counter;
+    private float delayFrame;
+    private float counter;
     private boolean isPause;
 
-    public Delay(int delayFrame) {
+    public Delay(float delayFrame) {
         this.delayFrame = delayFrame;
         this.counter = 0;
         this.isPause = true;
     }
 
-    public void setDelayFrame(int delayFrame) {
+    public void setDelayFrame(float delayFrame) {
         this.delayFrame = delayFrame;
     }
 

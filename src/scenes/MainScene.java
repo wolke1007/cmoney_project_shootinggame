@@ -119,15 +119,9 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
 
     @Override
     public void sceneBegin() {
-        Global.log("actor_x: " + Global.DEFAULT_ACTOR_X);
-        Global.log("actor_y: " + Global.DEFAULT_ACTOR_Y);
-        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.DEFAULT_ACTOR_X, Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR, this.viewMaps);
-        Global.log("debug w:" + Global.VIEW_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
-        Global.log("debug h:" + Global.VIEW_HEIGHT); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
-        Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
-        Global.log("debug map_h:" + Global.MAP_HEIGHT); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
-        this.view = new View(this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
+        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.ACTOR_X, Global.ACTOR_Y, 60, Global.ACTOR, this.viewMaps);
+        this.view = new View((int)this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                (int)this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
                 60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT);
         settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
         this.delay = new Delay(1);

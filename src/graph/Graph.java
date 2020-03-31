@@ -82,7 +82,6 @@ public abstract class Graph {
         setBottom(bottom() + dy);
     }
 
-//    public abstract boolean intersects(int left, int top, int right, int bottom);
     public abstract boolean intersects(Graph graph);
 
     public abstract boolean intersects(Graph a, Graph b);

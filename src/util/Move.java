@@ -31,8 +31,7 @@ public class Move {
 
     public Point getDestination(boolean reverse) { // 此移動可以穿牆，目前只有地圖使用 ，上下左右邏輯完全與角色移動顛倒
         int dir = movingDir();
-        int speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
-        Point ret = null;
+        float speed = 10; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.DOWN: // go up
                 ret = reverse ? new Point(0, -speed) : new Point(0, speed);

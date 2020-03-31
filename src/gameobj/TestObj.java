@@ -25,11 +25,11 @@ public class TestObj extends GameObject {
 
     private Delay moveDelay;
 
-    private int moveSpeed; // per frame
-    private int actMoveSpeed;
+    private float moveSpeed; // per frame
+    private float actMoveSpeed;
 
-    private int width;
-    private int height;
+    private float width;
+    private float height;
     
     private Move movement;
 
@@ -49,20 +49,20 @@ public class TestObj extends GameObject {
     }//多載 建構子 當前版本
     
     @Override
-    public void setX(int x) {
+    public void setX(float x) {
         super.setX(x);
     }
 
     @Override
-    public void setY(int y) {
+    public void setY(float y) {
         super.setY(y);
     }
     
-    public void setWidth(int width) {
+    public void setWidth(float width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(float height) {
         this.height = height;
     }
 
@@ -88,7 +88,7 @@ public class TestObj extends GameObject {
         this.moveDelay.setDelayFrame(this.actMoveSpeed);
     }//修改角色移動速度
 
-    public int getMoveSpeed() {
+    public float getMoveSpeed() {
         return this.moveSpeed;
     }//取得目前的速度設定
 
@@ -106,11 +106,11 @@ public class TestObj extends GameObject {
         this.view.setDir(dir);
     }
     
-    public int centerX(){
-        return super.getX() + this.width / 2;
+    public float centerX(){
+        return super.getX() + this.width / 2f;
     }
-    public int centerY(){
-        return this.getY() + this.height / 2;
+    public float centerY(){
+        return this.getY() + this.height / 2f;
     }
     
     public void setMovementPressedStatus(int dir, boolean status){
@@ -141,7 +141,7 @@ public class TestObj extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, super.getX(), super.getY(), this.width, this.height);
+        this.renderer.paint(g);
         this.view.paint(g);
     }
 

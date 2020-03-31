@@ -11,58 +11,58 @@ package util;
  */
 public class AverageSpeed {
 
-    private double centerX;
-    private double centerY;
-    private double goalCenterX;
-    private double goalCenterY;
+    private float centerX;
+    private float centerY;
+    private float goalCenterX;
+    private float goalCenterY;
 
     private boolean isFixedLength;//固定長度 
     private Slope slope;
 
-    private double moveSpeed;
-    private double reMoveSpeed;
-    private double length;//定值分割長度
+    private float moveSpeed;
+    private float reMoveSpeed;
+    private float length;//定值分割長度
 
-    public AverageSpeed(double centerX, double centerY, double goalCenterX, double goalCenterY, double moveSpeed, boolean isFixedLength) {
+    public AverageSpeed(float centerX, float centerY, float goalCenterX, float goalCenterY, float moveSpeed, boolean isFixedLength) {
         setCenterX(centerX);
         setCenterY(centerY);
         setGoalCenterX(goalCenterX);
         setGoalCenterY(goalCenterY);
         isFixedLength(true);
-        setLength(100d);
+        setLength(100f);
         SlopeValue();
         setMoveSpeed(moveSpeed);
     }
 
-    public void setCenterX(double centerX) {
+    public void setCenterX(float centerX) {
         this.centerX = centerX;
     }
 
-    public void setCenterY(double centerY) {
+    public void setCenterY(float centerY) {
         this.centerY = centerY;
     }
 
-    public void setGoalCenterX(double goalCenterX) {
+    public void setGoalCenterX(float goalCenterX) {
         this.goalCenterX = goalCenterX;
     }
 
-    public void setGoalCenterY(double goalCenterY) {
+    public void setGoalCenterY(float goalCenterY) {
         this.goalCenterY = goalCenterY;
     }
 
-    private double getCenterX() {
+    private float getCenterX() {
         return this.centerX;
     }
 
-    private double getCenterY() {
+    private float getCenterY() {
         return this.centerY;
     }
 
-    private double getGoalCenterX() {
+    private float getGoalCenterX() {
         return this.goalCenterX;
     }
 
-    private double getGoalCenterY() {
+    private float getGoalCenterY() {
         return this.goalCenterY;
     }
 
@@ -78,7 +78,7 @@ public class AverageSpeed {
         return this.slope.getSlope();
     }
 
-    public void setLength(double length) {
+    public void setLength(float length) {
         this.length = length;
     }
 
@@ -86,12 +86,12 @@ public class AverageSpeed {
         return this.length;
     }
 
-    public void setMoveSpeed(double moveSpeed) {
+    public void setMoveSpeed(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.reMoveSpeed = 60 - this.moveSpeed;
     }
 
-    private double limitRange(double moveSpeed) {
+    private float limitRange(float moveSpeed) {
         if (moveSpeed > 59) {
             return moveSpeed = 59;
         } else if (moveSpeed < 0) {
