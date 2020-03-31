@@ -149,4 +149,27 @@ public class Rect extends Graph {
         return result;
     }
 
+    @Override
+    public boolean mapActorEdgeCheck(String side, Graph actor) {
+        boolean result;
+        switch (side) {
+            case "up":
+                result = this.top > actor.top ? true : false;
+                break;
+            case "down":
+                result = this.bottom < actor.bottom ? true : false;
+                break;
+            case "left":
+                result = this.left > actor.left ? true : false;
+                break;
+            case "right":
+                result =  this.right < actor.right ? true : false;
+                break;
+            default:
+                result = false;
+                break;
+        }
+        return result;
+    }
+
 }

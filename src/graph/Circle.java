@@ -133,4 +133,118 @@ public class Circle extends Graph {
         }
     }
 
+    @Override
+    public boolean screenEdgeCheck() {
+        //TODO implement
+        return true;
+    }
+    
+    @Override
+    public int centerX() {
+        return (left + right) / 2;
+    }
+
+    @Override
+    public int centerY() {
+        return (top + bottom) / 2;
+    }
+
+    @Override
+    public double exactCenterX() {
+        return (left + right) / 2;
+    }
+
+    @Override
+    public double exactCenterY() {
+        return (top + bottom) / 2;
+    }
+
+    @Override
+    public void offset(int dx, int dy) {
+        this.left += dx;
+        this.right += dx;
+        this.top += dy;
+        this.bottom += dy;
+    }
+
+    @Override
+    public int left() {
+        return left;
+    }
+
+    @Override
+    public void setLeft(int left) {
+        this.left = left;
+    }
+
+    @Override
+    public int top() {
+        return top;
+    }
+
+    @Override
+    public void setTop(int top) {
+        this.top = top;
+    }
+
+    @Override
+    public int right() {
+        return right;
+    }
+
+    @Override
+    public void setRight(int right) {
+        this.right = right;
+    }
+
+    @Override
+    public int bottom() {
+        return bottom;
+    }
+
+    @Override
+    public void setBottom(int bottom) {
+        this.bottom = bottom;
+    }
+
+    public void setR(double r) {
+        this.r = r;
+    }
+
+    public double r() {
+        return this.r;
+    }
+
+    @Override
+    public int width() {
+        return this.right - this.left;
+    }
+
+    @Override
+    public int height() {
+        return this.bottom - this.top;
+    }
+    
+    @Override
+    public boolean mapActorEdgeCheck(String side, Graph actor) {
+        boolean result;
+        switch (side) {
+            case "up":
+                result = this.top > actor.top ? true : false;
+                break;
+            case "down":
+                result = this.bottom < actor.bottom ? true : false;
+                break;
+            case "left":
+                result = this.left > actor.left ? true : false;
+                break;
+            case "right":
+                result =  this.right < actor.right ? true : false;
+                break;
+            default:
+                result = false;
+                break;
+        }
+        return result;
+    }
 }
