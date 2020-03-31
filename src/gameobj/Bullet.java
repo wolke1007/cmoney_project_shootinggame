@@ -11,7 +11,7 @@ import java.awt.Graphics;
  *
  * @author F-NB
  */
-public class Bullet extends GameObject{
+public class Bullet{
     private RendererToRotate renderer;//旋轉方向設定
     private boolean isShootOut;//是否射擊的狀態 Origine false
 //    public Bullet(int x, int y, int width, int height, int colliderWidth, int colliderHeight) {
@@ -19,15 +19,12 @@ public class Bullet extends GameObject{
 //    }
 
     public Bullet(String colliderType, int x, int y, int width, int height, int colliderWidth, int colliderHeight) {
-        super(colliderType, x, y, width, height, colliderWidth, colliderHeight);
     }
 
-    @Override
     public void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public void paintComponent(Graphics g) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
