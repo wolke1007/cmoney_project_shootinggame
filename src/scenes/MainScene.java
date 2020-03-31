@@ -140,10 +140,10 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
     
     @Override
     public void sceneUpdate() {
-        Global.log("actor x: " + actor.getX());
-        Global.log("actor y: " + actor.getY());
-        Global.log("maps x: " + maps.getX());
-        Global.log("maps y: " + maps.getY());
+//        Global.log("actor x: " + actor.getX());
+//        Global.log("actor y: " + actor.getY());
+//        Global.log("maps x: " + maps.getX());
+//        Global.log("maps y: " + maps.getY());
         this.actor.update();
         this.view.update();
         allMapsUpdate();

@@ -78,8 +78,8 @@ public abstract class Graph {
     }
 
     public void offset(float dx, float dy) {
-        Global.log("left(): " + left());
-        Global.log("dx: " + dx);
+        Global.log("top(): " + top());
+        Global.log("dy: " + dy);
         setLeft(left() + dx);
         setRight(right() + dx);
         setTop(top() + dy);
