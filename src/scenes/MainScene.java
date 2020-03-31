@@ -175,8 +175,8 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-            Global.log("viewEdgeTouched: " + viewEdgeTouched);
-            Global.log("actorEdgeTouched: " + actorEdgeTouched);
+//            Global.log("viewEdgeTouched: " + viewEdgeTouched);
+//            Global.log("actorEdgeTouched: " + actorEdgeTouched);
             // TODO 如果超出邊界要讓角色退回去
             if (!viewEdgeTouched) {
                 //  如果 view 沒有碰到地圖邊際 // 這部分目前沒問題
@@ -250,20 +250,40 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
             maps.setStand(false);
             switch (commandCode) {
                 case Global.UP:
-                    if (!(actor.getX() < Global.mapEdgeUp)) {
-                        Global.log("actor.getX()" + actor.getX());
-                        Global.log("Global.mapEdgeUp" + Global.mapEdgeUp);
+                    if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
                         allMapSetDirAndPressedStatus(Global.UP, true);
+                    }else{
+                        stopRule(commandCode);
+                        Global.log("actor.getCollider().top()" + actor.getCollider().top());
+                        Global.log("Global.mapEdgeUp" + Global.mapEdgeUp);
                     }
                     break;
                 case Global.DOWN:
-                    allMapSetDirAndPressedStatus(Global.DOWN, true);
+                    if (!(actor.getCollider().bottom() > Global.mapEdgeDown)) {
+                        allMapSetDirAndPressedStatus(Global.DOWN, true);
+                    }else{
+                        stopRule(commandCode);
+                        Global.log("actor.getCollider().bottom()" + actor.getCollider().bottom());
+                        Global.log("Global.mapEdgeDown" + Global.mapEdgeDown);
+                    }
                     break;
                 case Global.LEFT:
-                    allMapSetDirAndPressedStatus(Global.LEFT, true);
+                    if (!(actor.getCollider().left() < Global.mapEdgeLeft)) {
+                        allMapSetDirAndPressedStatus(Global.LEFT, true);
+                    }else{
+                        stopRule(commandCode);
+                        Global.log("actor.getCollider().left()" + actor.getCollider().left());
+                        Global.log("Global.mapEdgeLeft" + Global.mapEdgeLeft);
+                    }
                     break;
                 case Global.RIGHT:
-                    allMapSetDirAndPressedStatus(Global.RIGHT, true);
+                    if (!(actor.getCollider().right() > Global.mapEdgeRight)) {
+                        allMapSetDirAndPressedStatus(Global.RIGHT, true);
+                    }else{
+                        stopRule(commandCode);
+                        Global.log("actor.getCollider().right()" + actor.getCollider().right());
+                        Global.log("Global.mapEdgeRight" + Global.mapEdgeRight);
+                    }
                     break;
             }
         } // 當角色的視野碰到牆壁時移動邏輯
