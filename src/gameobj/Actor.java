@@ -133,20 +133,20 @@ public class Actor extends GameObject {
 
     private void move() {
         // 這段邏輯應該也要搬進 game loop 的 update 中做判斷，理論上才能避免一頭插進牆壁裡面
-        Point destination = this.movement.getDestination(false);
-        Point correctedDest = null;
-        if(destination != null){
-            correctedDest = this.movement.correctedDest(destination); // 如果移動會超過要阻止
-        }else{
-            return;
-        }
-        if(correctedDest != null){
-            Global.log("correct dest");
-            this.movement.moving(correctedDest);
-        }else{
-            Global.log("moving false");
-            this.movement.moving(this.movement.getDestination(false));
-        }
+//        Point destination = this.movement.getDestination(false);
+//        Point correctedDest = null;
+//        if(destination != null){
+//            correctedDest = this.movement.correctedDest(destination); // 如果移動會超過要阻止
+//        }else{
+//            return;
+//        }
+//        if(correctedDest != null){
+//            Global.log("correct dest");
+//            this.movement.moving(correctedDest);
+//        }else{
+//            Global.log("moving false");
+//            this.movement.moving(this.movement.getDestination(false));
+//        }
     }
 
     @Override

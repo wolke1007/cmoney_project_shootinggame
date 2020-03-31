@@ -20,6 +20,7 @@ public class Maps extends GameObject {
     private Move movement;
 //    private Delay moveDelay;
     private boolean isStand;
+    private int dir;
 //    private int moveSpeed = 60; // per frame
     
     public Maps(int x, int y, int width, int height, int colliderWidth, int colliderHeight){
@@ -48,6 +49,7 @@ public class Maps extends GameObject {
     }
     
     public void update(){
+        move();
         for(int i = 0; i < this.maps.size(); i++){
             this.maps.get(i).update();
         }
@@ -72,18 +74,21 @@ public class Maps extends GameObject {
     }
     
     public void setStand(boolean status){
+        this.isStand = status;
         for(int i = 0; i < this.maps.size(); i++){
             this.maps.get(i).setStand(status);
         }
     }
     
     public void setDir(int dir){
+        this.dir = dir;
         for(int i = 0; i < this.maps.size(); i++){
             this.maps.get(i).setDir(dir);
         }
     }
     
     public void setMovementPressedStatus(int dir, boolean status){
+        this.movement.setPressedStatus(dir, status);
         for(int i = 0; i < this.maps.size(); i++){
             this.maps.get(i).setMovementPressedStatus(dir, status);
         }
@@ -91,6 +96,7 @@ public class Maps extends GameObject {
     
     public void move(){
         // 移動大地圖，然後讓所有小地圖一起動
+        this.movement.mapMoving();
         for(int i = 0; i < this.maps.size(); i++){
             this.maps.get(i).move();
         }
