@@ -92,6 +92,8 @@ public class View extends GameObject{
     
     @Override
     public void paintComponent(Graphics g) {
+        g.drawLine(0, (int)this.getCenterY(), 1000, (int)this.getCenterY());
+        g.drawLine((int)this.getCenterX(), 0, (int)this.getCenterX(), 1000);
         return;
     }
     

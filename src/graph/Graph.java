@@ -5,6 +5,8 @@
  */
 package graph;
 
+import util.Global;
+
 /**
  *
  * @author Cloud-Razer

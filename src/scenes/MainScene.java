@@ -98,11 +98,11 @@ public class MainScene extends Scene {
 //            this.viewMaps[3] = this.mapRightDown;
 //            this.viewMaps[4] = this.mapRightUp.getRightMap(); // DEBUG
 //            this.viewMaps[5] = this.mapRightDown.getRightMap(); // DEBUG
-            Global.mapEdgeUp = (int) this.maps.get(0).getY();
-            Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getY()) + Global.MAP_HEIGHT;
-            Global.mapEdgeLeft = (int) this.maps.get(0).getX();
-            Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getX()) + Global.MAP_WIDTH;
-
+            Global.mapEdgeUp = (int) (this.maps.get(0).getGraph().top());
+            Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().bottom());
+            Global.mapEdgeLeft = (int) (this.maps.get(0).getGraph().left());
+            Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
+            Global.log("DEBUG2 maps.get(0).getGraph().top():" + maps.get(0).getGraph().top());
 //            Global.log(""+Global.mapEdgeUp);
 //            Global.log(""+Global.mapEdgeDown);
 //            Global.log(""+Global.mapEdgeLeft);
@@ -136,13 +136,17 @@ public class MainScene extends Scene {
     private void allMapsUpdate() {
         this.maps.update();
         Global.mapEdgeUp = (int) (this.maps.get(0).getGraph().top());
-        Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().top());
+        Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().bottom());
         Global.mapEdgeLeft = (int) (this.maps.get(0).getGraph().left());
         Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
     }
 
     @Override
     public void sceneUpdate() {
+//        Global.log("actor x: " + actor.getX());
+//        Global.log("actor y: " + actor.getY());
+//        Global.log("maps x: " + maps.getX());
+//        Global.log("maps y: " + maps.getY());
         this.actor.update();
         this.view.update();
         allMapsUpdate();
@@ -183,15 +187,15 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-            Global.log("viewEdgeTouched: " + viewEdgeTouched);
-            Global.log("actorEdgeTouched: " + actorEdgeTouched);
+//            Global.log("viewEdgeTouched: " + viewEdgeTouched);
+//            Global.log("actorEdgeTouched: " + actorEdgeTouched);
             // TODO 如果超出邊界要讓角色退回去
-            if (!viewEdgeTouched) {
+            if (true) {
                 //  如果 view 沒有碰到地圖邊際 // 這部分目前沒問題
                 Global.log("map move");
                 mapMoveRule(commandCode);
             } else {
-                //  如果 view 有碰到地圖邊際 // TODO 目前 map 會繼續移動
+                stopRule(commandCode);
                 Global.log("view and actor move");
                 // 手動讓地圖停下來
                 maps.setStand(true);
@@ -208,38 +212,37 @@ public class MainScene extends Scene {
         }
 
         private void setDirAndPressedStatus(GameObject obj, int dir, boolean status) {
+            obj.setStand(false);
             obj.setDir(dir);
             obj.setMovementPressedStatus(dir, status);
         }
 
-        private void allMapSetDirAndPressedStatus(int dir, boolean status) {
-            maps.setDir(dir);
-            maps.setMovementPressedStatus(dir, status);
-        }
-
-        private void viewMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
-            view.setStand(true);
-            switch (commandCode) {
-                case Global.UP:
-                    setDirAndPressedStatus(view, Global.UP, true);
-                    break;
-                case Global.DOWN:
-                    setDirAndPressedStatus(view, Global.DOWN, true);
-                    break;
-                case Global.LEFT:
-                    setDirAndPressedStatus(view, Global.LEFT, true);
-                    break;
-                case Global.RIGHT:
-                    setDirAndPressedStatus(view, Global.RIGHT, true);
-                    break;
-            }
-        } // 當角色的視野沒碰到牆壁時移動邏輯
-
+//        private void viewMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
+//            view.setStand(true);
+//            switch (commandCode) {
+//                case Global.UP:
+//                    setDirAndPressedStatus(view, Global.UP, true);
+//                    break;
+//                case Global.DOWN:
+//                    setDirAndPressedStatus(view, Global.DOWN, true);
+//                    break;
+//                case Global.LEFT:
+//                    setDirAndPressedStatus(view, Global.LEFT, true);
+//                    break;
+//                case Global.RIGHT:
+//                    setDirAndPressedStatus(view, Global.RIGHT, true);
+//                    break;
+//            }
+//        } // 當角色的視野沒碰到牆壁時移動邏輯
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
             switch (commandCode) {
                 case Global.UP:
-                    setDirAndPressedStatus(actor, Global.UP, true);
+                    if(actor.getCollider().centerY() > view.getCollider().centerY()){
+                        stopRule(commandCode, maps);
+                    }else{
+                        setDirAndPressedStatus(actor, Global.UP, true);
+                    }
                     break;
                 case Global.DOWN:
                     setDirAndPressedStatus(actor, Global.DOWN, true);
@@ -254,28 +257,96 @@ public class MainScene extends Scene {
         } // 當角色的視野沒碰到牆壁時移動邏輯
 
         private void mapMoveRule(int commandCode) { // 當角色的視野碰到牆壁時移動邏輯
-            //TODO 若 view 碰到牆壁而停止角色繼續前進，但角色如果回頭時 view 必須等角色回到正中心後才能跟著移動
-            maps.setStand(false);
             switch (commandCode) {
                 case Global.UP:
-                    if (!(actor.getX() < Global.mapEdgeUp)) {
-                        Global.log("actor.getX()" + actor.getX());
-                        Global.log("Global.mapEdgeUp" + Global.mapEdgeUp);
-                        allMapSetDirAndPressedStatus(Global.UP, true);
+                    if (!(view.getCollider().top() < Global.mapEdgeUp)) {
+                        if(actor.getCenterY() > view.getCenterY()){
+                            setDirAndPressedStatus(actor, Global.UP, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.UP, true);
+                        }
+                    } else {
+                        stopRule(commandCode, maps);
+                        if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
+                            setDirAndPressedStatus(actor, Global.UP, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
                     }
                     break;
                 case Global.DOWN:
-                    allMapSetDirAndPressedStatus(Global.DOWN, true);
+                    if (!(view.getCollider().bottom() > Global.mapEdgeDown)) {
+                        if(actor.getCenterY() < view.getCenterY()){
+                            setDirAndPressedStatus(actor, Global.DOWN, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.DOWN, true);
+                        }
+                    } else {
+                        stopRule(commandCode, maps);
+                        if (!(actor.getCollider().bottom() > Global.mapEdgeDown)) {
+                            setDirAndPressedStatus(actor, Global.DOWN, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
+                    }
                     break;
                 case Global.LEFT:
-                    allMapSetDirAndPressedStatus(Global.LEFT, true);
+                    if (!(view.getCollider().left() < Global.mapEdgeLeft)) {
+                        if(actor.getCenterX() > view.getCenterX()){
+                            setDirAndPressedStatus(actor, Global.LEFT, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.LEFT, true);
+                        }
+                    } else {
+                        stopRule(commandCode, maps);
+                        if (!(actor.getCollider().left() < Global.mapEdgeLeft)) {
+                            setDirAndPressedStatus(actor, Global.LEFT, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
+                    }
                     break;
                 case Global.RIGHT:
-                    allMapSetDirAndPressedStatus(Global.RIGHT, true);
+                    if (!(view.getCollider().right() > Global.mapEdgeRight)) {
+                        if(actor.getCenterX() < view.getCenterX()){
+                            setDirAndPressedStatus(actor, Global.RIGHT, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.RIGHT, true);
+                        }
+                    } else {
+                        stopRule(commandCode, maps);
+                        if (!(actor.getCollider().right() > Global.mapEdgeRight)) {
+                            setDirAndPressedStatus(actor, Global.RIGHT, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
+                    }
                     break;
             }
         } // 當角色的視野碰到牆壁時移動邏輯
 
+        private void stopRule(int commandCode, GameObject target) {
+            target.setStand(true);
+            switch (commandCode) {
+                case Global.UP:
+                    setDirAndPressedStatus(target, Global.UP, false);
+                    break;
+                case Global.DOWN:
+                    setDirAndPressedStatus(target, Global.DOWN, false);
+                    break;
+                case Global.LEFT:
+                    setDirAndPressedStatus(target, Global.LEFT, false);
+                    break;
+                case Global.RIGHT:
+                    setDirAndPressedStatus(target, Global.RIGHT, false);
+                    break;
+            }
+        }
+        
         private void stopRule(int commandCode) {
             actor.setStand(true);
             view.setStand(true);
@@ -284,22 +355,22 @@ public class MainScene extends Scene {
                 case Global.UP:
                     setDirAndPressedStatus(actor, Global.UP, false);
                     setDirAndPressedStatus(view, Global.UP, false);
-                    allMapSetDirAndPressedStatus(Global.UP, false);
+                    setDirAndPressedStatus(maps, Global.UP, false);
                     break;
                 case Global.DOWN:
                     setDirAndPressedStatus(actor, Global.DOWN, false);
                     setDirAndPressedStatus(view, Global.DOWN, false);
-                    allMapSetDirAndPressedStatus(Global.DOWN, false);
+                    setDirAndPressedStatus(maps, Global.DOWN, false);
                     break;
                 case Global.LEFT:
                     setDirAndPressedStatus(actor, Global.LEFT, false);
                     setDirAndPressedStatus(view, Global.LEFT, false);
-                    allMapSetDirAndPressedStatus(Global.LEFT, false);
+                    setDirAndPressedStatus(maps, Global.LEFT, false);
                     break;
                 case Global.RIGHT:
                     setDirAndPressedStatus(actor, Global.RIGHT, false);
                     setDirAndPressedStatus(view, Global.RIGHT, false);
-                    allMapSetDirAndPressedStatus(Global.RIGHT, false);
+                    setDirAndPressedStatus(maps, Global.RIGHT, false);
                     break;
             }
         }

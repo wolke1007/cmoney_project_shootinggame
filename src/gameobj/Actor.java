@@ -134,6 +134,7 @@ public class Actor extends GameObject {
 //            Global.log("moving false");
 //            this.movement.moving(this.movement.getDestination(false));
 //        }
+        this.movement.moving();
     }
 
     @Override
