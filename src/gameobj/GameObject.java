@@ -24,20 +24,19 @@ public abstract class GameObject {
     private float x;
     private float y;
 
-    public GameObject(String colliderType, int x, int y, int width, int height, int colliderWidth, int colliderHeight) {
-        setX(x);
-        setY(y);
+    public GameObject(String colliderType, float x, float y, int width, int height, int colliderWidth, int colliderHeight) {
         switch (colliderType) {
             case "circle":
                 this.graph = new Circle(x, y, x + width, y + height, width / 2f);
                 this.collider = new Circle(x, y, x + width, y + height, width / 2f);
-                Global.log("create circle");
                 break;
             case "rect":
                 this.graph = new Rect(x, y, x + width, y + height);
                 this.collider = new Rect(x, y, x + width, y + height);
                 break;
         }
+        setX(x);
+        setY(y);
     }
 
     public float getX() {
@@ -66,10 +65,23 @@ public abstract class GameObject {
 
     public void setX(float x) {
         this.x = x;
+        this.graph.setLeft(this.x);
+        this.collider.setLeft(this.x);
+        this.graph.setRight(this.x + width());
+        this.collider.setRight(this.x + width());
     }
 
     public void setY(float y) {
         this.y = y;
+        this.graph.setTop(this.y);
+        this.collider.setTop(this.y);
+        this.graph.setBottom(this.y + height());
+        this.collider.setBottom(this.y + height());
+    }
+
+    public void setXY(float x, float y) {
+        setX(x);
+        setY(y);
     }
 
     public void offset(float dx, float dy) {
@@ -78,10 +90,10 @@ public abstract class GameObject {
         this.graph.offset(dx, dy);
         this.collider.offset(dx, dy);
     }
-    
+
     public void offset(Point dest) {
-        Global.log("offset x: "+ dest.getX());
-        Global.log("offset y: "+ dest.getY());
+        Global.log("offset x: " + dest.getX());
+        Global.log("offset y: " + dest.getY());
         this.x += dest.getX();
         this.y += dest.getY();
         this.graph.offset(dest.getX(), dest.getY());
@@ -130,7 +142,7 @@ public abstract class GameObject {
             g.setColor(Color.BLACK);
         }
     }
-    
+
 //    public boolean isMeetMapEdge(){
 //        Global.log("mapEdgeUp" + Global.mapEdgeUp);
 //        Global.log("mapEdgeDown" + Global.mapEdgeDown);
@@ -138,7 +150,6 @@ public abstract class GameObject {
 //        Global.log("mapEdgeRight" + Global.mapEdgeRight);
 //        return this.graph.intersects(Global.mapEdgeRight, Global.mapEdgeDown, Global.mapEdgeLeft, Global.mapEdgeUp);
 //    }
-
     public abstract void update();
 
     public abstract void setDir(int dir);

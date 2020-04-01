@@ -29,18 +29,13 @@ public class Actor extends GameObject {
     private float moveSpeed; // per frame
     private float actMoveSpeed;
 
-    private float width;
-    private float height;
-
     private Move movement;
     private Map[] currentViewMap;
 
-    public Actor(int[] steps, int x, int y, int moveSpeed, String src, Map[] currentViewMap) {//src => Global.ACTOR
-        super("circle", x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
-        setWidth(Global.UNIT_X);
-        setHeight(Global.UNIT_Y);
+    public Actor(String colliderType, float x, float y, int moveSpeed, String[] path, Map[] currentViewMap) {//src => Global.ACTOR
+        super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         this.currentViewMap = currentViewMap;
-        this.renderer = new RendererToRotate(src, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
+        this.renderer = new RendererToRotate(path, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
@@ -54,14 +49,6 @@ public class Actor extends GameObject {
     @Override
     public void setY(float y) {
         super.setY(y);
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
     }
 
     private void setActorMoveSpeedDetail(float moveSpeed) {
@@ -105,11 +92,11 @@ public class Actor extends GameObject {
     }
 
     public float centerX() {
-        return super.getX() + this.width / 2f;
+        return super.getCenterX();
     }
 
     public float centerY() {
-        return this.getY() + this.height / 2f;
+        return super.getCenterY();
     }
 
     @Override
@@ -124,29 +111,29 @@ public class Actor extends GameObject {
         }
         // 需要先移動再 RenderToRotate 避免 Actor 的圖片跟不上碰撞框的移動
         // 以下一定要更新
-        this.renderer.setCenterX(super.getX());
-        this.renderer.setCenterY(super.getY());
+        this.renderer.setX(super.getX());
+        this.renderer.setY(super.getY());
         this.renderer.setGoalCenterX(Global.mouseX);
         this.renderer.setGoalCenterY(Global.mouseY);
-        renderer.update();
+        this.renderer.update();
     }
 
     private void move() {
         // 這段邏輯應該也要搬進 game loop 的 update 中做判斷，理論上才能避免一頭插進牆壁裡面
-        Point destination = this.movement.getDestination(false);
-        Point correctedDest = null;
-        if(destination != null){
-            correctedDest = this.movement.correctedDest(destination); // 如果移動會超過要阻止
-        }else{
-            return;
-        }
-        if(correctedDest != null){
-            Global.log("correct dest");
-            this.movement.moving(correctedDest);
-        }else{
-            Global.log("moving false");
-            this.movement.moving(this.movement.getDestination(false));
-        }
+//        Point destination = this.movement.getDestination(false);
+//        Point correctedDest = null;
+//        if(destination != null){
+//            correctedDest = this.movement.correctedDest(destination); // 如果移動會超過要阻止
+//        }else{
+//            return;
+//        }
+//        if(correctedDest != null){
+//            Global.log("correct dest");
+//            this.movement.moving(correctedDest);
+//        }else{
+//            Global.log("moving false");
+//            this.movement.moving(this.movement.getDestination(false));
+//        }
     }
 
     @Override

@@ -7,10 +7,11 @@ package scenes;
 
 import controllers.SceneController;
 import gameobj.Actor;
+import gameobj.Ammunition;
 import gameobj.GameObject;
 import gameobj.Map;
 import gameobj.Maps;
-import gameobj.TestObj;
+//import gameobj.TestObj;
 import gameobj.View;
 import java.awt.Graphics;
 //import java.awt.event.KeyEvent;
@@ -27,7 +28,8 @@ import java.util.ArrayList;
 public class MainScene extends Scene {
 
     Actor actor;
-    TestObj testobj;
+    private ArrayList<Ammunition> ammunition;
+//    TestObj testobj;
     Map mapLeftUp;
     Map mapRightUp;
     Map mapLeftDown;
@@ -46,8 +48,8 @@ public class MainScene extends Scene {
         super(sceneController);
         this.viewMaps = new Map[6]; // 預計一個畫面最多看見 4 張地圖
         this.mapLength = (int) Math.sqrt(Global.MAP_QTY); // 全地圖的地圖邊長為總數開根號
-        this.maps = new Maps(0, 0, this.mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT);
-Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
+        this.maps = new Maps(0f, 0f, this.mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT);
+        Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
         Global.log("debug map_h:" + Global.MAP_HEIGHT); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
 //        Global.log("this.mapLength: " + this.mapLength);
 //        this.allMaps = new Map[this.mapLength][this.mapLength];
@@ -65,13 +67,13 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
                     int whichMap = x;
                     switch (whichMap) {
                         case 0:
-                            maps.add(new Map(Global.BACKGROUND_1, map_x * y, map_y * x, width, height));
+                            maps.add(new Map(Global.BACKGROUND_1, (float) map_x * y, (float) map_y * x, width, height));
                             break;
                         case 1:
-                            maps.add(new Map(Global.BACKGROUND_2, map_x * y, map_y * x, width, height));
+                            maps.add(new Map(Global.BACKGROUND_2, (float) map_x * y, (float) map_y * x, width, height));
                             break;
                         case 2:
-                            maps.add(new Map(Global.BACKGROUND_3, map_x * y, map_y * x, width, height));
+                            maps.add(new Map(Global.BACKGROUND_3, (float) map_x * y, (float) map_y * x, width, height));
                             break;
                     }
                 }
@@ -96,11 +98,11 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
 //            this.viewMaps[3] = this.mapRightDown;
 //            this.viewMaps[4] = this.mapRightUp.getRightMap(); // DEBUG
 //            this.viewMaps[5] = this.mapRightDown.getRightMap(); // DEBUG
-            Global.mapEdgeUp = (int)this.maps.get(0).getY();
-            Global.mapEdgeDown = (int)(this.maps.get(this.maps.getMaps().size() - 1).getY()) + Global.MAP_HEIGHT;
-            Global.mapEdgeLeft = (int)this.maps.get(0).getX();
-            Global.mapEdgeRight = (int)(this.maps.get(this.maps.getMaps().size() - 1).getX()) + Global.MAP_WIDTH;
-            
+            Global.mapEdgeUp = (int) this.maps.get(0).getY();
+            Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getY()) + Global.MAP_HEIGHT;
+            Global.mapEdgeLeft = (int) this.maps.get(0).getX();
+            Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getX()) + Global.MAP_WIDTH;
+
 //            Global.log(""+Global.mapEdgeUp);
 //            Global.log(""+Global.mapEdgeDown);
 //            Global.log(""+Global.mapEdgeLeft);
@@ -119,9 +121,10 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
 
     @Override
     public void sceneBegin() {
-        this.actor = new Actor(Global.STEPS_WALK_NORMAL, Global.DEFAULT_ACTOR_X, Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR, this.viewMaps);
-        this.view = new View((int)this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                (int)this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
+        this.ammunition = new ArrayList();
+        this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1, this.viewMaps);
+        this.view = new View(this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
+                this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
                 60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT);
         settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
         this.delay = new Delay(1);
@@ -132,17 +135,23 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
 
     private void allMapsUpdate() {
         this.maps.update();
-        Global.mapEdgeUp = (int)(this.maps.get(0).getGraph().top());
-        Global.mapEdgeDown = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().top());
-        Global.mapEdgeLeft = (int)(this.maps.get(0).getGraph().left());
-        Global.mapEdgeRight = (int)(this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
+        Global.mapEdgeUp = (int) (this.maps.get(0).getGraph().top());
+        Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().top());
+        Global.mapEdgeLeft = (int) (this.maps.get(0).getGraph().left());
+        Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
     }
-    
+
     @Override
     public void sceneUpdate() {
         this.actor.update();
         this.view.update();
         allMapsUpdate();
+        if (Global.mouseState == 1) {
+            this.ammunition.add(new Ammunition("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+        }
+        for (int i = 0; i < this.ammunition.size(); i++) {
+            this.ammunition.get(i).update();
+        }
     }
 
     @Override
@@ -155,6 +164,9 @@ Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改�
         this.maps.paint(g);
         this.actor.paint(g);
         this.view.paint(g);
+        for (int i = 0; i < this.ammunition.size(); i++) {
+            this.ammunition.get(i).paint(g);
+        }
     }
 
     @Override

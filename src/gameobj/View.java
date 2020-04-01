@@ -30,7 +30,7 @@ public class View extends GameObject{
 
     private Move movement;
     
-    public View(int x, int y, int moveSpeed, int width, int height) {
+    public View(float x, float y, int moveSpeed, int width, int height) {
         super("rect", x, y, width, height, width, height);
         Global.log("rec x" + x + " ,y" + y + " ,width:" + width + " ,height:" + height);
         this.width = width;

@@ -6,7 +6,7 @@
 package scenes;
 
 import controllers.SceneController;
-import gameobj.TestObj;
+//import gameobj.TestObj;
 import graph.Rect;
 import util.CommandSolver;
 import util.Delay;
@@ -22,8 +22,8 @@ import gameobj.Renderer;
  */
 public class SecondScene extends Scene{
 
-    TestObj obj;
-    TestObj obj2;
+//    TestObj obj;
+//    TestObj obj2;
     Delay delay;
     
     public SecondScene(SceneController sceneController) {
@@ -41,10 +41,10 @@ public class SecondScene extends Scene{
     @Override
     public void sceneUpdate() {
         if(delay.isTrig()){
-            obj2.update();
-            obj.update();
-            if(obj.isCollision(obj2)){
-            }
+//            obj2.update();
+//            obj.update();
+//            if(obj.isCollision(obj2)){
+//            }
         }
     }
 
@@ -54,8 +54,8 @@ public class SecondScene extends Scene{
 
     @Override
     public void paint(Graphics g) {
-        obj.paint(g);
-        obj2.paint(g);
+//        obj.paint(g);
+//        obj2.paint(g);
     }
 
     @Override
@@ -72,12 +72,10 @@ public class SecondScene extends Scene{
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-            System.out.println("~~~~");
         }
 
         @Override
         public void keyReleased(int commandCode, long trigTime) {
-            System.out.println("1234");
         }
 
         @Override

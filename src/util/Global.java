@@ -12,7 +12,6 @@ package util;
 public class Global {
 
     // Debug Mode
-
     public static final boolean IS_DEBUG = true;
 
     public static void log(String str) {
@@ -41,8 +40,8 @@ public class Global {
     public static final int UNIT_X = 32;
     public static final int UNIT_Y = 32;
     // 角色於地圖位置
-    public static final int DEFAULT_ACTOR_X = FRAME_X / 2 - UNIT_X /2;
-    public static final int DEFAULT_ACTOR_Y = FRAME_Y / 2 - UNIT_Y /2;    
+    public static final int DEFAULT_ACTOR_X = FRAME_X / 2 - UNIT_X / 2;
+    public static final int DEFAULT_ACTOR_Y = FRAME_Y / 2 - UNIT_Y / 2;
     // 方向
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -61,7 +60,10 @@ public class Global {
     public static final String BACKGROUND_2 = "/resources/background2.png";
     public static final String BACKGROUND_3 = "/resources/background3.png";
 //    public static final String ACTOR = "/resources/Actor.png";
-    public static final String ACTOR = "/resources/Actor_sample.png";
+    private static final String ROOT = "/resources";
+    public static final String ACTOR = Global.ROOT + "/Actor_sample.png";
+    public static final String[] ACTOR1 = {Global.ROOT + "/Actor_sample.png",Global.ROOT + "/Actor_sample2.png"};
+    public static final String[] BULLET = {Global.ROOT+"/bullet.png"};
     //角度需求
     public static final float PI = 3.14f;
     // 地圖數量
@@ -74,7 +76,9 @@ public class Global {
     //滑鼠當前的座標
     public static int mouseX;
     public static int mouseY;
- 
+    //測試用按鍵
+    public static int mouseState;
+    
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
     }

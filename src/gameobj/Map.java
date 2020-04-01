@@ -34,7 +34,7 @@ public class Map extends GameObject {
     
     private Move movement;
 
-    public Map(String src, int x, int y, int width, int height) {
+    public Map(String src, float x, float y, int width, int height) {
         super("rect", x, y, width - 2, height - 2, width - 2, height - 2);
         this.width = width;
         this.height = height;

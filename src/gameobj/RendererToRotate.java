@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import util.Angle;
 import util.Delay;
@@ -22,7 +23,10 @@ import util.Rotate;
  */
 public class RendererToRotate {
 
-    private BufferedImage img;//要被旋轉的圖
+//    private BufferedImage img;//要被旋轉的圖
+    private ArrayList<BufferedImage> img;
+//    private BufferedImage img2;//要被旋轉的圖
+    private int state;//目前狀態
 
     private float imgX;
     private float imgY;
@@ -31,28 +35,42 @@ public class RendererToRotate {
     private Rotate rotate;
     private Angle angle;
 
-    public RendererToRotate(String ptah, float imgX, float imgY, float goalCenterX, float goalCenterY) {
+    public RendererToRotate(String[] path, float imgX, float imgY, float goalCenterX, float goalCenterY) {
+        this.img = new ArrayList<>();
         try {
-            img = ImageIO.read(getClass().getResource(ptah));
+//            this.img = ImageIO.read(getClass().getResource(ptah));
+            for (int i = 0; i < path.length; i++) {
+                this.img.add(ImageIO.read(getClass().getResource(path[i])));
+            }
         } catch (IOException ex) {
         }
-        setAngle(imgX + this.img.getWidth() / 2f, imgY + this.img.getHeight() / 2f, goalCenterX, goalCenterY);
-        setRotate();
+        this.state = 0;
+        setAngle(imgX + this.img.get(this.state).getWidth() / 2f, imgY + this.img.get(this.state).getHeight() / 2f, goalCenterX, goalCenterY);
+        setRotate(this.state);
+    }
+
+    public void setState(int state) {
+        this.state = state;
+        this.rotate.setImg(this.img.get(state));
+    }
+
+    public int getState() {
+        return this.state;
     }
 
     private void setAngle(float imgCenterX, float imgCenterY, float goalCenterX, float goalCenterY) {
         this.angle = new Angle(imgCenterX, imgCenterY, goalCenterX, goalCenterY);
     }
 
-    private void setRotate() {
-        this.rotate = new Rotate(this.img, this.angle.getAngle(), (int)this.imgX, (int)this.imgY);
-    }
+    private void setRotate(int state) {
+        this.rotate = new Rotate(this.img.get(state), this.angle.getAngle(), (int) this.imgX, (int) this.imgY);
+    }//初始化用
 
-    public void setCenterX(float imgX) {
+    public void setX(float imgX) {
         this.imgX = imgX;
     }
 
-    public void setCenterY(float imgY) {
+    public void setY(float imgY) {
         this.imgY = imgY;
     }
 
@@ -63,15 +81,17 @@ public class RendererToRotate {
     public void setGoalCenterY(float goalCenterY) {
         this.goalCenterY = goalCenterY;
     }
-    public void update(){
-        this.angle.setCenterX(this.imgX + this.img.getWidth() / 2f);
-        this.angle.setCenterY(this.imgY + this.img.getHeight() / 2f);
+
+    public void update() {
+        this.angle.setCenterX(this.imgX + this.img.get(this.state).getWidth() / 2f);
+        this.angle.setCenterY(this.imgY + this.img.get(this.state).getHeight() / 2f);
         this.angle.setGoalCenterX(this.goalCenterX);
         this.angle.setGoalCenterY(this.goalCenterY);
-        this.rotate.setX((int)this.imgX);
-        this.rotate.setY((int)this.imgY);
+        this.rotate.setX((int) this.imgX);
+        this.rotate.setY((int) this.imgY);
         this.rotate.setAngle(this.angle.getAngle());
     }
+
     public void paint(Graphics g) {
         this.rotate.paintComponent(g);
     }

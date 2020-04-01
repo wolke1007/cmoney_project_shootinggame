@@ -22,7 +22,7 @@ public class Maps extends GameObject {
     private boolean isStand;
 //    private int moveSpeed = 60; // per frame
     
-    public Maps(int x, int y, int width, int height, int colliderWidth, int colliderHeight){
+    public Maps(float x, float y, int width, int height, int colliderWidth, int colliderHeight){
         super("rect", x, y, width, height, colliderWidth, colliderHeight);
         this.maps = new ArrayList<Map>();
         this.isStand = true;

@@ -36,7 +36,7 @@ public class Rotate {
         this.y = y;
     }
 
-    private void setImg(BufferedImage img) {
+    public void setImg(BufferedImage img) {
         this.img = img;
     }
 

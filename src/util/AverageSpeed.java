@@ -113,7 +113,7 @@ public class AverageSpeed {
         if (this.isFixedLength) {
             double degree = Math.atan(Math.abs(getSlope()));
             double dy = this.length * Math.sin(degree);
-            return ((this.centerY < this.goalCenterY) ? -1 : 1) * dy / this.reMoveSpeed;
+            return ((this.centerY < this.goalCenterY) ? 1 : -1) * dy / this.reMoveSpeed;
         }
         return (this.goalCenterX - this.centerX) / this.reMoveSpeed;
     }

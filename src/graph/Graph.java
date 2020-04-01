@@ -17,12 +17,16 @@ public abstract class Graph {
     private float top;
     private float right;
     private float bottom;
+    private float width;
+    private float hight;
 
     public Graph(float left, float top, float right, float bottom) {
         setLeft(left);
         setTop(top);
         setRight(right);
         setBottom(bottom);
+        setWidth();
+        setHeight();
     }
 
     public void setLeft(float left) {
@@ -43,6 +47,14 @@ public abstract class Graph {
         this.bottom = bottom;
     }
 
+    private void setWidth() {
+        this.width = right() - left();
+    }
+
+    private void setHeight() {
+        this.hight = bottom() - top();
+    }
+
     public float left() {
         return this.left;
     }
@@ -60,11 +72,11 @@ public abstract class Graph {
     }
 
     public float width() {
-        return right() - left();
+        return this.width;
     }
 
     public float height() {
-        return bottom() - top();
+        return this.hight;
     }
 
     public float centerX() {
@@ -89,6 +101,5 @@ public abstract class Graph {
     public abstract boolean intersects(float left, float top, float right, float bottom);
 
     public abstract boolean intersects(float x, float y, float r);
-
 
 }

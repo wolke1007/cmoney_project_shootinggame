@@ -15,7 +15,7 @@ public class Circle extends Graph {
 
     private float r;
 
-    public Circle(int left, int top, int right, int bottom, float r) {
+    public Circle(float left, float top, float right, float bottom, float r) {
         super(left, top, right, bottom);
         setR(r);
     }
