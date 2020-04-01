@@ -248,7 +248,12 @@ public class MainScene extends Scene {
             switch (commandCode) {
                 case Global.UP:
                     if (!(view.getCollider().top() < Global.mapEdgeUp)) {
-                        setDirAndPressedStatus(maps, Global.UP, true);
+                        if(actor.getCenterY() > view.getCenterY()){
+                            setDirAndPressedStatus(actor, Global.UP, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.UP, true);
+                        }
                     } else {
                         stopRule(commandCode, maps);
                         if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
@@ -260,7 +265,12 @@ public class MainScene extends Scene {
                     break;
                 case Global.DOWN:
                     if (!(view.getCollider().bottom() > Global.mapEdgeDown)) {
-                        setDirAndPressedStatus(maps, Global.DOWN, true);
+                        if(actor.getCenterY() < view.getCenterY()){
+                            setDirAndPressedStatus(actor, Global.DOWN, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.DOWN, true);
+                        }
                     } else {
                         stopRule(commandCode, maps);
                         if (!(actor.getCollider().bottom() > Global.mapEdgeDown)) {
@@ -272,7 +282,12 @@ public class MainScene extends Scene {
                     break;
                 case Global.LEFT:
                     if (!(view.getCollider().left() < Global.mapEdgeLeft)) {
-                        setDirAndPressedStatus(maps, Global.LEFT, true);
+                        if(actor.getCenterX() > view.getCenterX()){
+                            setDirAndPressedStatus(actor, Global.LEFT, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.LEFT, true);
+                        }
                     } else {
                         stopRule(commandCode, maps);
                         if (!(actor.getCollider().left() < Global.mapEdgeLeft)) {
@@ -284,7 +299,12 @@ public class MainScene extends Scene {
                     break;
                 case Global.RIGHT:
                     if (!(view.getCollider().right() > Global.mapEdgeRight)) {
-                        setDirAndPressedStatus(maps, Global.RIGHT, true);
+                        if(actor.getCenterX() < view.getCenterX()){
+                            setDirAndPressedStatus(actor, Global.RIGHT, true);
+                        }else{
+                            stopRule(commandCode, actor);
+                            setDirAndPressedStatus(maps, Global.RIGHT, true);
+                        }
                     } else {
                         stopRule(commandCode, maps);
                         if (!(actor.getCollider().right() > Global.mapEdgeRight)) {
