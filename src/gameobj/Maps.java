@@ -71,13 +71,6 @@ public class Maps extends GameObject {
             }
             this.maps.get(i).paint(g);
         }
-        g.drawLine(0, 10, 1000, 10);
-        g.drawLine(0, 20, 1000, 20);
-        g.drawLine(0, 30, 1000, 30);
-        g.drawLine(0, 40, 1000, 40);
-        g.drawLine(0, 80, 1000, 80);
-        g.drawLine(0, 160, 1000, 160);
-        g.drawLine(0, 184, 1000, 184);
     }
     
     public void setStand(boolean status){
