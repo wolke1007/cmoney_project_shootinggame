@@ -88,12 +88,12 @@ public class AverageSpeed {
 
     public void setMoveSpeed(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
-        this.reMoveSpeed = 60 - this.moveSpeed;
+        this.reMoveSpeed = 100 - this.moveSpeed;
     }
 
     private float limitRange(float moveSpeed) {
-        if (moveSpeed > 59) {
-            return moveSpeed = 59;
+        if (moveSpeed > 99) {
+            return moveSpeed = 99;
         } else if (moveSpeed < 0) {
             return moveSpeed = 0;
         }

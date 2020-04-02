@@ -7,7 +7,7 @@ package scenes;
 
 import controllers.SceneController;
 import gameobj.Actor;
-import gameobj.Ammunition;
+import gameobj.Ammo;
 import gameobj.GameObject;
 import gameobj.Map;
 import gameobj.Maps;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class MainScene extends Scene {
 
     Actor actor;
-    private ArrayList<Ammunition> ammunition;
+    private ArrayList<Ammo> ammunition;
 //    TestObj testobj;
     Map mapLeftUp;
     Map mapRightUp;
@@ -151,7 +151,7 @@ public class MainScene extends Scene {
         this.view.update();
         allMapsUpdate();
         if (Global.mouseState == 1) {
-            this.ammunition.add(new Ammunition("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+            this.ammunition.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
         }
         for (int i = 0; i < this.ammunition.size(); i++) {
             this.ammunition.get(i).update();

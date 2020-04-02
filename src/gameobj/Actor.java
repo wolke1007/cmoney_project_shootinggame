@@ -44,14 +44,27 @@ public class Actor extends GameObject {
         this.moveDistance = 10;
     }//多載 建構子 當前版本
 
+    //位置資訊
     @Override
     public void setX(float x) {
         super.setX(x);
+        if (this.renderer != null) {
+            this.renderer.setX(x);
+            this.renderer.setGoalCenterX(Global.mouseX);
+        }
     }
 
     @Override
     public void setY(float y) {
         super.setY(y);
+        if (this.renderer != null) {
+            this.renderer.setY(y);
+            this.renderer.setGoalCenterY(Global.mouseY);
+        }
+    }
+
+    public float centerX() {
+        return super.getCenterX();
     }
     
     private void setMoveDistance(int moveDistance){
@@ -61,6 +74,12 @@ public class Actor extends GameObject {
         return this.moveDistance;
     }
 
+    public float centerY() {
+        return super.getCenterY();
+    }
+    //位置資訊end
+
+    //角色移動相關資訊
     private void setActorMoveSpeedDetail(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
@@ -86,6 +105,7 @@ public class Actor extends GameObject {
     public float getMoveSpeed() {
         return this.moveSpeed;
     }//取得目前的速度設定
+    //角色移動相關資訊end
 
     public void setStand(boolean isStand) {
         this.isStand = isStand;
@@ -101,14 +121,6 @@ public class Actor extends GameObject {
         this.dir = dir;
     }
 
-    public float centerX() {
-        return super.getCenterX();
-    }
-
-    public float centerY() {
-        return super.getCenterY();
-    }
-
     @Override
     public void setMovementPressedStatus(int dir, boolean status) {
         this.movement.setPressedStatus(dir, status);
@@ -121,10 +133,8 @@ public class Actor extends GameObject {
         }
         // 需要先移動再 RenderToRotate 避免 Actor 的圖片跟不上碰撞框的移動
         // 以下一定要更新
-        this.renderer.setX(super.getX());
-        this.renderer.setY(super.getY());
-        this.renderer.setGoalCenterX(Global.mouseX);
-        this.renderer.setGoalCenterY(Global.mouseY);
+        this.setX(super.getX());
+        this.setY(super.getY());
         this.renderer.update();
     }
 
