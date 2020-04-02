@@ -29,6 +29,7 @@ public class Move {
         this.obj = obj;
     }
 
+    //TODO 這部分應該刪除，map 不應該移動
     public void mapMoving() {
         int dir = movingDir();
         int speed = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
@@ -63,36 +64,36 @@ public class Move {
         }
     }
 
-    public void moving() {
+    public void moving(int distance) {
         int dir = movingDir();
-        int speed = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
+//        int distance = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.UP: // go up
-                this.obj.offset(0, -speed);
+                this.obj.offset(0, -distance);
                 break;
             case Global.DOWN: //  go down
-                this.obj.offset(0, speed);
+                this.obj.offset(0, distance);
                 break;
             case Global.LEFT: // go left
-                this.obj.offset(-speed, 0);
+                this.obj.offset(-distance, 0);
                 break;
             case Global.RIGHT: // go right
-                this.obj.offset(speed, 0);
+                this.obj.offset(distance, 0);
                 break;
             case Global.UP_LEFT: // go up-left
-                this.obj.offset(-speed, -speed);
+                this.obj.offset(-distance, -distance);
                 break;
             case Global.UP_RIGHT: // go up-right
                 Global.log("dir is UP_RIGHT:" + Global.UP_RIGHT);
-                this.obj.offset(speed, -speed);
+                this.obj.offset(distance, -distance);
                 break;
             case Global.DOWN_LEFT: //  go down-left
                 Global.log("dir is DOWN_LEFT:" + Global.DOWN_LEFT);
-                this.obj.offset(-speed, speed);
+                this.obj.offset(-distance, distance);
                 break;
             case Global.DOWN_RIGHT: // go down-right
                 Global.log("dir is DOWN_RIGHT:" + Global.DOWN_RIGHT);
-                this.obj.offset(speed, speed);
+                this.obj.offset(distance, distance);
                 break;
         }
     }    

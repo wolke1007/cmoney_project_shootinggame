@@ -31,6 +31,8 @@ public class Actor extends GameObject {
 
     private Move movement;
     private Map[] currentViewMap;
+    
+    private int moveDistance;
 
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path, Map[] currentViewMap) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
@@ -39,6 +41,7 @@ public class Actor extends GameObject {
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
+        this.moveDistance = 10;
     }//多載 建構子 當前版本
 
     @Override
@@ -49,6 +52,13 @@ public class Actor extends GameObject {
     @Override
     public void setY(float y) {
         super.setY(y);
+    }
+    
+    private void setMoveDistance(int moveDistance){
+        this.moveDistance = moveDistance;
+    }
+    private int getMoveDistance(){
+        return this.moveDistance;
     }
 
     private void setActorMoveSpeedDetail(float moveSpeed) {
@@ -119,22 +129,7 @@ public class Actor extends GameObject {
     }
 
     private void move() {
-        // 這段邏輯應該也要搬進 game loop 的 update 中做判斷，理論上才能避免一頭插進牆壁裡面
-//        Point destination = this.movement.getDestination(false);
-//        Point correctedDest = null;
-//        if(destination != null){
-//            correctedDest = this.movement.correctedDest(destination); // 如果移動會超過要阻止
-//        }else{
-//            return;
-//        }
-//        if(correctedDest != null){
-//            Global.log("correct dest");
-//            this.movement.moving(correctedDest);
-//        }else{
-//            Global.log("moving false");
-//            this.movement.moving(this.movement.getDestination(false));
-//        }
-        this.movement.moving();
+        this.movement.moving(this.moveDistance);
     }
 
     @Override

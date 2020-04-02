@@ -187,23 +187,7 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-//            Global.log("viewEdgeTouched: " + viewEdgeTouched);
-//            Global.log("actorEdgeTouched: " + actorEdgeTouched);
-            // TODO 如果超出邊界要讓角色退回去
-            if (true) {
-                //  如果 view 沒有碰到地圖邊際 // 這部分目前沒問題
-                Global.log("map move");
-                mapMoveRule(commandCode);
-            } else {
-                stopRule(commandCode);
-                Global.log("view and actor move");
-                // 手動讓地圖停下來
-                maps.setStand(true);
-                actorMoveRule(commandCode);
-            }
-
-//                Global.log("move 2");
-//                moveRule_2(commandCode);
+            actorMoveRule(commandCode);
         }
 
         @Override
@@ -234,28 +218,46 @@ public class MainScene extends Scene {
 //                    break;
 //            }
 //        } // 當角色的視野沒碰到牆壁時移動邏輯
+        
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
             switch (commandCode) {
                 case Global.UP:
-                    if(actor.getCollider().centerY() > view.getCollider().centerY()){
-                        stopRule(commandCode, maps);
-                    }else{
+                    if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
+                        Global.log("actor move");
                         setDirAndPressedStatus(actor, Global.UP, true);
+                    } else {
+                        stopRule(commandCode, actor);
                     }
                     break;
                 case Global.DOWN:
-                    setDirAndPressedStatus(actor, Global.DOWN, true);
+                    if (!(actor.getCollider().bottom() > Global.mapEdgeDown)) {
+                        Global.log("actor move");
+                        setDirAndPressedStatus(actor, Global.DOWN, true);
+                    } else {
+                        stopRule(commandCode, actor);
+                    }
                     break;
                 case Global.LEFT:
-                    setDirAndPressedStatus(actor, Global.LEFT, true);
+                    if (!(actor.getCollider().left() < Global.mapEdgeLeft)) {
+                        Global.log("actor move");
+                        setDirAndPressedStatus(actor, Global.LEFT, true);
+                    } else {
+                        stopRule(commandCode, actor);
+                    }
                     break;
                 case Global.RIGHT:
-                    setDirAndPressedStatus(actor, Global.RIGHT, true);
+                    if (!(actor.getCollider().right() > Global.mapEdgeRight)) {
+                        Global.log("actor move");
+                        setDirAndPressedStatus(actor, Global.RIGHT, true);
+                    } else {
+                        stopRule(commandCode, actor);
+                    }
                     break;
             }
         } // 當角色的視野沒碰到牆壁時移動邏輯
 
+        // 地圖不應該動 XD
         private void mapMoveRule(int commandCode) { // 當角色的視野碰到牆壁時移動邏輯
             switch (commandCode) {
                 case Global.UP:
