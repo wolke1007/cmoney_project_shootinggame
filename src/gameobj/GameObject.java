@@ -21,8 +21,9 @@ public abstract class GameObject {
 
     private Graph collider;
     protected Graph graph;
-    private float x;
-    private float y;
+    protected float x;
+    protected float y;
+    protected int paintPriority;
 
     public GameObject(String colliderType, float x, float y, int width, int height, int colliderWidth, int colliderHeight) {
         switch (colliderType) {
@@ -37,6 +38,7 @@ public abstract class GameObject {
         }
         setX(x);
         setY(y);
+        this.paintPriority = 10; // 數字越大越後面畫，目前設計為 10 最大，同個數字則表示誰先誰後畫都沒差
     }
 
     public float getX() {
@@ -103,6 +105,13 @@ public abstract class GameObject {
     public void offsetX(float x) {
         this.graph.offset(x - this.graph.centerX(), 0);
         this.collider.offset(x - this.collider.centerX(), 0);
+        setX(x);
+    }
+    
+    public void offsetY(float y) {
+        this.graph.offset(0, y - this.graph.centerY());
+        this.collider.offset(0, y - this.collider.centerY());
+        setY(y);
     }
 
     public Graph getGraph() {
@@ -111,11 +120,6 @@ public abstract class GameObject {
 
     public Graph getCollider() {
         return this.collider;
-    }
-
-    public void offsetY(float y) {
-        this.graph.offset(0, y - this.graph.centerY());
-        this.collider.offset(0, y - this.collider.centerY());
     }
 
     public boolean isCollision(GameObject obj) {
@@ -129,27 +133,40 @@ public abstract class GameObject {
         paintComponent(g);
         if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Circle) {
             g.setColor(Color.RED);
-            g.drawOval((int) this.graph.left(), (int) this.graph.top(), (int) this.graph.width(), (int) this.graph.height());
+            g.drawOval((int) this.graph.left() - Global.viewX,
+                    (int) this.graph.top() - Global.viewY,
+                    (int) this.graph.width(),
+                    (int) this.graph.height());
             g.setColor(Color.BLUE);
-            g.drawOval((int) this.collider.left(), (int) this.collider.top(), (int) this.collider.width(), (int) this.collider.height());
+            g.drawOval((int) this.collider.left() - Global.viewX,
+                    (int) this.collider.top() - Global.viewY,
+                    (int) this.collider.width(), 
+                    (int) this.collider.height());
             g.setColor(Color.BLACK);
         }
         if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Rect) {
             g.setColor(Color.RED);
-            g.drawRect((int) this.graph.left(), (int) this.graph.top(), (int) this.graph.width(), (int) this.graph.height());
+            g.drawRect((int) this.graph.left() - Global.viewX,
+                    (int) this.graph.top() - Global.viewY, 
+                    (int) this.graph.width(), 
+                    (int) this.graph.height());
             g.setColor(Color.BLUE);
-            g.drawRect((int) this.collider.left(), (int) this.collider.top(), (int) this.collider.width(), (int) this.collider.height());
+            g.drawRect((int) this.collider.left() - Global.viewX, 
+                    (int) this.collider.top() - Global.viewY, 
+                    (int) this.collider.width(), 
+                    (int) this.collider.height());
             g.setColor(Color.BLACK);
         }
     }
 
-//    public boolean isMeetMapEdge(){
-//        Global.log("mapEdgeUp" + Global.mapEdgeUp);
-//        Global.log("mapEdgeDown" + Global.mapEdgeDown);
-//        Global.log("mapEdgeLeft" + Global.mapEdgeLeft);
-//        Global.log("mapEdgeRight" + Global.mapEdgeRight);
-//        return this.graph.intersects(Global.mapEdgeRight, Global.mapEdgeDown, Global.mapEdgeLeft, Global.mapEdgeUp);
-//    }
+    public boolean isMeetMapEdge(){
+        Global.log("mapEdgeUp" + Global.mapEdgeUp);
+        Global.log("mapEdgeDown" + Global.mapEdgeDown);
+        Global.log("mapEdgeLeft" + Global.mapEdgeLeft);
+        Global.log("mapEdgeRight" + Global.mapEdgeRight);
+        return this.graph.intersects(Global.mapEdgeRight, Global.mapEdgeDown, Global.mapEdgeLeft, Global.mapEdgeUp);
+    }
+    
     public abstract void update();
 
     public abstract void setDir(int dir);
@@ -158,5 +175,5 @@ public abstract class GameObject {
 
     public abstract void paintComponent(Graphics g);
     
-    public abstract void setStand(boolean isStand);
+    public abstract void setStand(boolean isStand);    
 }

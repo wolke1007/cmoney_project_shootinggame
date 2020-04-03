@@ -93,7 +93,7 @@ public class Renderer {
 //    private int testAngle = 0;
     public void paint(Graphics g, int x, int y, int w, int h) {
 //        g.drawImage(img, 0, 0, null);
-        g.drawImage(img, x, y, x + w, y + h,
+        g.drawImage(img, x - Global.viewX, y - Global.viewY, x + w, y + h,
                 (Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),
                 (Global.UNIT_Y * dir) + (characterIndex / 4) * (Global.UNIT_Y * 4),
                 (Global.UNIT_X + Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),

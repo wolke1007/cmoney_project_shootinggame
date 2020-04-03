@@ -98,7 +98,6 @@ public class Move {
         }
     }    
 
-
     public Point correctedDest(Point destPoint) {
 //        int colliderUp, int colliderDown, int colliderLeft, int colliderRight
         float x = 0;

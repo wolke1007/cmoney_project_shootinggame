@@ -20,16 +20,16 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 600;
-    public static final int FRAME_Y = 400;
+    public static final int FRAME_X = 800;
+    public static final int FRAME_Y = 700;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 角色視野大小
-    public static final int VIEW_WIDTH = 100;
-    public static final int VIEW_HEIGHT = 100;
+    public static final int VIEW_WIDTH = SCREEN_X;
+    public static final int VIEW_HEIGHT = SCREEN_Y;
     // 地圖大小
-    public static final int MAP_WIDTH = 200;
-    public static final int MAP_HEIGHT = 100;
+    public static final int MAP_WIDTH = SCREEN_X;
+    public static final int MAP_HEIGHT = SCREEN_Y;
     // 資料刷新時間
     public static final int UPDATE_TIMES_PER_SEC = 60;// 每秒更新60次遊戲邏輯
     public static final int MILLISEC_PER_UPDATE = 1000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數
@@ -76,6 +76,9 @@ public class Global {
     //滑鼠當前的座標
     public static int mouseX;
     public static int mouseY;
+    // view 當前座標
+    public static int viewX;
+    public static int viewY;
     //測試用按鍵
     public static int mouseState;
     
