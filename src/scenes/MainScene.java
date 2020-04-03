@@ -115,7 +115,9 @@ public class MainScene extends Scene {
         if (Global.mouseState == 1) {
             boolean create = true;
             if (this.ammo == null) {
-                this.ammo.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+                Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET);
+                this.ammo.add(ammo);
+                this.allObjects.add(ammo);
             } else {
                 for (int i = 0; i < this.ammo.size(); i++) {
                     if (this.ammo.get(i).getIsShootOut() == false) {
@@ -129,7 +131,9 @@ public class MainScene extends Scene {
                     }
                 }
                 if (create) {
-                    this.ammo.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+                    Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET);
+                    this.ammo.add(ammo);
+                    this.allObjects.add(ammo);
                 }
             }
             Global.mouseState++;
@@ -159,10 +163,10 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        this.view.paint(g); // 只有在 view 裡面的要畫出來
-        for (int i = 0; i < this.ammo.size(); i++) {
-            this.ammo.get(i).paint(g);
-        }
+        this.view.paint(g); // 只有出現在 view sawObjects 裡面的要畫出來
+//        for (int i = 0; i < this.ammo.size(); i++) {
+//            this.ammo.get(i).paint(g);
+//        }
 //        for (int i = 0; i < this.ammunition.size(); i++) { // 這部分之後要用加進 view.sawObjects 的方式做
 //            this.ammunition.get(i).paint(g);
 //        }
