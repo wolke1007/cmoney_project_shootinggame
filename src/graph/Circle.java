@@ -106,4 +106,41 @@ public class Circle extends Graph {
         return false;
     }
 
+    @Override
+    public boolean innerCollisionToCollision(Graph target) {
+        if (target instanceof Circle) {
+            Circle tmp = (Circle) target;
+            return innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
+        }
+        return innerCollisionToCollision(target.left(), target.top(), target.right(), target.bottom());
+    }
+
+    @Override
+    public boolean innerCollisionToCollision(Graph a, Graph b) {
+        if (b instanceof Rect) {
+            return a.innerCollisionToCollision(b.left(), b.top(), b.right(), b.bottom());
+        }
+        Circle tmp = (Circle) b;
+        return a.innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
+    }
+
+    @Override
+    public boolean innerCollisionToCollision(float left, float top, float right, float bottom) {
+        if (super.left() <= left || super.right() >= right || super.top() <= top || super.bottom() >= bottom) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean innerCollisionToCollision(float x, float y, float r) {
+        float dx = Math.abs(super.centerX() - x);
+        float dy = Math.abs(super.centerY() - y);
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance + r() >= r) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -104,4 +104,12 @@ public abstract class Graph {
 
     public abstract boolean intersects(float x, float y, float r);
 
+    public abstract boolean innerCollisionToCollision(Graph graph);
+
+    public abstract boolean innerCollisionToCollision(Graph a, Graph b);
+
+    public abstract boolean innerCollisionToCollision(float left, float top, float right, float bottom);
+
+    public abstract boolean innerCollisionToCollision(float x, float y, float r);
+
 }

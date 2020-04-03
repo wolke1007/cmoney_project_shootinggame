@@ -22,9 +22,8 @@ public class Rect extends Graph {
         if (b instanceof Circle) {
             Circle tmp = (Circle) b;
             return a.intersects(tmp.centerX(), tmp.centerY(), tmp.r());
-        } else {
-            return a.intersects(b.left(), b.top(), b.right(), b.bottom());
         }
+        return a.intersects(b.left(), b.top(), b.right(), b.bottom());
     }
 
     @Override
@@ -101,6 +100,50 @@ public class Rect extends Graph {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean innerCollisionToCollision(Graph target) {
+        if (target instanceof Rect) {
+            return innerCollisionToCollision(target.left(), target.top(), target.right(), target.bottom());
+        } else {
+            Circle tmp = (Circle) target;
+            return innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
+        }
+    }
+
+    @Override
+    public boolean innerCollisionToCollision(Graph a, Graph b) {
+        if (b instanceof Circle) {
+            Circle tmp = (Circle) b;
+            return a.innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
+        }
+        return a.innerCollisionToCollision(b.left(), b.top(), b.right(), b.bottom());
+    }
+
+    @Override
+    public boolean innerCollisionToCollision(float left, float top, float right, float bottom) {
+        if (super.left() <= left || super.right() >= right || super.top() <= top || super.bottom() >= bottom) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean innerCollisionToCollision(float x, float y, float r) {
+        float dx = Math.abs(super.right() - x);
+        if (Math.abs(super.left() - x) > Math.abs(super.right() - x)) {
+            dx = Math.abs(super.left() - x);
+        }
+        float dy = Math.abs(super.bottom() - y);
+        if (Math.abs(super.top() - y) > Math.abs(super.bottom() - y)) {
+            dy = Math.abs(super.top() - y);
+        }
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance > r) {
+            return true;
+        }
+        return false;
     }
 
 }
