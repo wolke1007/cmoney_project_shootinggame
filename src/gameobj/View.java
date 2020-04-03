@@ -18,9 +18,6 @@ import util.Point;
  */
 public class View extends GameObject {
 
-    private int dir;
-    private boolean isStand;
-
     private Delay moveDelay;
 
     private float moveSpeed; // per frame
@@ -41,7 +38,6 @@ public class View extends GameObject {
         Global.log("rec x" + super.x + " ,y" + super.y + " ,width:" + width + " ,height:" + height);
         this.width = width;
         this.height = height;
-        this.isStand = true;
         setViewMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
         sawObjects = new LinkedList<GameObject>();
@@ -81,11 +77,9 @@ public class View extends GameObject {
 
     @Override
     public void setDir(int dir) {
-        this.dir = dir;
     }
 
     public void setStand(boolean isStand) {
-        this.isStand = isStand;
     }
 
     private void setViewMoveSpeedDetail(float moveSpeed) {
