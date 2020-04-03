@@ -17,19 +17,11 @@ import util.Move;
  */
 public class Maps extends GameObject {
     private ArrayList<Map> maps;
-    private Move movement;
-//    private Delay moveDelay;
-    private boolean isStand;
-    private int dir;
-//    private int moveSpeed = 60; // per frame
+
     
     public Maps(float x, float y, int width, int height, int colliderWidth, int colliderHeight){
         super("rect", x, y, width, height, colliderWidth, colliderHeight);
         this.maps = new ArrayList<Map>();
-        this.isStand = true;
-        movement = new Move(this);
-//        this.moveDelay = new Delay(60 - this.moveSpeed);
-//        this.moveDelay.start();
     }
     
     public void add(Map map){
@@ -48,11 +40,8 @@ public class Maps extends GameObject {
         return this.maps;
     }
     
+    @Override
     public void update(){
-        move();
-        for(int i = 0; i < this.maps.size(); i++){
-            this.maps.get(i).update();
-        }
         if(this.maps.get(0).getX() - this.maps.get(1).getX() != -Global.MAP_WIDTH){
                 Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(0).getX() - this.maps.get(1).getX()));
         }
@@ -60,52 +49,17 @@ public class Maps extends GameObject {
                 Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(1).getX() - this.maps.get(2).getX()));
         }
     }
-
-    public void setStand(boolean status){
-        this.isStand = status;
-        for(int i = 0; i < this.maps.size(); i++){
-            this.maps.get(i).setStand(status);
-        }
-    }
     
+    @Override
     public void setDir(int dir){
-        this.dir = dir;
-        for(int i = 0; i < this.maps.size(); i++){
-            this.maps.get(i).setDir(dir);
-        }
-    }
-    
-    public void setMovementPressedStatus(int dir, boolean status){
-        this.movement.setPressedStatus(dir, status);
-        for(int i = 0; i < this.maps.size(); i++){
-            this.maps.get(i).setMovementPressedStatus(dir, status);
-        }
-    }
-    
-    public void move(){
-        // 移動大地圖，然後讓所有小地圖一起動
-        this.movement.mapMoving();
-        for(int i = 0; i < this.maps.size(); i++){
-            this.maps.get(i).move();
-        }
     }
 
+    @Override
     public void paint(Graphics g){
-        // 這邊考慮拔掉，而統一用 view 的 paint 來決定畫誰
-//        for(int i = 0; i < this.maps.size(); i++){
-//            if(this.maps.get(0).getX() - this.maps.get(1).getX() != -Global.MAP_WIDTH){
-//                Global.log("========= IDE BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(0).getX() - this.maps.get(1).getX()));
-//            }
-//            if(this.maps.get(1).getX() - this.maps.get(2).getX() != -Global.MAP_WIDTH){
-//                Global.log("========= IDE BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(1).getX() - this.maps.get(2).getX()));
-//            }
-//            this.maps.get(i).paint(g);
-//        }
     }
 
     @Override
     public void paintComponent(Graphics g) {
-//        paint(g);
     }
     
 }

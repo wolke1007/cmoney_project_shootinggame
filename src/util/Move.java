@@ -29,41 +29,6 @@ public class Move {
         this.obj = obj;
     }
 
-    //TODO 這部分應該刪除，map 不應該移動
-    public void mapMoving() {
-        int dir = movingDir();
-        int speed = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
-        switch (dir) {
-            case Global.DOWN: // map go up
-                this.obj.offset(0, -speed);
-                break;
-            case Global.UP: //  map go down
-                this.obj.offset(0, speed);
-                break;
-            case Global.RIGHT: // map  go left
-                this.obj.offset(-speed, 0);
-                break;
-            case Global.LEFT: // map  go right
-                this.obj.offset(speed, 0);
-                break;
-            case Global.DOWN_RIGHT: //  map go up-left
-                this.obj.offset(-speed, -speed);
-                break;
-            case Global.DOWN_LEFT: //  map go up-right
-                Global.log("dir is UP_RIGHT:" + Global.UP_RIGHT);
-                this.obj.offset(speed, -speed);
-                break;
-            case Global.UP_RIGHT: //  map go down-left
-                Global.log("dir is DOWN_LEFT:" + Global.DOWN_LEFT);
-                this.obj.offset(-speed, speed);
-                break;
-            case Global.UP_LEFT: //  map go down-right
-                Global.log("dir is DOWN_RIGHT:" + Global.DOWN_RIGHT);
-                this.obj.offset(speed, speed);
-                break;
-        }
-    }
-
     public void moving(int distance) {
         int dir = movingDir();
 //        int distance = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢

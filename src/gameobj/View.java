@@ -88,11 +88,6 @@ public class View extends GameObject {
         this.isStand = isStand;
     }
 
-    @Override
-    public void setMovementPressedStatus(int dir, boolean status) {
-        this.movement().setPressedStatus(dir, status);
-    }
-
     private void setViewMoveSpeedDetail(int moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;

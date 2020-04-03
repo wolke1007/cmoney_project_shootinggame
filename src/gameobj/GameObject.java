@@ -171,9 +171,6 @@ public abstract class GameObject {
 
     public abstract void setDir(int dir);
 
-    public abstract void setMovementPressedStatus(int dir, boolean status);
-
     public abstract void paintComponent(Graphics g);
-    
-    public abstract void setStand(boolean isStand);    
+
 }

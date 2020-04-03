@@ -61,6 +61,7 @@ public class Actor extends GameObject {
             this.renderer.setGoalCenterY(Global.mouseY);
         }
     }
+
     public float centerX() {
         return super.getCenterX();
     }
@@ -120,7 +121,6 @@ public class Actor extends GameObject {
         this.dir = dir;
     }
 
-    @Override
     public void setMovementPressedStatus(int dir, boolean status) {
         this.movement.setPressedStatus(dir, status);
     }

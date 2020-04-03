@@ -34,6 +34,10 @@ public class RendererToRotate {
     private Angle angle;
 
     public RendererToRotate(String[] path, float imgX, float imgY, float goalCenterX, float goalCenterY) {
+        imgX = imgX - Global.viewX + 100;
+        imgY = imgY - Global.viewY + 100;
+        goalCenterX = goalCenterX - Global.viewX;
+        goalCenterY = goalCenterY - Global.viewY;
         this.img = new ArrayList<>();
         try {
             for (int i = 0; i < path.length; i++) {
@@ -114,6 +118,7 @@ public class RendererToRotate {
         Graphics2D g2d = (Graphics2D) g;
         AffineTransform oldXForm = g2d.getTransform();
         g2d.rotate(Math.toRadians(this.angle.getAngle()), getImgCenterX(), getImgCenterY());
+//        g2d.drawImage(this.img.get(getState()), (int) getImgX(), (int) getImgY(), this.img.get(getState()).getWidth(), this.img.get(getState()).getHeight(), null);
         g2d.drawImage(this.img.get(getState()), (int) getImgX(), (int) getImgY(), this.img.get(getState()).getWidth(), this.img.get(getState()).getHeight(), null);
         g2d.setTransform(oldXForm);
     }
