@@ -20,6 +20,7 @@ import util.Global;
 import util.CommandSolver;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  *
@@ -34,25 +35,22 @@ public class MainScene extends Scene {
     Map mapRightUp;
     Map mapLeftDown;
     Map mapRightDown;
-    Map[] viewMaps;
     Delay delay;
     Delay changeSceneDelay;
     int mapLength;
     Maps maps;
-    Map[][] allMaps;
     View view;
     boolean actorEdgeTouched;
     boolean viewEdgeTouched;
+    LinkedList<GameObject> allObjects;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
-        this.viewMaps = new Map[6]; // 預計一個畫面最多看見 4 張地圖
         this.mapLength = (int) Math.sqrt(Global.MAP_QTY); // 全地圖的地圖邊長為總數開根號
         this.maps = new Maps(0f, 0f, this.mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT);
         Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
         Global.log("debug map_h:" + Global.MAP_HEIGHT); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
-//        Global.log("this.mapLength: " + this.mapLength);
-//        this.allMaps = new Map[this.mapLength][this.mapLength];
+        this.allObjects = new LinkedList<GameObject>();
     }
 
     private void settingMaps(int width, int height) {
@@ -67,42 +65,39 @@ public class MainScene extends Scene {
                     int whichMap = x;
                     switch (whichMap) {
                         case 0:
-                            maps.add(new Map(Global.BACKGROUND_1, (float) map_x * y, (float) map_y * x, width, height));
+                            this.maps.add(new Map(Global.BACKGROUND_1, (float) map_x * y, (float) map_y * x, width, height));
                             break;
                         case 1:
-                            maps.add(new Map(Global.BACKGROUND_2, (float) map_x * y, (float) map_y * x, width, height));
+                            this.maps.add(new Map(Global.BACKGROUND_2, (float) map_x * y, (float) map_y * x, width, height));
                             break;
                         case 2:
-                            maps.add(new Map(Global.BACKGROUND_3, (float) map_x * y, (float) map_y * x, width, height));
+                            this.maps.add(new Map(Global.BACKGROUND_3, (float) map_x * y, (float) map_y * x, width, height));
                             break;
                     }
                 }
             }
-            //  設定每張地圖的鄰居地圖是誰 //TODO exception here
+//            //  設定每張地圖的鄰居地圖是誰 //TODO delete
             for (int i = 0; i < this.maps.getMaps().size(); i++) {
                 Global.log("" + i);
-                maps.get(i).setUpMap(maps.get(i - this.mapLength));
-                maps.get(i).setDownMap(maps.get(i + this.mapLength));
-                maps.get(i).setLeftMap(maps.get(i - 1));
-                maps.get(i).setRightMap(maps.get(i + 1));
+                this.allObjects.add(this.maps.get(i));
             }
             // 設定當前要 paint 出來的四張地圖，目前預設視窗最多會出現就 4 張地圖
             // 預設為設定左上這張地圖，並將玩家設定至此地圖
-            this.mapLeftUp = this.maps.get(0);
-            this.mapRightUp = this.mapLeftUp.getRightMap();
-            this.mapLeftDown = this.mapLeftUp.getDownMap();
-            this.mapRightDown = this.mapLeftDown.getRightMap();
+//            this.mapLeftUp = this.maps.get(0);
+//            this.mapRightUp = this.mapLeftUp.getRightMap();
+//            this.mapLeftDown = this.mapLeftUp.getDownMap();
+//            this.mapRightDown = this.mapLeftDown.getRightMap();
 //            this.viewMaps[0] = this.mapLeftUp;
 //            this.viewMaps[1] = this.mapRightUp;
 //            this.viewMaps[2] = this.mapLeftDown;
 //            this.viewMaps[3] = this.mapRightDown;
 //            this.viewMaps[4] = this.mapRightUp.getRightMap(); // DEBUG
 //            this.viewMaps[5] = this.mapRightDown.getRightMap(); // DEBUG
-            Global.mapEdgeUp = (int) (this.maps.get(0).getGraph().top());
-            Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().bottom());
-            Global.mapEdgeLeft = (int) (this.maps.get(0).getGraph().left());
-            Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
-            Global.log("DEBUG2 maps.get(0).getGraph().top():" + maps.get(0).getGraph().top());
+//            Global.mapEdgeUp = (int) (this.maps.get(0).getGraph().top());
+//            Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().bottom());
+//            Global.mapEdgeLeft = (int) (this.maps.get(0).getGraph().left());
+//            Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
+//            Global.log("DEBUG2 maps.get(0).getGraph().top():" + this.maps.get(0).getGraph().top());
 //            Global.log(""+Global.mapEdgeUp);
 //            Global.log(""+Global.mapEdgeDown);
 //            Global.log(""+Global.mapEdgeLeft);
@@ -121,16 +116,11 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        this.ammunition = new ArrayList();
-        this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1, this.viewMaps);
-        this.view = new View(this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
-                this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
-                60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT);
+//        this.ammunition = new ArrayList();
+        this.actor = new Actor("rect", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1);
+        this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
-        this.delay = new Delay(1);
-        this.delay.start();
-//        changeSceneDelay = new Delay(180);
-//        changeSceneDelay.start();
+        this.allObjects.add(this.actor);
     }
 
     private void allMapsUpdate() {
@@ -143,19 +133,26 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneUpdate() {
-//        Global.log("actor x: " + actor.getX());
-//        Global.log("actor y: " + actor.getY());
-//        Global.log("maps x: " + maps.getX());
-//        Global.log("maps y: " + maps.getY());
-        this.actor.update();
         this.view.update();
+        for(int i = 0; i < this.allObjects.size(); i++){
+            this.allObjects.get(i).update();
+            if(this.view.isCollision(this.allObjects.get(i))){
+                if (!(this.view.stillSeeing(this.allObjects.get(i)))){
+                    this.view.saw(this.allObjects.get(i));
+                }
+            }else{
+                this.view.removeSeen(this.allObjects.get(i));
+            }
+        }
         allMapsUpdate();
-        if (Global.mouseState == 1) {
-            this.ammunition.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
-        }
-        for (int i = 0; i < this.ammunition.size(); i++) {
-            this.ammunition.get(i).update();
-        }
+        Global.log("allObjects.size(): " + this.allObjects.size());
+        Global.log("this.view.getSaw().size(): " + this.view.getSaw().size());
+//        if (Global.mouseState == 1) {
+//            this.ammunition.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+//        }
+//        for (int i = 0; i < this.ammunition.size(); i++) {
+//            this.ammunition.get(i).update();
+//        }
     }
 
     @Override
@@ -165,12 +162,10 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        this.maps.paint(g);
-        this.actor.paint(g);
-        this.view.paint(g);
-        for (int i = 0; i < this.ammunition.size(); i++) {
-            this.ammunition.get(i).paint(g);
-        }
+        this.view.paint(g); // 只有在 view 裡面的要畫出來
+//        for (int i = 0; i < this.ammunition.size(); i++) { // 這部分之後要用加進 view.sawObjects 的方式做
+//            this.ammunition.get(i).paint(g);
+//        }
     }
 
     @Override
@@ -200,24 +195,6 @@ public class MainScene extends Scene {
             obj.setDir(dir);
             obj.setMovementPressedStatus(dir, status);
         }
-
-//        private void viewMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
-//            view.setStand(true);
-//            switch (commandCode) {
-//                case Global.UP:
-//                    setDirAndPressedStatus(view, Global.UP, true);
-//                    break;
-//                case Global.DOWN:
-//                    setDirAndPressedStatus(view, Global.DOWN, true);
-//                    break;
-//                case Global.LEFT:
-//                    setDirAndPressedStatus(view, Global.LEFT, true);
-//                    break;
-//                case Global.RIGHT:
-//                    setDirAndPressedStatus(view, Global.RIGHT, true);
-//                    break;
-//            }
-//        } // 當角色的視野沒碰到牆壁時移動邏輯
         
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
@@ -262,9 +239,9 @@ public class MainScene extends Scene {
             switch (commandCode) {
                 case Global.UP:
                     if (!(view.getCollider().top() < Global.mapEdgeUp)) {
-                        if(actor.getCenterY() > view.getCenterY()){
+                        if (actor.getCenterY() > view.getCenterY()) {
                             setDirAndPressedStatus(actor, Global.UP, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.UP, true);
                         }
@@ -279,9 +256,9 @@ public class MainScene extends Scene {
                     break;
                 case Global.DOWN:
                     if (!(view.getCollider().bottom() > Global.mapEdgeDown)) {
-                        if(actor.getCenterY() < view.getCenterY()){
+                        if (actor.getCenterY() < view.getCenterY()) {
                             setDirAndPressedStatus(actor, Global.DOWN, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.DOWN, true);
                         }
@@ -296,9 +273,9 @@ public class MainScene extends Scene {
                     break;
                 case Global.LEFT:
                     if (!(view.getCollider().left() < Global.mapEdgeLeft)) {
-                        if(actor.getCenterX() > view.getCenterX()){
+                        if (actor.getCenterX() > view.getCenterX()) {
                             setDirAndPressedStatus(actor, Global.LEFT, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.LEFT, true);
                         }
@@ -313,9 +290,9 @@ public class MainScene extends Scene {
                     break;
                 case Global.RIGHT:
                     if (!(view.getCollider().right() > Global.mapEdgeRight)) {
-                        if(actor.getCenterX() < view.getCenterX()){
+                        if (actor.getCenterX() < view.getCenterX()) {
                             setDirAndPressedStatus(actor, Global.RIGHT, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.RIGHT, true);
                         }
@@ -348,7 +325,7 @@ public class MainScene extends Scene {
                     break;
             }
         }
-        
+
         private void stopRule(int commandCode) {
             actor.setStand(true);
             view.setStand(true);
