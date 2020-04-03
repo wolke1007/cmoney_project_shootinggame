@@ -88,7 +88,7 @@ public class MainScene extends Scene {
     @Override
     public void sceneBegin() {
 //        this.ammunition = new ArrayList();
-        this.actor = new Actor("rect", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1);
+        this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
         this.allObjects.add(this.actor);
