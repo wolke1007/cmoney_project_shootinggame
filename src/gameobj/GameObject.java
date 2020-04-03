@@ -29,11 +29,11 @@ public abstract class GameObject {
         switch (colliderType) {
             case "circle":
                 this.graph = new Circle(x, y, x + width, y + height, width / 2f);
-                this.collider = new Circle(x, y, x + width, y + height, width / 2f);
+                this.collider = new Circle(x, y, x + colliderWidth, y + colliderHeight, colliderWidth / 2f);
                 break;
             case "rect":
                 this.graph = new Rect(x, y, x + width, y + height);
-                this.collider = new Rect(x, y, x + width, y + height);
+                this.collider = new Rect(x, y, x + colliderWidth, y + colliderHeight);
                 break;
         }
         setX(x);
