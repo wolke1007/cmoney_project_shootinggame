@@ -33,6 +33,7 @@ public class Ammo extends GameObject {
 
     public Ammo(String colliderType, float x, float y, int moveSpeed, String[] path) {
         super(colliderType, x, y, Global.UNIT_X / 2, Global.UNIT_Y / 2, Global.UNIT_X / 2, Global.UNIT_Y / 2);
+        System.out.println(super.getX());
         this.renderer = new RendererToRotate(path, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         setMoveSpeedDetail(moveSpeed);//初始化移動應為最大值，暫時不該限制delay
         this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mouseX, Global.mouseY, 50, true);//30為子彈的移動距離值
@@ -44,6 +45,7 @@ public class Ammo extends GameObject {
     //圖片資料
     @Override
     public void setX(float x) {
+//        float newX = x - Global.viewX;
         super.setX(x);
         if (this.renderer != null) {
             this.renderer.setX(x);
@@ -52,6 +54,7 @@ public class Ammo extends GameObject {
 
     @Override
     public void setY(float y) {
+//        float newY = y - Global.viewY;
         super.setY(y);
         if (this.renderer != null) {
             this.renderer.setY(y);
@@ -146,7 +149,6 @@ public class Ammo extends GameObject {
     }
 
     //再一次 開始 設定end
-
     @Override
     public void offset(float dx, float dy) {
         super.offset(dx, dy);
