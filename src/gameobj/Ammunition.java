@@ -15,27 +15,28 @@ import util.Global;
  *
  * @author F-NB
  */
-public class Ammo extends GameObject {
+public class Ammunition extends GameObject {
 
     private RendererToRotate renderer;//旋轉方向設定
     private boolean isShootOut;//是否射擊的狀態 Origine true 創建時就是要射出
     private boolean isPaint;//是否畫出 Origine true 創建時就要射出
 
-    //子彈移動控制
     private Delay moveDelay;
     private float moveSpeed;
     private float actMoveSpeed;
-    //子彈移動控制end
 
-    //移動分段
     private AverageSpeed averageSpeed;
-    //移動分段end
 
-    public Ammo(String colliderType, float x, float y, int moveSpeed, String[] path) {
+    private float width;
+    private float height;
+
+    public Ammunition(String colliderType, float x, float y, int moveSpeed, String[] path) {
         super(colliderType, x, y, Global.UNIT_X / 2, Global.UNIT_Y / 2, Global.UNIT_X / 2, Global.UNIT_Y / 2);
+        setWidth(Global.UNIT_X / 2);
+        setHeight(Global.UNIT_Y / 2);
         this.renderer = new RendererToRotate(path, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         setMoveSpeedDetail(moveSpeed);//初始化移動應為最大值，暫時不該限制delay
-        this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mouseX, Global.mouseY, 50, true);//30為子彈的移動距離值
+        setAerageSpeed(super.getCenterX(), super.getCenterY(), Global.mouseX, Global.mouseY, 30, true);//先切割30等分的距離值
         setIsShootOut(true);
         setIsPaint(true);
 //        System.out.println("Ammunition");
@@ -45,23 +46,19 @@ public class Ammo extends GameObject {
     @Override
     public void setX(float x) {
         super.setX(x);
-        if (this.renderer != null) {
-            this.renderer.setX(x);
-        }
     }
 
     @Override
     public void setY(float y) {
         super.setY(y);
-        if (this.renderer != null) {
-            this.renderer.setY(y);
-        }
     }
 
-    @Override
-    public void setXY(float x, float y) {
-        setX(x);
-        setY(y);
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
     //圖片資料end
 
@@ -111,20 +108,27 @@ public class Ammo extends GameObject {
     }
     //delay控制end
 
+    //設定物體移動距離
+    private void setAerageSpeed(float centerX, float centerY, float goalCenterX, float goalCenterY, float moveSpeed, boolean isFixedLength) {
+        this.averageSpeed = new AverageSpeed(centerX, centerY, goalCenterX, goalCenterY, moveSpeed, isFixedLength);
+    }
+    //設定物體移動距離end
+
     //再一次 開始 設定
     public boolean setNewStart(float centerX, float centerY) {
         if (getIsShootOut()) {
             setAerageSpeed(centerX, centerY);
             float x = centerX - super.width() / 2;
             float y = centerY - super.height() / 2;
-            setXY(x, y);
+            setRenderer(x, y);
+            super.setXY(x, y);
             return true;
         }
         return false;
     }
 
     private boolean setAerageSpeed(float centerX, float centerY) {
-        if (getIsShootOut() && getIsPaint()) {
+        if (getIsShootOut()) {
             this.averageSpeed.setCenterX(centerX);//被給予Actor的centerX
             this.averageSpeed.setCenterY(centerY);//被給予Actor的centerY
             this.averageSpeed.setGoalCenterX(Global.mouseX);//直接拿目標的x
@@ -144,20 +148,23 @@ public class Ammo extends GameObject {
         }
         return false;
     }
-
     //再一次 開始 設定end
 
-    @Override
-    public void offset(float dx, float dy) {
-        super.offset(dx, dy);
-        this.renderer.offset(dx, dy);
+    //物體資料
+    public float centerX() {
+        return super.getCenterX();
     }
+
+    public float centerY() {
+        return super.getCenterY();
+    }
+
+    //物體資料end
 
     @Override
     public void update() {
         if (getIsShootOut() || getIsPaint()) {//如果是 射擊出去的狀態 或 可以被畫出的狀態 就移動
-            this.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
-//            super.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
+            super.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
             this.renderer.update();
         }
     }
@@ -174,23 +181,15 @@ public class Ammo extends GameObject {
     public void setDir(int dir) {
     }//方向用不到
 
-//    @Override
-//    public void setMovementPressedStatus(int dir, boolean status) {
-//    }//八方向用不到
-//
-//    @Override
-//    public void setStand(boolean isStand) {
-//    }
-}
     //屬性
 //    private boolean isCoolState;//是否為冷卻狀態 Origine false
 //    private boolean isChangeImage;//是否換特效 Origine false
-//屬性end
-//建構子內
+    //屬性end
+    //建構子內
 //        setIsCoolState(false);
 //        setIsChangeImage(false);
-//建構子內end
-//funtion
+    //建構子內end
+    //funtion
 //    public void setIsCoolState(boolean isCoolState) {
 //        this.isCoolState = isCoolState;
 //    }
@@ -205,5 +204,6 @@ public class Ammo extends GameObject {
 //    public boolean getIsChangeImage() {
 //        return this.isChangeImage;
 //    }
-//funtion end
+    //funtion end
 
+}

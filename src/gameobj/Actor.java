@@ -30,18 +30,17 @@ public class Actor extends GameObject {
     private float actMoveSpeed;
 
     private Move movement;
-    private Map[] currentViewMap;
-    
+
     private int moveDistance;
 
-    public Actor(String colliderType, float x, float y, int moveSpeed, String[] path, Map[] currentViewMap) {//src => Global.ACTOR
+    public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
-        this.currentViewMap = currentViewMap;
         this.renderer = new RendererToRotate(path, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
         this.moveDistance = 10;
+        super.paintPriority = 0;
     }//多載 建構子 當前版本
 
     //位置資訊
@@ -66,11 +65,12 @@ public class Actor extends GameObject {
     public float centerX() {
         return super.getCenterX();
     }
-    
-    private void setMoveDistance(int moveDistance){
+
+    private void setMoveDistance(int moveDistance) {
         this.moveDistance = moveDistance;
     }
-    private int getMoveDistance(){
+
+    private int getMoveDistance() {
         return this.moveDistance;
     }
 
@@ -121,7 +121,6 @@ public class Actor extends GameObject {
         this.dir = dir;
     }
 
-    @Override
     public void setMovementPressedStatus(int dir, boolean status) {
         this.movement.setPressedStatus(dir, status);
     }
@@ -144,6 +143,8 @@ public class Actor extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
+        g.drawLine(-10000, (int) this.getCollider().centerY() - Global.viewY, 10000, (int) this.getCollider().centerY() - Global.viewY);
+        g.drawLine((int) this.getCollider().centerX() - Global.viewX, -10000, (int) this.getCollider().centerX() - Global.viewX, 10000);
         this.renderer.paint(g);
     }
 
