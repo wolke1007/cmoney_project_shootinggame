@@ -46,18 +46,20 @@ public class Actor extends GameObject {
     //位置資訊
     @Override
     public void setX(float x) {
+        float newX = x - Global.viewX;
         super.setX(x);
         if (this.renderer != null) {
-            this.renderer.setX(x);
+            this.renderer.setX(newX);
             this.renderer.setGoalCenterX(Global.mouseX);
         }
     }
 
     @Override
     public void setY(float y) {
+        float newY = y -Global.viewY;
         super.setY(y);
         if (this.renderer != null) {
-            this.renderer.setY(y);
+            this.renderer.setY(newY);
             this.renderer.setGoalCenterY(Global.mouseY);
         }
     }

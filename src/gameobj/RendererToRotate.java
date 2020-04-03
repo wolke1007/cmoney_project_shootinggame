@@ -57,43 +57,55 @@ public class RendererToRotate {
     public void setX(float imgX) {
         this.imgX = imgX;
     }
+
     public void setY(float imgY) {
         this.imgY = imgY;
     }
+
     public void setGoalCenterX(float goalCenterX) {
         this.goalCenterX = goalCenterX;
     }
+
     public void setGoalCenterY(float goalCenterY) {
         this.goalCenterY = goalCenterY;
     }
+
     public void offset(float dx, float dy) {
         setX(getImgX() + dx);
         setY(getImgY() + dy);
         setGoalCenterX(getGoalCenterX() + dx);
         setGoalCenterY(getGoalCenterY() + dy);
     }
+
     public void setState(int state) {
         this.state = state;
 //        this.rotate.setImg(this.img.get(state)); //不需要再藉由ratate畫圖，rederer本身自己畫
     }
+
     public float getImgX() {
         return this.imgX;
     }
+
     public float getImgY() {
         return this.imgY;
     }
+
     public float getImgCenterX() {
         return getImgX() + this.img.get(getState()).getWidth() / 2f;
     }
+
     public float getImgCenterY() {
         return getImgY() + this.img.get(getState()).getHeight() / 2f;
     }
+
     public float getGoalCenterX() {
         return this.goalCenterX;
     }
+
     public float getGoalCenterY() {
         return this.goalCenterY;
     }
+
     public int getState() {
         return this.state;
     }

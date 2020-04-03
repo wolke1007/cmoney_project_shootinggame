@@ -138,10 +138,10 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
+        this.view.paint(g); // 只有在 view 裡面的要畫出來
         for (int i = 0; i < this.ammo.size(); i++) {
             this.ammo.get(i).paint(g);
         }
-        this.view.paint(g); // 只有在 view 裡面的要畫出來
 //        for (int i = 0; i < this.ammunition.size(); i++) { // 這部分之後要用加進 view.sawObjects 的方式做
 //            this.ammunition.get(i).paint(g);
 //        }
