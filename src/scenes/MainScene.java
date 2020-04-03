@@ -28,7 +28,7 @@ import java.util.ArrayList;
 public class MainScene extends Scene {
 
     Actor actor;
-    private ArrayList<Ammo> ammunition;
+    private ArrayList<Ammo> ammo;
 //    TestObj testobj;
     Map mapLeftUp;
     Map mapRightUp;
@@ -121,7 +121,7 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        this.ammunition = new ArrayList();
+        this.ammo = new ArrayList();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1, this.viewMaps);
         this.view = new View(this.actor.getX() - (Global.VIEW_WIDTH / 2 - Global.UNIT_X / 2),
                 this.actor.getY() + (Global.UNIT_Y / 2) - (Global.VIEW_HEIGHT / 2),
@@ -151,10 +151,11 @@ public class MainScene extends Scene {
         this.view.update();
         allMapsUpdate();
         if (Global.mouseState == 1) {
-            this.ammunition.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+            this.ammo.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+            Global.mouseState++;
         }
-        for (int i = 0; i < this.ammunition.size(); i++) {
-            this.ammunition.get(i).update();
+        for (int i = 0; i < this.ammo.size(); i++) {
+            this.ammo.get(i).update();
         }
     }
 
@@ -168,8 +169,8 @@ public class MainScene extends Scene {
         this.maps.paint(g);
         this.actor.paint(g);
         this.view.paint(g);
-        for (int i = 0; i < this.ammunition.size(); i++) {
-            this.ammunition.get(i).paint(g);
+        for (int i = 0; i < this.ammo.size(); i++) {
+            this.ammo.get(i).paint(g);
         }
     }
 
@@ -218,7 +219,6 @@ public class MainScene extends Scene {
 //                    break;
 //            }
 //        } // 當角色的視野沒碰到牆壁時移動邏輯
-        
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
             switch (commandCode) {
@@ -262,9 +262,9 @@ public class MainScene extends Scene {
             switch (commandCode) {
                 case Global.UP:
                     if (!(view.getCollider().top() < Global.mapEdgeUp)) {
-                        if(actor.getCenterY() > view.getCenterY()){
+                        if (actor.getCenterY() > view.getCenterY()) {
                             setDirAndPressedStatus(actor, Global.UP, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.UP, true);
                         }
@@ -279,9 +279,9 @@ public class MainScene extends Scene {
                     break;
                 case Global.DOWN:
                     if (!(view.getCollider().bottom() > Global.mapEdgeDown)) {
-                        if(actor.getCenterY() < view.getCenterY()){
+                        if (actor.getCenterY() < view.getCenterY()) {
                             setDirAndPressedStatus(actor, Global.DOWN, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.DOWN, true);
                         }
@@ -296,9 +296,9 @@ public class MainScene extends Scene {
                     break;
                 case Global.LEFT:
                     if (!(view.getCollider().left() < Global.mapEdgeLeft)) {
-                        if(actor.getCenterX() > view.getCenterX()){
+                        if (actor.getCenterX() > view.getCenterX()) {
                             setDirAndPressedStatus(actor, Global.LEFT, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.LEFT, true);
                         }
@@ -313,9 +313,9 @@ public class MainScene extends Scene {
                     break;
                 case Global.RIGHT:
                     if (!(view.getCollider().right() > Global.mapEdgeRight)) {
-                        if(actor.getCenterX() < view.getCenterX()){
+                        if (actor.getCenterX() < view.getCenterX()) {
                             setDirAndPressedStatus(actor, Global.RIGHT, true);
-                        }else{
+                        } else {
                             stopRule(commandCode, actor);
                             setDirAndPressedStatus(maps, Global.RIGHT, true);
                         }
@@ -348,7 +348,7 @@ public class MainScene extends Scene {
                     break;
             }
         }
-        
+
         private void stopRule(int commandCode) {
             actor.setStand(true);
             view.setStand(true);
@@ -388,6 +388,14 @@ public class MainScene extends Scene {
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
 //            System.out.println("mouse state:" + state);
+//            
+            if (state == CommandSolver.MouseState.PRESSED) {
+                Global.mouseState = 1;
+//                System.out.println(Global.mouseState);
+            } else if (state == CommandSolver.MouseState.CLICKED) {
+                Global.mouseState = 0;
+//                System.out.println(Global.mouseState);
+            }
         }
 
     }

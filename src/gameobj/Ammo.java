@@ -35,7 +35,7 @@ public class Ammo extends GameObject {
         super(colliderType, x, y, Global.UNIT_X / 2, Global.UNIT_Y / 2, Global.UNIT_X / 2, Global.UNIT_Y / 2);
         this.renderer = new RendererToRotate(path, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
         setMoveSpeedDetail(moveSpeed);//初始化移動應為最大值，暫時不該限制delay
-        this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mouseX, Global.mouseY, 30, true);//30為子彈的移動距離值
+        this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mouseX, Global.mouseY, 50, true);//30為子彈的移動距離值
         setIsShootOut(true);
         setIsPaint(true);
 //        System.out.println("Ammunition");
@@ -49,6 +49,7 @@ public class Ammo extends GameObject {
             this.renderer.setX(x);
         }
     }
+
     @Override
     public void setY(float y) {
         super.setY(y);
@@ -56,6 +57,7 @@ public class Ammo extends GameObject {
             this.renderer.setY(y);
         }
     }
+
     @Override
     public void setXY(float x, float y) {
         setX(x);
@@ -67,12 +69,15 @@ public class Ammo extends GameObject {
     public void setIsShootOut(boolean isShootOut) {
         this.isShootOut = isShootOut;
     }
+
     public boolean getIsShootOut() {
         return this.isShootOut;
     }
+
     public void setIsPaint(boolean isPaint) {
         this.isPaint = isPaint;
     }
+
     public boolean getIsPaint() {
         return this.isPaint;
     }
@@ -85,6 +90,7 @@ public class Ammo extends GameObject {
         this.moveDelay = new Delay(this.actMoveSpeed);
         this.moveDelay.start();
     }
+
     private float limitRange(float range) {
         if (range < 0) {
             return range = 0;
@@ -93,11 +99,13 @@ public class Ammo extends GameObject {
         }
         return range;
     }
+
     public void setMoveSpeed(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
         this.moveDelay.setDelayFrame(this.actMoveSpeed);
     }
+
     public float getMoveSpeed() {
         return this.moveSpeed;
     }
@@ -109,7 +117,7 @@ public class Ammo extends GameObject {
             setAerageSpeed(centerX, centerY);
             float x = centerX - super.width() / 2;
             float y = centerY - super.height() / 2;
-            setXY(x,y);
+            setXY(x, y);
             return true;
         }
         return false;
@@ -136,22 +144,20 @@ public class Ammo extends GameObject {
         }
         return false;
     }
+
     //再一次 開始 設定end
 
-    //物體資料
-    public float centerX() {
-        return super.getCenterX();
+    @Override
+    public void offset(float dx, float dy) {
+        super.offset(dx, dy);
+        this.renderer.offset(dx, dy);
     }
 
-    public float centerY() {
-        return super.getCenterY();
-    }
-
-    //物體資料end
     @Override
     public void update() {
         if (getIsShootOut() || getIsPaint()) {//如果是 射擊出去的狀態 或 可以被畫出的狀態 就移動
-            super.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
+            this.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
+//            super.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
             this.renderer.update();
         }
     }
@@ -172,15 +178,19 @@ public class Ammo extends GameObject {
     public void setMovementPressedStatus(int dir, boolean status) {
     }//八方向用不到
 
+    @Override
+    public void setStand(boolean isStand) {
+    }
+}
     //屬性
 //    private boolean isCoolState;//是否為冷卻狀態 Origine false
 //    private boolean isChangeImage;//是否換特效 Origine false
-    //屬性end
-    //建構子內
+//屬性end
+//建構子內
 //        setIsCoolState(false);
 //        setIsChangeImage(false);
-    //建構子內end
-    //funtion
+//建構子內end
+//funtion
 //    public void setIsCoolState(boolean isCoolState) {
 //        this.isCoolState = isCoolState;
 //    }
@@ -195,9 +205,5 @@ public class Ammo extends GameObject {
 //    public boolean getIsChangeImage() {
 //        return this.isChangeImage;
 //    }
-    //funtion end
-    @Override
-    public void setStand(boolean isStand) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-}
+//funtion end
+

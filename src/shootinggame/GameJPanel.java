@@ -63,11 +63,11 @@ public class GameJPanel extends javax.swing.JPanel implements KeyListener, Mouse
             sceneController.getML().mouseTrig(e, state, trigTime);
             Global.mouseX = e.getX();
             Global.mouseY = e.getY();
-            if(state == CommandSolver.MouseState.CLICKED){
-                Global.mouseState = 1;
-            }else{
-                Global.mouseState = 0;
-            }
+//            if(state == CommandSolver.MouseState.PRESSED){//state == CommandSolver.MouseState.CLICKED
+//                Global.mouseState = 1;
+//            }else{
+//                Global.mouseState = 0;
+//            }
         }
     }
 }
