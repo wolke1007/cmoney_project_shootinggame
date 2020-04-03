@@ -33,9 +33,8 @@ public class Renderer {
     // 動畫Delay
 //    private Delay delay;
     // 動畫Delay end
-    
     private BufferedImage testImg;
-    
+
     public Renderer(int characterIndex, int[] steps, int delay, String src) {
         try {
             img = ImageIO.read(getClass().getResource(src));
@@ -74,7 +73,6 @@ public class Renderer {
 //        this.delay = new Delay(delay);
 //        this.delay.start();
 //    }
-
     public void setDelay(int delay) {
 //        this.delay.setDelayFrame(delay);
     }
@@ -91,8 +89,11 @@ public class Renderer {
 //        this.delay.start();
     }
 //    private int testAngle = 0;
+
     public void paint(Graphics g, int x, int y, int w, int h) {
-        g.drawImage(img, x - Global.viewX, y - Global.viewY, x + w, y + h,
+        x = x - Global.viewX;
+        y = y - Global.viewY;
+        g.drawImage(img, x, y, x + w, y + h,
                 (Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),
                 (Global.UNIT_Y * dir) + (characterIndex / 4) * (Global.UNIT_Y * 4),
                 (Global.UNIT_X + Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),

@@ -77,7 +77,7 @@ public class MainScene extends Scene {
                 }
             }
             for (int i = 0; i < this.maps.getMaps().size(); i++) {
-                Global.log("" + i);
+                // 所有這個場景有用到 GameObject 都必需放進 allObjects 的 LinkedList 中去做碰撞判斷決定要不要畫出來
                 this.allObjects.add(this.maps.get(i));
             }
         } else {
@@ -116,8 +116,6 @@ public class MainScene extends Scene {
             }
         }
         allMapsUpdate();
-        Global.log("allObjects.size(): " + this.allObjects.size());
-        Global.log("this.view.getSaw().size(): " + this.view.getSaw().size());
 //        if (Global.mouseState == 1) {
 //            this.ammunition.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
 //        }
