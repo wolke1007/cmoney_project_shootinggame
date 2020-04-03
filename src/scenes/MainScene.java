@@ -90,7 +90,7 @@ public class MainScene extends Scene {
         this.ammo = new ArrayList();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
-        settingMaps(Global.MAP_WIDTH,Global.MAP_HEIGHT);
+        settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
         this.allObjects.add(this.actor);
     }
 
@@ -106,30 +106,51 @@ public class MainScene extends Scene {
     public void sceneUpdate() {
         this.view.update();
         allMapsUpdate();
+        //this.ammo測試範圍
+        for (int i = 0; i < this.ammo.size(); i++) {
+            if (this.ammo.get(i).getCenterX() < 50 || this.ammo.get(i).getCenterX() > 500 || this.ammo.get(i).getCenterY() < 50 || this.ammo.get(i).getCenterY() > 500) {
+                        this.ammo.get(i).setIsShootOut(false);
+                        this.ammo.get(i).setIsPaint(false);
+                    }//如果超出範圍設定為假的回收彈夾狀態，且不畫出
+        }
         if (Global.mouseState == 1) {
-            this.ammo.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+            boolean create = true;
+            if (this.ammo == null) {
+                this.ammo.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+            } else {
+                for (int i = 0; i < this.ammo.size(); i++) {
+                    if (this.ammo.get(i).getIsShootOut() == false) {
+                        this.ammo.get(i).setIsShootOut(create);
+                        this.ammo.get(i).setIsPaint(create);
+                        this.ammo.get(i).setNewStart(this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4);
+                        create = false;
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                if (create) {
+                    this.ammo.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
+                }
+            }
             Global.mouseState++;
         }
+        System.out.println(this.ammo.size());
+        //this.ammo測試範圍end
         for (int i = 0; i < this.ammo.size(); i++) {
             this.ammo.get(i).update();
         }
-        for(int i = 0; i < this.allObjects.size(); i++){
+        for (int i = 0; i < this.allObjects.size(); i++) {
             this.allObjects.get(i).update();
-            if(this.view.isCollision(this.allObjects.get(i))){
-                if (!(this.view.stillSeeing(this.allObjects.get(i)))){
+            if (this.view.isCollision(this.allObjects.get(i))) {
+                if (!(this.view.stillSeeing(this.allObjects.get(i)))) {
                     this.view.saw(this.allObjects.get(i));
                 }
-            }else{
+            } else {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
         allMapsUpdate();
-//        if (Global.mouseState == 1) {
-//            this.ammunition.add(new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET));
-//        }
-//        for (int i = 0; i < this.ammunition.size(); i++) {
-//            this.ammunition.get(i).update();
-//        }
     }
 
     @Override
@@ -193,7 +214,6 @@ public class MainScene extends Scene {
 //                    break;
 //            }
 //        } // 當角色的視野沒碰到牆壁時移動邏輯
-        
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
             switch (commandCode) {
@@ -261,13 +281,10 @@ public class MainScene extends Scene {
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
 //            System.out.println("mouse state:" + state);
-//            
             if (state == CommandSolver.MouseState.PRESSED) {
                 Global.mouseState = 1;
-//                System.out.println(Global.mouseState);
-            } else if (state == CommandSolver.MouseState.CLICKED) {
+            } else{// if (state == CommandSolver.MouseState.CLICKED) {
                 Global.mouseState = 0;
-//                System.out.println(Global.mouseState);
             }
         }
 

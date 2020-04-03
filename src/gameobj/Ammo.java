@@ -66,6 +66,7 @@ public class Ammo extends GameObject {
         setX(x);
         setY(y);
     }
+    
     //圖片資料end
 
     //狀態控制
