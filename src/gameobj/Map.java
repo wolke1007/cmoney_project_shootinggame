@@ -6,10 +6,6 @@
 package gameobj;
 
 import java.awt.Graphics;
-import util.Delay;
-import util.Global;
-import util.Move;
-import util.Point;
 
 /**
  *
@@ -35,7 +31,6 @@ public class Map extends GameObject {
 
     @Override
     public void setDir(int dir) {
-//        this.renderer.setDir(dir);
     }
 
     @Override

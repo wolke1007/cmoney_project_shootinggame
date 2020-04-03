@@ -30,7 +30,6 @@ public class MainScene extends Scene {
 
     Actor actor;
     private ArrayList<Ammo> ammo;
-//    TestObj testobj;
     Map mapLeftUp;
     Map mapRightUp;
     Map mapLeftDown;
@@ -139,9 +138,6 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        this.maps.paint(g);
-        this.actor.paint(g);
-        this.view.paint(g);
         for (int i = 0; i < this.ammo.size(); i++) {
             this.ammo.get(i).paint(g);
         }
@@ -178,24 +174,6 @@ public class MainScene extends Scene {
             actor.setDir(dir);
             actor.setMovementPressedStatus(dir, status);
         }
-
-//        private void viewMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
-//            view.setStand(true);
-//            switch (commandCode) {
-//                case Global.UP:
-//                    setDirAndPressedStatus(view, Global.UP, true);
-//                    break;
-//                case Global.DOWN:
-//                    setDirAndPressedStatus(view, Global.DOWN, true);
-//                    break;
-//                case Global.LEFT:
-//                    setDirAndPressedStatus(view, Global.LEFT, true);
-//                    break;
-//                case Global.RIGHT:
-//                    setDirAndPressedStatus(view, Global.RIGHT, true);
-//                    break;
-//            }
-//        } // 當角色的視野沒碰到牆壁時移動邏輯
         
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
