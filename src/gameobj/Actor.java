@@ -8,6 +8,7 @@ package gameobj;
 import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
+import util.Angle;
 import util.Delay;
 import util.Global;
 import util.Move;
@@ -21,6 +22,7 @@ public class Actor extends GameObject {
 
     private int dir;
     private RendererToRotate renderer;
+    private Angle angle;
     private boolean isStand;
     private View view;
 
@@ -35,7 +37,8 @@ public class Actor extends GameObject {
 
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
-        this.renderer = new RendererToRotate(path, super.getX(), super.getY(), Global.mouseX, Global.mouseY);
+        setAngle(super.getCenterX(), super.getCenterY());
+        this.renderer = new RendererToRotate(path, super.getX(), super.getY(), getAngle());
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
@@ -46,21 +49,17 @@ public class Actor extends GameObject {
     //位置資訊
     @Override
     public void setX(float x) {
-        float newX = x - Global.viewX;
         super.setX(x);
         if (this.renderer != null) {
-            this.renderer.setX(newX);
-            this.renderer.setGoalCenterX(Global.mouseX);
+            this.renderer.setX(x);
         }
     }
 
     @Override
     public void setY(float y) {
-        float newY = y -Global.viewY;
         super.setY(y);
         if (this.renderer != null) {
-            this.renderer.setY(newY);
-            this.renderer.setGoalCenterY(Global.mouseY);
+            this.renderer.setY(y);
         }
     }
 
@@ -80,6 +79,23 @@ public class Actor extends GameObject {
         return super.getCenterY();
     }
     //位置資訊end
+
+    //角度計算
+    public void setAngle(float centerX, float centerY) {
+        if (this.angle == null) {
+            this.angle = new Angle(centerX, centerY, Global.mapMouseX, Global.mapMouseY);
+            return;
+        }
+        this.angle.setCenterX(centerX);
+        this.angle.setCenterY(centerY);
+        this.angle.setGoalCenterX(Global.mapMouseX);
+        this.angle.setGoalCenterY(Global.mapMouseY);
+    }
+
+    public double getAngle() {
+        return this.angle.getAngle();
+    }
+    //角度計算end
 
     //角色移動相關資訊
     private void setActorMoveSpeedDetail(float moveSpeed) {
@@ -127,6 +143,13 @@ public class Actor extends GameObject {
         this.movement.setPressedStatus(dir, status);
     }
 
+    public void updateRenderer() {
+        this.setX(super.getX());
+        this.setY(super.getY());
+        this.setAngle(super.getCenterX(), super.getCenterY());
+        this.renderer.setAngle(this.getAngle());
+    }
+
     @Override
     public void update() {
         if (!this.isStand && this.moveDelay.isTrig()) {
@@ -134,9 +157,7 @@ public class Actor extends GameObject {
         }
         // 需要先移動再 RenderToRotate 避免 Actor 的圖片跟不上碰撞框的移動
         // 以下一定要更新
-        this.setX(super.getX());
-        this.setY(super.getY());
-        this.renderer.update();
+        updateRenderer();
     }
 
     private void move() {
