@@ -21,6 +21,7 @@ import util.CommandSolver;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import util.map.MapGenerator;
 
 /**
  *
@@ -89,8 +90,16 @@ public class MainScene extends Scene {
         this.ammo = new ArrayList();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
-        settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
+//        settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
+        MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps, true);
+        addAllMapsToAllObjects();
         this.allObjects.add(this.actor);
+    }
+    
+    private void addAllMapsToAllObjects(){
+        for(int i = 0; i < this.maps.getMaps().size(); i++){
+            this.allObjects.add(this.maps.get(i));
+        }
     }
 
     private void allMapsUpdate() {
@@ -138,7 +147,7 @@ public class MainScene extends Scene {
             }
             Global.mouseState++;
         }
-        System.out.println(this.ammo.size());
+//        System.out.println(this.ammo.size());
         //this.ammo測試範圍end
         for (int i = 0; i < this.ammo.size(); i++) {
             this.ammo.get(i).update();
