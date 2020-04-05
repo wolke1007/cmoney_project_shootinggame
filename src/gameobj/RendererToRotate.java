@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import controllers.ImageResourceController;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
@@ -32,6 +33,7 @@ public class RendererToRotate {
     private float goalCenterX;// OK
     private float goalCenterY;// OK
     private Angle angle;
+    private ImageResourceController irc;
 
     public RendererToRotate(String[] path, float imgX, float imgY, float goalCenterX, float goalCenterY) {
         imgX = imgX - Global.viewX + 100;
@@ -39,11 +41,9 @@ public class RendererToRotate {
         goalCenterX = goalCenterX - Global.viewX;
         goalCenterY = goalCenterY - Global.viewY;
         this.img = new ArrayList<>();
-        try {
-            for (int i = 0; i < path.length; i++) {
-                this.img.add(ImageIO.read(getClass().getResource(path[i])));
-            }
-        } catch (IOException ex) {
+        this.irc = ImageResourceController.getInstance();
+        for (int i = 0; i < path.length; i++) {
+            this.img.add(this.irc.tryGetImage(path[i]));
         }
         setX(imgX);
         setY(imgY);
