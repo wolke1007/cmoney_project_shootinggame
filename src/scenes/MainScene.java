@@ -105,13 +105,9 @@ public class MainScene extends Scene {
     public void sceneUpdate() {
         this.view.update();
         allMapsUpdate();
+        Global.mapMouseX = Global.mouseX + Global.viewX;
+        Global.mapMouseY = Global.mouseY + Global.viewY;
         //this.ammo測試範圍
-        for (int i = 0; i < this.ammo.size(); i++) {
-            if (this.ammo.get(i).getCenterX() < 50 || this.ammo.get(i).getCenterX() > 500 || this.ammo.get(i).getCenterY() < 50 || this.ammo.get(i).getCenterY() > 500) {
-                        this.ammo.get(i).setIsShootOut(false);
-                        this.ammo.get(i).setIsPaint(false);
-                    }//如果超出範圍設定為假的回收彈夾狀態，且不畫出
-        }
         if (Global.mouseState == 1) {
             boolean create = true;
             if (this.ammo == null) {
@@ -122,8 +118,7 @@ public class MainScene extends Scene {
                 for (int i = 0; i < this.ammo.size(); i++) {
                     if (this.ammo.get(i).getIsShootOut() == false) {
                         this.ammo.get(i).setIsShootOut(create);
-                        this.ammo.get(i).setIsPaint(create);
-                        this.ammo.get(i).setNewStart(this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4);
+                        this.ammo.get(i).setNewStart(this.actor.centerX(), this.actor.centerY());
                         create = false;
                         break;
                     } else {
@@ -153,7 +148,7 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-        allMapsUpdate();
+//        allMapsUpdate();
     }
 
     @Override

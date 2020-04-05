@@ -71,7 +71,14 @@ public class AverageSpeed {
     }
 
     private void SlopeValue() {
-        this.slope = new Slope(getCenterX(), getCenterY(), getGoalCenterX(), getGoalCenterY());
+        if (this.slope == null) {
+            this.slope = new Slope(getCenterX(), getCenterY(), getGoalCenterX(), getGoalCenterY());
+            return;
+        }
+        this.slope.setCenterX(getCenterX());
+        this.slope.setCenterY(getCenterY());
+        this.slope.setGoalCenterX(getGoalCenterX());
+        this.slope.setGoalCenterY(getGoalCenterY());
     }
 
     private double getSlope() {
@@ -102,6 +109,7 @@ public class AverageSpeed {
 
     public double offsetDX() {
         if (this.isFixedLength) {
+            SlopeValue();
             double degree = Math.atan(Math.abs(getSlope()));
             double dx = this.length * Math.cos(degree);
             return ((this.getGoalCenterX() > this.getCenterX()) ? 1 : -1) * dx / this.reMoveSpeed;
@@ -111,6 +119,7 @@ public class AverageSpeed {
 
     public double offsetDY() {
         if (this.isFixedLength) {
+            SlopeValue();
             double degree = Math.atan(Math.abs(getSlope()));
             double dy = this.length * Math.sin(degree);
             return ((this.centerY < this.goalCenterY) ? 1 : -1) * dy / this.reMoveSpeed;
