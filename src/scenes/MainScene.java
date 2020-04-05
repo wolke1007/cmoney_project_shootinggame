@@ -32,13 +32,8 @@ public class MainScene extends Scene {
 
     Actor actor;
     private ArrayList<Ammo> ammo;
-    Map mapLeftUp;
-    Map mapRightUp;
-    Map mapLeftDown;
-    Map mapRightDown;
     Delay delay;
     Delay changeSceneDelay;
-    int mapLength;
     Maps maps;
     View view;
     boolean actorEdgeTouched;
@@ -47,80 +42,43 @@ public class MainScene extends Scene {
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
-        this.mapLength = (int) Math.sqrt(Global.MAP_QTY); // 全地圖的地圖邊長為總數開根號
-        this.maps = new Maps(0f, 0f, this.mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, this.mapLength * Global.MAP_HEIGHT);
-        Global.log("debug map_w:" + Global.MAP_WIDTH); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
-        Global.log("debug map_h:" + Global.MAP_HEIGHT); // 這邊不做 debug log 則改動 Global 的數值也沒有辦法改變........ NetBeans 的 bug
         this.allObjects = new LinkedList<GameObject>();
     }
-
-//    private void settingMaps(int width, int height) {
-//        // 這邊希望地圖數能為 3x3 or 4x4 這樣的形式
-//        int map_x = width;
-//        int map_y = height;
-//        if (this.mapLength % 1 == 0 && this.mapLength >= 3) {
-//            Global.log("地圖數量: " + this.mapLength + "x" + this.mapLength);
-//            // 不同位置的地圖使用不同的圖片，之後需做成從地圖池中取隨機 pattern 來用
-//            for (int x = 0; x < this.mapLength; x++) {
-//                for (int y = 0; y < this.mapLength; y++) {
-//                    int whichMap = x;
-//                    switch (whichMap) {
-//                        case 0:
-//                            this.maps.add(new Map(Global.BACKGROUND_1, (float) map_x * y, (float) map_y * x, width, height));
-//                            break;
-//                        case 1:
-//                            this.maps.add(new Map(Global.BACKGROUND_2, (float) map_x * y, (float) map_y * x, width, height));
-//                            break;
-//                        case 2:
-//                            this.maps.add(new Map(Global.BACKGROUND_3, (float) map_x * y, (float) map_y * x, width, height));
-//                            break;
-//                    }
-//                }
-//            }
-//            for (int i = 0; i < this.maps.getMaps().size(); i++) {
-//                // 所有這個場景有用到 GameObject 都必需放進 allObjects 的 LinkedList 中去做碰撞判斷決定要不要畫出來
-//                this.allObjects.add(this.maps.get(i));
-//            }
-//        } else {
-//            Global.log("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
-//        }
-//    }
 
     @Override
     public void sceneBegin() {
         this.ammo = new ArrayList();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
-//        settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
-        MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps, false); // false 為建立 sequence map
+        int mapLength = (int) Math.sqrt(Global.MAP_QTY);
+        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
+        Global.mapEdgeUp = (int) this.maps.getCollider().top();
+        Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
+        Global.mapEdgeLeft = (int) this.maps.getCollider().left();
+        Global.mapEdgeRight = (int) this.maps.getCollider().right();
+        MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
+//        mg.genSequenceMap();
+        mg.genRandomMap();
         addAllMapsToAllObjects();
         this.allObjects.add(this.actor);
     }
-    
-    private void addAllMapsToAllObjects(){
-        for(int i = 0; i < this.maps.getMaps().size(); i++){
+
+    private void addAllMapsToAllObjects() {
+        for (int i = 0; i < this.maps.getMaps().size(); i++) {
             this.allObjects.add(this.maps.get(i));
         }
-    }
-
-    private void allMapsUpdate() {
-        this.maps.update();
-        Global.mapEdgeUp = (int) (this.maps.get(0).getGraph().top());
-        Global.mapEdgeDown = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().bottom());
-        Global.mapEdgeLeft = (int) (this.maps.get(0).getGraph().left());
-        Global.mapEdgeRight = (int) (this.maps.get(this.maps.getMaps().size() - 1).getGraph().right());
     }
 
     @Override
     public void sceneUpdate() {
         this.view.update();
-        allMapsUpdate();
+//        allMapsUpdate();
         //this.ammo測試範圍
         for (int i = 0; i < this.ammo.size(); i++) {
             if (this.ammo.get(i).getCenterX() < 50 || this.ammo.get(i).getCenterX() > 500 || this.ammo.get(i).getCenterY() < 50 || this.ammo.get(i).getCenterY() > 500) {
-                        this.ammo.get(i).setIsShootOut(false);
-                        this.ammo.get(i).setIsPaint(false);
-                    }//如果超出範圍設定為假的回收彈夾狀態，且不畫出
+                this.ammo.get(i).setIsShootOut(false);
+                this.ammo.get(i).setIsPaint(false);
+            }//如果超出範圍設定為假的回收彈夾狀態，且不畫出
         }
         if (Global.mouseState == 1) {
             boolean create = true;
@@ -163,7 +121,7 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-        allMapsUpdate();
+//        allMapsUpdate();
     }
 
     @Override
@@ -174,12 +132,6 @@ public class MainScene extends Scene {
     @Override
     public void paint(Graphics g) {
         this.view.paint(g); // 只有出現在 view sawObjects 裡面的要畫出來
-//        for (int i = 0; i < this.ammo.size(); i++) {
-//            this.ammo.get(i).paint(g);
-//        }
-//        for (int i = 0; i < this.ammunition.size(); i++) { // 這部分之後要用加進 view.sawObjects 的方式做
-//            this.ammunition.get(i).paint(g);
-//        }
     }
 
     @Override
@@ -209,7 +161,7 @@ public class MainScene extends Scene {
             actor.setDir(dir);
             actor.setMovementPressedStatus(dir, status);
         }
-        
+
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
             switch (commandCode) {
@@ -279,7 +231,7 @@ public class MainScene extends Scene {
 //            System.out.println("mouse state:" + state);
             if (state == CommandSolver.MouseState.PRESSED) {
                 Global.mouseState = 1;
-            } else{// if (state == CommandSolver.MouseState.CLICKED) {
+            } else {// if (state == CommandSolver.MouseState.CLICKED) {
                 Global.mouseState = 0;
             }
         }
