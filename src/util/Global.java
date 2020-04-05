@@ -56,14 +56,14 @@ public class Global {
     public static final int[] STEPS_WALK_SHORT = {0, 2};
     public static final int[] STEPS_WALK_ACTOR = null;
     // 圖片庫    
-    public static final String BACKGROUND_1 = "/resources/background1.png";
-    public static final String BACKGROUND_2 = "/resources/background2.png";
-    public static final String BACKGROUND_3 = "/resources/background3.png";
+//    public static final String BACKGROUND_1 = "/resources/background1.png";
+//    public static final String BACKGROUND_2 = "/resources/background2.png";
+//    public static final String BACKGROUND_3 = "/resources/background3.png";
 //    public static final String ACTOR = "/resources/Actor.png";
-    private static final String ROOT = "/resources";
-    public static final String ACTOR = Global.ROOT + "/Actor_sample.png";
-    public static final String[] ACTOR1 = {Global.ROOT + "/Actor_sample.png",Global.ROOT + "/Actor_sample2.png"};
-    public static final String[] BULLET = {Global.ROOT+"/bullet.png"};
+//    private static final String ROOT = "/resources";
+//    public static final String ACTOR = Global.ROOT + "/Actor_sample.png";
+//    public static final String[] ACTOR1 = {Global.ROOT + "/Actor_sample.png",Global.ROOT + "/Actor_sample2.png"};
+//    public static final String[] BULLET = {Global.ROOT+"/bullet.png"};
     //角度需求
     public static final float PI = 3.14f;
     // 地圖數量

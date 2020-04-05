@@ -5,6 +5,7 @@
  */
 package scenes;
 
+import controllers.ImagePath;
 import controllers.SceneController;
 import gameobj.Actor;
 import gameobj.Ammo;
@@ -53,45 +54,45 @@ public class MainScene extends Scene {
         this.allObjects = new LinkedList<GameObject>();
     }
 
-    private void settingMaps(int width, int height) {
-        // 這邊希望地圖數能為 3x3 or 4x4 這樣的形式
-        int map_x = width;
-        int map_y = height;
-        if (this.mapLength % 1 == 0 && this.mapLength >= 3) {
-            Global.log("地圖數量: " + this.mapLength + "x" + this.mapLength);
-            // 不同位置的地圖使用不同的圖片，之後需做成從地圖池中取隨機 pattern 來用
-            for (int x = 0; x < this.mapLength; x++) {
-                for (int y = 0; y < this.mapLength; y++) {
-                    int whichMap = x;
-                    switch (whichMap) {
-                        case 0:
-                            this.maps.add(new Map(Global.BACKGROUND_1, (float) map_x * y, (float) map_y * x, width, height));
-                            break;
-                        case 1:
-                            this.maps.add(new Map(Global.BACKGROUND_2, (float) map_x * y, (float) map_y * x, width, height));
-                            break;
-                        case 2:
-                            this.maps.add(new Map(Global.BACKGROUND_3, (float) map_x * y, (float) map_y * x, width, height));
-                            break;
-                    }
-                }
-            }
-            for (int i = 0; i < this.maps.getMaps().size(); i++) {
-                // 所有這個場景有用到 GameObject 都必需放進 allObjects 的 LinkedList 中去做碰撞判斷決定要不要畫出來
-                this.allObjects.add(this.maps.get(i));
-            }
-        } else {
-            Global.log("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
-        }
-    }
+//    private void settingMaps(int width, int height) {
+//        // 這邊希望地圖數能為 3x3 or 4x4 這樣的形式
+//        int map_x = width;
+//        int map_y = height;
+//        if (this.mapLength % 1 == 0 && this.mapLength >= 3) {
+//            Global.log("地圖數量: " + this.mapLength + "x" + this.mapLength);
+//            // 不同位置的地圖使用不同的圖片，之後需做成從地圖池中取隨機 pattern 來用
+//            for (int x = 0; x < this.mapLength; x++) {
+//                for (int y = 0; y < this.mapLength; y++) {
+//                    int whichMap = x;
+//                    switch (whichMap) {
+//                        case 0:
+//                            this.maps.add(new Map(Global.BACKGROUND_1, (float) map_x * y, (float) map_y * x, width, height));
+//                            break;
+//                        case 1:
+//                            this.maps.add(new Map(Global.BACKGROUND_2, (float) map_x * y, (float) map_y * x, width, height));
+//                            break;
+//                        case 2:
+//                            this.maps.add(new Map(Global.BACKGROUND_3, (float) map_x * y, (float) map_y * x, width, height));
+//                            break;
+//                    }
+//                }
+//            }
+//            for (int i = 0; i < this.maps.getMaps().size(); i++) {
+//                // 所有這個場景有用到 GameObject 都必需放進 allObjects 的 LinkedList 中去做碰撞判斷決定要不要畫出來
+//                this.allObjects.add(this.maps.get(i));
+//            }
+//        } else {
+//            Global.log("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
+//        }
+//    }
 
     @Override
     public void sceneBegin() {
         this.ammo = new ArrayList();
-        this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, Global.ACTOR1);
+        this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
 //        settingMaps(Global.MAP_WIDTH, Global.MAP_HEIGHT);
-        MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps, true);
+        MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps, false); // false 為建立 sequence map
         addAllMapsToAllObjects();
         this.allObjects.add(this.actor);
     }
@@ -124,7 +125,7 @@ public class MainScene extends Scene {
         if (Global.mouseState == 1) {
             boolean create = true;
             if (this.ammo == null) {
-                Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET);
+                Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, ImagePath.BULLET);
                 this.ammo.add(ammo);
                 this.allObjects.add(ammo);
             } else {
@@ -140,7 +141,7 @@ public class MainScene extends Scene {
                     }
                 }
                 if (create) {
-                    Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, Global.BULLET);
+                    Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, ImagePath.BULLET);
                     this.ammo.add(ammo);
                     this.allObjects.add(ammo);
                 }

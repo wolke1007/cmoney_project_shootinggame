@@ -5,6 +5,8 @@
  */
 package gameobj;
 
+import controllers.ImagePath;
+import controllers.ImageResourceController;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -34,10 +36,13 @@ public class Renderer {
 //    private Delay delay;
     // 動畫Delay end
     private BufferedImage testImg;
+    private ImageResourceController irc;
 
     public Renderer(int characterIndex, int[] steps, int delay, String src) {
+        this.irc = ImageResourceController.getInstance();
         try {
-            img = ImageIO.read(getClass().getResource(src));
+//            img = ImageIO.read(getClass().getResource(src));
+            img = this.irc.tryGetImage(src);
             this.testImg = ImageIO.read(getClass().getResource("/resources/Actor_sample.png"));
         } catch (IOException ex) {
         }
@@ -53,10 +58,9 @@ public class Renderer {
     }//老師版本 (未來可以改圖及呈現方式)
 
     public Renderer(int[] steps, int delay, String src) {
-        try {
-            img = ImageIO.read(getClass().getResource(src));
-        } catch (IOException ex) {
-        }
+        this.irc = ImageResourceController.getInstance();
+//            img = ImageIO.read(getClass().getResource(src));
+        img = this.irc.tryGetImage(src);
         this.steps = steps;//預留步伐接口 //暫時不用
         setDir(0);//待修改
 //        setRenderDelay(delay);
