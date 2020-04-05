@@ -27,6 +27,7 @@ public class RendererToRotate {
     private float imgX;
     private float imgY;
     private double angle;
+    private ImageResourceController irc;
 
     public RendererToRotate(String[] path, float imgX, float imgY, double angle) {
         this.img = new ArrayList<>();

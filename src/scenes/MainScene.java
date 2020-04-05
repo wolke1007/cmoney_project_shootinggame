@@ -72,7 +72,6 @@ public class MainScene extends Scene {
     @Override
     public void sceneUpdate() {
         this.view.update();
-        allMapsUpdate();
         Global.mapMouseX = Global.mouseX + Global.viewX;
         Global.mapMouseY = Global.mouseY + Global.viewY;
         //this.ammo測試範圍
@@ -116,7 +115,6 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-//        allMapsUpdate();
     }
 
     @Override
