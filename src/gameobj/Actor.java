@@ -8,6 +8,7 @@ package gameobj;
 import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.LinkedList;
 import util.Angle;
 import util.Delay;
 import util.Global;
@@ -25,6 +26,7 @@ public class Actor extends GameObject {
     private Angle angle;
     private boolean isStand;
     private View view;
+    private LinkedList<GameObject> allObjects;
 
     private Delay moveDelay;
 
@@ -61,6 +63,10 @@ public class Actor extends GameObject {
         if (this.renderer != null) {
             this.renderer.setY(y);
         }
+    }
+    
+    public void setAllObjects(LinkedList<GameObject> list){
+        this.allObjects = list;
     }
 
     public float centerX() {
@@ -161,7 +167,7 @@ public class Actor extends GameObject {
     }
 
     private void move() {
-        this.movement.moving(this.moveDistance);
+        this.movement.moving(this.moveDistance, this.allObjects);
     }
 
     @Override

@@ -8,6 +8,7 @@ package util;
 import gameobj.GameObject;
 import graph.Graph;
 import graph.Rect;
+import java.util.LinkedList;
 
 /**
  *
@@ -29,39 +30,48 @@ public class Move {
         this.obj = obj;
     }
 
-    public void moving(int distance) {
+    public void moving(int distance, LinkedList<GameObject> list) {
+        // GameObject self, float dx, float dy, LinkedList<GameObject> allObject
+        JapStep goal = new JapStep(this.obj, 0, 0, list);
         int dir = movingDir();
 //        int distance = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.UP: // go up
-                this.obj.offset(0, -distance);
+                goal.newSet(this.obj, 0, -distance, list);
+                Global.log("goal.getDY(): "+ goal.getDY());
+                this.obj.offset(0, goal.getDY());
                 break;
             case Global.DOWN: //  go down
-                this.obj.offset(0, distance);
+                goal.newSet(this.obj, 0, distance, list);
+                Global.log("goal.getDY(): "+ goal.getDY());
+                this.obj.offset(0, goal.getDY());
                 break;
             case Global.LEFT: // go left
-                this.obj.offset(-distance, 0);
+                goal.newSet(this.obj, -distance, 0, list);
+                this.obj.offset(goal.getDX(), 0);
                 break;
             case Global.RIGHT: // go right
-                this.obj.offset(distance, 0);
+                goal.newSet(this.obj, distance, 0, list);
+                this.obj.offset(goal.getDX(), 0);
                 break;
             case Global.UP_LEFT: // go up-left
-                this.obj.offset(-distance, -distance);
+                goal.newSet(this.obj, -distance, -distance, list);
+                this.obj.offset(goal.getDX(), goal.getDY());
                 break;
             case Global.UP_RIGHT: // go up-right
-                Global.log("dir is UP_RIGHT:" + Global.UP_RIGHT);
-                this.obj.offset(distance, -distance);
+                goal.newSet(this.obj, distance, -distance, list);
+                this.obj.offset(goal.getDX(), goal.getDY());
                 break;
             case Global.DOWN_LEFT: //  go down-left
-                Global.log("dir is DOWN_LEFT:" + Global.DOWN_LEFT);
-                this.obj.offset(-distance, distance);
+                goal.newSet(this.obj, -distance, distance, list);
+                this.obj.offset(goal.getDX(), goal.getDY());
                 break;
             case Global.DOWN_RIGHT: // go down-right
-                Global.log("dir is DOWN_RIGHT:" + Global.DOWN_RIGHT);
-                this.obj.offset(distance, distance);
+                goal.newSet(this.obj, distance, distance, list);
+                this.obj.offset(goal.getDX(), goal.getDY());
                 break;
         }
-    }    
+    }
 
     public Point correctedDest(Point destPoint) {
         float x = 0;
