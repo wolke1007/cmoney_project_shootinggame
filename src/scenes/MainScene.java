@@ -31,7 +31,7 @@ import util.map.MapGenerator;
 public class MainScene extends Scene {
 
     Actor actor;
-    private ArrayList<Ammo> ammo;
+    private ArrayList<Ammo> ammos;
     Delay delay;
     Delay changeSceneDelay;
     Maps maps;
@@ -47,7 +47,7 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
-        this.ammo = new ArrayList();
+        this.ammos = new ArrayList();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = (int) Math.sqrt(Global.MAP_QTY);
@@ -77,15 +77,15 @@ public class MainScene extends Scene {
         //this.ammo測試範圍
         if (Global.mouseState == 1) {
             boolean create = true;
-            if (this.ammo == null) {
+            if (this.ammos == null) {
                 Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, ImagePath.BULLET);
-                this.ammo.add(ammo);
+                this.ammos.add(ammo);
                 this.allObjects.add(ammo);
             } else {
-                for (int i = 0; i < this.ammo.size(); i++) {
-                    if (this.ammo.get(i).getIsShootOut() == false) {
-                        this.ammo.get(i).setIsShootOut(create);
-                        this.ammo.get(i).setNewStart(this.actor.centerX(), this.actor.centerY());
+                for (int i = 0; i < this.ammos.size(); i++) {
+                    if (this.ammos.get(i).getIsShootOut() == false) {
+                        this.ammos.get(i).setIsShootOut(create);
+                        this.ammos.get(i).setNewStart(this.actor.centerX(), this.actor.centerY());
                         create = false;
                         break;
                     } else {
@@ -94,7 +94,7 @@ public class MainScene extends Scene {
                 }
                 if (create) {
                     Ammo ammo = new Ammo("circle", this.actor.centerX() - Global.UNIT_X / 4, this.actor.centerY() - Global.UNIT_Y / 4, 60, ImagePath.BULLET);
-                    this.ammo.add(ammo);
+                    this.ammos.add(ammo);
                     this.allObjects.add(ammo);
                 }
             }
@@ -102,8 +102,8 @@ public class MainScene extends Scene {
         }
 //        System.out.println(this.ammo.size());
         //this.ammo測試範圍end
-        for (int i = 0; i < this.ammo.size(); i++) {
-            this.ammo.get(i).update();
+        for (int i = 0; i < this.ammos.size(); i++) {
+            this.ammos.get(i).update();
         }
         for (int i = 0; i < this.allObjects.size(); i++) {
             this.allObjects.get(i).update();

@@ -20,6 +20,6 @@ public class ImagePath {
                                                "/resources/background3.png"};
 
     public static final String ACTOR = ImagePath.ROOT + "/Actor_sample.png";
-    public static final String[] ACTOR1 = {ImagePath.ROOT + "/Actor_new.png",ImagePath.ROOT + "/Actor_sample2.png"};
-    public static final String[] BULLET = {ImagePath.ROOT+"/bullet.png"};
+    public static final String[] ACTOR1 = {ImagePath.ROOT + "/Actor_new1.png",ImagePath.ROOT + "/Actor_sample2.png"};
+    public static final String[] BULLET = {ImagePath.ROOT+"/bullet1.png"};
 }

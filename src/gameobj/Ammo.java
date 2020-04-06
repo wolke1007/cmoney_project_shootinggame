@@ -18,7 +18,7 @@ import util.Global;
  */
 public class Ammo extends GameObject {
 
-    private RendererToRotate renderer;//旋轉方向設定
+    private RendererToRotate renderer;//旋轉圖渲染器
     private boolean isShootOut;//是否射擊的狀態 Origine true 創建時就是要射出
 
     //子彈移動控制
