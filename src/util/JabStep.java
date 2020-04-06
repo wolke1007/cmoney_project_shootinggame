@@ -124,5 +124,4 @@ public class JabStep {//試探碰撞
         }
         return go;
     }
-
 }

@@ -96,11 +96,11 @@ public class Move {
         if (destPoint.getY() + this.obj.getGraph().bottom() >= Global.mapEdgeDown) {
             y = Global.mapEdgeDown - this.obj.getGraph().bottom() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
         }
-        if(x == 0 && y == 0){
+        if (x == 0 && y == 0) {
             Global.log("move return null");
             return null;
         }
-        return new Point((int)x, (int)y);
+        return new Point((int) x, (int) y);
     }
 
     public void setPressedStatus(int pressedBtn, boolean status) {

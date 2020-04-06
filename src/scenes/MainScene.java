@@ -107,7 +107,7 @@ public class MainScene extends Scene {
             }
             Global.mouseState++;
         }
-//        System.out.println(this.ammo.size());
+//        System.out.println(this.ammos.size());
         //this.ammo測試範圍end
         for (int i = 0; i < this.ammos.size(); i++) {
             this.ammos.get(i).update();
@@ -231,7 +231,7 @@ public class MainScene extends Scene {
 //            System.out.println("mouse state:" + state);
             if (state == CommandSolver.MouseState.PRESSED) {
                 Global.mouseState = 1;
-            } else {// if (state == CommandSolver.MouseState.CLICKED) {
+            } else {
                 Global.mouseState = 0;
             }
         }
