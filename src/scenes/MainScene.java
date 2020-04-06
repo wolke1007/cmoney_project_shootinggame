@@ -50,7 +50,6 @@ public class MainScene extends Scene {
     public void sceneBegin() {
         this.ammos = new ArrayList();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
-        this.actor.setAllObjects(this.allObjects);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = (int) Math.sqrt(Global.MAP_QTY);
         this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
@@ -60,6 +59,7 @@ public class MainScene extends Scene {
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
 //        mg.genSequenceMap();
+        this.allObjects.add(maps);
         mg.genRandomMap();
         addAllMapsToAllObjects();
         this.allObjects.add(this.actor);
@@ -80,6 +80,7 @@ public class MainScene extends Scene {
         this.view.update();
         Global.mapMouseX = Global.mouseX + Global.viewX;
         Global.mapMouseY = Global.mouseY + Global.viewY;
+        this.actor.setAllObjects(this.allObjects);
         //this.ammo測試範圍
         if (Global.mouseState == 1) {
             boolean create = true;
