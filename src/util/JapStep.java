@@ -5,6 +5,7 @@
  */
 package util;
 
+import gameobj.Ammo;
 import gameobj.GameObject;
 import gameobj.Map;
 import gameobj.Maps;
@@ -64,7 +65,7 @@ public class JapStep {//試探碰撞
         Graph other;
         for (float i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObject.size(); k++) {
-                if (this.allObject.get(k) instanceof Map) {
+                if (this.allObject.get(k) instanceof Map || this.allObject.get(k) instanceof Ammo) {
                     continue;
                 }
                 other = this.allObject.get(k).getCollider();
@@ -86,7 +87,7 @@ public class JapStep {//試探碰撞
         Graph other;
         for (float i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObject.size(); k++) {
-                if (this.allObject.get(k) instanceof Map) {
+                if (this.allObject.get(k) instanceof Map || this.allObject.get(k) instanceof Ammo) {
                     continue;
                 }
                 other = this.allObject.get(k).getCollider();
