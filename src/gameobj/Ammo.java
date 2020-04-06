@@ -38,7 +38,7 @@ public class Ammo extends GameObject {
         setAngle(super.getCenterX(), super.getCenterY());
         this.renderer = new RendererToRotate(path, super.getX(), super.getY(), getAngle());
         setMoveSpeedDetail(moveSpeed);//初始化移動應為最大值，暫時不該限制delay
-        this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mapMouseX, Global.mapMouseY, 10, true);//30為子彈的移動距離值
+        this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mapMouseX, Global.mapMouseY, 50, true);//30為子彈的移動距離值
         setIsShootOut(true);
         super.paintPriority = 1; // 畫圖順序僅次於主角，此順序可討論
 //        System.out.println("Ammunition");
