@@ -62,8 +62,7 @@ public class JapStep {//試探碰撞
         float go = 0;
         Graph self = this.self.getCollider();
         Graph other;
-        for (int i = 0; i < this.divisor; i++) {
-            go += tmp;
+        for (float i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObject.size(); k++) {
                 if (this.allObject.get(k) instanceof Map) {
                     continue;
@@ -71,11 +70,11 @@ public class JapStep {//試探碰撞
                 other = this.allObject.get(k).getCollider();
                 if (!(this.allObject.get(k) instanceof Maps) && self.intersects(other)) {
                     return go;
-                }
-                if (this.allObject.get(k) instanceof Maps && self.innerCollisionToCollision(other)) {
+                } else if (this.allObject.get(k) instanceof Maps && self.innerCollisionToCollision(other)) {
                     return go;
                 }
             }
+            go += tmp;
         }
         return go;
     }
@@ -85,8 +84,7 @@ public class JapStep {//試探碰撞
         float go = 0;
         Graph self = this.self.getCollider();
         Graph other;
-        for (int i = 0; i < this.divisor; i++) {
-            go += tmp;
+        for (float i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObject.size(); k++) {
                 if (this.allObject.get(k) instanceof Map) {
                     continue;
@@ -94,11 +92,11 @@ public class JapStep {//試探碰撞
                 other = this.allObject.get(k).getCollider();
                 if (!(this.allObject.get(k) instanceof Maps) && self.intersects(other)) {
                     return go;
-                }
-                if (this.allObject.get(k) instanceof Maps && self.innerCollisionToCollision(other)) {
+                } else if (this.allObject.get(k) instanceof Maps && self.innerCollisionToCollision(other)) {
                     return go;
                 }
             }
+            go += tmp;
         }
         return go;
     }
