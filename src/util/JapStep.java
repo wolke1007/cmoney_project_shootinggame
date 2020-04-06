@@ -59,46 +59,48 @@ public class JapStep {//試探碰撞
 
     public float getDX() {
         float tmp = this.dx / this.divisor;
+        float go = 0;
         Graph self = this.self.getCollider();
         Graph other;
-        for (int i = 1; i < this.divisor; i++) {
-            tmp += tmp;
+        for (int i = 0; i < this.divisor; i++) {
+            go += tmp;
             for (int k = 0; k < this.allObject.size(); k++) {
                 if (this.allObject.get(k) instanceof Map) {
                     continue;
                 }
                 other = this.allObject.get(k).getCollider();
                 if (!(this.allObject.get(k) instanceof Maps) && self.intersects(other)) {
-                    return tmp;
+                    return go;
                 }
                 if (this.allObject.get(k) instanceof Maps && self.innerCollisionToCollision(other)) {
-                    return tmp;
+                    return go;
                 }
             }
         }
-        return tmp;
+        return go;
     }
 
     public float getDY() {
         float tmp = this.dy / this.divisor;
+        float go = 0;
         Graph self = this.self.getCollider();
         Graph other;
-        for (int i = 1; i < this.divisor; i++) {
-            tmp += tmp;
+        for (int i = 0; i < this.divisor; i++) {
+            go += tmp;
             for (int k = 0; k < this.allObject.size(); k++) {
                 if (this.allObject.get(k) instanceof Map) {
                     continue;
                 }
                 other = this.allObject.get(k).getCollider();
                 if (!(this.allObject.get(k) instanceof Maps) && self.intersects(other)) {
-                    return tmp;
+                    return go;
                 }
                 if (this.allObject.get(k) instanceof Maps && self.innerCollisionToCollision(other)) {
-                    return tmp;
+                    return go;
                 }
             }
         }
-        return tmp;
+        return go;
     }
 
 }
