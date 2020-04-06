@@ -6,6 +6,8 @@
 package gameobj;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import util.Global;
 
 /**
  *
@@ -14,6 +16,8 @@ import java.awt.Graphics;
 public class Map extends GameObject {
 
     private Renderer renderer;
+    private ArrayList<Barrier> barriers;
+//    private ArrayList<Building> buildings;
 
     private float width;
     private float height;
@@ -23,10 +27,25 @@ public class Map extends GameObject {
         this.width = width;
         this.height = height;
         this.renderer = r(src);
+        this.barriers = new ArrayList<Barrier>();
     }
 
     public static Renderer r(String src) {
         return new Renderer(new int[]{0}, 0, src);
+    }
+    
+    public ArrayList<Barrier> getBarriers(){
+        return this.barriers;
+    }
+    
+    public void updateAllBarriersXY(){
+        for(int i = 0; i < this.barriers.size(); i++){
+            Barrier b = this.barriers.get(i);
+            b.setX(super.x + b.x);
+            b.setY(super.y + b.y);
+            Global.log("super.x : " + super.x  );
+            Global.log("b.x: " + b.x );
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import controllers.ImagePath;
 import controllers.SceneController;
 import gameobj.Actor;
 import gameobj.Ammo;
+import gameobj.Barrier;
 import gameobj.GameObject;
 import gameobj.Map;
 import gameobj.Maps;
@@ -22,7 +23,7 @@ import util.CommandSolver;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import util.map.MapGenerator;
+import util.MapGenerator;
 
 /**
  *
@@ -65,7 +66,11 @@ public class MainScene extends Scene {
 
     private void addAllMapsToAllObjects() {
         for (int i = 0; i < this.maps.getMaps().size(); i++) {
-            this.allObjects.add(this.maps.get(i));
+            Map map = this.maps.get(i);
+            this.allObjects.add(map);
+            for(int j = 0; j < map.getBarriers().size(); j++){
+                this.allObjects.add(map.getBarriers().get(j));
+            }
         }
     }
 

@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util.map;
+package util;
 
 import controllers.ImagePath;
 import controllers.ImageResourceController;
+import gameobj.Barrier;
 import gameobj.Map;
 import gameobj.Maps;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class MapGenerator {
                 this.maps.add(newMap);
             }
         }
+        updateAllBarriersXY();
     }
 
     public void genSequenceMap() {
@@ -70,6 +72,13 @@ public class MapGenerator {
                 this.maps.add(newMap);
             }
         }
+        updateAllBarriersXY();
+    }
+    
+    private void updateAllBarriersXY(){
+        for(int i = 0; i < this.maps.getMaps().size(); i++){
+            this.maps.get(i).updateAllBarriersXY();
+        }
     }
     
     private void genSingleMapIntoPool(boolean randomBackGround){
@@ -77,7 +86,7 @@ public class MapGenerator {
             // 預設 x, y 座標都為 0 需於加入時被另外設定
             Map newMap = new Map(ImagePath.BACKGROUND[Global.random(0, ImagePath.BACKGROUND.length - 1)], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
-            
+            newMap.getBarriers().add(new Barrier("circle", 100f, 100f, 64, 64, ImagePath.BARRIER));
             // 新增元素(障礙物、建築物等等)進該地圖中 end
             this.mapPool.add(newMap);
         }else{
