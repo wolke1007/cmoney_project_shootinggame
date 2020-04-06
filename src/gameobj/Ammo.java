@@ -30,6 +30,7 @@ public class Ammo extends GameObject {
     //移動分段
     private Angle angle;
     private AverageSpeed averageSpeed;
+    private int count = 0;
     //移動分段end
 
     public Ammo(String colliderType, float x, float y, int moveSpeed, String[] path) {
@@ -87,6 +88,7 @@ public class Ammo extends GameObject {
     //狀態控制
     public void setIsShootOut(boolean isShootOut) {
         this.isShootOut = isShootOut;
+        this.count = 0;
     }
 
     public boolean getIsShootOut() {
@@ -157,9 +159,16 @@ public class Ammo extends GameObject {
     @Override
     public void update() {
         if (getIsShootOut()) {//如果是 射擊出去的狀態 或 可以被畫出的狀態 就移動
-            this.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
+            if (this.count == 0) {
+                int d = 20;
+                this.offset(d * (float) this.averageSpeed.offsetDX(), d * (float) this.averageSpeed.offsetDY());
+                this.count = 1;
+            } else {
+                this.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
+            }
+
         }
-        if (getCollider().left() < 100 || this.getCollider().right() > 500 || this.getCollider().top() < 100 || this.getCollider().bottom() > 500) {
+        if (getCollider().left() < Global.mapEdgeLeft || this.getCollider().right() > Global.mapEdgeRight || this.getCollider().top() < Global.mapEdgeUp || this.getCollider().bottom() > Global.mapEdgeDown) {
             setIsShootOut(false);
             this.setXY(-50, -50);
             this.renderer.setX(-50);
