@@ -39,7 +39,7 @@ public class Actor extends GameObject {
 
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
-        setAngle(super.getCenterX(), super.getCenterY());
+        setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
@@ -49,22 +49,8 @@ public class Actor extends GameObject {
     }//多載 建構子 當前版本
 
     //位置資訊
-    @Override
-    public void setX(float x) {
-        super.setX(x);
-    }
-
-    @Override
-    public void setY(float y) {
-        super.setY(y);
-    }
-
     public void setAllObjects(LinkedList<GameObject> list) {
         this.allObjects = list;
-    }
-
-    public float centerX() {
-        return super.getCenterX();
     }
 
     private void setMoveDistance(int moveDistance) {
@@ -74,20 +60,16 @@ public class Actor extends GameObject {
     private int getMoveDistance() {
         return this.moveDistance;
     }
-
-    public float centerY() {
-        return super.getCenterY();
-    }
     //位置資訊end
 
     //角度計算
-    public void setAngle(float centerX, float centerY) {
+    public void setAngle() {
         if (this.angle == null) {
-            this.angle = new Angle(centerX, centerY, Global.mapMouseX, Global.mapMouseY);
+            this.angle = new Angle(this.getCenterX(), this.getCenterY(), Global.mapMouseX, Global.mapMouseY);
             return;
         }
-        this.angle.setCenterX(centerX);
-        this.angle.setCenterY(centerY);
+        this.angle.setCenterX(this.getCenterX());
+        this.angle.setCenterY(this.getCenterY());
         this.angle.setGoalCenterX(Global.mapMouseX);
         this.angle.setGoalCenterY(Global.mapMouseY);
     }
@@ -107,9 +89,9 @@ public class Actor extends GameObject {
 
     private float limitRange(float range) {
         if (range < 0) {
-            return range = 0;
+            return 0;
         } else if (range > 60) {
-            return range = 60;
+            return 60;
         }
         return range;
     }//限制範圍 0-60
@@ -144,7 +126,7 @@ public class Actor extends GameObject {
     }
 
     public void updateRendererAngle() {
-        this.setAngle(super.getCenterX(), super.getCenterY());
+        this.setAngle();
         this.renderer.setAngle(this.getAngle());
     }
 

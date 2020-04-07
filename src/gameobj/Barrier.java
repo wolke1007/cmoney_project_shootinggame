@@ -24,37 +24,16 @@ public class Barrier extends GameObject {
     }
 
     @Override
-    public void setX(float x) {
-        super.setX(x);
-    }
-
-    @Override
-    public void setY(float y) {
-        super.setY(y);
-    }
-
-    //位置資訊start
-    public float centerX() {
-        return super.getCenterX();
-    }
-
-    public float centerY() {
-        return super.getCenterY();
-    }
-    //位置資訊end
-    
-    @Override
     public void setDir(int dir) {
     }
-    
+
     @Override
     public void update() {
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int)super.x, (int)super.y, (int)super.width(), (int)super.height());
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.width(), (int) super.height());
     }
 
 }
-

@@ -12,15 +12,17 @@ import util.Global;
  * @author Cloud
  */
 public class ImagePath {
+
     private static final String ROOT = "/resources";
-    
+
     // 圖片庫    
-    public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png", 
-                                               ImagePath.ROOT + "/background2.png", 
-                                               ImagePath.ROOT + "/background3.png"};
+    public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png",
+        ImagePath.ROOT + "/background2.png",
+        ImagePath.ROOT + "/background3.png"};
 
     public static final String ACTOR = ImagePath.ROOT + "/Actor_sample.png";
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
-    public static final String[] ACTOR1 = {ImagePath.ROOT + "/Actor_new1.png",ImagePath.ROOT + "/Actor_sample2.png"};
-    public static final String[] BULLET = {ImagePath.ROOT+"/bullet1.png"};
+    public static final String[] ACTOR1 = {ImagePath.ROOT + "/Actor_new1.png", ImagePath.ROOT + "/Actor_sample2.png"};
+    public static final String[] BULLET = {ImagePath.ROOT + "/bullet1.png"};
+    public static final String[] ENEMY = {ImagePath.ROOT + "/Actor_new.png"};
 }
