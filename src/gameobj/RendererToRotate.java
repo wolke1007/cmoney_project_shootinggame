@@ -56,11 +56,11 @@ public class RendererToRotate {
         return this.obj.getY() - Global.viewY;
     }
 
-    private float getImgCenterX() {
+    private double getImgCenterX() {
         return getImgX() + this.img.get(getState()).getWidth() / 2f;
     }
 
-    private float getImgCenterY() {
+    private double getImgCenterY() {
         return getImgY() + this.img.get(getState()).getHeight() / 2f;
     }
 

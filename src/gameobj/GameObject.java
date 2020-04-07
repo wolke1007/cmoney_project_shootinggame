@@ -107,7 +107,7 @@ public abstract class GameObject {
         this.collider.offset(x - this.collider.centerX(), 0);
         setX(x);
     }
-    
+
     public void offsetY(float y) {
         this.graph.offset(0, y - this.graph.centerY());
         this.collider.offset(0, y - this.collider.centerY());
@@ -133,40 +133,40 @@ public abstract class GameObject {
         paintComponent(g);
         if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Circle) {
             g.setColor(Color.RED);
-            g.drawOval((int) this.graph.left() - Global.viewX,
-                    (int) this.graph.top() - Global.viewY,
+            g.drawOval((int) (this.graph.left() - Global.viewX),
+                    (int) (this.graph.top() - Global.viewY),
                     (int) this.graph.width(),
                     (int) this.graph.height());
             g.setColor(Color.BLUE);
-            g.drawOval((int) this.collider.left() - Global.viewX,
-                    (int) this.collider.top() - Global.viewY,
-                    (int) this.collider.width(), 
+            g.drawOval((int) (this.collider.left() - Global.viewX),
+                    (int) (this.collider.top() - Global.viewY),
+                    (int) this.collider.width(),
                     (int) this.collider.height());
             g.setColor(Color.BLACK);
         }
         if (this.graph != null && Global.IS_DEBUG && this.graph instanceof Rect) {
             g.setColor(Color.RED);
-            g.drawRect((int) this.graph.left() - Global.viewX,
-                    (int) this.graph.top() - Global.viewY, 
-                    (int) this.graph.width(), 
+            g.drawRect((int) (this.graph.left() - Global.viewX),
+                    (int) (this.graph.top() - Global.viewY),
+                    (int) this.graph.width(),
                     (int) this.graph.height());
             g.setColor(Color.BLUE);
-            g.drawRect((int) this.collider.left() - Global.viewX, 
-                    (int) this.collider.top() - Global.viewY, 
-                    (int) this.collider.width(), 
+            g.drawRect((int) (this.collider.left() - Global.viewX),
+                    (int) (this.collider.top() - Global.viewY),
+                    (int) this.collider.width(),
                     (int) this.collider.height());
             g.setColor(Color.BLACK);
         }
     }
 
-    public boolean isMeetMapEdge(){
+    public boolean isMeetMapEdge() {
         Global.log("mapEdgeUp" + Global.mapEdgeUp);
         Global.log("mapEdgeDown" + Global.mapEdgeDown);
         Global.log("mapEdgeLeft" + Global.mapEdgeLeft);
         Global.log("mapEdgeRight" + Global.mapEdgeRight);
         return this.graph.intersects(Global.mapEdgeRight, Global.mapEdgeDown, Global.mapEdgeLeft, Global.mapEdgeUp);
     }
-    
+
     public abstract void update();
 
     public abstract void setDir(int dir);

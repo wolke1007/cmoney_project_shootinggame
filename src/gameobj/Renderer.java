@@ -42,7 +42,7 @@ public class Renderer {
         this.irc = ImageResourceController.getInstance();
 //        try {
 //            img = ImageIO.read(getClass().getResource(src));
-            img = this.irc.tryGetImage(src);
+        img = this.irc.tryGetImage(src);
 //            this.testImg = ImageIO.read(getClass().getResource("/resources/Actor_sample.png"));
 //        } catch (IOException ex) {
 //        }
@@ -95,8 +95,8 @@ public class Renderer {
 //    private int testAngle = 0;
 
     public void paint(Graphics g, int x, int y, int w, int h) {
-        x = x - Global.viewX;
-        y = y - Global.viewY;
+        x = x - (int) Global.viewX;
+        y = y - (int) Global.viewY;
         g.drawImage(img, x, y, x + w, y + h,
                 (Global.UNIT_X * currentStep) + (characterIndex % 4) * (Global.UNIT_X * 3),
                 (Global.UNIT_Y * dir) + (characterIndex / 4) * (Global.UNIT_Y * 4),

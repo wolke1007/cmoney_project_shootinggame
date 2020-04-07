@@ -164,8 +164,8 @@ public class Actor extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawLine(-10000, (int) this.getCollider().centerY() - Global.viewY, 10000, (int) this.getCollider().centerY() - Global.viewY);
-        g.drawLine((int) this.getCollider().centerX() - Global.viewX, -10000, (int) this.getCollider().centerX() - Global.viewX, 10000);
+        g.drawLine(-10000, (int) (this.getCollider().centerY() - Global.viewY), 10000, (int) (this.getCollider().centerY() - Global.viewY));
+        g.drawLine((int) (this.getCollider().centerX() - Global.viewX), -10000, (int) (this.getCollider().centerX() - Global.viewX), 10000);
         this.renderer.paint(g);
     }
 

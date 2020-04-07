@@ -77,11 +77,11 @@ public class Global {
     public static int mouseX;
     public static int mouseY;
     // view 當前座標
-    public static int viewX;
-    public static int viewY;
+    public static float viewX;
+    public static float viewY;
     //滑鼠當前的相對座標
-    public static int mapMouseX;
-    public static int mapMouseY;
+    public static float mapMouseX;
+    public static float mapMouseY;
     //測試用按鍵
     public static int mouseState;
     

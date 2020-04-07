@@ -61,8 +61,8 @@ public class View extends GameObject {
             }
         }
     }
-    
-    public boolean stillSeeing(GameObject obj){
+
+    public boolean stillSeeing(GameObject obj) {
         for (int i = 0; i < this.sawObjects.size(); i++) {
             if (this.sawObjects.get(i) == obj) {
                 return true;
@@ -102,16 +102,16 @@ public class View extends GameObject {
     public void update() {
         super.offsetX(focusOn.x - this.width / 2);
         super.offsetY(focusOn.y - this.height / 2);
-        Global.viewX = (int) super.x;
-        Global.viewY = (int) super.y;
+        Global.viewX = super.x;
+        Global.viewY = super.y;
     }
 
     @Override
     public void paintComponent(Graphics g) {
         // 為了解決 paint 順序問題，將所有 GameObject 建立一個 paintPriority 屬性，數字越大越先畫(圖層越下層)，數字最大為 10
-        for(int p = 10; p >= 0; p--){
+        for (int p = 10; p >= 0; p--) {
             for (int i = 0; i < this.sawObjects.size(); i++) {
-                if(this.sawObjects.get(i).paintPriority == p){
+                if (this.sawObjects.get(i).paintPriority == p) {
                     this.sawObjects.get(i).paint(g);
                 }
             }

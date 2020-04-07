@@ -69,7 +69,7 @@ public class MainScene extends Scene {
         for (int i = 0; i < this.maps.getMaps().size(); i++) {
             Map map = this.maps.get(i);
             this.allObjects.add(map);
-            for(int j = 0; j < map.getBarriers().size(); j++){
+            for (int j = 0; j < map.getBarriers().size(); j++) {
                 this.allObjects.add(map.getBarriers().get(j));
             }
         }
@@ -229,7 +229,6 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-//            System.out.println("mouse state:" + state);
             if (state == CommandSolver.MouseState.PRESSED) {
                 Global.mouseState = 1;
             } else {
