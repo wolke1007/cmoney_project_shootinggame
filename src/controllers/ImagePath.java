@@ -26,4 +26,5 @@ public class ImagePath {
     public static final String[] BULLET = {ImagePath.ROOT+"/bullet1.png"};
     public static final String[] ENEMY = {ImagePath.ROOT+"/enemy 1.png"};
     public static final String[] HP = {ImagePath.ROOT+"/HP_frame.png", ImagePath.ROOT+"/HP.png", ImagePath.ROOT+"/HP_debug.png"};
-    }
+    public static final String[] BUILDING = {ImagePath.ROOT+"/roof1.jpg"};
+}

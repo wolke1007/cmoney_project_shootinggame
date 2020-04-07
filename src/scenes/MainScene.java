@@ -61,9 +61,9 @@ public class MainScene extends Scene {
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-//        mg.genSequenceMap();
+        mg.genSequenceMap();
+//        mg.genRandomMap();
         this.allObjects.add(maps);
-        mg.genRandomMap();
         addAllMapsToAllObjects();
         this.allObjects.add(this.actor);
         this.allObjects.add(this.enemy);

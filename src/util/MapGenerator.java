@@ -87,13 +87,15 @@ public class MapGenerator {
             Map newMap = new Map(ImagePath.BACKGROUND[Global.random(0, ImagePath.BACKGROUND.length - 1)], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
             newMap.getBarriers().add(new Barrier("circle", 100f, 100f, 64, 64, ImagePath.BARRIER));
+            newMap.getBarriers().add(new Barrier("rect", 0f, 0f, 50, 100, ImagePath.BUILDING));
             // 新增元素(障礙物、建築物等等)進該地圖中 end
             this.mapPool.add(newMap);
         }else{
             // 固定用第一張背景圖
             Map newMap = new Map(ImagePath.BACKGROUND[0], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
-            
+            newMap.getBarriers().add(new Barrier("circle", 200f, 200f, 64, 64, ImagePath.BARRIER));
+            newMap.getBarriers().add(new Barrier("rect", 0f, 0f, 80, 400, ImagePath.BUILDING));
             // 新增元素(障礙物、建築物等等)進該地圖中 end
             this.mapPool.add(newMap);
         }
