@@ -6,6 +6,7 @@
 package gameobj;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import util.Delay;
 import util.Global;
@@ -61,8 +62,8 @@ public class View extends GameObject {
             }
         }
     }
-    
-    public boolean stillSeeing(GameObject obj){
+
+    public boolean stillSeeing(GameObject obj) {
         for (int i = 0; i < this.sawObjects.size(); i++) {
             if (this.sawObjects.get(i) == obj) {
                 return true;
@@ -109,13 +110,24 @@ public class View extends GameObject {
     @Override
     public void paintComponent(Graphics g) {
         // 為了解決 paint 順序問題，將所有 GameObject 建立一個 paintPriority 屬性，數字越大越先畫(圖層越下層)，數字最大為 10
-        for(int p = 10; p >= 0; p--){
+        ArrayList<GameObject> tmp = new ArrayList<>();
+        for (int p = 10; p >= 0; p--) {
             for (int i = 0; i < this.sawObjects.size(); i++) {
-                if(this.sawObjects.get(i).paintPriority == p){
-                    this.sawObjects.get(i).paint(g);
+                if (this.sawObjects.get(i).paintPriority == p) {
+                    tmp.add(this.sawObjects.get(i));
                 }
             }
         }
+        for(int i = 0 ; i < tmp.size(); i++){
+            tmp.get(i).paint(g);
+        }
+//        for (int p = 10; p >= 0; p--) {
+//            for (int i = 0; i < this.sawObjects.size(); i++) {
+//                if (this.sawObjects.get(i).paintPriority == p) {
+//                    this.sawObjects.get(i).paint(g);
+//                }
+//            }
+//        }
     }
 
 }
