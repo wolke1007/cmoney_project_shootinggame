@@ -21,7 +21,7 @@ public class Map extends GameObject {
 
     private float width;
     private float height;
-    
+
     public Map(String src, float x, float y, int width, int height) {
         super("rect", x, y, width - 2, height - 2, width - 2, height - 2);
         this.width = width;
@@ -33,18 +33,18 @@ public class Map extends GameObject {
     public static Renderer r(String src) {
         return new Renderer(new int[]{0}, 0, src);
     }
-    
-    public ArrayList<Barrier> getBarriers(){
+
+    public ArrayList<Barrier> getBarriers() {
         return this.barriers;
     }
-    
-    public void updateAllBarriersXY(){
-        for(int i = 0; i < this.barriers.size(); i++){
+
+    public void updateAllBarriersXY() {
+        for (int i = 0; i < this.barriers.size(); i++) {
             Barrier b = this.barriers.get(i);
             b.setX(super.x + b.x);
             b.setY(super.y + b.y);
-            Global.log("super.x : " + super.x  );
-            Global.log("b.x: " + b.x );
+            Global.log("super.x : " + super.x);
+            Global.log("b.x: " + b.x);
         }
     }
 
@@ -58,7 +58,7 @@ public class Map extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int)super.getX(), (int)super.getY(), (int)this.width, (int)this.height, 1280, 720);
+        this.renderer.paint(g, (int) super.getX(), (int) super.getY(), (int) super.getX() + (int) this.width, (int) super.getY() + (int) this.height, 0, 0, 1280, 720);
     }
 
 }

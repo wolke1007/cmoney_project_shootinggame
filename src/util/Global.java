@@ -84,7 +84,15 @@ public class Global {
     public static float mapMouseY;
     //測試用按鍵
     public static int mouseState;
-    
+    // HP 圖案資訊
+    public static final int hpFrameWidth = 199;
+    public static final int hpFrameHeight = 31;
+    public static final int hpFrameImgW = 628;
+    public static final int hpFrameImgH = 146;
+    public static final int hpWidth = 176;
+    public static final int hpHeight = 30;
+    public static final int hpImgW = 555;
+    public static final int hpImgH = 74;
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
     }

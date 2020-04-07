@@ -47,7 +47,7 @@ public class View extends GameObject {
         this.moveDistance = 10;
         this.focusOn = focusOn;
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
-        this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[1]);
+        this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
     }
 
     public void saw(GameObject obj) {
@@ -122,16 +122,15 @@ public class View extends GameObject {
                 }
                 if (paintObj instanceof Actor) {
                     if (((Actor) paintObj).getHP() >= 0) {
-                        int x = (int) super.x;
-                        int y = (int) super.y;
-                        int width = 200;
-                        int height = 30;
-                        int imgW = 630;
-                        int imgH = 145;
-                        this.hpFrameRenderer.paint(g, x, y, 199, 31, 628, 146);
-                        this.hpRenderer.paint(g, x + 12, y + 8,
-                                (int)(width * 1), height, 
-                                (int)(imgW * 0.8), imgH);
+                        int hpFrameX = (int) super.x;
+                        int hpFrameY = (int) super.y;
+                        float hpRate = ((Actor) paintObj).getHP() / 100f;
+                        this.hpFrameRenderer.paint(g, hpFrameX, hpFrameY, hpFrameX + Global.hpFrameWidth, hpFrameY + Global.hpFrameHeight, 0, 0, Global.hpFrameImgW, Global.hpFrameImgH);
+                        this.hpRenderer.paint(g,
+                                hpFrameX + 12, hpFrameY + 8,
+                                (int)(hpFrameX + 12 + (Global.hpWidth * hpRate)), hpFrameY -7 + Global.hpHeight,
+                                0, 0,
+                                (int)(Global.hpImgW * hpRate), Global.hpImgH);
                     }
                 }
             }
