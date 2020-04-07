@@ -39,29 +39,22 @@ public class Ammo extends GameObject {
     public Ammo(String colliderType, float x, float y, int moveSpeed, String[] path) {
         super(colliderType, x, y, Global.UNIT_X / 2, Global.UNIT_Y / 2, Global.UNIT_X / 2, Global.UNIT_Y / 2);
         setAngle(super.getCenterX(), super.getCenterY());
-        this.renderer = new RendererToRotate(path, super.getX(), super.getY(), getAngle());
+        this.renderer = new RendererToRotate(path, this, getAngle());
         setMoveSpeedDetail(moveSpeed);//初始化移動應為最大值，暫時不該限制delay
-        this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mapMouseX, Global.mapMouseY, 50, true);//30為子彈的移動距離值
+        this.averageSpeed = new AverageSpeed(super.getCenterX(), super.getCenterY(), Global.mapMouseX, Global.mapMouseY, 30, true);//30為子彈的移動距離值
         setIsShootOut(true);
         super.paintPriority = 1; // 畫圖順序僅次於主角，此順序可討論
-//        System.out.println("Ammunition");
     }
 
     //圖片資料
     @Override
     public void setX(float x) {
         super.setX(x);
-        if (this.renderer != null) {
-            this.renderer.setX(x);
-        }
     }
 
     @Override
     public void setY(float y) {
         super.setY(y);
-        if (this.renderer != null) {
-            this.renderer.setY(y);
-        }
     }
 
     @Override
@@ -160,20 +153,19 @@ public class Ammo extends GameObject {
     @Override
     public void offset(float dx, float dy) {
         super.offset(dx, dy);
-        this.renderer.offset(dx, dy);
     }
 
     @Override
     public void update() {
         if (getIsShootOut()) {//如果是 射擊出去的狀態 或 可以被畫出的狀態 就移動
             if (this.count == 0) {
-                int d = 20;
-                this.offset(d * (float) this.averageSpeed.offsetDX(), d * (float) this.averageSpeed.offsetDY());
+                float d = 5;
+                this.offset((float) this.averageSpeed.offsetDX() * this.averageSpeed.getReMoveSpeed() / d,
+                        (float) this.averageSpeed.offsetDY() * this.averageSpeed.getReMoveSpeed() / d);
                 this.count = 1;
             } else {
                 this.offset((float) this.averageSpeed.offsetDX(), (float) this.averageSpeed.offsetDY());
             }
-
         }
         Graph other;
         for (int i = 0; i < this.allObjects.size(); i++) {
@@ -186,13 +178,9 @@ public class Ammo extends GameObject {
             if (!(this.allObjects.get(i) instanceof Maps) && this.getCollider().intersects(other)) {
                 setIsShootOut(false);
                 this.setXY(-50, -50);
-                this.renderer.setX(-50);
-                this.renderer.setY(-50);
             } else if (this.allObjects.get(i) instanceof Maps && this.getCollider().innerCollisionToCollision(other)) {
                 setIsShootOut(false);
                 this.setXY(-50, -50);
-                this.renderer.setX(-50);
-                this.renderer.setY(-50);
             }
         }
     }

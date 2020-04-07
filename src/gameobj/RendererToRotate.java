@@ -24,58 +24,54 @@ public class RendererToRotate {
     private ArrayList<BufferedImage> img;
     private int state;//目前狀態
 
-    private float imgX;
-    private float imgY;
+    private GameObject obj;
     private double angle;
     private ImageResourceController irc;
 
-    public RendererToRotate(String[] path, float imgX, float imgY, double angle) {
+    public RendererToRotate(String[] path, GameObject obj, double angle) {
         this.img = new ArrayList<>();
         this.irc = ImageResourceController.getInstance();
         for (int i = 0; i < path.length; i++) {
             this.img.add(this.irc.tryGetImage(path[i]));
         }
-        setX(imgX);
-        setY(imgY);
+        this.obj = obj;
         setAngle(angle);
         setState(0);
     }
 
     //圖片資訊
-    public void setX(float imgX) {
-        this.imgX = imgX;
-    }
-    public void setY(float imgY) {
-        this.imgY = imgY;
-    }
     public void setAngle(double angle) {
         this.angle = angle;
     }
-    public void offset(float dx, float dy) {
-        setX(this.imgX + dx);
-        setY(this.imgY + dy);
-    }
+
     public void setState(int state) {
         this.state = state;
     }
+
     private float getImgX() {
-        return this.imgX - Global.viewX;
+        return this.obj.getX() - Global.viewX;
     }
+
     private float getImgY() {
-        return this.imgY - Global.viewY;
+        return this.obj.getY() - Global.viewY;
     }
+
     private float getImgCenterX() {
         return getImgX() + this.img.get(getState()).getWidth() / 2f;
     }
+
     private float getImgCenterY() {
         return getImgY() + this.img.get(getState()).getHeight() / 2f;
     }
+
     private double getAngle() {
         return this.angle;
     }
+
     public int getState() {
         return this.state;
     }
+
     //圖片資訊end
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;

@@ -40,7 +40,7 @@ public class Actor extends GameObject {
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setAngle(super.getCenterX(), super.getCenterY());
-        this.renderer = new RendererToRotate(path, super.getX(), super.getY(), getAngle());
+        this.renderer = new RendererToRotate(path, this, getAngle());
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
@@ -52,20 +52,14 @@ public class Actor extends GameObject {
     @Override
     public void setX(float x) {
         super.setX(x);
-        if (this.renderer != null) {
-            this.renderer.setX(x);
-        }
     }
 
     @Override
     public void setY(float y) {
         super.setY(y);
-        if (this.renderer != null) {
-            this.renderer.setY(y);
-        }
     }
-    
-    public void setAllObjects(LinkedList<GameObject> list){
+
+    public void setAllObjects(LinkedList<GameObject> list) {
         this.allObjects = list;
     }
 
@@ -149,9 +143,7 @@ public class Actor extends GameObject {
         this.movement.setPressedStatus(dir, status);
     }
 
-    public void updateRenderer() {
-        this.setX(super.getX());
-        this.setY(super.getY());
+    public void updateRendererAngle() {
         this.setAngle(super.getCenterX(), super.getCenterY());
         this.renderer.setAngle(this.getAngle());
     }
@@ -163,7 +155,7 @@ public class Actor extends GameObject {
         }
         // 需要先移動再 RenderToRotate 避免 Actor 的圖片跟不上碰撞框的移動
         // 以下一定要更新
-        updateRenderer();
+        updateRendererAngle();
     }
 
     private void move() {

@@ -98,6 +98,10 @@ public class AverageSpeed {
         this.reMoveSpeed = 100 - this.moveSpeed;
     }
 
+    public float getReMoveSpeed() {
+        return this.reMoveSpeed;
+    }
+
     private float limitRange(float moveSpeed) {
         if (moveSpeed > 99) {
             return moveSpeed = 99;
