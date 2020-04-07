@@ -96,9 +96,9 @@ public class View extends GameObject {
 
     private float limitRange(float range) {
         if (range < 0) {
-            return range = 0;
+            return 0;
         } else if (range > 60) {
-            return range = 60;
+            return 60;
         }
         return range;
     }//限制範圍 0-60

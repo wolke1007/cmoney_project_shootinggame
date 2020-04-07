@@ -111,22 +111,22 @@ public class AverageSpeed {
         return moveSpeed;
     }
 
-    public double offsetDX() {
+    public float offsetDX() {
         if (this.isFixedLength) {
             SlopeValue();
             double degree = Math.atan(Math.abs(getSlope()));
             double dx = this.length * Math.cos(degree);
-            return ((this.getGoalCenterX() > this.getCenterX()) ? 1 : -1) * dx / this.reMoveSpeed;
+            return (float) (((this.getGoalCenterX() > this.getCenterX()) ? 1 : -1) * dx) / this.reMoveSpeed;
         }
         return (this.goalCenterX - this.centerX) / this.reMoveSpeed;
     }
 
-    public double offsetDY() {
+    public float offsetDY() {
         if (this.isFixedLength) {
             SlopeValue();
             double degree = Math.atan(Math.abs(getSlope()));
             double dy = this.length * Math.sin(degree);
-            return ((this.centerY < this.goalCenterY) ? 1 : -1) * dy / this.reMoveSpeed;
+            return (float) (((this.centerY < this.goalCenterY) ? 1 : -1) * dy) / this.reMoveSpeed;
         }
         return (this.goalCenterX - this.centerX) / this.reMoveSpeed;
     }
