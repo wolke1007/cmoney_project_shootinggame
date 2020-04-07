@@ -53,7 +53,7 @@ public class Barrier extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int)super.x, (int)super.y, (int)super.width(), (int)super.height());
+        this.renderer.paint(g, (int)super.x, (int)super.y, (int)super.width(), (int)super.height(), 64, 64);
     }
 
 }

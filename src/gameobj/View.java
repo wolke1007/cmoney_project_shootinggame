@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import controllers.ImagePath;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import util.Delay;
@@ -22,6 +23,8 @@ public class View extends GameObject {
 
     private float moveSpeed; // per frame
     private float actMoveSpeed;
+    private Renderer hpFrameRenderer;
+    private Renderer hpRenderer;
 
     private float width;
     private float height;
@@ -43,6 +46,8 @@ public class View extends GameObject {
         sawObjects = new LinkedList<GameObject>();
         this.moveDistance = 10;
         this.focusOn = focusOn;
+        this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
+        this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[1]);
     }
 
     public void saw(GameObject obj) {
@@ -111,8 +116,23 @@ public class View extends GameObject {
         // 為了解決 paint 順序問題，將所有 GameObject 建立一個 paintPriority 屬性，數字越大越先畫(圖層越下層)，數字最大為 10
         for (int p = 10; p >= 0; p--) {
             for (int i = 0; i < this.sawObjects.size(); i++) {
-                if (this.sawObjects.get(i).paintPriority == p) {
-                    this.sawObjects.get(i).paint(g);
+                GameObject paintObj = this.sawObjects.get(i);
+                if (paintObj.paintPriority == p) {
+                    paintObj.paint(g);
+                }
+                if (paintObj instanceof Actor) {
+                    if (((Actor) paintObj).getHP() >= 0) {
+                        int x = (int) super.x;
+                        int y = (int) super.y;
+                        int width = 200;
+                        int height = 30;
+                        int imgW = 630;
+                        int imgH = 145;
+                        this.hpFrameRenderer.paint(g, x, y, 199, 31, 628, 146);
+                        this.hpRenderer.paint(g, x + 12, y + 8,
+                                (int)(width * 1), height, 
+                                (int)(imgW * 0.8), imgH);
+                    }
                 }
             }
         }

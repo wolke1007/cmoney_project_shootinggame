@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import controllers.ImagePath;
 import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -27,6 +28,7 @@ public class Actor extends GameObject {
     private boolean isStand;
     private View view;
     private LinkedList<GameObject> allObjects;
+    private float hp;
 
     private Delay moveDelay;
 
@@ -46,6 +48,7 @@ public class Actor extends GameObject {
         movement = new Move(this);
         this.moveDistance = 10;
         super.paintPriority = 0;
+        this.hp = 100f;
     }//多載 建構子 當前版本
 
     //位置資訊
@@ -79,6 +82,14 @@ public class Actor extends GameObject {
         return super.getCenterY();
     }
     //位置資訊end
+    
+    public float getHP(){
+        return this.hp;
+    }
+    
+    public void setHP(float hp){
+        this.hp = hp;
+    }
 
     //角度計算
     public void setAngle(float centerX, float centerY) {
