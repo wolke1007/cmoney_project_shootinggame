@@ -20,7 +20,7 @@ public class Barrier extends GameObject {
     public Barrier(String colliderType, float x, float y, int width, int height, String[] path) {//src => Global.Barrier
         super(colliderType, x, y, width, height, width, height);
         this.renderer = new Renderer(new int[0], 0, path[0]);
-        super.paintPriority = 1;
+        super.paintPriority = 2;
     }
 
     @Override

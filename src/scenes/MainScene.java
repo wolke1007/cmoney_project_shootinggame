@@ -110,6 +110,7 @@ public class MainScene extends Scene {
 //        System.out.println(this.ammos.size());
         //this.ammo測試範圍end
         for (int i = 0; i < this.ammos.size(); i++) {
+            this.ammos.get(i).setAllObjects(this.allObjects);
             this.ammos.get(i).update();
         }
         for (int i = 0; i < this.allObjects.size(); i++) {

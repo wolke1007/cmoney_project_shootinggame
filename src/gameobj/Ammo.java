@@ -5,8 +5,10 @@
  */
 package gameobj;
 
+import graph.Graph;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 import util.Angle;
 import util.AverageSpeed;
 import util.Delay;
@@ -20,6 +22,7 @@ public class Ammo extends GameObject {
 
     private RendererToRotate renderer;//旋轉圖渲染器
     private boolean isShootOut;//是否射擊的狀態 Origine true 創建時就是要射出
+    private LinkedList<GameObject> allObjects;
 
     //子彈移動控制
     private Delay moveDelay;
@@ -67,6 +70,10 @@ public class Ammo extends GameObject {
         setY(y);
     }
     //圖片資料end
+
+    public void setAllObjects(LinkedList<GameObject> list) {
+        this.allObjects = list;
+    }
 
     //角度計算
     public void setAngle(float centerX, float centerY) {
@@ -168,11 +175,25 @@ public class Ammo extends GameObject {
             }
 
         }
-        if (getCollider().left() < Global.mapEdgeLeft || this.getCollider().right() > Global.mapEdgeRight || this.getCollider().top() < Global.mapEdgeUp || this.getCollider().bottom() > Global.mapEdgeDown) {
-            setIsShootOut(false);
-            this.setXY(-50, -50);
-            this.renderer.setX(-50);
-            this.renderer.setY(-50);
+        Graph other;
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            if (this.allObjects.get(i) instanceof Map
+                    || this.allObjects.get(i) instanceof Ammo
+                    || this.allObjects.get(i) instanceof Actor) {
+                continue;
+            }
+            other = this.allObjects.get(i).getCollider();
+            if (!(this.allObjects.get(i) instanceof Maps) && this.getCollider().intersects(other)) {
+                setIsShootOut(false);
+                this.setXY(-50, -50);
+                this.renderer.setX(-50);
+                this.renderer.setY(-50);
+            } else if (this.allObjects.get(i) instanceof Maps && this.getCollider().innerCollisionToCollision(other)) {
+                setIsShootOut(false);
+                this.setXY(-50, -50);
+                this.renderer.setX(-50);
+                this.renderer.setY(-50);
+            }
         }
     }
 

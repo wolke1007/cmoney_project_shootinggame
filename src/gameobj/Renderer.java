@@ -35,17 +35,17 @@ public class Renderer {
     // 動畫Delay
 //    private Delay delay;
     // 動畫Delay end
-    private BufferedImage testImg;
+//    private BufferedImage testImg;
     private ImageResourceController irc;
 
     public Renderer(int characterIndex, int[] steps, int delay, String src) {
         this.irc = ImageResourceController.getInstance();
-        try {
+//        try {
 //            img = ImageIO.read(getClass().getResource(src));
             img = this.irc.tryGetImage(src);
-            this.testImg = ImageIO.read(getClass().getResource("/resources/Actor_sample.png"));
-        } catch (IOException ex) {
-        }
+//            this.testImg = ImageIO.read(getClass().getResource("/resources/Actor_sample.png"));
+//        } catch (IOException ex) {
+//        }
         this.characterIndex = 0; // 不會變動  一定要先定義
         this.steps = steps;
 
