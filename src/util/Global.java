@@ -20,8 +20,8 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 800;
-    public static final int FRAME_Y = 700;
+    public static final int FRAME_X = 1920;
+    public static final int FRAME_Y = 1080;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 角色視野大小
@@ -55,7 +55,9 @@ public class Global {
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};
     public static final int[] STEPS_WALK_ACTOR = null;
-    // 圖片庫    
+    //敵人上限
+    public static final int ENEMY_LIMIT = 15;
+// 圖片庫    
 //    public static final String BACKGROUND_1 = "/resources/background1.png";
 //    public static final String BACKGROUND_2 = "/resources/background2.png";
 //    public static final String BACKGROUND_3 = "/resources/background3.png";
@@ -82,8 +84,8 @@ public class Global {
     //滑鼠當前的相對座標
     public static float mapMouseX;
     public static float mapMouseY;
-    //測試用按鍵
-    public static int mouseState;
+    //測試用滑鼠狀態
+    public static float mouseState;
     // HP 圖案資訊
     public static final int HP_FRAME_WIDTH = 199;
     public static final int HP_FRAME_HEIGHT = 31;

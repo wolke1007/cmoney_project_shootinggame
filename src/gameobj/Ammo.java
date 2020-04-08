@@ -38,7 +38,7 @@ public class Ammo extends GameObject {
     //移動分段end
 
     public Ammo(String colliderType, float x, float y, GameObject start, int moveSpeed, String[] path) {
-        super(colliderType, x, y, Global.UNIT_X / 2, Global.UNIT_Y / 2, Global.UNIT_X / 2, Global.UNIT_Y / 2);
+        super(colliderType, x, y, Global.UNIT_X / 4, Global.UNIT_Y / 4, Global.UNIT_X / 4, Global.UNIT_Y / 4);
         setStart(start);
         setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());
@@ -145,7 +145,7 @@ public class Ammo extends GameObject {
             float dy = this.averageSpeed.offsetDY();
             float reMoveSpeed = this.averageSpeed.getReMoveSpeed();
             if (this.count == 0) {
-                float d = 5;
+                float d = 3;
                 this.offset(dx * reMoveSpeed / d,
                         dy * reMoveSpeed / d);
                 this.count = 1;
