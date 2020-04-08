@@ -6,12 +6,14 @@
 package shootinggame;
 
 import controllers.SceneController;
+import gameobj.Renderer;
 import java.awt.Graphics;
 import scenes.MainScene;
 import util.CommandSolver;
 import util.CommandSolver.KeyListener;
 import util.CommandSolver.MouseCommandListener;
 import java.awt.event.MouseEvent;
+import scenes.StartMenuScene;
 import util.Global;
 
 /**
@@ -24,7 +26,7 @@ public class GameJPanel extends javax.swing.JPanel implements KeyListener, Mouse
 
     public GameJPanel() {
         sceneController = new SceneController();
-        sceneController.changeScene(new MainScene(sceneController));
+        sceneController.changeScene(new StartMenuScene(sceneController));
     }
 
     public void update() {

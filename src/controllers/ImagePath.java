@@ -22,9 +22,12 @@ public class ImagePath {
 
     public static final String ACTOR = ImagePath.ROOT + "/Actor_sample.png";
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
-    public static final String[] ACTOR1 = {ImagePath.ROOT + "/Actor_new12.png",ImagePath.ROOT + "/Actor_sample2.png"};
-    public static final String[] BULLET = {ImagePath.ROOT+"/bullet11.png"};
-    public static final String[] ENEMY = {ImagePath.ROOT+"/Actor_new13.png"};
-    public static final String[] HP = {ImagePath.ROOT+"/HP_frame.png", ImagePath.ROOT+"/HP.png", ImagePath.ROOT+"/HP_debug.png"};
-    public static final String[] BUILDING = {ImagePath.ROOT+"/roof1.jpg"};
+    public static final String[] ACTOR1 = {ImagePath.ROOT + "/Actor_new12.png", ImagePath.ROOT + "/Actor_sample2.png"};
+    public static final String[] BULLET = {ImagePath.ROOT + "/bullet11.png"};
+    public static final String[] ENEMY = {ImagePath.ROOT + "/Actor_new13.png"};
+    public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
+    public static final String[] BUILDING = {ImagePath.ROOT + "/roof1.jpg"};
+    public static final String[] START_MENU = {ImagePath.ROOT + "/startmenu.jpeg",
+        ImagePath.ROOT + "/playgame.png",
+        ImagePath.ROOT + "/score_history.png"};
 }

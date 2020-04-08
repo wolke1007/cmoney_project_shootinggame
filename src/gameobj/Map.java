@@ -48,15 +48,11 @@ public class Map extends GameObject {
             Barrier b = this.barriers.get(i);
             b.setX(super.x + b.x);
             b.setY(super.y + b.y);
-            Global.log("super.x : " + super.x);
-            Global.log("b.x: " + b.x);
         }
         for (int i = 0; i < this.buildings.size(); i++) {
             Building b = this.buildings.get(i);
             b.setX(super.x + b.x);
             b.setY(super.y + b.y);
-            Global.log("super.x : " + super.x);
-            Global.log("b.x: " + b.x);
         }
     }
 
