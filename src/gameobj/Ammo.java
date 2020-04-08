@@ -163,6 +163,10 @@ public class Ammo extends GameObject {
             }
             other = this.allObjects.get(i).getCollider();
             if (!(obj instanceof Maps) && this.getCollider().intersects(other)) {
+                if (obj instanceof Enemy && this.getCollider().intersects(other)) {
+                    Enemy tmp = (Enemy) obj;
+                    tmp.subtractHp();
+                }
                 setIsShootOut(false);
                 this.setXY(-50, -50);
             } else if (obj instanceof Maps && this.getCollider().innerCollisionToCollision(other)) {

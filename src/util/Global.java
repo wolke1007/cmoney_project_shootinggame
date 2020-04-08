@@ -37,8 +37,8 @@ public class Global {
     public static final int FRAME_LIMIT = 60;
     public static final int LIMIT_DELTA_TIME = 1000 / FRAME_LIMIT;
     // 遊戲單位大小
-    public static final int UNIT_X = 32;
-    public static final int UNIT_Y = 32;
+    public static final int UNIT_X = 64;
+    public static final int UNIT_Y = 64;
     // 角色於地圖位置
     public static final int DEFAULT_ACTOR_X = FRAME_X / 2 - UNIT_X / 2;
     public static final int DEFAULT_ACTOR_Y = FRAME_Y / 2 - UNIT_Y / 2;

@@ -121,7 +121,7 @@ public class View extends GameObject {
                     paintObj.paint(g);
                 }
                 if (paintObj instanceof Actor) {
-                    if (((Actor) paintObj).getHP() >= 0) {
+                    if (((Actor) paintObj).getHp() >= 0) {
                         int hpFrameX = (int) super.x;
                         int hpFrameY = (int) super.y;
                         float hpRate = ((Actor) paintObj).getHP() / 100f;

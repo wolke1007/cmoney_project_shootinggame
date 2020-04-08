@@ -90,7 +90,7 @@ public class MainScene extends Scene {
         this.actor.setAllObjects(this.allObjects);
         this.enemy.update();//測試中
         //this.ammo測試範圍
-        if (Global.mouseState == 1) {
+        if (Global.mouseState  == 1) {
             boolean create = true;
             if (this.ammos == null) {
                 Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_X / 4, this.actor.getCenterY() - Global.UNIT_Y / 4, this.actor, 60, ImagePath.BULLET);
