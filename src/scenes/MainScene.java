@@ -176,7 +176,6 @@ public class MainScene extends Scene {
             switch (commandCode) {
                 case Global.UP:
                     if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
-                        Global.log("actor move");
                         setDirAndPressedStatus(actor, Global.UP, true);
                     } else {
                         stopRule(commandCode);
@@ -184,7 +183,6 @@ public class MainScene extends Scene {
                     break;
                 case Global.DOWN:
                     if (!(actor.getCollider().bottom() > Global.mapEdgeDown)) {
-                        Global.log("actor move");
                         setDirAndPressedStatus(actor, Global.DOWN, true);
                     } else {
                         stopRule(commandCode);
@@ -192,7 +190,6 @@ public class MainScene extends Scene {
                     break;
                 case Global.LEFT:
                     if (!(actor.getCollider().left() < Global.mapEdgeLeft)) {
-                        Global.log("actor move");
                         setDirAndPressedStatus(actor, Global.LEFT, true);
                     } else {
                         stopRule(commandCode);
@@ -200,7 +197,6 @@ public class MainScene extends Scene {
                     break;
                 case Global.RIGHT:
                     if (!(actor.getCollider().right() > Global.mapEdgeRight)) {
-                        Global.log("actor move");
                         setDirAndPressedStatus(actor, Global.RIGHT, true);
                     } else {
                         stopRule(commandCode);
