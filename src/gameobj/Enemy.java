@@ -5,6 +5,9 @@
  */
 package gameobj;
 
+import graph.Graph;
+import graph.Rect;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import util.Angle;
@@ -20,6 +23,8 @@ public class Enemy extends GameObject {
 
     private RendererToRotate renderer;//旋轉圖渲染器
     private float hp;//hp的總量
+    private float hpBarWidth;
+    private float dividend;
     private GameObject goal;
     private LinkedList<GameObject> allObjects;
 
@@ -37,7 +42,7 @@ public class Enemy extends GameObject {
     public Enemy(String colliderType, float x, float y, float hp, GameObject goal, int moveSpeed, String[] path) {
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setGoal(goal);
-        setHp(hp);
+        setHpPoint(hp);
         setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());
         setMoveSpeedDetail(moveSpeed);
@@ -46,19 +51,23 @@ public class Enemy extends GameObject {
     }
 
     //自己的資料
-    private void setHp(float hp) {
-        this.hp = hp;
+    private void setHpPoint(float dividend) {
+        this.hpBarWidth = this.width();
+        this.dividend = this.hpBarWidth / dividend;
     }
 
-    public void subtractHp(float hurt) {
-        this.hp -= hurt;
+    public boolean subtractHp() {
+        this.hpBarWidth -= this.dividend;
+        return true;
     }
 
-    public void increaseHp(float blood) {
-        this.hp += blood;
+    public boolean increaseHp() {
+        this.hpBarWidth += this.dividend;
+        return true;
     }
 
     public float getHp() {
+        this.hp = this.hpBarWidth / this.dividend;
         return this.hp;
     }
     //自己的資料end
@@ -129,12 +138,20 @@ public class Enemy extends GameObject {
         this.averageSpeed.setGoalCenterY(this.goal.getCenterY());
     }
 
-    @Override
-    public void update() {
+    public void move() {
         this.setAngle();
         this.renderer.setAngle(this.getAngle());
         setAverageSpeed();
         this.offset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
+    }
+
+    @Override
+    public void update() {
+        if (this.hpBarWidth > 0) {
+            move();
+        } else {
+            this.setXY(-50, -50);
+        }
     }
 
     @Override
@@ -144,6 +161,10 @@ public class Enemy extends GameObject {
     @Override
     public void paintComponent(Graphics g) {
         this.renderer.paint(g);
+        g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.width(), 4);
+        g.setColor(Color.RED);
+        g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.hpBarWidth, 4);
+        g.setColor(Color.BLACK);
     }
 
 }

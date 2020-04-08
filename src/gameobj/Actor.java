@@ -29,6 +29,8 @@ public class Actor extends GameObject {
     private View view;
     private LinkedList<GameObject> allObjects;
     private float hp;
+    private float hpBarWidth;
+    private float dividend;
 
     private Delay moveDelay;
 
@@ -48,7 +50,7 @@ public class Actor extends GameObject {
         movement = new Move(this);
         this.moveDistance = 10;
         super.paintPriority = 0;
-        this.hp = 100f;
+        setHpPoint(100);
     }//多載 建構子 當前版本
 
     //位置資訊
@@ -65,12 +67,24 @@ public class Actor extends GameObject {
     }
     //位置資訊end
     
-    public float getHP(){
-        return this.hp;
+    private void setHpPoint(float dividend) {
+        this.hpBarWidth = this.width();
+        this.dividend = this.hpBarWidth / dividend;
     }
-    
-    public void setHP(float hp){
-        this.hp = hp;
+
+    public boolean subtractHp() {
+        this.hpBarWidth -= this.dividend;
+        return true;
+    }
+
+    public boolean increaseHp() {
+        this.hpBarWidth += this.dividend;
+        return true;
+    }
+
+    public float getHp() {
+        this.hp = this.hpBarWidth / this.dividend;
+        return this.hp;
     }
 
     //角度計算

@@ -121,10 +121,10 @@ public class View extends GameObject {
                     paintObj.paint(g);
                 }
                 if (paintObj instanceof Actor) {
-                    if (((Actor) paintObj).getHP() >= 0) {
+                    if (((Actor) paintObj).getHp() >= 0) {
                         int hpFrameX = (int) super.x;
                         int hpFrameY = (int) super.y;
-                        float hpRate = ((Actor) paintObj).getHP() / 100f;
+                        float hpRate = ((Actor) paintObj).getHp() / 100f;
                         this.hpFrameRenderer.paint(g, hpFrameX, hpFrameY, hpFrameX + Global.hpFrameWidth, hpFrameY + Global.hpFrameHeight, 0, 0, Global.hpFrameImgW, Global.hpFrameImgH);
                         this.hpRenderer.paint(g,
                                 hpFrameX + 12, hpFrameY + 8,
