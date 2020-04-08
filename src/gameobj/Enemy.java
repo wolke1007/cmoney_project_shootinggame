@@ -22,10 +22,13 @@ import util.Global;
 public class Enemy extends GameObject {
 
     private RendererToRotate renderer;//旋轉圖渲染器
+    //血量控制
     private float hp;//hp的總量
     private float hpBarWidth;
     private float dividend;
-    private GameObject goal;
+    private GameObject target;
+    private Delay targetHp;
+    //血量控制end
     private LinkedList<GameObject> allObjects;
 
     //敵人對目標的移動控制
@@ -39,14 +42,14 @@ public class Enemy extends GameObject {
     private AverageSpeed averageSpeed;
     //移動分段end
 
-    public Enemy(String colliderType, float x, float y, float hp, GameObject goal, int moveSpeed, String[] path) {
+    public Enemy(String colliderType, float x, float y, float hp, GameObject target, int moveSpeed, String[] path) {
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
-        setGoal(goal);
+        setTarget(target);
         setHpPoint(hp);
         setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());
         setMoveSpeedDetail(moveSpeed);
-        this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), this.goal.getCenterX(), this.goal.getCenterY(), 50, true);
+        this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), this.target.getCenterX(), this.target.getCenterY(), 50, true);
         super.paintPriority = 1;
     }
 
@@ -73,25 +76,25 @@ public class Enemy extends GameObject {
     //自己的資料end
 
     //目標資料
-    public void setGoal(GameObject goal) {
-        this.goal = goal;
+    public void setTarget(GameObject target) {
+        this.target = target;
     }
 
-    public GameObject getGoal() {
-        return this.goal;
+    public GameObject getTarget() {
+        return this.target;
     }
     //目標資料end
 
     //角度計算
     public void setAngle() {
         if (this.angle == null) {
-            this.angle = new Angle(this.getCenterX(), this.getCenterY(), getGoal().getCenterX(), getGoal().getCenterY());
+            this.angle = new Angle(this.getCenterX(), this.getCenterY(), getTarget().getCenterX(), getTarget().getCenterY());
             return;
         }
         this.angle.setCenterX(this.getCenterX());
         this.angle.setCenterY(this.getCenterY());
-        this.angle.setGoalCenterX(getGoal().getCenterX());
-        this.angle.setGoalCenterY(getGoal().getCenterY());
+        this.angle.setGoalCenterX(getTarget().getCenterX());
+        this.angle.setGoalCenterY(getTarget().getCenterY());
     }
 
     public double getAngle() {
@@ -104,6 +107,8 @@ public class Enemy extends GameObject {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
         this.moveDelay = new Delay(this.actMoveSpeed);
+        this.targetHp = new Delay(120);
+        this.targetHp.start();
         this.moveDelay.start();
     }
 
@@ -134,21 +139,35 @@ public class Enemy extends GameObject {
     private void setAverageSpeed() {
         this.averageSpeed.setCenterX(this.getCenterX());
         this.averageSpeed.setCenterY(this.getCenterY());
-        this.averageSpeed.setGoalCenterX(this.goal.getCenterX());
-        this.averageSpeed.setGoalCenterY(this.goal.getCenterY());
+        this.averageSpeed.setGoalCenterX(this.target.getCenterX());
+        this.averageSpeed.setGoalCenterY(this.target.getCenterY());
     }
 
     public void move() {
-        this.setAngle();
-        this.renderer.setAngle(this.getAngle());
-        setAverageSpeed();
-        this.offset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
+        if (!this.getCollider().intersects(this.target.getCollider())) {
+            this.setAngle();
+            this.renderer.setAngle(this.getAngle());
+            setAverageSpeed();
+            this.offset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
+        }
+    }
+
+    public void attackTarget() {
+        if (this.targetHp.isTrig()// 每 1 秒觸發一次
+                && this.target instanceof Actor
+                && this.getCollider().intersects(this.target.getCollider())) {
+            Actor tmp = (Actor) this.target;
+            tmp.subtractHp();
+        }
     }
 
     @Override
     public void update() {
-        if (this.hpBarWidth > 0) {
-            move();
+        if (this.hp >= 1) {
+            if (this.moveDelay.isTrig()) {
+                move();
+                attackTarget();
+            }
         } else {
             this.setXY(-50, -50);
         }
