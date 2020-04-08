@@ -17,7 +17,7 @@ public class Map extends GameObject {
 
     private Renderer renderer;
     private ArrayList<Barrier> barriers;
-//    private ArrayList<Building> buildings;
+    private ArrayList<Building> buildings;
 
     private float width;
     private float height;
@@ -28,6 +28,7 @@ public class Map extends GameObject {
         this.height = height;
         this.renderer = r(src);
         this.barriers = new ArrayList<Barrier>();
+        this.buildings = new ArrayList<Building>();
     }
 
     public static Renderer r(String src) {
@@ -37,10 +38,21 @@ public class Map extends GameObject {
     public ArrayList<Barrier> getBarriers() {
         return this.barriers;
     }
+    
+    public ArrayList<Building> getBuildings() {
+        return this.buildings;
+    }
 
-    public void updateAllBarriersXY() {
+    public void updateAllBarriersBuildingsXY() {
         for (int i = 0; i < this.barriers.size(); i++) {
             Barrier b = this.barriers.get(i);
+            b.setX(super.x + b.x);
+            b.setY(super.y + b.y);
+            Global.log("super.x : " + super.x);
+            Global.log("b.x: " + b.x);
+        }
+        for (int i = 0; i < this.buildings.size(); i++) {
+            Building b = this.buildings.get(i);
             b.setX(super.x + b.x);
             b.setY(super.y + b.y);
             Global.log("super.x : " + super.x);

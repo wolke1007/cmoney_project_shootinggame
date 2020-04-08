@@ -61,8 +61,8 @@ public class MainScene extends Scene {
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-        mg.genSequenceMap();
-//        mg.genRandomMap();
+//        mg.genSequenceMap();
+        mg.genRandomMap();
         this.allObjects.add(maps);
         addAllMapsToAllObjects();
         this.allObjects.add(this.actor);
@@ -75,6 +75,9 @@ public class MainScene extends Scene {
             this.allObjects.add(map);
             for (int j = 0; j < map.getBarriers().size(); j++) {
                 this.allObjects.add(map.getBarriers().get(j));
+            }
+            for (int j = 0; j < map.getBuildings().size(); j++) {
+                this.allObjects.add(map.getBuildings().get(j));
             }
         }
     }

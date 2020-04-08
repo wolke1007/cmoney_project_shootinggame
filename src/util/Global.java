@@ -85,14 +85,14 @@ public class Global {
     //測試用按鍵
     public static int mouseState;
     // HP 圖案資訊
-    public static final int hpFrameWidth = 199;
-    public static final int hpFrameHeight = 31;
-    public static final int hpFrameImgW = 628;
-    public static final int hpFrameImgH = 146;
-    public static final int hpWidth = 176;
-    public static final int hpHeight = 30;
-    public static final int hpImgW = 555;
-    public static final int hpImgH = 74;
+    public static final int HP_FRAME_WIDTH = 199;
+    public static final int HP_FRAME_HEIGHT = 31;
+    public static final int HP_FRAME_IMG_W = 628;
+    public static final int HP_FRAME_IMG_H = 146;
+    public static final int HP_WIDTH = 176;
+    public static final int HP_HEIGHT = 30;
+    public static final int HP_IMG_W = 555;
+    public static final int HP_IMG_H = 74;
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
     }
