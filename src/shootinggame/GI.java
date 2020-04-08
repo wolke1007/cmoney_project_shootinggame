@@ -11,6 +11,7 @@ import scenes.MainScene;
 import util.CommandSolver;
 import util.CommandSolver.KeyListener;
 import util.CommandSolver.MouseCommandListener;
+import util.GameKernel.GameInterface;
 import java.awt.event.MouseEvent;
 import util.Global;
 
@@ -18,11 +19,11 @@ import util.Global;
  *
  * @author Cloud-Razer
  */
-public class GameJPanel extends javax.swing.JPanel implements KeyListener, MouseCommandListener {
+public class GI implements KeyListener, MouseCommandListener, GameInterface {
 
     private SceneController sceneController;
 
-    public GameJPanel() {
+    public GI() {
         sceneController = new SceneController();
         sceneController.changeScene(new MainScene(sceneController));
     }
@@ -32,7 +33,7 @@ public class GameJPanel extends javax.swing.JPanel implements KeyListener, Mouse
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paint(Graphics g) {
         sceneController.paint(g);
     }
 
