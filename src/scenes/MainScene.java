@@ -116,7 +116,7 @@ public class MainScene extends Scene {
         for (int i = 0; i < this.enemys.size(); i++) {
             if (this.enemys.get(i).getHp() <= 1) {
                 remove(this.enemys.get(i));
-                this.enemys.remove(this.enemys.get(i));
+                this.enemys.remove(this.enemys.get(i)); // 真實的刪除
                 i--;
             }
         }
@@ -128,7 +128,7 @@ public class MainScene extends Scene {
     public void remove(GameObject obj) {
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
-    }
+    }//不顯示的remove 作為不顯示和判斷用 可以再放計分的地方
 
     //子彈測試更新中
     public void ammoUpdate() {

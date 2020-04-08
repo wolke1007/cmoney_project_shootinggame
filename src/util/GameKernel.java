@@ -25,23 +25,23 @@ public class GameKernel extends Canvas {
         private GameKernel gk;
         private CommandSolver.Builder builder;
 
-        public Builder(GameInterface gi, int limitDeltaTimePerMilli, int millisecPerUpdate) {
+        public Builder(GameInterface gi, long limitDeltaTimePerNano, long nanosecPerUpdate) {
             this.gi = gi;
-            this.gk = new GameKernel(gi, limitDeltaTimePerMilli, millisecPerUpdate);
+            this.gk = new GameKernel(gi, limitDeltaTimePerNano, nanosecPerUpdate);
         }
         
         public Builder initListener(){
-            builder = new CommandSolver.Builder(this.gk, this.gk.millisecPerUpdate);
+            builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate);
             return this;
         }
 
         public Builder initListener(int[][] array) {
-            builder = new CommandSolver.Builder(this.gk, this.gk.millisecPerUpdate, array);
+            builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate, array);
             return this;
         }
         
         public Builder initListener(ArrayList<int[]> cmArray) {
-            builder = new CommandSolver.Builder(this.gk, this.gk.millisecPerUpdate, cmArray);
+            builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate, cmArray);
             return this;
         }
 
@@ -89,14 +89,14 @@ public class GameKernel extends Canvas {
     }
 
     private CommandSolver cs;
-    private final int limitDeltaTimePerMilli;
-    private final int millisecPerUpdate;
+    private final long limitDeltaTimePerNano;
+    private final long nanosecPerUpdate;
     private final GameInterface gi;
 
-    private GameKernel(GameInterface gi, int limitDeltaTimePerMilli, int millisecPerUpdate) {
+    private GameKernel(GameInterface gi, long limitDeltaTimePerNano, long nanosecPerUpdate) {
         this.gi = gi;
-        this.limitDeltaTimePerMilli = limitDeltaTimePerMilli;
-        this.millisecPerUpdate = millisecPerUpdate;
+        this.limitDeltaTimePerNano = limitDeltaTimePerNano;
+        this.nanosecPerUpdate = nanosecPerUpdate;
     }
 
     public void paint() {
@@ -125,7 +125,7 @@ public class GameKernel extends Canvas {
         while (true) {
             long currentTime = System.nanoTime();// 系統當前時間
             long totalTime = currentTime - startTime;// 從開始到現在經過的時間
-            long targetTotalUpdated = totalTime / (millisecPerUpdate * 1000000);// 開始到現在應該更新的次數
+            long targetTotalUpdated = totalTime / (nanosecPerUpdate);// 開始到現在應該更新的次數
             // input
             // input end
             while (passedUpdated < targetTotalUpdated) {// 如果當前經過的次數小於實際應該要更新的次數
@@ -144,7 +144,7 @@ public class GameKernel extends Canvas {
                 timer = currentTime;
             }
 
-            if (limitDeltaTimePerMilli * 1000000 <= currentTime - lastRepaintTime) {
+            if (limitDeltaTimePerNano <= currentTime - lastRepaintTime) {
                 lastRepaintTime = currentTime;
                 paint();
                 paintTimes++;

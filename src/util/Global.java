@@ -32,10 +32,10 @@ public class Global {
     public static final int MAP_HEIGHT = SCREEN_Y;
     // 資料刷新時間
     public static final int UPDATE_TIMES_PER_SEC = 60;// 每秒更新60次遊戲邏輯
-    public static final int MILLISEC_PER_UPDATE = 1000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數
+    public static final int MILLISEC_PER_UPDATE = 1000000000 / UPDATE_TIMES_PER_SEC;// 每一次要花費的毫秒數
     // 畫面更新時間
     public static final int FRAME_LIMIT = 60;
-    public static final int LIMIT_DELTA_TIME = 1000 / FRAME_LIMIT;
+    public static final int LIMIT_DELTA_TIME = 1000000000 / FRAME_LIMIT;
     // 遊戲單位大小
     public static final int UNIT_X = 64;
     public static final int UNIT_Y = 64;
@@ -95,6 +95,7 @@ public class Global {
     public static final int HP_HEIGHT = 30;
     public static final int HP_IMG_W = 555;
     public static final int HP_IMG_H = 74;
+
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
     }
