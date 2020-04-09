@@ -20,8 +20,8 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 1280;
-    public static final int FRAME_Y = 720;
+    public static final int FRAME_X = 1920;
+    public static final int FRAME_Y = 1080;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 角色視野大小
