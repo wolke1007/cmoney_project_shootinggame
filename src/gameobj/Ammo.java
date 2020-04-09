@@ -6,6 +6,7 @@
 package gameobj;
 
 import graph.Graph;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
@@ -38,7 +39,7 @@ public class Ammo extends GameObject {
     //移動分段end
 
     public Ammo(String colliderType, float x, float y, GameObject start, int moveSpeed, String[] path) {
-        super(colliderType, x, y, Global.UNIT_X / 4, Global.UNIT_Y / 4, Global.UNIT_X / 4, Global.UNIT_Y / 4);
+        super(colliderType, x, y, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2);
         setStart(start);
         setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());

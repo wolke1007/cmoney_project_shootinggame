@@ -132,7 +132,7 @@ public class MainScene extends Scene {
         if (Global.mouseState == 1) {
             boolean create = true;
             if (this.ammos == null) {
-                Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_X / Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_Y / Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
+                Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
                 this.ammos.add(ammo);
                 this.allObjects.add(ammo);
                 ammo.setAllObjects(this.allObjects);
@@ -148,7 +148,7 @@ public class MainScene extends Scene {
                     }
                 }
                 if (create) {
-                    Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_X / Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_Y / Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
+                    Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
                     this.ammos.add(ammo);
                     this.allObjects.add(ammo);
                     ammo.setAllObjects(this.allObjects);
@@ -156,7 +156,7 @@ public class MainScene extends Scene {
             }
 //            Global.mouseState++;
         }
-//        System.out.println(this.ammos.size());
+        System.out.println(this.ammos.size());
     }
 
     @Override
