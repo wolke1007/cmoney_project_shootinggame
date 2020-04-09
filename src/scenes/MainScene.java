@@ -120,9 +120,6 @@ public class MainScene extends Scene {
                 i--;
             }
         }
-        for (int i = 0; i < this.enemys.size(); i++) {
-            this.enemys.get(i).update();
-        }
     }
 
     public void remove(GameObject obj) {
@@ -138,6 +135,7 @@ public class MainScene extends Scene {
                 Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_X / 4, this.actor.getCenterY() - Global.UNIT_Y / 4, this.actor, 60, ImagePath.BULLET);
                 this.ammos.add(ammo);
                 this.allObjects.add(ammo);
+                ammo.setAllObjects(this.allObjects);
             } else {
                 for (int i = 0; i < this.ammos.size(); i++) {
                     if (this.ammos.get(i).getIsShootOut() == false) {
@@ -153,15 +151,12 @@ public class MainScene extends Scene {
                     Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_X / 4, this.actor.getCenterY() - Global.UNIT_Y / 4, this.actor, 60, ImagePath.BULLET);
                     this.ammos.add(ammo);
                     this.allObjects.add(ammo);
+                    ammo.setAllObjects(this.allObjects);
                 }
             }
 //            Global.mouseState++;
         }
 //        System.out.println(this.ammos.size());
-        for (int i = 0; i < this.ammos.size(); i++) {
-            this.ammos.get(i).setAllObjects(this.allObjects);
-            this.ammos.get(i).update();
-        }
     }
 
     @Override

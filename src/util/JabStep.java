@@ -25,13 +25,13 @@ public class JabStep {//試探碰撞
     private Graph self;
     private float dx;
     private float dy;
-    private LinkedList<GameObject> allObject;
+    private LinkedList<GameObject> allObjects;
     private float divisor;//切割的等分
 
-    public JabStep(Graph self, float dx, float dy, LinkedList<GameObject> allObject) {
+    public JabStep(Graph self, float dx, float dy, LinkedList<GameObject> allObjects) {
         setSelf(self);
         setDXY(dx, dy);
-        setAllObject(allObject);
+        setAllObjects(allObjects);
         this.divisor = 100;
     }
 
@@ -64,14 +64,14 @@ public class JabStep {//試探碰撞
         setDY(dy);
     }
 
-    public void setAllObject(LinkedList<GameObject> allObject) {
-        this.allObject = allObject;
+    public void setAllObjects(LinkedList<GameObject> allObjects) {
+        this.allObjects = allObjects;
     }
 
-    public void newSet(Graph self, float dx, float dy, LinkedList<GameObject> allObject) {
+    public void newSet(Graph self, float dx, float dy, LinkedList<GameObject> allObjects) {
         setSelf(self);
         setDXY(dx, dy);
-        setAllObject(allObject);
+        setAllObjects(allObjects);
     }
 
     public float getDX() {
@@ -80,17 +80,17 @@ public class JabStep {//試探碰撞
         Graph other;
         for (float i = 0; i < this.divisor; i++) {
             this.self.offset(tmp, 0);
-            for (int k = 0; k < this.allObject.size(); k++) {
-                if (this.allObject.get(k) instanceof Map
-                        || this.allObject.get(k) instanceof Ammo
-                        || this.allObject.get(k) instanceof Actor || this.allObject.get(k) instanceof Enemy) {
+            for (int k = 0; k < this.allObjects.size(); k++) {
+                if (this.allObjects.get(k) instanceof Map
+                        || this.allObjects.get(k) instanceof Ammo
+                        || this.allObjects.get(k) instanceof Actor || this.allObjects.get(k) instanceof Enemy) {
                     continue;
                 }
-                other = this.allObject.get(k).getCollider();
-                if (!(this.allObject.get(k) instanceof Maps)
+                other = this.allObjects.get(k).getCollider();
+                if (!(this.allObjects.get(k) instanceof Maps)
                         && self.intersects(other)) {
                     return go;
-                } else if (this.allObject.get(k) instanceof Maps
+                } else if (this.allObjects.get(k) instanceof Maps
                         && self.innerCollisionToCollision(other)) {
                     return go;
                 }
@@ -106,17 +106,17 @@ public class JabStep {//試探碰撞
         Graph other;
         for (float i = 0; i < this.divisor; i++) {
             this.self.offset(0, tmp);
-            for (int k = 0; k < this.allObject.size(); k++) {
-                if (this.allObject.get(k) instanceof Map
-                        || this.allObject.get(k) instanceof Ammo
-                        || this.allObject.get(k) instanceof Actor|| this.allObject.get(k) instanceof Enemy) {
+            for (int k = 0; k < this.allObjects.size(); k++) {
+                if (this.allObjects.get(k) instanceof Map
+                        || this.allObjects.get(k) instanceof Ammo
+                        || this.allObjects.get(k) instanceof Actor|| this.allObjects.get(k) instanceof Enemy) {
                     continue;
                 }
-                other = this.allObject.get(k).getCollider();
-                if (!(this.allObject.get(k) instanceof Maps)
+                other = this.allObjects.get(k).getCollider();
+                if (!(this.allObjects.get(k) instanceof Maps)
                         && self.intersects(other)) {
                     return go;
-                } else if (this.allObject.get(k) instanceof Maps
+                } else if (this.allObjects.get(k) instanceof Maps
                         && self.innerCollisionToCollision(other)) {
                     return go;
                 }

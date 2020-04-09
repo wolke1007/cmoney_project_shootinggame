@@ -15,7 +15,8 @@ public class Angle {
     private float centerY;
     private float goalCenterX;
     private float goalCenterY;
-    private double angle;
+    private double angle;// up degree 0 turnRight add degree
+    private double normalAngle;
 
     public Angle(float centerX, float centerY, float goalCenterX, float goalCenterY) {
         setCenterX(centerX);
@@ -23,6 +24,7 @@ public class Angle {
         setGoalCenterX(goalCenterX);
         setGoalCenterY(goalCenterY);
         this.angle = 0d;
+        this.normalAngle = 0d;
     }
 
     public void setCenterX(float centerX) {
@@ -66,14 +68,30 @@ public class Angle {
         float dx = getGoalCenterX() - getCenterX();
         float dy = getCenterY() - getGoalCenterY();
         this.angle = Math.atan(Math.abs(dx) / Math.abs(dy)) / Global.PI * 180d;
-        if (dx < 0 && dy > 0) {
+        if (dx < 0 && dy > 0) {//第 2 象限
             this.angle = 360 - this.angle;
-        }
-        if (dx > 0 && dy < 0) {
+        } else if (dx < 0 && dy <= 0) {//第 3 象限
+            this.angle = 180 + this.angle;
+        } else if (dx >= 0 && dy < 0) {//第 4 象限
             this.angle = 180 - this.angle;
         }
-        if (dx < 0 && dy < 0) {
-            this.angle = 180 + this.angle;
+    }
+
+    public double getNormalAngle() {
+        angleATan();
+        return this.normalAngle;
+    }
+
+    public void angleATan() {
+        float dx = getGoalCenterX() - getCenterX();
+        float dy = getCenterY() - getGoalCenterY();
+        this.normalAngle = Math.atan(Math.abs(dy) / Math.abs(dx)) / Global.PI * 180d;
+        if (dx < 0 && dy < 0) {//第 3 象限
+            this.normalAngle = 180 + this.normalAngle;
+        } else if (dx < 0 && dy >= 0) {//第 2 象限
+            this.normalAngle = 180 - this.normalAngle;
+        } else if (dx >= 0 && dy < 0) {//第 4 象限
+            this.normalAngle = 360 - this.normalAngle;
         }
     }
 }

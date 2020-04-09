@@ -140,12 +140,12 @@ public class Ammo extends GameObject {
 
     @Override
     public void update() {
-        if (getIsShootOut()) {//如果是 射擊出去的狀態 或 可以被畫出的狀態 就移動
+        if (getIsShootOut()) {//如果是 射擊出去的狀態 就移動
             float dx = this.averageSpeed.offsetDX();
             float dy = this.averageSpeed.offsetDY();
             float reMoveSpeed = this.averageSpeed.getReMoveSpeed();
             if (this.count == 0) {
-                float d = 3;
+                float d = 4;
                 this.offset(dx * reMoveSpeed / d,
                         dy * reMoveSpeed / d);
                 this.count = 1;
