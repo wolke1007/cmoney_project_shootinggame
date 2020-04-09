@@ -39,10 +39,12 @@ public class Global {
     // 遊戲單位大小
     public static final int UNIT_X = 64;
     public static final int UNIT_Y = 64;
+    private static final int HALF = 2;
+    public static final int UNIT_MIN = 16 / Global.HALF;//子彈 像素
     // 角色於地圖位置
     public static final int DEFAULT_ACTOR_X = FRAME_X / 2 - UNIT_X / 2;
     public static final int DEFAULT_ACTOR_Y = FRAME_Y / 2 - UNIT_Y / 2;
-    // 方向
+    // 方向 
     public static final int UP = 1;
     public static final int DOWN = 2;
     public static final int LEFT = 4;
