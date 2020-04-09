@@ -14,6 +14,7 @@ import gameobj.Enemy;
 import gameobj.GameObject;
 import gameobj.Map;
 import gameobj.Maps;
+import gameobj.Renderer;
 //import gameobj.TestObj;
 import gameobj.View;
 import java.awt.Graphics;
@@ -42,10 +43,14 @@ public class MainScene extends Scene {
     private boolean actorEdgeTouched;
     private boolean viewEdgeTouched;
     private LinkedList<GameObject> allObjects;
+    private Renderer hpFrameRenderer;
+    private Renderer hpRenderer;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.allObjects = new LinkedList<GameObject>();
+        this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
+        this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
     }
 
     @Override
@@ -167,6 +172,19 @@ public class MainScene extends Scene {
     @Override
     public void paint(Graphics g) {
         this.view.paint(g); // 只有出現在 view sawObjects 裡面的要畫出來
+        // Actor HP bar start
+        float hp = this.actor.getHp();
+        if (this.actor.getHp() >= 0f) {
+            int hpFrameX = (int) this.view.getX();
+            int hpFrameY = (int) this.view.getY();
+            float hpRate = hp / 100f;
+            this.hpFrameRenderer.paint(g, hpFrameX, hpFrameY, hpFrameX + Global.HP_FRAME_WIDTH, hpFrameY + Global.HP_FRAME_HEIGHT);
+            this.hpRenderer.paint(g,
+                    hpFrameX + 12, hpFrameY + 8,
+                    (int) (hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY - 7 + Global.HP_HEIGHT,
+                    0, 0, (int) (555 * hpRate), 74);
+        }
+        // Actor HP bar end
     }
 
     @Override
