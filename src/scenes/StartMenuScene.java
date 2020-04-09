@@ -23,7 +23,6 @@ public class StartMenuScene extends Scene {
     private Renderer menuRenderer;
     private Renderer startBtnRenderer;
     private Renderer recordBtnRenderer;
-    private int goToNextScene;
 
     public StartMenuScene(SceneController sceneController) {
         super(sceneController);
@@ -84,19 +83,19 @@ public class StartMenuScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        this.menuRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y, 0, 0, 1280, 719); // 背景圖
+        this.menuRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
         Button btn;
         btn = new startButton();
         if (cursorInBtn(btn)) {
-            this.startBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom, 0, 0, 440, 152); // 開始按鈕
+            this.startBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom); // 開始按鈕
         } else {
-            this.startBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10, 0, 0, 440, 152); // 開始按鈕
+            this.startBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10); // 開始按鈕
         }
         btn = new scoreButton();
         if (cursorInBtn(btn)) {
-            this.recordBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom, 0, 0, 167, 105); // 歷史紀錄按鈕
+            this.recordBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom); // 歷史紀錄按鈕
         } else {
-            this.recordBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10, 0, 0, 167, 105); // 歷史紀錄按鈕
+            this.recordBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10); // 歷史紀錄按鈕
         }
     }
 

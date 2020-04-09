@@ -94,12 +94,12 @@ public class Renderer {
     }
 //    private int testAngle = 0;
 
-    public void paint(Graphics g, int gameX1, int gameY1, int gameX2, int gameY2, int imageX1, int imageY1, int imageX2, int imageY2) {
+    public void paint(Graphics g, int gameX1, int gameY1, int gameX2, int gameY2) {
         gameX1 = gameX1 - (int) Global.viewX;
         gameY1 = gameY1 - (int) Global.viewY;
         gameX2 = gameX2 - (int) Global.viewX;
         gameY2 = gameY2 - (int) Global.viewY;
         g.drawImage(img, gameX1, gameY1, gameX2, gameY2,
-                imageX1, imageY1, imageX2, imageY2, null); 
+                0, 0, this.img.getWidth(), this.img.getHeight(), null); 
     }
 }
