@@ -145,7 +145,7 @@ public class Ammo extends GameObject {
             float dy = this.averageSpeed.offsetDY();
             float reMoveSpeed = this.averageSpeed.getReMoveSpeed();
             if (this.count == 0) {
-                float d = 4;
+                float d = 2.5f;
                 this.offset(dx * reMoveSpeed / d,
                         dy * reMoveSpeed / d);
                 this.count = 1;
