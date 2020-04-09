@@ -101,10 +101,16 @@ public class View extends GameObject {
 
     @Override
     public void update() {
-        super.offsetX(focusOn.x - this.width / 2);
-        super.offsetY(focusOn.y - this.height / 2);
-        Global.viewX = super.x;
-        Global.viewY = super.y;
+        float x = focusOn.x - this.width / 2;
+        float y = focusOn.y - this.height / 2;
+        if(x >= 0 && x + Global.VIEW_WIDTH <= (Global.MAP_WIDTH * Math.sqrt(Global.MAP_QTY))){
+            super.offsetX(x);
+            Global.viewX = super.x;
+        }
+        if (y>=0 && y + Global.VIEW_HEIGHT <= (Global.MAP_HEIGHT * Math.sqrt(Global.MAP_QTY))){
+            super.offsetY(y);
+            Global.viewY = super.y;
+        }
     }
 
     @Override
