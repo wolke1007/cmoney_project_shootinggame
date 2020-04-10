@@ -17,6 +17,7 @@ import gameobj.Maps;
 import gameobj.Renderer;
 //import gameobj.TestObj;
 import gameobj.View;
+import java.awt.Color;
 import java.awt.Graphics;
 //import java.awt.event.KeyEvent;
 import util.Delay;
@@ -68,7 +69,8 @@ public class MainScene extends Scene {
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
 //        mg.genSequenceMap();
         mg.genRandomMap();
-        this.allObjects.add(maps);
+        this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
+        this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();
         this.actor.setAllObjects(this.allObjects);
     }
@@ -105,7 +107,7 @@ public class MainScene extends Scene {
             }
         }
     }
-
+    
     //敵人測試更新中
     public void enemyUpdate() {
         if (this.enemys.size() < Global.ENEMY_LIMIT && Global.random(20)) {
@@ -162,16 +164,42 @@ public class MainScene extends Scene {
         }
 //        System.out.println(this.ammos.size());
     }
-
-    @Override
-    public void sceneEnd() {
-        Global.log("main scene end");
+    
+    private void paintSmallMap(Graphics g){
+        int smallMapWidth = 200;
+        int smallMapHeight = 200;
+        int unitWidth = 5;
+        int unitHeight = 5;
+        double mapWidthRatio = smallMapWidth / (Global.MAP_WIDTH * Math.sqrt(Global.MAP_QTY));
+        double mapHeightRatio = smallMapHeight / (Global.MAP_HEIGHT * Math.sqrt(Global.MAP_QTY));
+        int smallMapX = Global.SCREEN_X - smallMapWidth;
+        g.setColor(Color.GREEN);
+        g.drawRect(smallMapX, 0, smallMapWidth, smallMapHeight); // 小地圖外框
+        g.setColor(Color.GREEN);
+        int actorOnSmallMapX = smallMapX + (int)Math.ceil((double)this.actor.getX() * mapWidthRatio);
+        actorOnSmallMapX = actorOnSmallMapX + unitWidth >= Global.SCREEN_X ? Global.SCREEN_X  - unitWidth: actorOnSmallMapX;
+        int actorOnSmallMapY = (int)((double)this.actor.getY() * mapHeightRatio);
+        actorOnSmallMapY = actorOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight: actorOnSmallMapY;
+        g.drawRect(actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
+        // 畫敵人 start
+        for(int i = 0; i < this.allObjects.size(); i++){
+            if(this.allObjects.get(i) instanceof Enemy){
+                int enemyX = (int)this.allObjects.get(i).getX();
+                int enemyY = (int)this.allObjects.get(i).getY();
+                g.setColor(Color.CYAN);
+                int enemyOnSmallMapX = smallMapX + (int)((double)enemyX * mapWidthRatio);
+                enemyOnSmallMapX = enemyOnSmallMapX + unitWidth >= Global.SCREEN_X ? Global.SCREEN_X  - unitWidth: enemyOnSmallMapX;
+                int enemyOnSmallMapY = (int)((double)enemyY * mapHeightRatio);
+                enemyOnSmallMapY = enemyOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight: enemyOnSmallMapY;
+                g.drawRect(enemyOnSmallMapX, enemyOnSmallMapY, unitWidth, unitHeight); // 敵人
+            }
+        }
+        // 畫敵人 end
+        g.setColor(Color.BLACK);
+        
     }
-
-    @Override
-    public void paint(Graphics g) {
-        this.view.paint(g); // 只有出現在 view sawObjects 裡面的要畫出來
-        // Actor HP bar start
+    
+    private void paintHPbar(Graphics g){
         float hp = this.actor.getHp();
         if (this.actor.getHp() >= 0f) {
             int hpFrameX = (int) this.view.getX();
@@ -183,7 +211,18 @@ public class MainScene extends Scene {
                     (int) (hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY - 7 + Global.HP_HEIGHT,
                     0, 0, (int) (555 * hpRate), 74);
         }
-        // Actor HP bar end
+    }
+
+    @Override
+    public void sceneEnd() {
+        Global.log("main scene end");
+    }
+
+    @Override
+    public void paint(Graphics g) {
+        this.view.paint(g);
+        paintHPbar(g);
+        paintSmallMap(g);
     }
 
     @Override
