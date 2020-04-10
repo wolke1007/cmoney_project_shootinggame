@@ -40,10 +40,10 @@ public class StartMenuScene extends Scene {
 
     public class startButton extends Button {
         public startButton(){
-            super.left = Global.SCREEN_X / 2 - 110;
+            super.left = Global.SCREEN_X / 2 - 150;
             super.top = Global.SCREEN_Y - 90;
             super.right = Global.SCREEN_X / 2 + 110;
-            super.bottom = Global.SCREEN_Y - 30;
+            super.bottom = Global.SCREEN_Y - 40;
         }
     }
 
@@ -52,7 +52,7 @@ public class StartMenuScene extends Scene {
             super.left = 30;
             super.top = Global.SCREEN_Y - 90;
             super.right = 167;
-            super.bottom = Global.SCREEN_Y - 30;
+            super.bottom = Global.SCREEN_Y - 40;
         }
     }
 
@@ -87,15 +87,15 @@ public class StartMenuScene extends Scene {
         Button btn;
         btn = new startButton();
         if (cursorInBtn(btn)) {
-            this.startBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom); // 開始按鈕
+            this.startBtnRenderer.paint(g, btn.left + 10, btn.top + 10, btn.right + 10, btn.bottom + 10); // 開始按鈕
         } else {
-            this.startBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10); // 開始按鈕
+            this.startBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom); // 開始按鈕
         }
         btn = new scoreButton();
         if (cursorInBtn(btn)) {
-            this.recordBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom); // 歷史紀錄按鈕
+            this.recordBtnRenderer.paint(g, btn.left + 10, btn.top + 10, btn.right + 10, btn.bottom + 10); // 歷史紀錄按鈕
         } else {
-            this.recordBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10); // 歷史紀錄按鈕
+            this.recordBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom); // 歷史紀錄按鈕
         }
     }
 
@@ -129,7 +129,7 @@ public class StartMenuScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (state == CommandSolver.MouseState.PRESSED) {
+            if (state == CommandSolver.MouseState.PRESSED || state == CommandSolver.MouseState.CLICKED) {
                 if(cursorInBtn(new startButton())){
                     // Enter main scene
                     StartMenuScene.super.sceneController.changeScene(new MainScene(StartMenuScene.super.sceneController));
