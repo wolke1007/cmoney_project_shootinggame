@@ -70,7 +70,7 @@ public class MainScene extends Scene {
         mg.genRandomMap();
         this.allObjects.add(maps);
         addAllMapsToAllObjects();
-        this.allObjects.add(this.actor);
+        this.actor.setAllObjects(this.allObjects);
     }
 
     private void addAllMapsToAllObjects() {
@@ -91,7 +91,6 @@ public class MainScene extends Scene {
         this.view.update();
         Global.mapMouseX = Global.mouseX + Global.viewX;
         Global.mapMouseY = Global.mouseY + Global.viewY;
-        this.actor.setAllObjects(this.allObjects);
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
 //        this.enemy.update();//測試中
