@@ -24,7 +24,7 @@ public abstract class GameObject {
     protected float x;
     protected float y;
     protected int paintPriority;
-
+    
     public GameObject(String colliderType, float x, float y, int width, int height, int colliderWidth, int colliderHeight) {
         switch (colliderType) {
             case "circle":
@@ -40,7 +40,7 @@ public abstract class GameObject {
         setY(y);
         this.paintPriority = 10; // 數字越大越後面畫，目前設計為 10 最大，同個數字則表示誰先誰後畫都沒差
     }
-
+    
     public float getX() {
         return this.x;
     }

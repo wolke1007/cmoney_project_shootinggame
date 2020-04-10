@@ -92,7 +92,6 @@ public class Move {
         if (destPoint.getY() + this.obj.getGraph().top() <= Global.mapEdgeUp) {
             y = Global.mapEdgeUp - this.obj.getGraph().top() - 2;  //  造成在牆壁邊抖動，且隨機會人卡進牆中
         }
-        Global.log("this.obj.getGraph().bottom() " + this.obj.getGraph().bottom());
         if (destPoint.getY() + this.obj.getGraph().bottom() >= Global.mapEdgeDown) {
             y = Global.mapEdgeDown - this.obj.getGraph().bottom() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
         }
