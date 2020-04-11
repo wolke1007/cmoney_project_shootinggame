@@ -8,7 +8,7 @@ package scenes;
 import controllers.ImagePath;
 import controllers.SceneController;
 import gameobj.Actor;
-import gameobj.Renderer;
+import renderer.Renderer;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import util.CommandSolver;

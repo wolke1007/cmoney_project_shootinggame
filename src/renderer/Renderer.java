@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameobj;
+package renderer;
 
 import controllers.ImagePath;
 import controllers.ImageResourceController;
@@ -42,7 +42,7 @@ public class Renderer {
         this.irc = ImageResourceController.getInstance();
 //        try {
 //            img = ImageIO.read(getClass().getResource(src));
-        img = this.irc.tryGetImage(src);
+        this.img = this.irc.tryGetImage(src);
 //            this.testImg = ImageIO.read(getClass().getResource("/resources/Actor_sample.png"));
 //        } catch (IOException ex) {
 //        }
@@ -60,11 +60,19 @@ public class Renderer {
     public Renderer(int[] steps, int delay, String src) {
         this.irc = ImageResourceController.getInstance();
 //            img = ImageIO.read(getClass().getResource(src));
-        img = this.irc.tryGetImage(src);
+        this.img = this.irc.tryGetImage(src);
         this.steps = steps;//預留步伐接口 //暫時不用
         setDir(0);//待修改
 //        setRenderDelay(delay);
     }//多載 建構子 當前版本
+
+    public Renderer() {
+        this.irc = ImageResourceController.getInstance();
+    }//多載 建構子 不先指定圖片的版本
+    
+    public void setImage(String src){
+        this.img = this.irc.tryGetImage(src);
+    }
 
     public void update() {
 //        if (delay.isTrig()) {

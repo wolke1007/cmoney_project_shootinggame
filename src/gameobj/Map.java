@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.Renderer;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import util.Global;

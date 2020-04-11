@@ -32,4 +32,5 @@ public class ImagePath {
         ImagePath.ROOT + "/score_history.png"};
     public static final String[] HIGH_SCORE = {ImagePath.ROOT + "/high_score.png"};
     public static final String[] COMMON_BUTTON = {ImagePath.ROOT + "/back.png"};
+    public static final String[] BLOOD = {ImagePath.ROOT + "/low_hp.png", ImagePath.ROOT + "/take_damage.png"};
 }

@@ -50,7 +50,7 @@ public class MapGenerator {
                 Map newMap = this.mapPool.get(poolIndex++);
                 // 設定完 x, y 後再加入，不然預設地圖位置皆為 0, 0
                 newMap.setX((float) Global.MAP_WIDTH * x);
-                newMap.setY((float) (float) Global.MAP_HEIGHT * y);
+                newMap.setY((float) Global.MAP_HEIGHT * y);
                 this.maps.add(newMap);
             }
         }
@@ -68,7 +68,7 @@ public class MapGenerator {
                 Map newMap = this.mapPool.get(poolIndex++);
                 // 設定完 x, y 後再加入，不然預設地圖位置皆為 0, 0
                 newMap.setX((float) Global.MAP_WIDTH * x);
-                newMap.setY((float) (float) Global.MAP_HEIGHT * y);
+                newMap.setY((float) Global.MAP_HEIGHT * y);
                 this.maps.add(newMap);
             }
         }
@@ -107,7 +107,7 @@ public class MapGenerator {
             // 固定用第一張背景圖
             Map newMap = new Map(ImagePath.BACKGROUND[0], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
-            pattern_3(newMap);
+            pattern_4(newMap);
             // 新增元素(障礙物、建築物等等)進該地圖中 end
             this.mapPool.add(newMap);
         }

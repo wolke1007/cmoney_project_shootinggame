@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.RendererToRotate;
 import graph.Graph;
 import graph.Rect;
 import java.awt.Color;

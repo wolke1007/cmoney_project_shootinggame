@@ -14,7 +14,7 @@ import gameobj.Enemy;
 import gameobj.GameObject;
 import gameobj.Map;
 import gameobj.Maps;
-import gameobj.Renderer;
+import renderer.Renderer;
 //import gameobj.TestObj;
 import gameobj.View;
 import java.awt.Color;
@@ -64,7 +64,7 @@ public class MainScene extends Scene {
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = (int) Math.sqrt(Global.MAP_QTY);
-        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
+        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH , mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
         Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
