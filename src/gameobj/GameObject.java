@@ -11,7 +11,6 @@ import graph.Rect;
 import java.awt.Graphics;
 import util.Global;
 import java.awt.Color;
-import util.Point;
 
 /**
  *
@@ -91,15 +90,6 @@ public abstract class GameObject {
         this.y += dy;
         this.graph.offset(dx, dy);
         this.collider.offset(dx, dy);
-    }
-
-    public void offset(Point dest) {
-        Global.log("offset x: " + dest.getX());
-        Global.log("offset y: " + dest.getY());
-        this.x += dest.getX();
-        this.y += dest.getY();
-        this.graph.offset(dest.getX(), dest.getY());
-        this.collider.offset(dest.getX(), dest.getY());
     }
 
     public void offsetX(float x) {
