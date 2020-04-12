@@ -28,6 +28,7 @@ public class HighScoreScene extends Scene {
     private ScoreCalculator scoreCal;
     private ArrayList<Record> scoreList;
     private int printLimit;
+    private final String[] gameMode = {"endless", "campaign", "saving"};
     Button backBtn;
     Button endlessBtn;
     Button campaignBtn;
@@ -100,7 +101,7 @@ public class HighScoreScene extends Scene {
     public void sceneBegin() {
         // 播放背景音樂
         this.scoreCal = ScoreCalculator.getInstance();
-        this.scoreList = this.scoreCal.getHistory("endless");
+        this.scoreList = this.scoreCal.getHistory(this.gameMode[0]);
         Global.log("this.scoreList: " + this.scoreList);
     }
 
@@ -178,13 +179,16 @@ public class HighScoreScene extends Scene {
         g.drawString("Score", this.endlessBtn.left + 400, this.endlessBtn.bottom + 50);
         g.drawString("Date", this.endlessBtn.left + 800, this.endlessBtn.bottom + 50);
         g.setColor(Color.BLACK);
-        if(this.scoreList != null && this.scoreType.equals("endless")){
+        if(this.scoreList == null){
+            return;
+        }
+        if(this.scoreType.equals(HighScoreScene.this.gameMode[0])){
             paintEndlessScore(g);
         }
-        if(this.scoreList != null && this.scoreType.equals("campaign")){
+        if(this.scoreType.equals(HighScoreScene.this.gameMode[1])){
             
         }
-        if(this.scoreList != null && this.scoreType.equals("saving")){
+        if(this.scoreType.equals(HighScoreScene.this.gameMode[2])){
             
         }
     }
@@ -226,7 +230,15 @@ public class HighScoreScene extends Scene {
                 }
                 if (cursorInBtn(new EndlessButton())) {
                     // Enter score history scene
-                    HighScoreScene.this.scoreType = "endless";
+                    HighScoreScene.this.scoreType = HighScoreScene.this.gameMode[0];
+                }
+                if (cursorInBtn(new CampaignButton())) {
+                    // Enter score history scene
+                    HighScoreScene.this.scoreType = HighScoreScene.this.gameMode[1];
+                }
+                if (cursorInBtn(new SavingButton())) {
+                    // Enter score history scene
+                    HighScoreScene.this.scoreType = HighScoreScene.this.gameMode[2];
                 }
             }
         }
