@@ -68,7 +68,7 @@ public class Actor extends GameObject {
         
         @Override
         public void update(){
-            if(Actor.this.hp <= 99){
+            if(Actor.this.hp <= 15){
                 this.x = (int)Global.viewX;
                 this.y = (int)Global.viewY;
                 this.run = true;

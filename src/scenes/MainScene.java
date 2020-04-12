@@ -39,16 +39,13 @@ public class MainScene extends Scene {
     private Actor actor;
     private ArrayList<Ammo> ammos;
     private ArrayList<Enemy> enemys;
-    private Delay delay;
-    private Delay changeSceneDelay;
     private Maps maps;
     private View view;
-    private boolean actorEdgeTouched;
-    private boolean viewEdgeTouched;
     private LinkedList<GameObject> allObjects;
     private Renderer hpFrameRenderer;
     private Renderer hpRenderer;
     private ScoreCalculator scoreCal;
+    private boolean gameover;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -59,6 +56,7 @@ public class MainScene extends Scene {
 
     @Override
     public void sceneBegin() {
+        // 開始背景音樂
         this.ammos = new ArrayList<>();
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
@@ -70,13 +68,15 @@ public class MainScene extends Scene {
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-//        mg.genSequenceMap();
-        mg.genRandomMap();
+//        mg.genSequenceMap();  // 產生一樣的地圖(沒有障礙物的十字路口)
+        mg.genRandomMap(); // 產生隨機地圖
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
         this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();
         this.actor.setAllObjects(this.allObjects);
-        this.scoreCal = new ScoreCalculator();
+        this.scoreCal = ScoreCalculator.getInstance();
+        this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
+        this.gameover = false;
     }
 
     private void addAllMapsToAllObjects() {
@@ -109,6 +109,10 @@ public class MainScene extends Scene {
             } else {
                 this.view.removeSeen(this.allObjects.get(i));
             }
+        }
+        if(this.actor.getHp() <= 99f && !this.gameover){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+            this.scoreCal.addInHistoryIfInTop(5);
+            MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
         }
     }
 
@@ -220,12 +224,15 @@ public class MainScene extends Scene {
 
     private void paintScore(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
-        g.drawString(String.valueOf("Score: " + this.scoreCal.getTotalScore()), Global.HP_FRAME_WIDTH + 10, 30);
+        g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
     }
 
     @Override
     public void sceneEnd() {
+        // 停止背景音樂
         Global.log("main scene end");
+        Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
+        Global.viewY = 0f;
     }
 
     @Override
