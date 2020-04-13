@@ -58,9 +58,9 @@ public class Global {
     public static final int[] STEPS_WALK_SHORT = {0, 2};
     public static final int[] STEPS_WALK_ACTOR = null;
     //敵人上限
-    public static final int ENEMY_LIMIT = 0;
+    public static final int ENEMY_LIMIT = 15;
     //碰撞判斷    
-    public static final String[] EXCLUDE = {"Map"}; 
+    public static final String[] EXCLUDE = {"Map","Ammo"}; 
     public static final String[] INNER = {"Maps"};
 // 圖片庫    
 //    public static final String BACKGROUND_1 = "/resources/background1.png";
