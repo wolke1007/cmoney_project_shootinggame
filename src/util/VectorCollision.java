@@ -36,7 +36,7 @@ public class VectorCollision {
         setSelf(self);
         setDXY(dx, dy);
         setAllObjects(allObjects);
-        this.setDivisor(100);
+        this.setDivisor(50);
         this.offsetDX = this.offsetDY = 0;
         this.multiple = 3f;
     }

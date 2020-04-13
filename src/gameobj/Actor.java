@@ -43,19 +43,22 @@ public class Actor extends GameObject {
     private Move movement;
 
     private int moveDistance;
-    
-    private abstract class Effect{
+
+    private abstract class Effect {
+
         public String imagePath = "";
         public int x;
         public int y;
         public int width;
         public int height;
         public boolean run = false;
+
         public abstract void update();
+
         public abstract void paint(Graphics g);
     }
-    
-    private class LowHpEffect extends Effect{
+
+    private class LowHpEffect extends Effect {
 
         public LowHpEffect(int x, int y, int width, int height) {
             this.imagePath = ImagePath.BLOOD[0];
@@ -65,27 +68,27 @@ public class Actor extends GameObject {
             this.height = height;
             this.run = false;
         }
-        
+
         @Override
-        public void update(){
-            if(Actor.this.hp <= 15){
-                this.x = (int)Global.viewX;
-                this.y = (int)Global.viewY;
+        public void update() {
+            if (Actor.this.hp <= 15) {
+                this.x = (int) Global.viewX;
+                this.y = (int) Global.viewY;
                 this.run = true;
-            }else{
+            } else {
                 this.run = false;
             }
-            
+
         }
-        
+
         @Override
-        public void paint(Graphics g){
+        public void paint(Graphics g) {
             Actor.this.renderer.setImage(this.imagePath);
             Actor.this.renderer.paint(g, this.x, this.y, this.x + this.width, this.y + this.height);
         }
     }
-    
-    private class DeadEffect extends Effect{
+
+    private class DeadEffect extends Effect {
 
         public DeadEffect(int x, int y, int width, int height) {
             this.imagePath = ImagePath.BLOOD[0];
@@ -95,26 +98,25 @@ public class Actor extends GameObject {
             this.height = height;
             this.run = false;
         }
-        
+
         @Override
-        public void update(){
-            if(Actor.this.hp <= 99){
-                this.x = (int)Actor.this.x;
-                this.y = (int)Actor.this.y;
+        public void update() {
+            if (Actor.this.hp <= 99) {
+                this.x = (int) Actor.this.x;
+                this.y = (int) Actor.this.y;
                 this.run = true;
-            }else{
+            } else {
                 this.run = false;
             }
-            
+
         }
-        
+
         @Override
-        public void paint(Graphics g){
+        public void paint(Graphics g) {
             Actor.this.renderer.setImage(this.imagePath);
             Actor.this.renderer.paint(g, this.x, this.y, this.x + this.width, this.y + this.height);
         }
     }
-    
 
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
@@ -129,7 +131,7 @@ public class Actor extends GameObject {
         setHpPoint(100);
         setType("Actor");
         this.effects = new LinkedList();
-        this.effects.add(new LowHpEffect((int)this.x, (int)this.y, Global.SCREEN_X, Global.SCREEN_Y));
+        this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y));
     }//多載 建構子 當前版本
 
     //位置資訊
@@ -224,7 +226,7 @@ public class Actor extends GameObject {
     public void setDir(int dir) {
         this.dir = dir;
     }
-    
+
     public void setMovementPressedStatus(int dir, boolean status) {
         this.movement.setPressedStatus(dir, status);
     }
@@ -233,16 +235,16 @@ public class Actor extends GameObject {
         this.setAngle();
         this.rotateRenderer.setAngle(this.getAngle());
     }
-    
-    private void updateEffects(){
-        for(int i = 0; i < this.effects.size(); i++){
+
+    private void updateEffects() {
+        for (int i = 0; i < this.effects.size(); i++) {
             this.effects.get(i).update();
         }
     }
-    
-    private void paintEffects(Graphics g){
-        for(int i = 0; i < this.effects.size(); i++){
-            if(this.effects.get(i).run){
+
+    private void paintEffects(Graphics g) {
+        for (int i = 0; i < this.effects.size(); i++) {
+            if (this.effects.get(i).run) {
                 this.effects.get(i).paint(g);
             }
         }
