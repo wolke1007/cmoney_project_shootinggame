@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.Renderer;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import util.Global;
@@ -29,6 +30,7 @@ public class Map extends GameObject {
         this.renderer = r(src);
         this.barriers = new ArrayList<Barrier>();
         this.buildings = new ArrayList<Building>();
+        setType("Map");
     }
 
     public static Renderer r(String src) {
@@ -38,7 +40,7 @@ public class Map extends GameObject {
     public ArrayList<Barrier> getBarriers() {
         return this.barriers;
     }
-    
+
     public ArrayList<Building> getBuildings() {
         return this.buildings;
     }

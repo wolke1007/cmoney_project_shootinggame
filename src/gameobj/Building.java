@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.Renderer;
 import java.awt.Graphics;
 
 /**
@@ -20,7 +21,8 @@ public class Building extends GameObject {
     public Building(String colliderType, float x, float y, int width, int height, String[] path, int imgIndex) {//src => Global.Barrier
         super(colliderType, x, y, width, height, width, height);
         this.renderer = new Renderer(new int[0], 0, path[imgIndex]);
-        super.paintPriority =2;
+        super.paintPriority = 2;
+        setType("Building");
     }
 
     @Override
@@ -33,7 +35,7 @@ public class Building extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int)super.x, (int)super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height(), 0, 0 , 353, 239);
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height(), 0, 0, 353, 239);
     }
 
 }

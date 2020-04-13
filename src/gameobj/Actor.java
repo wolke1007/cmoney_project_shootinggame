@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.RendererToRotate;
 import controllers.ImagePath;
 import graph.Rect;
 import java.awt.Color;
@@ -51,6 +52,7 @@ public class Actor extends GameObject {
         this.moveDistance = 10;
         super.paintPriority = 0;
         setHpPoint(100);
+        setType("Actor");
     }//多載 建構子 當前版本
 
     //位置資訊
@@ -66,7 +68,7 @@ public class Actor extends GameObject {
         return this.moveDistance;
     }
     //位置資訊end
-    
+
     private void setHpPoint(float dividend) {
         this.hpBarWidth = this.width();
         this.dividend = this.hpBarWidth / dividend;

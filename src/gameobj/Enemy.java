@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.RendererToRotate;
 import graph.Graph;
 import graph.Rect;
 import java.awt.Color;
@@ -51,6 +52,7 @@ public class Enemy extends GameObject {
         setMoveSpeedDetail(moveSpeed);
         this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), this.target.getCenterX(), this.target.getCenterY(), 50, true);
         super.paintPriority = 1;
+        this.setType("Enemy");
     }
 
     //自己的資料

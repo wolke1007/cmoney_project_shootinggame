@@ -14,7 +14,7 @@ import util.Global;
 import java.awt.Color;
 import java.awt.Graphics;
 import gameobj.Actor;
-import gameobj.Renderer;
+import renderer.Renderer;
 
 /**
  *

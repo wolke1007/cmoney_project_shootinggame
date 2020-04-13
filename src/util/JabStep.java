@@ -83,7 +83,7 @@ public class JabStep {//試探碰撞
             for (int k = 0; k < this.allObjects.size(); k++) {
                 if (this.allObjects.get(k) instanceof Map
                         || this.allObjects.get(k) instanceof Ammo
-                        || this.allObjects.get(k) instanceof Actor 
+                        || this.allObjects.get(k) instanceof Actor
                         || this.allObjects.get(k) instanceof Enemy) {
                     continue;
                 }

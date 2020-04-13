@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.RendererToRotate;
 import graph.Graph;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -47,6 +48,7 @@ public class Ammo extends GameObject {
         this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), Global.mapMouseX, Global.mapMouseY, 90, true);//30為子彈的移動距離值
         setIsShootOut(true);
         super.paintPriority = 1; // 畫圖順序僅次於主角，此順序可討論
+        setType("Ammo");
     }
 
     public void setStart(GameObject start) {

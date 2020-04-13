@@ -61,8 +61,8 @@ public class MainScene extends Scene {
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-//        mg.genSequenceMap();
-        mg.genRandomMap();
+        mg.genSequenceMap();
+//        mg.genRandomMap();
         this.allObjects.add(maps);
         addAllMapsToAllObjects();
         this.allObjects.add(this.actor);
@@ -89,7 +89,6 @@ public class MainScene extends Scene {
         this.actor.setAllObjects(this.allObjects);
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
-//        this.enemy.update();//測試中
         for (int i = 0; i < this.allObjects.size(); i++) {
             this.allObjects.get(i).update();
             if (this.view.isCollision(this.allObjects.get(i))) {
@@ -156,7 +155,7 @@ public class MainScene extends Scene {
             }
 //            Global.mouseState++;
         }
-        System.out.println(this.ammos.size());
+//        System.out.println(this.ammos.size());
     }
 
     @Override

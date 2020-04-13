@@ -107,7 +107,7 @@ public class MapGenerator {
             // 固定用第一張背景圖
             Map newMap = new Map(ImagePath.BACKGROUND[0], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
-            pattern_3(newMap);
+            pattern_1(newMap);
             // 新增元素(障礙物、建築物等等)進該地圖中 end
             this.mapPool.add(newMap);
         }

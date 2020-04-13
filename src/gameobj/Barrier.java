@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.Renderer;
 import java.awt.Graphics;
 
 /**
@@ -21,6 +22,7 @@ public class Barrier extends GameObject {
         super(colliderType, x, y, width, height, width, height);
         this.renderer = new Renderer(new int[0], 0, path[imgIndex]);
         super.paintPriority = 2;
+        setType("Barrier");
     }
 
     @Override
@@ -33,7 +35,7 @@ public class Barrier extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int)super.x, (int)super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height(), 0, 0 , 64, 64);
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height(), 0, 0, 64, 64);
     }
 
 }

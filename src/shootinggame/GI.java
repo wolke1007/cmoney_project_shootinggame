@@ -6,7 +6,7 @@
 package shootinggame;
 
 import controllers.SceneController;
-import gameobj.Renderer;
+import renderer.Renderer;
 import java.awt.Graphics;
 import scenes.MainScene;
 import util.CommandSolver;

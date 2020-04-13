@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.Renderer;
 import controllers.ImagePath;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -48,6 +49,7 @@ public class View extends GameObject {
         this.focusOn = focusOn;
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
+        setType("View");
     }
 
     public void saw(GameObject obj) {
@@ -128,9 +130,9 @@ public class View extends GameObject {
                         this.hpFrameRenderer.paint(g, hpFrameX, hpFrameY, hpFrameX + Global.HP_FRAME_WIDTH, hpFrameY + Global.HP_FRAME_HEIGHT, 0, 0, Global.HP_FRAME_IMG_W, Global.HP_FRAME_IMG_H);
                         this.hpRenderer.paint(g,
                                 hpFrameX + 12, hpFrameY + 8,
-                                (int)(hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY -7 + Global.HP_HEIGHT,
+                                (int) (hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY - 7 + Global.HP_HEIGHT,
                                 0, 0,
-                                (int)(Global.HP_IMG_W * hpRate), Global.HP_IMG_H);
+                                (int) (Global.HP_IMG_W * hpRate), Global.HP_IMG_H);
                     }
                 }
             }
