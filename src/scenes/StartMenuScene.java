@@ -5,6 +5,8 @@
  */
 package scenes;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import controllers.ImagePath;
 import controllers.SceneController;
 import renderer.Renderer;
