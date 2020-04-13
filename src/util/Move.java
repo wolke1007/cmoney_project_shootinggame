@@ -84,37 +84,6 @@ public class Move {
         }
     }
 
-    public Point correctedDest(Point destPoint) {
-        float x = 0;
-        float y = 0;
-//        Global.log("point.getX(): " + point.getX());
-//        Global.log("point.getY(): " + point.getY());
-//        Global.log("this.obj.getX(): " + this.obj.getX());
-//        Global.log("this.obj.getY(): " + this.obj.getY());
-//        Global.log("Global.mapEdgeRight: " + Global.mapEdgeRight);
-//        Global.log("Global.mapEdgeLeft: " + Global.mapEdgeLeft);
-//        Global.log("Global.mapEdgeUp: " + Global.mapEdgeUp);
-//        Global.log("Global.mapEdgeDown: " + Global.mapEdgeDown);
-        if (destPoint.getX() + this.obj.getGraph().right() >= Global.mapEdgeRight) {
-            x = Global.mapEdgeRight - this.obj.getGraph().right() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
-        }
-        if (destPoint.getX() + this.obj.getGraph().left() <= Global.mapEdgeLeft) {
-            x = Global.mapEdgeLeft - this.obj.getGraph().left() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
-        }
-        if (destPoint.getY() + this.obj.getGraph().top() <= Global.mapEdgeUp) {
-            y = Global.mapEdgeUp - this.obj.getGraph().top() - 2;  //  造成在牆壁邊抖動，且隨機會人卡進牆中
-        }
-        Global.log("this.obj.getGraph().bottom() " + this.obj.getGraph().bottom());
-        if (destPoint.getY() + this.obj.getGraph().bottom() >= Global.mapEdgeDown) {
-            y = Global.mapEdgeDown - this.obj.getGraph().bottom() - 2; //  造成在牆壁邊抖動，且隨機會人卡進牆中
-        }
-        if (x == 0 && y == 0) {
-            Global.log("move return null");
-            return null;
-        }
-        return new Point((int) x, (int) y);
-    }
-
     public void setPressedStatus(int pressedBtn, boolean status) {
         switch (pressedBtn) {
             case Global.UP:

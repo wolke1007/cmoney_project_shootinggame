@@ -14,8 +14,11 @@ import gameobj.Enemy;
 import gameobj.GameObject;
 import gameobj.Map;
 import gameobj.Maps;
+import renderer.Renderer;
 //import gameobj.TestObj;
 import gameobj.View;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 //import java.awt.event.KeyEvent;
 import util.Delay;
@@ -25,6 +28,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import util.MapGenerator;
+import util.ScoreCalculator;
 
 /**
  *
@@ -35,37 +39,44 @@ public class MainScene extends Scene {
     private Actor actor;
     private ArrayList<Ammo> ammos;
     private ArrayList<Enemy> enemys;
-    private Delay delay;
-    private Delay changeSceneDelay;
     private Maps maps;
     private View view;
-    private boolean actorEdgeTouched;
-    private boolean viewEdgeTouched;
     private LinkedList<GameObject> allObjects;
+    private Renderer hpFrameRenderer;
+    private Renderer hpRenderer;
+    private ScoreCalculator scoreCal;
+    private boolean gameover;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.allObjects = new LinkedList<GameObject>();
+        this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
+        this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
     }
 
     @Override
     public void sceneBegin() {
+        // 開始背景音樂
         this.ammos = new ArrayList<>();
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = (int) Math.sqrt(Global.MAP_QTY);
-        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
+        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH , mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
         Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-        mg.genSequenceMap();
-//        mg.genRandomMap();
-        this.allObjects.add(maps);
+//        mg.genSequenceMap();  // 產生一樣的地圖(沒有障礙物的十字路口)
+        mg.genRandomMap(); // 產生隨機地圖
+        this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
+        this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();
-        this.allObjects.add(this.actor);
+        this.actor.setAllObjects(this.allObjects);
+        this.scoreCal = ScoreCalculator.getInstance();
+        this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
+        this.gameover = false;
     }
 
     private void addAllMapsToAllObjects() {
@@ -86,7 +97,6 @@ public class MainScene extends Scene {
         this.view.update();
         Global.mapMouseX = Global.mouseX + Global.viewX;
         Global.mapMouseY = Global.mouseY + Global.viewY;
-        this.actor.setAllObjects(this.allObjects);
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
         for (int i = 0; i < this.allObjects.size(); i++) {
@@ -98,6 +108,10 @@ public class MainScene extends Scene {
             } else {
                 this.view.removeSeen(this.allObjects.get(i));
             }
+        }
+        if(this.actor.getHp() <= 99f && !this.gameover){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+            this.scoreCal.addInHistoryIfInTop(5);
+            MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
         }
     }
 
@@ -116,6 +130,7 @@ public class MainScene extends Scene {
             if (this.enemys.get(i).getHp() <= 1) {
                 remove(this.enemys.get(i));
                 this.enemys.remove(this.enemys.get(i)); // 真實的刪除
+                this.scoreCal.addScore(); // 計算分數
                 i--;
             }
         }
@@ -158,14 +173,73 @@ public class MainScene extends Scene {
 //        System.out.println(this.ammos.size());
     }
 
+    private void paintSmallMap(Graphics g) {
+        int smallMapWidth = 200;
+        int smallMapHeight = 200;
+        int unitWidth = 5;
+        int unitHeight = 5;
+        double mapWidthRatio = smallMapWidth / (Global.MAP_WIDTH * Math.sqrt(Global.MAP_QTY));
+        double mapHeightRatio = smallMapHeight / (Global.MAP_HEIGHT * Math.sqrt(Global.MAP_QTY));
+        int smallMapX = Global.SCREEN_X - smallMapWidth;
+        g.setColor(Color.GREEN);
+        g.drawRect(smallMapX, 0, smallMapWidth, smallMapHeight); // 小地圖外框
+        g.setColor(Color.GREEN);
+        int actorOnSmallMapX = smallMapX + (int) Math.ceil((double) this.actor.getX() * mapWidthRatio);
+        actorOnSmallMapX = actorOnSmallMapX + unitWidth >= Global.SCREEN_X ? Global.SCREEN_X - unitWidth : actorOnSmallMapX;
+        int actorOnSmallMapY = (int) ((double) this.actor.getY() * mapHeightRatio);
+        actorOnSmallMapY = actorOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight : actorOnSmallMapY;
+        g.drawRect(actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
+        // 畫敵人 start
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            if (this.allObjects.get(i) instanceof Enemy) {
+                int enemyX = (int) this.allObjects.get(i).getX();
+                int enemyY = (int) this.allObjects.get(i).getY();
+                g.setColor(Color.CYAN);
+                int enemyOnSmallMapX = smallMapX + (int) ((double) enemyX * mapWidthRatio);
+                enemyOnSmallMapX = enemyOnSmallMapX + unitWidth >= Global.SCREEN_X ? Global.SCREEN_X - unitWidth : enemyOnSmallMapX;
+                int enemyOnSmallMapY = (int) ((double) enemyY * mapHeightRatio);
+                enemyOnSmallMapY = enemyOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight : enemyOnSmallMapY;
+                g.drawRect(enemyOnSmallMapX, enemyOnSmallMapY, unitWidth, unitHeight); // 敵人
+            }
+        }
+        // 畫敵人 end
+        g.setColor(Color.BLACK);
+
+    }
+
+    private void paintHPbar(Graphics g) {
+        float hp = this.actor.getHp();
+        if (this.actor.getHp() >= 0f) {
+            int hpFrameX = (int) this.view.getX();
+            int hpFrameY = (int) this.view.getY();
+            float hpRate = hp / 100f;
+            this.hpFrameRenderer.paint(g, hpFrameX, hpFrameY, hpFrameX + Global.HP_FRAME_WIDTH, hpFrameY + Global.HP_FRAME_HEIGHT);
+            this.hpRenderer.paint(g,
+                    hpFrameX + 12, hpFrameY + 8,
+                    (int) (hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY - 7 + Global.HP_HEIGHT,
+                    0, 0, (int) (555 * hpRate), 74);
+        }
+    }
+
+    private void paintScore(Graphics g) {
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
+        g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
+    }
+
     @Override
     public void sceneEnd() {
+        // 停止背景音樂
         Global.log("main scene end");
+        Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
+        Global.viewY = 0f;
     }
 
     @Override
     public void paint(Graphics g) {
-        this.view.paint(g); // 只有出現在 view sawObjects 裡面的要畫出來
+        this.view.paint(g);
+        paintHPbar(g);
+        paintSmallMap(g);
+        paintScore(g);
     }
 
     @Override

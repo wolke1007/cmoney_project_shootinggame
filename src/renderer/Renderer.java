@@ -42,7 +42,7 @@ public class Renderer {
         this.irc = ImageResourceController.getInstance();
 //        try {
 //            img = ImageIO.read(getClass().getResource(src));
-        img = this.irc.tryGetImage(src);
+        this.img = this.irc.tryGetImage(src);
 //            this.testImg = ImageIO.read(getClass().getResource("/resources/Actor_sample.png"));
 //        } catch (IOException ex) {
 //        }
@@ -60,11 +60,19 @@ public class Renderer {
     public Renderer(int[] steps, int delay, String src) {
         this.irc = ImageResourceController.getInstance();
 //            img = ImageIO.read(getClass().getResource(src));
-        img = this.irc.tryGetImage(src);
+        this.img = this.irc.tryGetImage(src);
         this.steps = steps;//預留步伐接口 //暫時不用
         setDir(0);//待修改
 //        setRenderDelay(delay);
     }//多載 建構子 當前版本
+
+    public Renderer() {
+        this.irc = ImageResourceController.getInstance();
+    }//多載 建構子 不先指定圖片的版本
+    
+    public void setImage(String src){
+        this.img = this.irc.tryGetImage(src);
+    }
 
     public void update() {
 //        if (delay.isTrig()) {
@@ -94,12 +102,21 @@ public class Renderer {
     }
 //    private int testAngle = 0;
 
-    public void paint(Graphics g, int gameX1, int gameY1, int gameX2, int gameY2, int imageX1, int imageY1, int imageX2, int imageY2) {
+    public void paint(Graphics g, int gameX1, int gameY1, int gameX2, int gameY2) {
         gameX1 = gameX1 - (int) Global.viewX;
         gameY1 = gameY1 - (int) Global.viewY;
         gameX2 = gameX2 - (int) Global.viewX;
         gameY2 = gameY2 - (int) Global.viewY;
         g.drawImage(img, gameX1, gameY1, gameX2, gameY2,
-                imageX1, imageY1, imageX2, imageY2, null); 
+                0, 0, this.img.getWidth(), this.img.getHeight(), null); 
+    }
+    
+    public void paint(Graphics g, int gameX1, int gameY1, int gameX2, int gameY2, int imgX1, int imgY1, int imgX2, int imgY2) {
+        gameX1 = gameX1 - (int) Global.viewX;
+        gameY1 = gameY1 - (int) Global.viewY;
+        gameX2 = gameX2 - (int) Global.viewX;
+        gameY2 = gameY2 - (int) Global.viewY;
+        g.drawImage(img, gameX1, gameY1, gameX2, gameY2,
+                imgX1, imgY1, imgX2, imgY2, null); 
     }
 }

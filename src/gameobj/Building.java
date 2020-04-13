@@ -35,7 +35,7 @@ public class Building extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height(), 0, 0, 353, 239);
+        this.renderer.paint(g, (int)super.x, (int)super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height());
     }
 
 }

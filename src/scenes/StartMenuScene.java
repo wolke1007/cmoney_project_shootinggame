@@ -5,9 +5,10 @@
  */
 package scenes;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import controllers.ImagePath;
 import controllers.SceneController;
-import gameobj.Actor;
 import renderer.Renderer;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -20,16 +21,19 @@ import util.Global;
  */
 public class StartMenuScene extends Scene {
 
-    private Renderer menuRenderer;
+    private Renderer backgroundRenderer;
     private Renderer startBtnRenderer;
     private Renderer recordBtnRenderer;
-    private int goToNextScene;
+    private Button startBtn;
+    private Button highScoreBtn;
 
     public StartMenuScene(SceneController sceneController) {
         super(sceneController);
-        this.menuRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[0]);
+        this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[0]);
         this.startBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[1]);
         this.recordBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[2]);
+        this.startBtn = new startButton();
+        this.highScoreBtn = new scoreButton();
     }
 
     public abstract class Button {
@@ -41,10 +45,10 @@ public class StartMenuScene extends Scene {
 
     public class startButton extends Button {
         public startButton(){
-            super.left = Global.SCREEN_X / 2 - 110;
+            super.left = Global.SCREEN_X / 2 - 150;
             super.top = Global.SCREEN_Y - 90;
             super.right = Global.SCREEN_X / 2 + 110;
-            super.bottom = Global.SCREEN_Y - 30;
+            super.bottom = Global.SCREEN_Y - 40;
         }
     }
 
@@ -53,7 +57,7 @@ public class StartMenuScene extends Scene {
             super.left = 30;
             super.top = Global.SCREEN_Y - 90;
             super.right = 167;
-            super.bottom = Global.SCREEN_Y - 30;
+            super.bottom = Global.SCREEN_Y - 40;
         }
     }
 
@@ -84,19 +88,16 @@ public class StartMenuScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        this.menuRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y, 0, 0, 1280, 719); // 背景圖
-        Button btn;
-        btn = new startButton();
-        if (cursorInBtn(btn)) {
-            this.startBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom, 0, 0, 440, 152); // 開始按鈕
+        this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
+        if (cursorInBtn(this.startBtn)) {
+            this.startBtnRenderer.paint(g, this.startBtn.left + 10, this.startBtn.top + 10, this.startBtn.right + 10, this.startBtn.bottom + 10); // 開始按鈕
         } else {
-            this.startBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10, 0, 0, 440, 152); // 開始按鈕
+            this.startBtnRenderer.paint(g, this.startBtn.left, this.startBtn.top, this.startBtn.right, this.startBtn.bottom); // 開始按鈕
         }
-        btn = new scoreButton();
-        if (cursorInBtn(btn)) {
-            this.recordBtnRenderer.paint(g, btn.left, btn.top, btn.right, btn.bottom, 0, 0, 167, 105); // 歷史紀錄按鈕
+        if (cursorInBtn(this.highScoreBtn)) {
+            this.recordBtnRenderer.paint(g, this.highScoreBtn.left + 10, this.highScoreBtn.top + 10, this.highScoreBtn.right + 10, this.highScoreBtn.bottom + 10); // 歷史紀錄按鈕
         } else {
-            this.recordBtnRenderer.paint(g, btn.left + 10, btn.top - 10, btn.right + 10, btn.bottom - 10, 0, 0, 167, 105); // 歷史紀錄按鈕
+            this.recordBtnRenderer.paint(g, this.highScoreBtn.left, this.highScoreBtn.top, this.highScoreBtn.right, this.highScoreBtn.bottom); // 歷史紀錄按鈕
         }
     }
 
@@ -137,6 +138,7 @@ public class StartMenuScene extends Scene {
                 }
                 if(cursorInBtn(new scoreButton())){
                     // Enter score history scene
+                    StartMenuScene.super.sceneController.changeScene(new HighScoreScene(StartMenuScene.super.sceneController));
                 }
             }
         }

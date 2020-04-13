@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import util.Delay;
 import util.Global;
 import util.Move;
-import util.Point;
 
 /**
  *
@@ -24,8 +23,6 @@ public class View extends GameObject {
 
     private float moveSpeed; // per frame
     private float actMoveSpeed;
-    private Renderer hpFrameRenderer;
-    private Renderer hpRenderer;
 
     private float width;
     private float height;
@@ -47,9 +44,6 @@ public class View extends GameObject {
         sawObjects = new LinkedList<GameObject>();
         this.moveDistance = 10;
         this.focusOn = focusOn;
-        this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
-        this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
-        setType("View");
     }
 
     public void saw(GameObject obj) {
@@ -107,10 +101,16 @@ public class View extends GameObject {
 
     @Override
     public void update() {
-        super.offsetX(focusOn.x - this.width / 2);
-        super.offsetY(focusOn.y - this.height / 2);
-        Global.viewX = super.x;
-        Global.viewY = super.y;
+        float x = focusOn.x - this.width / 2;
+        float y = focusOn.y - this.height / 2;
+        if(x >= 0 && x + Global.VIEW_WIDTH <= (Global.MAP_WIDTH * Math.sqrt(Global.MAP_QTY))){
+            super.offsetX(x);
+            Global.viewX = super.x;
+        }
+        if (y>=0 && y + Global.VIEW_HEIGHT <= (Global.MAP_HEIGHT * Math.sqrt(Global.MAP_QTY))){
+            super.offsetY(y);
+            Global.viewY = super.y;
+        }
     }
 
     @Override
@@ -121,19 +121,6 @@ public class View extends GameObject {
                 GameObject paintObj = this.sawObjects.get(i);
                 if (paintObj.paintPriority == p) {
                     paintObj.paint(g);
-                }
-                if (paintObj instanceof Actor) {
-                    if (((Actor) paintObj).getHp() >= 0) {
-                        int hpFrameX = (int) super.x;
-                        int hpFrameY = (int) super.y;
-                        float hpRate = ((Actor) paintObj).getHp() / 100f;
-                        this.hpFrameRenderer.paint(g, hpFrameX, hpFrameY, hpFrameX + Global.HP_FRAME_WIDTH, hpFrameY + Global.HP_FRAME_HEIGHT, 0, 0, Global.HP_FRAME_IMG_W, Global.HP_FRAME_IMG_H);
-                        this.hpRenderer.paint(g,
-                                hpFrameX + 12, hpFrameY + 8,
-                                (int) (hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY - 7 + Global.HP_HEIGHT,
-                                0, 0,
-                                (int) (Global.HP_IMG_W * hpRate), Global.HP_IMG_H);
-                    }
                 }
             }
         }
