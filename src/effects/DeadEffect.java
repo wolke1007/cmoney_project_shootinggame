@@ -50,7 +50,7 @@ public class DeadEffect implements Effect {
 
     @Override
     public void update() {
-        if (this.actor.getHp() <= 100f) {
+        if (this.actor.getHp() <= 0f) {
             this.run = true;
         } else {
             this.run = false;
