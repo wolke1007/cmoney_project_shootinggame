@@ -35,16 +35,12 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
     public DeadEffect(int width, int height, Actor actor) {
         this.width = width;
         this.height = height;
-        this.run = true;
+        this.run = false;
         this.actor = actor;
         this.handRenderer = new Renderer();
         this.bloodRenderer = new Renderer();
         this.dragDistance = 0;
         this.delay = new Delay(1);
-    }
-
-    public void setRun(boolean status) {
-        this.run = status;
     }
 
     @Override
@@ -54,6 +50,7 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
 
     @Override
     public void update() {
+        this.run = true;
     }
 
     @Override
