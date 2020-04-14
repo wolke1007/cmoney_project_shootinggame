@@ -25,9 +25,6 @@ public class VectorCollision {
     private LinkedList<GameObject> allObjects;
 
     //被取移動距離
-    private double offsetDX;
-    private double offsetDY;
-
     private float multiple;
 
     private float divisor;//細分預判的等份數 //暫時不一定用到
@@ -37,8 +34,7 @@ public class VectorCollision {
         setDXY(dx, dy);
         setAllObjects(allObjects);
         this.setDivisor(50);
-        this.offsetDX = this.offsetDY = 0;
-        this.multiple = 3f;
+        setMultiple(3f);
     }
 
     public void setSelf(GameObject self) {
@@ -66,6 +62,10 @@ public class VectorCollision {
         this.divisor = divisor;
     }
 
+    public void setMultiple(float multiple) {
+        this.multiple = multiple;
+    }
+
     public void newSet(float dx, float dy, LinkedList<GameObject> allObjects) {
         setDXY(dx, dy);
         setAllObjects(allObjects);
@@ -79,7 +79,7 @@ public class VectorCollision {
         for (int i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObjects.size(); k++) {
                 another = this.allObjects.get(k);
-                if (another == this.self) {//跳過自己 不判斷
+                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
                     continue;
                 }
                 boolean escape = false;
@@ -117,7 +117,7 @@ public class VectorCollision {
         for (int i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObjects.size(); k++) {
                 another = this.allObjects.get(k);
-                if (another == this.self) {//跳過自己 不判斷
+                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
                     continue;
                 }
                 boolean escape = false;
@@ -139,7 +139,6 @@ public class VectorCollision {
                 for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
                     if (!(another.getType().equals(Global.INNER[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
-
                         this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
                         return;
                     }

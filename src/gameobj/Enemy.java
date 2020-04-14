@@ -58,28 +58,6 @@ public class Enemy extends GameObject {
         this.setType("Enemy");
     }
 
-    //自己的資料
-    private void setHpPoint(float dividend) {
-        this.hpBarWidth = this.width();
-        this.dividend = this.hpBarWidth / dividend;
-    }
-
-    public boolean subtractHp() {
-        this.hpBarWidth -= this.dividend;
-        return true;
-    }
-
-    public boolean increaseHp() {
-        this.hpBarWidth += this.dividend;
-        return true;
-    }
-
-    public float getHp() {
-        this.hp = this.hpBarWidth / this.dividend;
-        return this.hp;
-    }
-    //自己的資料end
-
     //目標資料
     public void setTarget(GameObject target) {
         this.target = target;
@@ -154,40 +132,43 @@ public class Enemy extends GameObject {
             this.setAngle();
             this.renderer.setAngle(this.getAngle());
             setAverageSpeed();
-//            this.vectorMove.setDXY(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
-            this.offset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
+            attackTarget();//待修改 暫時扣不到血
+            this.vectorMove.newSet(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY(), this.allObjects);
+//            this.offset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
+        } else {
+
         }
-        GameObject another;
-        for (int i = 0; i < this.allObjects.size(); i++) {
-            another = this.allObjects.get(i);
-            boolean escape = false;
-            if (another == this) {//跳過自己 不判斷
-                continue;
-            }
-            for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
-                if (another.getType().equals(Global.EXCLUDE[z])) {
-                    escape = true;
-                }
-            }
-            if (escape) {
-                continue;
-            }
-            for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
-                if (another.getType().equals(Global.INNER[z])
-                        && this.getCollider().innerCollisionToCollision(another.getCollider())) {
-                    this.offset(this.getCollider().getDx(), this.getCollider().getDy());
-                    return;
-                }
-            }
-            for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
-                if (!(another.getType().equals(Global.INNER[z]))
-                        && this.getCollider().intersects(another.getCollider())) {
-                    attackTarget();
-                    this.offset(this.getCollider().getDx() * 3, this.getCollider().getDy() * 3);
-                    return;
-                }
-            }
-        }
+//        GameObject another;
+//        for (int i = 0; i < this.allObjects.size(); i++) {
+//            another = this.allObjects.get(i);
+//            boolean escape = false;
+//            if (another == this) {//跳過自己 不判斷
+//                continue;
+//            }
+//            for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
+//                if (another.getType().equals(Global.EXCLUDE[z])) {
+//                    escape = true;
+//                }
+//            }
+//            if (escape) {
+//                continue;
+//            }
+//            for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
+//                if (another.getType().equals(Global.INNER[z])
+//                        && this.getCollider().innerCollisionToCollision(another.getCollider())) {
+//                    this.offset(this.getCollider().getDx(), this.getCollider().getDy());
+//                    return;
+//                }
+//            }
+//            for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
+//                if (!(another.getType().equals(Global.INNER[z]))
+//                        && this.getCollider().intersects(another.getCollider())) {
+//                    attackTarget();
+//                    this.offset(this.getCollider().getDx() * 3, this.getCollider().getDy() * 3);
+//                    return;
+//                }
+//            }
+//        }
     }
 
     public void attackTarget() {
