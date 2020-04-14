@@ -44,6 +44,7 @@ public abstract class GameObject {
         }
         setX(x);
         setY(y);
+        this.setHpPoint(Integer.MAX_VALUE);
         this.paintPriority = 10; // 數字越大越後面畫，目前設計為 10 最大，同個數字則表示誰先誰後畫都沒差
     }
 
@@ -69,6 +70,10 @@ public abstract class GameObject {
         this.hpBarWidth += this.dividend;
         return true;
     }
+    public float getHpBarWidth(){
+        return this.hpBarWidth;
+    }
+    
 
     public float getHp() {
         this.hp = this.hpBarWidth / this.dividend;

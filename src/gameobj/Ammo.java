@@ -159,22 +159,21 @@ public class Ammo extends GameObject {
         Graph other;
         for (int i = 0; i < this.allObjects.size(); i++) {
             GameObject obj = this.allObjects.get(i);
-            if (obj instanceof Map
-                    || obj instanceof Ammo
-                    || obj instanceof Actor) {
+            if (obj.getType().equals("Map")
+                    || obj.getType().equals("Ammo")
+                    || obj.getType().equals("Actor")) {
                 continue;
             }
             other = this.allObjects.get(i).getCollider();
-            if (!(obj instanceof Maps) && this.getCollider().intersects(other)) {
-                if (obj instanceof Enemy && this.getCollider().intersects(other)) {
-                    Enemy tmp = (Enemy) obj;
-                    tmp.subtractHp();
+            if (!(obj.getType().equals("Maps")) && this.getCollider().intersects(other)) {
+                if (obj.getType().equals("Enemy") && this.getCollider().intersects(other)) {
+                    obj.subtractHp();
                 }
                 setIsShootOut(false);
-                this.setXY(-50, -50);
-            } else if (obj instanceof Maps && this.getCollider().innerCollisionToCollision(other)) {
+                this.setXY(-1000, -1000);
+            } else if (obj.getType().equals(" Maps") && this.getCollider().innerCollisionToCollision(other)) {
                 setIsShootOut(false);
-                this.setXY(-50, -50);
+                this.setXY(-1000, -1000);
             }
         }
     }

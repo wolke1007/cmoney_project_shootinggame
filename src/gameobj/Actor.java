@@ -33,9 +33,6 @@ public class Actor extends GameObject {
     private boolean isStand;
     private View view;
     private LinkedList<GameObject> allObjects;
-    private float hp;
-    private float hpBarWidth;
-    private float dividend;
     private LinkedList<Effect> effects;
 
     private Delay moveDelay;

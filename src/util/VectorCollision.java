@@ -28,6 +28,8 @@ public class VectorCollision {
     private float multiple;
 
     private float divisor;//細分預判的等份數 //暫時不一定用到
+    
+    private boolean isHurt;
 
     public VectorCollision(GameObject self, float dx, float dy, LinkedList<GameObject> allObjects) {
         setSelf(self);
@@ -35,6 +37,7 @@ public class VectorCollision {
         setAllObjects(allObjects);
         this.setDivisor(50);
         setMultiple(3f);
+        setIsHurt(false);
     }
 
     public void setSelf(GameObject self) {
@@ -64,6 +67,13 @@ public class VectorCollision {
 
     public void setMultiple(float multiple) {
         this.multiple = multiple;
+    }
+    
+    public void setIsHurt(boolean isHurt){
+        this.isHurt = isHurt;
+    }
+    public boolean getIsHurt(){
+        return this.isHurt;
     }
 
     public void newSet(float dx, float dy, LinkedList<GameObject> allObjects) {
@@ -102,6 +112,9 @@ public class VectorCollision {
                     if (!(another.getType().equals(Global.INNER[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
+                        if(getIsHurt()){
+                            another.subtractHp();
+                        }
                         return;
                     }
                 }
@@ -140,6 +153,9 @@ public class VectorCollision {
                     if (!(another.getType().equals(Global.INNER[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
+                        if(getIsHurt()){
+                            another.subtractHp();
+                        }
                         return;
                     }
                 }
