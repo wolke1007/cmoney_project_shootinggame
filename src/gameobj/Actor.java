@@ -33,9 +33,6 @@ public class Actor extends GameObject {
     private boolean isStand;
     private View view;
     private LinkedList<GameObject> allObjects;
-    private float hp;
-    private float hpBarWidth;
-    private float dividend;
     private LinkedList<Effect> effects;
 
     private Delay moveDelay;
@@ -76,26 +73,6 @@ public class Actor extends GameObject {
         return this.moveDistance;
     }
     //位置資訊end
-
-    private void setHpPoint(float dividend) {
-        this.hpBarWidth = this.width();
-        this.dividend = this.hpBarWidth / dividend;
-    }
-
-    public boolean subtractHp() {
-        this.hpBarWidth -= this.dividend;
-        return true;
-    }
-
-    public boolean increaseHp() {
-        this.hpBarWidth += this.dividend;
-        return true;
-    }
-
-    public float getHp() {
-        this.hp = this.hpBarWidth / this.dividend;
-        return this.hp;
-    }
 
     //角度計算
     public void setAngle() {

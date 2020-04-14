@@ -25,9 +25,6 @@ public class Enemy extends GameObject {
 
     private RendererToRotate renderer;//旋轉圖渲染器
     //血量控制
-    private float hp;//hp的總量
-    private float hpBarWidth;
-    private float dividend;
     private GameObject target;
     private Delay targetHp;
     //血量控制end
@@ -51,34 +48,13 @@ public class Enemy extends GameObject {
         setHpPoint(hp);
         setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());
-        setMoveSpeedDetail(moveSpeed);
+        setMoveSpeedDetail(moveSpeed);//裡面有 扣血 & 移動 的時間設定
         this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), this.target.getCenterX(), this.target.getCenterY(), 55, true);
         super.paintPriority = 1;
         this.vectorMove = new VectorCollision(this, 0, 0, null);
+        this.vectorMove.setMultiple(4f);
         this.setType("Enemy");
     }
-
-    //自己的資料
-    private void setHpPoint(float dividend) {
-        this.hpBarWidth = this.width();
-        this.dividend = this.hpBarWidth / dividend;
-    }
-
-    public boolean subtractHp() {
-        this.hpBarWidth -= this.dividend;
-        return true;
-    }
-
-    public boolean increaseHp() {
-        this.hpBarWidth += this.dividend;
-        return true;
-    }
-
-    public float getHp() {
-        this.hp = this.hpBarWidth / this.dividend;
-        return this.hp;
-    }
-    //自己的資料end
 
     //目標資料
     public void setTarget(GameObject target) {
@@ -112,7 +88,7 @@ public class Enemy extends GameObject {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
         this.moveDelay = new Delay(this.actMoveSpeed);
-        this.targetHp = new Delay(60);
+        this.targetHp = new Delay(10);
         this.targetHp.start();
         this.moveDelay.start();
     }
@@ -154,54 +130,17 @@ public class Enemy extends GameObject {
             this.setAngle();
             this.renderer.setAngle(this.getAngle());
             setAverageSpeed();
-//            this.vectorMove.setDXY(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
-            this.offset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
-        }
-        GameObject another;
-        for (int i = 0; i < this.allObjects.size(); i++) {
-            another = this.allObjects.get(i);
-            boolean escape = false;
-            if (another == this) {//跳過自己 不判斷
-                continue;
-            }
-            for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
-                if (another.getType().equals(Global.EXCLUDE[z])) {
-                    escape = true;
-                }
-            }
-            if (escape) {
-                continue;
-            }
-            for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
-                if (another.getType().equals(Global.INNER[z])
-                        && this.getCollider().innerCollisionToCollision(another.getCollider())) {
-                    this.offset(this.getCollider().getDx(), this.getCollider().getDy());
-                    return;
-                }
-            }
-            for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
-                if (!(another.getType().equals(Global.INNER[z]))
-                        && this.getCollider().intersects(another.getCollider())) {
-                    attackTarget();
-                    this.offset(this.getCollider().getDx() * 3, this.getCollider().getDy() * 3);
-                    return;
-                }
-            }
-        }
-    }
-
-    public void attackTarget() {
-        if (this.targetHp.isTrig()// 每 1 秒觸發一次
-                && this.target instanceof Actor
-                && this.getCollider().intersects(this.target.getCollider())) {
-            Actor tmp = (Actor) this.target;
-            tmp.subtractHp();
+            if (this.targetHp.isTrig()) {
+                this.vectorMove.setIsHurt(true);
+            }//移動前 扣血 啟動
+            this.vectorMove.newSet(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY(), this.allObjects);
+            this.vectorMove.setIsHurt(false);
         }
     }
 
     @Override
     public void update() {
-        if (this.hp >= 1) {
+        if (this.getHp() >= 1) {
             if (this.moveDelay.isTrig()) {
                 move();
             }
@@ -219,7 +158,7 @@ public class Enemy extends GameObject {
         this.renderer.paint(g);
         g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.width(), 4);
         g.setColor(Color.RED);
-        g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.hpBarWidth, 4);
+        g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.getHpBarWidth(), 4);
         g.setColor(Color.BLACK);
     }
 

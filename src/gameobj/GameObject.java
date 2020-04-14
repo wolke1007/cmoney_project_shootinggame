@@ -24,6 +24,13 @@ public abstract class GameObject {
     protected float y;
     protected int paintPriority;
     private String type;
+    //血量
+    private float hp;
+    private float hpBarWidth;
+    private float dividend;
+
+    //血量end
+
     public GameObject(String colliderType, float x, float y, int width, int height, int colliderWidth, int colliderHeight) {
         switch (colliderType) {
             case "circle":
@@ -37,14 +44,40 @@ public abstract class GameObject {
         }
         setX(x);
         setY(y);
+        this.setHpPoint(Integer.MAX_VALUE);
         this.paintPriority = 10; // 數字越大越後面畫，目前設計為 10 最大，同個數字則表示誰先誰後畫都沒差
     }
-    public void setType(String type){
+
+    public void setType(String type) {
         this.type = type;
     }
-    
+
     public String getType() {
         return this.type;
+    }
+
+    public void setHpPoint(float dividend) {
+        this.hpBarWidth = this.width();
+        this.dividend = this.hpBarWidth / dividend;
+    }
+
+    public boolean subtractHp() {
+        this.hpBarWidth -= this.dividend;
+        return true;
+    }
+
+    public boolean increaseHp() {
+        this.hpBarWidth += this.dividend;
+        return true;
+    }
+    public float getHpBarWidth(){
+        return this.hpBarWidth;
+    }
+    
+
+    public float getHp() {
+        this.hp = this.hpBarWidth / this.dividend;
+        return this.hp;
     }
 
     public float getX() {

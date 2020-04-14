@@ -21,7 +21,7 @@ public class ImagePath {
         ImagePath.ROOT + "/background3.png"};
 
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
-    public static final String[] ACTOR1 = {ImagePath.ROOT + "/actor.gif", ImagePath.ROOT + "/clawsmark.png"};
+    public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/clawsmark.png"};
     public static final String[] BULLET = {ImagePath.ROOT + "/bullet_fire_small.png"};
     public static final String[] ENEMY = {ImagePath.ROOT + "/zombie.gif"};
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};

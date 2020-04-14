@@ -33,7 +33,6 @@ public class Move {
         this.leftPressed = false;
         this.rightPressed = false;
         this.obj = obj;
-//        this.goal = new JabStep(this.obj.getCollider(), 0, 0, null);
         this.vectorMove = new VectorCollision(this.obj, 0, 0, null);
     }
 
@@ -42,43 +41,27 @@ public class Move {
 //        int distance = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.UP: // go up
-//                goal.newSet(this.obj.getCollider(), 0, -distance, list);
-//                this.obj.offset(0, goal.getDY());
                 this.vectorMove.newSet(0, -distance, list);
                 break;
             case Global.DOWN: //  go down
-//                goal.newSet(this.obj.getCollider(), 0, distance, list);
-//                this.obj.offset(0, goal.getDY());
                 this.vectorMove.newSet(0, distance, list);
                 break;
             case Global.LEFT: // go left
-//                goal.newSet(this.obj.getCollider(), -distance, 0, list);
-//                this.obj.offset(goal.getDX(), 0);
                 this.vectorMove.newSet(-distance, 0, list);
                 break;
             case Global.RIGHT: // go right
-//                goal.newSet(this.obj.getCollider(), distance, 0, list);
-//                this.obj.offset(goal.getDX(), 0);
                 this.vectorMove.newSet(distance, 0, list);
                 break;
             case Global.UP_LEFT: // go up-left
-//                goal.newSet(this.obj.getCollider(), -distance, -distance, list);
-//                this.obj.offset(goal.getDX(), goal.getDY());
                 this.vectorMove.newSet(-distance, -distance, list);
                 break;
             case Global.UP_RIGHT: // go up-right
-//                goal.newSet(this.obj.getCollider(), distance, -distance, list);
-//                this.obj.offset(goal.getDX(), goal.getDY());
                 this.vectorMove.newSet(distance, -distance, list);
                 break;
             case Global.DOWN_LEFT: //  go down-left
-//                goal.newSet(this.obj.getCollider(), -distance, distance, list);
-//                this.obj.offset(goal.getDX(), goal.getDY());
                 this.vectorMove.newSet(-distance, distance, list);
                 break;
             case Global.DOWN_RIGHT: // go down-right
-//                goal.newSet(this.obj.getCollider(), distance, distance, list);
-//                this.obj.offset(goal.getDX(), goal.getDY());
                 this.vectorMove.newSet(distance, distance, list);
                 break;
         }

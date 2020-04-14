@@ -127,7 +127,7 @@ public class MainScene extends Scene {
                     Global.mapEdgeRight),
                     Global.random(Global.mapEdgeUp,
                             Global.mapEdgeDown), 5,
-                    this.actor, 59, ImagePath.ENEMY);
+                    this.actor, 58, ImagePath.ENEMY);
             this.enemys.add(enemy);
             this.allObjects.add(enemy);
             enemy.setAllObject(this.allObjects);
