@@ -68,8 +68,8 @@ public class MainScene extends Scene {
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-//        mg.genSequenceMap();  // 產生一樣的地圖(沒有障礙物的十字路口)
-        mg.genRandomMap(); // 產生隨機地圖
+        mg.genSequenceMap();  // 產生一樣的地圖(沒有障礙物的十字路口)
+//        mg.genRandomMap(); // 產生隨機地圖
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
         this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();
@@ -99,7 +99,6 @@ public class MainScene extends Scene {
         Global.mapMouseY = Global.mouseY + Global.viewY;
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
-//        this.enemy.update();//測試中
         for (int i = 0; i < this.allObjects.size(); i++) {
             this.allObjects.get(i).update();
             if (this.view.isCollision(this.allObjects.get(i))) {
@@ -110,7 +109,7 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-        if(this.actor.getHp() <= 99f && !this.gameover){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        if(this.actor.getHp() <= 0f && !this.gameover){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
             this.scoreCal.addInHistoryIfInTop(5);
             MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
         }
@@ -126,6 +125,7 @@ public class MainScene extends Scene {
                     this.actor, 59, ImagePath.ENEMY);
             this.enemys.add(enemy);
             this.allObjects.add(enemy);
+            enemy.setAllObject(this.allObjects);
         }
         for (int i = 0; i < this.enemys.size(); i++) {
             if (this.enemys.get(i).getHp() <= 1) {

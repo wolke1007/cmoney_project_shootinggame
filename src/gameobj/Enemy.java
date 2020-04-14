@@ -15,6 +15,7 @@ import util.Angle;
 import util.AverageSpeed;
 import util.Delay;
 import util.Global;
+import util.VectorCollision;
 
 /**
  *
@@ -41,6 +42,7 @@ public class Enemy extends GameObject {
     //移動分段
     private Angle angle;
     private AverageSpeed averageSpeed;
+    private VectorCollision vectorMove;
     //移動分段end
 
     public Enemy(String colliderType, float x, float y, float hp, GameObject target, int moveSpeed, String[] path) {
@@ -50,8 +52,10 @@ public class Enemy extends GameObject {
         setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());
         setMoveSpeedDetail(moveSpeed);
-        this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), this.target.getCenterX(), this.target.getCenterY(), 50, true);
+        this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), this.target.getCenterX(), this.target.getCenterY(), 55, true);
         super.paintPriority = 1;
+        this.vectorMove = new VectorCollision(this, 0, 0, null);
+        this.setType("Enemy");
     }
 
     //自己的資料
@@ -108,7 +112,7 @@ public class Enemy extends GameObject {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
         this.moveDelay = new Delay(this.actMoveSpeed);
-        this.targetHp = new Delay(120);
+        this.targetHp = new Delay(60);
         this.targetHp.start();
         this.moveDelay.start();
     }
@@ -135,6 +139,7 @@ public class Enemy extends GameObject {
 
     public void setAllObject(LinkedList<GameObject> list) {
         this.allObjects = list;
+        this.vectorMove.setAllObjects(this.allObjects);
     }
 
     private void setAverageSpeed() {
@@ -149,7 +154,39 @@ public class Enemy extends GameObject {
             this.setAngle();
             this.renderer.setAngle(this.getAngle());
             setAverageSpeed();
+//            this.vectorMove.setDXY(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
             this.offset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
+        }
+        GameObject another;
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            another = this.allObjects.get(i);
+            boolean escape = false;
+            if (another == this) {//跳過自己 不判斷
+                continue;
+            }
+            for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
+                if (another.getType().equals(Global.EXCLUDE[z])) {
+                    escape = true;
+                }
+            }
+            if (escape) {
+                continue;
+            }
+            for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
+                if (another.getType().equals(Global.INNER[z])
+                        && this.getCollider().innerCollisionToCollision(another.getCollider())) {
+                    this.offset(this.getCollider().getDx(), this.getCollider().getDy());
+                    return;
+                }
+            }
+            for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
+                if (!(another.getType().equals(Global.INNER[z]))
+                        && this.getCollider().intersects(another.getCollider())) {
+                    attackTarget();
+                    this.offset(this.getCollider().getDx() * 3, this.getCollider().getDy() * 3);
+                    return;
+                }
+            }
         }
     }
 
@@ -167,7 +204,6 @@ public class Enemy extends GameObject {
         if (this.hp >= 1) {
             if (this.moveDelay.isTrig()) {
                 move();
-                attackTarget();
             }
         } else {
             this.setXY(-50, -50);

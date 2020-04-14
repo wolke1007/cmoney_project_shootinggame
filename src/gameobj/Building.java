@@ -21,7 +21,8 @@ public class Building extends GameObject {
     public Building(String colliderType, float x, float y, int width, int height, String[] path, int imgIndex) {//src => Global.Barrier
         super(colliderType, x, y, width, height, width, height);
         this.renderer = new Renderer(new int[0], 0, path[imgIndex]);
-        super.paintPriority =2;
+        super.paintPriority = 2;
+        setType("Building");
     }
 
     @Override

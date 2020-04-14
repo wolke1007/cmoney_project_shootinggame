@@ -22,6 +22,9 @@ public abstract class Graph {
     private float width;
     private float hight;
 
+    private float dx;
+    private float dy;
+
     public Graph(float left, float top, float right, float bottom) {
         setLeft(left);
         setTop(top);
@@ -29,6 +32,8 @@ public abstract class Graph {
         setBottom(bottom);
         setWidth();
         setHeight();
+        setDx(0);
+        setDy(0);
     }
 
     public void setLeft(float left) {
@@ -55,6 +60,14 @@ public abstract class Graph {
 
     private void setHeight() {
         this.hight = bottom() - top();
+    }
+
+    public void setDx(float dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(float dy) {
+        this.dy = dy;
     }
 
     public float left() {
@@ -87,6 +100,14 @@ public abstract class Graph {
 
     public float centerY() {
         return (top() + bottom()) / 2;
+    }
+
+    public float getDx() {
+        return this.dx;
+    }
+
+    public float getDy() {
+        return this.dy;
     }
 
     public void offset(float dx, float dy) {

@@ -16,50 +16,51 @@ import util.Move;
  * @author Cloud-Razer
  */
 public class Maps extends GameObject {
+
     private ArrayList<Map> maps;
 
-    
-    public Maps(float x, float y, int width, int height, int colliderWidth, int colliderHeight){
+    public Maps(float x, float y, int width, int height, int colliderWidth, int colliderHeight) {
         super("rect", x, y, width, height, colliderWidth, colliderHeight);
         this.maps = new ArrayList<Map>();
+        setType("Maps");
     }
-    
-    public void add(Map map){
+
+    public void add(Map map) {
         this.maps.add(map);
     }
-    
-    public Map get(int index){
-        try{
+
+    public Map get(int index) {
+        try {
             return this.maps.get(index);
-        }catch(IndexOutOfBoundsException exception){
+        } catch (IndexOutOfBoundsException exception) {
             return null;
         }
     }
-    
-    public ArrayList getMaps(){
+
+    public ArrayList getMaps() {
         return this.maps;
-    }
-    
-    @Override
-    public void update(){
-        if(this.maps.get(0).getX() - this.maps.get(1).getX() != -Global.MAP_WIDTH){
-                Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(0).getX() - this.maps.get(1).getX()));
-        }
-        if(this.maps.get(1).getX() - this.maps.get(2).getX() != -Global.MAP_WIDTH){
-                Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(1).getX() - this.maps.get(2).getX()));
-        }
-    }
-    
-    @Override
-    public void setDir(int dir){
     }
 
     @Override
-    public void paint(Graphics g){
+    public void update() {
+        if (this.maps.get(0).getX() - this.maps.get(1).getX() != -Global.MAP_WIDTH) {
+            Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(0).getX() - this.maps.get(1).getX()));
+        }
+        if (this.maps.get(1).getX() - this.maps.get(2).getX() != -Global.MAP_WIDTH) {
+            Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(1).getX() - this.maps.get(2).getX()));
+        }
+    }
+
+    @Override
+    public void setDir(int dir) {
+    }
+
+    @Override
+    public void paint(Graphics g) {
     }
 
     @Override
     public void paintComponent(Graphics g) {
     }
-    
+
 }

@@ -22,6 +22,7 @@ public class Barrier extends GameObject {
         super(colliderType, x, y, width, height, width, height);
         this.renderer = new Renderer(new int[0], 0, path[imgIndex]);
         super.paintPriority = 2;
+        setType("Barrier");
     }
 
     @Override

@@ -12,11 +12,11 @@ import util.Global;
  * @author Cloud-Razer
  */
 public class Rect extends Graph {
-
+    
     public Rect(float left, float top, float right, float bottom) {
         super(left, top, right, bottom);
     }
-
+    
     @Override
     public boolean intersects(Graph a, Graph b) {
         if (b instanceof Circle) {
@@ -25,7 +25,7 @@ public class Rect extends Graph {
         }
         return a.intersects(b.left(), b.top(), b.right(), b.bottom());
     }
-
+    
     @Override
     public boolean intersects(float x, float y, float r) {
         if (x > left() && x < right() && y > top() && y < bottom()) {
@@ -34,9 +34,9 @@ public class Rect extends Graph {
         if (x < left() || x > right()) {
             float dx;
             if (x < left()) {
-                dx = Math.abs(x - left());
+                dx = x - left();
             } else {
-                dx = Math.abs(x - right());
+                dx = x - right();
             }
             float tmp;
             if (y < top()) {
@@ -46,9 +46,11 @@ public class Rect extends Graph {
             } else {
                 tmp = y;
             }
-            float dy = Math.abs(y - tmp);
+            float dy = y - tmp;
             double distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < r) {
+                super.setDx(((left() + right()) / 2 - x < 0) ? -1 : 1);
+                super.setDy(((top() + bottom()) / 2 - y < 0) ? -1 : 1);
                 return true;
             }
         } else if (y < top() || y > bottom()) {
@@ -60,21 +62,25 @@ public class Rect extends Graph {
             } else {
                 tmp = x;
             }
-            float dx = Math.abs(x - tmp);
+            float dx = x - tmp;
             float dy;
             if (y < top()) {
-                dy = Math.abs(y - top());
+                dy = y - top();
             } else {
-                dy = Math.abs(y - bottom());
+                dy = y - bottom();
             }
             double distance = Math.sqrt(dx * dx + dy * dy);
             if (distance < r) {
+                super.setDx(((left() + right()) / 2 - x < 0) ? -1 : 1);
+                super.setDy(((top() + bottom()) / 2 - y < 0) ? -1 : 1);
                 return true;
             }
         }
+        super.setDx(0);
+        super.setDy(0);
         return false;
     }
-
+    
     @Override
     public boolean intersects(Graph target) {
         if (target instanceof Rect) {
@@ -84,9 +90,11 @@ public class Rect extends Graph {
             return intersects(tmp.centerX(), tmp.centerY(), tmp.r());
         }
     }
-
+    
     @Override
     public boolean intersects(float left, float top, float right, float bottom) {
+        super.setDx(0);
+        super.setDy(0);
         if (this.left() > right) {
             return false;
         }
@@ -99,9 +107,19 @@ public class Rect extends Graph {
         if (this.bottom() < top) {
             return false;
         }
+        if (this.right() >= left) {
+            super.setDx(-1);
+        } else if (this.left() <= right) {
+            super.setDx(1);
+        }
+        if (this.top() <= bottom) {
+            super.setDy(1);
+        } else if (this.bottom() >= top) {
+            super.setDy(-1);
+        }
         return true;
     }
-
+    
     @Override
     public boolean innerCollisionToCollision(Graph target) {
         if (target instanceof Rect) {
@@ -111,7 +129,7 @@ public class Rect extends Graph {
             return innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
         }
     }
-
+    
     @Override
     public boolean innerCollisionToCollision(Graph a, Graph b) {
         if (b instanceof Circle) {
@@ -120,15 +138,31 @@ public class Rect extends Graph {
         }
         return a.innerCollisionToCollision(b.left(), b.top(), b.right(), b.bottom());
     }
-
+    
     @Override
     public boolean innerCollisionToCollision(float left, float top, float right, float bottom) {
         if (super.left() <= left || super.right() >= right || super.top() <= top || super.bottom() >= bottom) {
+            if (super.left() <= left) {
+                super.setDx(1);
+            } else if (super.right() >= right) {
+                super.setDx(-1);
+            } else {
+                super.setDx(0);
+            }
+            if (super.top() <= top) {
+                super.setDy(1);
+            } else if (super.bottom() >= bottom) {
+                super.setDy(-1);
+            } else {
+                super.setDy(0);
+            }
             return true;
         }
+        super.setDx(0);
+        super.setDy(0);
         return false;
     }
-
+    
     @Override
     public boolean innerCollisionToCollision(float x, float y, float r) {
         float dx = Math.abs(super.right() - x);
@@ -141,9 +175,13 @@ public class Rect extends Graph {
         }
         double distance = Math.sqrt(dx * dx + dy * dy);
         if (distance > r) {
+            super.setDx(((super.left() + super.right()) / 2 < x) ? 1 : -1);
+            super.setDy(((super.top() + super.bottom()) / 2 < y) ? 1 : -1);
             return true;
         }
+        super.setDx(0);
+        super.setDy(0);
         return false;
     }
-
+    
 }

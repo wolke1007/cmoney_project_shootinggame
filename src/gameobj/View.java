@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import renderer.Renderer;
 import controllers.ImagePath;
 import java.awt.Graphics;
 import java.util.LinkedList;
