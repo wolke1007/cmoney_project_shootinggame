@@ -16,7 +16,7 @@ import util.Global;
  *
  * @author Cloud-Razer
  */
-public class DeadEffect implements Effect {
+public class DeadEffect implements Effect { // 此效果因時機點特殊，不加入至 Actor 的 Effects 裡面而是獨立 new 在 main scene 中
 
     private String imagePath;
     private int x1;
@@ -35,12 +35,16 @@ public class DeadEffect implements Effect {
     public DeadEffect(int width, int height, Actor actor) {
         this.width = width;
         this.height = height;
-        this.run = false;
+        this.run = true;
         this.actor = actor;
         this.handRenderer = new Renderer();
         this.bloodRenderer = new Renderer();
         this.dragDistance = 0;
         this.delay = new Delay(1);
+    }
+
+    public void setRun(boolean status) {
+        this.run = status;
     }
 
     @Override
@@ -50,11 +54,6 @@ public class DeadEffect implements Effect {
 
     @Override
     public void update() {
-        if (this.actor.getHp() <= 0f) {
-            this.run = true;
-        } else {
-            this.run = false;
-        }
     }
 
     @Override
@@ -83,11 +82,14 @@ public class DeadEffect implements Effect {
             this.y2 = (int) this.actor.getY() + this.height / 2 + this.dragDistance;
             this.dragDistance = this.dragDistance + 4;
         } // 手掌往下拖
-        if (this.width >= 500) {
+        if (this.width >= 500 && this.dragDistance < 600) {
             this.bloodRenderer.paint(g, this.x1, (int) this.actor.getY() - this.height / 2, 
                     this.x2, (int) this.actor.getY() + this.dragDistance, 
                     0, 0, 287, this.dragDistance);
         } // 血跡
         this.handRenderer.paint(g, this.x1, this.y1, this.x2, this.y2);
+        if(this.dragDistance >= 600){
+            this.run = false;
+        }
     }
 }
