@@ -61,7 +61,7 @@ public class Actor extends GameObject {
         setType("Actor");
         this.effects = new LinkedList();
         this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y, this));
-        this.effects.add(new DeadEffect((int) this.x, (int) this.y , Global.SCREEN_X, Global.SCREEN_Y, this));
+        this.effects.add(new DeadEffect(200, 200, this));
     }//多載 建構子 當前版本
 
     //位置資訊
