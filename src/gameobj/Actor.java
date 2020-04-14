@@ -7,6 +7,9 @@ package gameobj;
 
 import renderer.RendererToRotate;
 import controllers.ImagePath;
+import effects.DeadEffect;
+import effects.Effect;
+import effects.LowHpEffect;
 import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -44,80 +47,6 @@ public class Actor extends GameObject {
 
     private int moveDistance;
 
-    private abstract class Effect {
-
-        public String imagePath = "";
-        public int x;
-        public int y;
-        public int width;
-        public int height;
-        public boolean run = false;
-
-        public abstract void update();
-
-        public abstract void paint(Graphics g);
-    }
-
-    private class LowHpEffect extends Effect {
-
-        public LowHpEffect(int x, int y, int width, int height) {
-            this.imagePath = ImagePath.BLOOD[0];
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.run = false;
-        }
-
-        @Override
-        public void update() {
-            if (Actor.this.hp <= 15) {
-                this.x = (int) Global.viewX;
-                this.y = (int) Global.viewY;
-                this.run = true;
-            } else {
-                this.run = false;
-            }
-
-        }
-
-        @Override
-        public void paint(Graphics g) {
-            Actor.this.renderer.setImage(this.imagePath);
-            Actor.this.renderer.paint(g, this.x, this.y, this.x + this.width, this.y + this.height);
-        }
-    }
-
-    private class DeadEffect extends Effect {
-
-        public DeadEffect(int x, int y, int width, int height) {
-            this.imagePath = ImagePath.BLOOD[0];
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.run = false;
-        }
-
-        @Override
-        public void update() {
-            if (Actor.this.hp <= 99) {
-                this.x = (int) Actor.this.x;
-                this.y = (int) Actor.this.y;
-                this.run = true;
-            } else {
-                this.run = false;
-            }
-
-        }
-
-        @Override
-        public void paint(Graphics g) {
-            Actor.this.renderer.setImage(this.imagePath);
-            Actor.this.renderer.paint(g, this.x, this.y, this.x + this.width, this.y + this.height);
-        }
-    }
-
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setAngle();
@@ -131,7 +60,8 @@ public class Actor extends GameObject {
         setHpPoint(100);
         setType("Actor");
         this.effects = new LinkedList();
-        this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y));
+        this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y, this));
+        this.effects.add(new DeadEffect((int) this.x, (int) this.y , Global.SCREEN_X, Global.SCREEN_Y, this));
     }//多載 建構子 當前版本
 
     //位置資訊
@@ -224,7 +154,7 @@ public class Actor extends GameObject {
 
     private void paintEffects(Graphics g) {
         for (int i = 0; i < this.effects.size(); i++) {
-            if (this.effects.get(i).run) {
+            if (this.effects.get(i).getRun()) {
                 this.effects.get(i).paint(g);
             }
         }
