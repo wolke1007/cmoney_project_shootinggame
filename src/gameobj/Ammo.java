@@ -37,10 +37,10 @@ public class Ammo extends GameObject {
     //移動分段
     private Angle angle;
     private AverageSpeed averageSpeed;
-    private int count = 0;
+    private int count = 0;//初始位置的狀態設定
     //移動分段end
 
-    public Ammo(String colliderType, float x, float y, GameObject start, int moveSpeed, String[] path) {
+    public Ammo(String colliderType, float x, float y, GameObject start, float moveSpeed, String[] path) {
         super(colliderType, x, y, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2);
         setStart(start);
         setAngle();
@@ -156,13 +156,20 @@ public class Ammo extends GameObject {
             } else {
                 this.offset(dx, dy);
             }
-            Graph other;
-            for (int i = 0; i < this.allObjects.size(); i++) {
-                GameObject obj = this.allObjects.get(i);
-                if (obj.getType().equals("Map")
-                        || obj.getType().equals("Ammo")
-                        || obj.getType().equals("Actor")) {
-                    continue;
+        }
+        Graph other;
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            GameObject obj = this.allObjects.get(i);
+            if (obj.getType().equals("Map")
+                    || obj.getType().equals("Ammo")
+                    || obj.getType().equals("Actor")
+                    || obj.getType().equals("Gun")) {
+                continue;
+            }
+            other = this.allObjects.get(i).getCollider();
+            if (!(obj.getType().equals("Maps")) && this.getCollider().intersects(other)) {
+                if (obj.getType().equals("Enemy") && this.getCollider().intersects(other)) {
+                    obj.subtractHp();
                 }
                 other = this.allObjects.get(i).getCollider();
                 if (!(obj.getType().equals("Maps")) && this.getCollider().intersects(other)) {

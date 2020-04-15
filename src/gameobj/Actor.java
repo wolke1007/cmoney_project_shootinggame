@@ -44,6 +44,14 @@ public class Actor extends GameObject {
 
     private int moveDistance;
 
+    private int keyModeChange;// 0 徒手, 1 步槍, 2 手榴彈 , 3 迫擊砲
+    private boolean haveRifle;//有步槍
+    private int rifleNum;//步槍彈數量
+    private boolean haveGuava;//有手榴彈
+    private int guavaNum;//手榴彈數量
+    private boolean haveMortar;//有迫擊砲
+    private int mortarNum;//迫擊砲數量
+
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setAngle();
@@ -59,6 +67,25 @@ public class Actor extends GameObject {
         this.effects = new ArrayList();
         this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y, this));
     }//多載 建構子 當前版本
+    
+    public void setHaveRifle(boolean haveRifle) {
+        this.haveRifle = haveRifle;
+    }
+    public boolean getHaveRifle() {
+        return this.haveRifle;
+    }
+    public void setHaveGuava(boolean haveGuava) {
+        this.haveGuava = haveGuava;
+    }
+    public boolean getHaveGuava() {
+        return this.haveGuava;
+    }
+    public void setHaveMortar(boolean haveMortar) {
+        this.haveMortar = haveMortar;
+    }
+    public boolean getHaveMortar() {
+        return this.haveMortar;
+    }
 
     //位置資訊
     public void setAllObjects(ArrayList<GameObject> list) {
