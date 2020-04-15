@@ -12,6 +12,7 @@ import gameobj.Ammo;
 import gameobj.Barrier;
 import gameobj.Enemy;
 import gameobj.GameObject;
+import gameobj.Gun;
 import gameobj.Map;
 import gameobj.Maps;
 import renderer.Renderer;
@@ -41,6 +42,7 @@ public class MainScene extends Scene {
     private ArrayList<Enemy> enemys;
     private Maps maps;
     private View view;
+    private Gun gun;
     private LinkedList<GameObject> allObjects;
     private Renderer hpFrameRenderer;
     private Renderer hpRenderer;
@@ -61,8 +63,9 @@ public class MainScene extends Scene {
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
+        this.gun = new Gun("circle", 600, 500, this.actor, "Gun", ImagePath.GUN);
         int mapLength = (int) Math.sqrt(Global.MAP_QTY);
-        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH , mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
+        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
         Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
@@ -77,6 +80,7 @@ public class MainScene extends Scene {
         this.scoreCal = ScoreCalculator.getInstance();
         this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameover = false;
+        this.allObjects.add(this.gun);
     }
 
     private void addAllMapsToAllObjects() {
@@ -109,7 +113,7 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-        if(this.actor.getHp() <= 0f && !this.gameover){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        if (this.actor.getHp() <= 0f && !this.gameover) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
             this.scoreCal.addInHistoryIfInTop(5);
             MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
         }
@@ -223,7 +227,7 @@ public class MainScene extends Scene {
     }
 
     private void paintScore(Graphics g) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
     }
 

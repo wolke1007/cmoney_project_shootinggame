@@ -81,5 +81,4 @@ public class RendererToRotate {
         g2d.drawImage(this.img.get(getState()), (int) getImgX(), (int) getImgY(), this.img.get(getState()).getWidth(), this.img.get(getState()).getHeight(), null);
         g2d.setTransform(oldXForm);
     }
-
 }

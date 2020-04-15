@@ -36,10 +36,10 @@ public class Ammo extends GameObject {
     //移動分段
     private Angle angle;
     private AverageSpeed averageSpeed;
-    private int count = 0;
+    private int count = 0;//初始位置的狀態設定
     //移動分段end
 
-    public Ammo(String colliderType, float x, float y, GameObject start, int moveSpeed, String[] path) {
+    public Ammo(String colliderType, float x, float y, GameObject start, float moveSpeed, String[] path) {
         super(colliderType, x, y, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2);
         setStart(start);
         setAngle();
@@ -161,7 +161,8 @@ public class Ammo extends GameObject {
             GameObject obj = this.allObjects.get(i);
             if (obj.getType().equals("Map")
                     || obj.getType().equals("Ammo")
-                    || obj.getType().equals("Actor")) {
+                    || obj.getType().equals("Actor")
+                    || obj.getType().equals("Gun")) {
                 continue;
             }
             other = this.allObjects.get(i).getCollider();
