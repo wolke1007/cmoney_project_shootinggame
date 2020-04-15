@@ -41,6 +41,24 @@ public class Maps extends GameObject {
         return this.maps;
     }
 
+    public boolean canDeploy(float x, float y, float width, float height) {
+        for (int i = 0; i < this.maps.size(); i++) {
+            ArrayList<Barrier> barriers = this.maps.get(i).getBarriers();
+            ArrayList<Building> buildings = this.maps.get(i).getBuildings();
+            for(int index = 0; index < barriers.size(); index++){
+                if(barriers.get(index).getCollider().intersects(x, y, x + width, y + height)){
+                    return false;
+                }
+            }
+            for(int index = 0; index < buildings.size(); index++){
+                if(buildings.get(index).getCollider().intersects(x, y, x + width, y + height)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Override
     public void update() {
         if (this.maps.get(0).getX() - this.maps.get(1).getX() != -Global.MAP_WIDTH) {

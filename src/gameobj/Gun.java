@@ -28,7 +28,7 @@ public class Gun extends GameObject {
     private int moveMent;//移動量
     private int change;
     private float angle;
-    private float shadowWidth;
+//    private float shadowWidth;
     //浮動控制end
 
     private int bulletNum;
@@ -45,7 +45,7 @@ public class Gun extends GameObject {
         this.moveMent = 1;
         this.change = -1;
         this.angle = 0;
-        this.shadowWidth = 0;
+//        this.shadowWidth = 0;
     }
 
     //狀態控制 //目的為了升降的效果
@@ -77,7 +77,7 @@ public class Gun extends GameObject {
             this.offset(0, this.change);
             this.moveMent++;
             this.angle += 0.5f;
-            this.shadowWidth += 0.2f * this.change;
+//            this.shadowWidth += 0.2f * this.change;
 
         }
     }
@@ -91,8 +91,8 @@ public class Gun extends GameObject {
     @Override
     public void paintComponent(Graphics g) {
         this.renderer.paint(g);
-        int a = 32;
-        this.rendererShadow.paint(g, (int) (this.getX() - this.shadowWidth), (int) this.getY() + a, (int) (this.getX() + a + this.shadowWidth), (int) this.getY() + a + 5);
+//        int a = 32;
+//        this.rendererShadow.paint(g, (int) (this.getX() - this.shadowWidth), (int) this.getY() + a, (int) (this.getX() + a + this.shadowWidth), (int) this.getY() + a + 5);
     }
 
     @Override

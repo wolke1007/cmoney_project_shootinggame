@@ -7,6 +7,8 @@ package scenes;
 
 import controllers.ImagePath;
 import controllers.SceneController;
+import effects.DeadEffect;
+import effects.Effect;
 import gameobj.Actor;
 import gameobj.Ammo;
 import gameobj.Barrier;
@@ -47,7 +49,7 @@ public class MainScene extends Scene {
     private Renderer hpFrameRenderer;
     private Renderer hpRenderer;
     private ScoreCalculator scoreCal;
-    private boolean gameover;
+    private Effect gameOverEffect;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -79,8 +81,7 @@ public class MainScene extends Scene {
         this.actor.setAllObjects(this.allObjects);
         this.scoreCal = ScoreCalculator.getInstance();
         this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
-        this.gameover = false;
-        this.allObjects.add(this.gun);
+        this.gameOverEffect = new DeadEffect(200, 200, this.actor);
     }
 
     private void addAllMapsToAllObjects() {
@@ -113,9 +114,12 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-        if (this.actor.getHp() <= 0f && !this.gameover) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
-            this.scoreCal.addInHistoryIfInTop(5);
-            MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
+        if(this.actor.getHp() <= 0){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+            this.gameOverEffect.update();
+            if(!this.gameOverEffect.getRun()){
+                this.scoreCal.addInHistoryIfInTop(5);
+                MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
+            }
         }
     }
 
@@ -245,6 +249,9 @@ public class MainScene extends Scene {
         paintHPbar(g);
         paintSmallMap(g);
         paintScore(g);
+        if(this.gameOverEffect.getRun()){
+            this.gameOverEffect.paint(g);
+        }
     }
 
     @Override

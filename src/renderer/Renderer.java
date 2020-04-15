@@ -108,7 +108,7 @@ public class Renderer {
         gameX2 = gameX2 - (int) Global.viewX;
         gameY2 = gameY2 - (int) Global.viewY;
         g.drawImage(img, gameX1, gameY1, gameX2, gameY2,
-                0, 0, this.img.getWidth(), this.img.getHeight(), null); 
+                0, 0, this.img.getWidth(), this.img.getHeight(), null);
     }
     
     public void paint(Graphics g, int gameX1, int gameY1, int gameX2, int gameY2, int imgX1, int imgY1, int imgX2, int imgY2) {
