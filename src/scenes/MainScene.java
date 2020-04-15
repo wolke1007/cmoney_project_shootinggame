@@ -180,7 +180,7 @@ public class MainScene extends Scene {
             }
 //            Global.mouseState++;
         }
-        System.out.println("ammo size: "+this.ammos.size());
+//        System.out.println("ammo size: "+this.ammos.size());
     }
 
     private void paintSmallMap(Graphics g) {

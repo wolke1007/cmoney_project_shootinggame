@@ -169,11 +169,14 @@ public class VectorCollision {
     }
 }
 ///////////////////////////////////////////////
-//待驗證功能，誤刪
+//待驗證功能，勿刪
 //                if (Math.abs(this.allObjects.get(i).getCenterX() - this.self.getCenterX()) > 350) {
 //                    continue;
 //                }
 //                if (Math.abs(this.allObjects.get(i).getCenterY() - this.self.getCenterY()) > 200) {
+//                    continue;
+//                }
+//                if (Math.sqrt(Math.pow(Math.abs(this.allObjects.get(i).getCenterX() - this.self.getCenterX()), 2) + Math.pow(Math.abs(this.allObjects.get(i).getCenterY() - this.self.getCenterY()), 2)) > 400) {
 //                    continue;
 //                }
 ///////////////////////////////////////////////
