@@ -127,14 +127,17 @@ public class MainScene extends Scene {
     //敵人測試更新中
     public void enemyUpdate() {
         if (this.enemys.size() < Global.ENEMY_LIMIT && Global.random(20)) {
-            Enemy enemy = new Enemy("circle", Global.random(Global.mapEdgeLeft,
-                    Global.mapEdgeRight),
-                    Global.random(Global.mapEdgeUp,
-                            Global.mapEdgeDown), 5,
-                    this.actor, 58, ImagePath.ENEMY);
-            this.enemys.add(enemy);
-            this.allObjects.add(enemy);
-            enemy.setAllObject(this.allObjects);
+            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
+            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
+            float width = Global.UNIT_X;
+            float height = Global.UNIT_Y;
+            if (this.maps.canDeploy(x, y, width, height)) {
+                Enemy enemy = new Enemy("circle", x, y, 5,
+                        this.actor, 58, ImagePath.ENEMY);
+                this.enemys.add(enemy);
+                this.allObjects.add(enemy);
+                enemy.setAllObject(this.allObjects);
+            }
         }
         for (int i = 0; i < this.enemys.size(); i++) {
             if (this.enemys.get(i).getHp() <= 1) {

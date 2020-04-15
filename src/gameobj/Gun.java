@@ -17,7 +17,7 @@ import util.Global;
  * @author F-NB
  */
 public class Gun extends GameObject {
-
+    
     private RendererToRotate renderer;
     private Renderer rendererShadow;//畫影子
 
