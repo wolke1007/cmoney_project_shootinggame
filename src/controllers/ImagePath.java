@@ -23,9 +23,9 @@ public class ImagePath {
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
     public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/clawsmark.png"};
     public static final String[] BULLET = {ImagePath.ROOT + "/bullet_fire_small.png"};
-    public static final String[] ENEMY = {ImagePath.ROOT + "/zombie.gif"};
+    public static final String[] ENEMY = {ImagePath.ROOT + "/zombie_1.png"};
     public static final String[] GUN = {ImagePath.ROOT + "/handGun.png"};
-    public static final String SHADOW = ImagePath.ROOT + "/handGun.png";
+    public static final String SHADOW = ImagePath.ROOT + "/shadow.png";
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
     public static final String[] BUILDING = {ImagePath.ROOT + "/roof1.jpg"};
     public static final String[] START_MENU = {ImagePath.ROOT + "/startmenu.jpeg",
@@ -33,8 +33,8 @@ public class ImagePath {
         ImagePath.ROOT + "/score_history.png"};
     public static final String[] HIGH_SCORE = {ImagePath.ROOT + "/high_score.png", ImagePath.ROOT + "/endless.png", ImagePath.ROOT + "/compaign.png", ImagePath.ROOT + "/saving.png"};
     public static final String[] COMMON_BUTTON = {ImagePath.ROOT + "/back.png"};
-    public static final String[] BLOOD = {ImagePath.ROOT + "/low_hp.png", 
-        ImagePath.ROOT + "/take_damage.png", 
-        ImagePath.ROOT + "/hand.png", 
+    public static final String[] BLOOD = {ImagePath.ROOT + "/low_hp.png",
+        ImagePath.ROOT + "/take_damage.png",
+        ImagePath.ROOT + "/hand.png",
         ImagePath.ROOT + "/blood_drag.png"};
 }

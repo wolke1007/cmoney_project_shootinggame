@@ -82,6 +82,7 @@ public class MainScene extends Scene {
         this.scoreCal = ScoreCalculator.getInstance();
         this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
+        this.allObjects.add(this.gun);
     }
 
     private void addAllMapsToAllObjects() {
@@ -114,9 +115,9 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-        if(this.actor.getHp() <= 0){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        if (this.actor.getHp() <= 0) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
             this.gameOverEffect.update();
-            if(!this.gameOverEffect.getRun()){
+            if (!this.gameOverEffect.getRun()) {
                 this.scoreCal.addInHistoryIfInTop(5);
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
@@ -249,7 +250,7 @@ public class MainScene extends Scene {
         paintHPbar(g);
         paintSmallMap(g);
         paintScore(g);
-        if(this.gameOverEffect.getRun()){
+        if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
         }
     }
