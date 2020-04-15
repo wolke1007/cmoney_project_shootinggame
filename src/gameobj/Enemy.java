@@ -54,6 +54,7 @@ public class Enemy extends GameObject {
         super.paintPriority = 1;
         this.vectorMove = new VectorCollision(this, 0, 0, null);
         this.vectorMove.setMultiple(4f);
+        this.vectorMove.setDivisor(5);
         this.setType("Enemy");
     }
 
@@ -134,7 +135,7 @@ public class Enemy extends GameObject {
             if (this.targetHp.isTrig()) {
                 this.vectorMove.setIsHurt(true);
             }//移動前 扣血 啟動
-            this.vectorMove.newSet(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY(), this.allObjects); // 這行有 performance issue!!
+            this.vectorMove.newOffset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
             this.vectorMove.setIsHurt(false);
             
         }

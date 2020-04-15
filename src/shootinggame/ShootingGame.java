@@ -28,7 +28,10 @@ public class ShootingGame {
             {KeyEvent.VK_W, Global.UP},
             {KeyEvent.VK_S, Global.DOWN},
             {KeyEvent.VK_A, Global.LEFT},
-            {KeyEvent.VK_D, Global.RIGHT}
+            {KeyEvent.VK_D, Global.RIGHT},
+            {KeyEvent.VK_1, Global.KEY_1},
+            {KeyEvent.VK_2, Global.KEY_2},
+            {KeyEvent.VK_G, Global.KEY_G},
         };
         GameKernel gk = new GameKernel.Builder(gi, Global.LIMIT_DELTA_TIME, Global.MILLISEC_PER_UPDATE)
                 .initListener(commands)

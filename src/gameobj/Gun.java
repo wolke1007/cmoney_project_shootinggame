@@ -18,9 +18,11 @@ import util.Global;
  */
 public class Gun extends GameObject {
     
-    private RendererToRotate renderer;
+    private RendererToRotate renderer;//畫道具
     private Renderer rendererShadow;//畫影子
-
+    
+    private boolean canHave;//當目標碰撞後可以拿到
+    
     //浮動控制
     private Delay moveDelay;
     private float moveSpeed;
@@ -40,7 +42,7 @@ public class Gun extends GameObject {
         this.rendererShadow.setImage(ImagePath.SHADOW);
         this.setMoveSpeedDetail(55);
         this.setType(type);//告知是甚麼槍
-        this.bulletNum = Global.random(10, 20);
+        this.bulletNum = Global.random(10, 20);//給予角色的子彈數量
         this.moveMent = 1;
         this.change = -1;
         this.angle = 0;
@@ -65,11 +67,7 @@ public class Gun extends GameObject {
     }
     //狀態控制end
 
-    public int getBulletNum() {
-        return this.bulletNum;
-    }//給予角色的子彈數量
-
-    private void move() {
+    private void flyMove() {
         if (this.angle == 361) {
             this.angle = 0;
         }
@@ -88,7 +86,7 @@ public class Gun extends GameObject {
 
     @Override
     public void update() {
-        this.move();
+        flyMove();
     }
 
     @Override

@@ -156,20 +156,14 @@ public class Ammo extends GameObject {
             } else {
                 this.offset(dx, dy);
             }
-        }
-        Graph other;
-        for (int i = 0; i < this.allObjects.size(); i++) {
-            GameObject obj = this.allObjects.get(i);
-            if (obj.getType().equals("Map")
-                    || obj.getType().equals("Ammo")
-                    || obj.getType().equals("Actor")
-                    || obj.getType().equals("Gun")) {
-                continue;
-            }
-            other = this.allObjects.get(i).getCollider();
-            if (!(obj.getType().equals("Maps")) && this.getCollider().intersects(other)) {
-                if (obj.getType().equals("Enemy") && this.getCollider().intersects(other)) {
-                    obj.subtractHp();
+            Graph other;
+            for (int i = 0; i < this.allObjects.size(); i++) {
+                GameObject obj = this.allObjects.get(i);
+                if (obj.getType().equals("Map")
+                        || obj.getType().equals("Ammo")
+                        || obj.getType().equals("Actor")
+                        || obj.getType().equals("Gun")) {
+                    continue;
                 }
                 other = this.allObjects.get(i).getCollider();
                 if (!(obj.getType().equals("Maps")) && this.getCollider().intersects(other)) {

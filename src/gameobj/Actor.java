@@ -25,7 +25,7 @@ import util.Move;
  * @author Cloud-Razer
  */
 public class Actor extends GameObject {
-
+    
     private int dir;
     private RendererToRotate rotateRenderer;
     private Renderer renderer;
@@ -36,14 +36,14 @@ public class Actor extends GameObject {
     private ArrayList<Effect> effects;
 
     private Delay moveDelay;
-
+    
     private float moveSpeed; // per frame
     private float actMoveSpeed;
-
+    
     private Move movement;
-
+    
     private int moveDistance;
-
+    
     private int keyModeChange;// 0 徒手, 1 步槍, 2 手榴彈 , 3 迫擊砲
     private boolean haveRifle;//有步槍
     private int rifleNum;//步槍彈數量
@@ -59,7 +59,7 @@ public class Actor extends GameObject {
         this.renderer = new Renderer();
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
-        movement = new Move(this);
+        this.movement = new Move(this);
         this.moveDistance = 10;
         super.paintPriority = 0;
         setHpPoint(100);
@@ -71,18 +71,23 @@ public class Actor extends GameObject {
     public void setHaveRifle(boolean haveRifle) {
         this.haveRifle = haveRifle;
     }
+
     public boolean getHaveRifle() {
         return this.haveRifle;
     }
+
     public void setHaveGuava(boolean haveGuava) {
         this.haveGuava = haveGuava;
     }
+
     public boolean getHaveGuava() {
         return this.haveGuava;
     }
+
     public void setHaveMortar(boolean haveMortar) {
         this.haveMortar = haveMortar;
     }
+
     public boolean getHaveMortar() {
         return this.haveMortar;
     }
@@ -90,12 +95,13 @@ public class Actor extends GameObject {
     //位置資訊
     public void setAllObjects(ArrayList<GameObject> list) {
         this.allObjects = list;
+        this.movement.setAllObjects(list);
     }
-
+    
     private void setMoveDistance(int moveDistance) {
         this.moveDistance = moveDistance;
     }
-
+    
     private int getMoveDistance() {
         return this.moveDistance;
     }
@@ -112,7 +118,7 @@ public class Actor extends GameObject {
         this.angle.setGoalCenterX(Global.mapMouseX);
         this.angle.setGoalCenterY(Global.mapMouseY);
     }
-
+    
     public double getAngle() {
         return this.angle.getAngle();
     }
@@ -154,27 +160,27 @@ public class Actor extends GameObject {
             this.moveDelay.start();
         }
     }
-
+    
     @Override
     public void setDir(int dir) {
         this.dir = dir;
     }
-
+    
     public void setMovementPressedStatus(int dir, boolean status) {
         this.movement.setPressedStatus(dir, status);
     }
-
+    
     public void updateRendererAngle() {
         this.setAngle();
         this.rotateRenderer.setAngle(this.getAngle());
     }
-
+    
     private void updateEffects() {
         for (int i = 0; i < this.effects.size(); i++) {
             this.effects.get(i).update();
         }
     }
-
+    
     private void paintEffects(Graphics g) {
         for (int i = 0; i < this.effects.size(); i++) {
             if (this.effects.get(i).getRun()) {
@@ -193,11 +199,11 @@ public class Actor extends GameObject {
         updateRendererAngle();
         updateEffects();
     }
-
+    
     private void move() {
-        this.movement.moving(this.moveDistance, this.allObjects);
+        this.movement.moving(this.moveDistance);
     }
-
+    
     @Override
     public void paintComponent(Graphics g) {
         g.drawLine(-10000, (int) (this.getCollider().centerY() - Global.viewY), 10000, (int) (this.getCollider().centerY() - Global.viewY));
@@ -205,5 +211,5 @@ public class Actor extends GameObject {
         this.rotateRenderer.paint(g);
         paintEffects(g);
     }
-
+    
 }

@@ -53,6 +53,10 @@ public class Global {
     public static final int DOWN_RIGHT = DOWN + RIGHT;
     public static final int UP_LEFT = UP + LEFT;
     public static final int DOWN_LEFT = DOWN + LEFT;
+    //槍的模式
+    public static final int KEY_1 = 21;
+    public static final int KEY_2 = 22;
+    public static final char KEY_G = 'g';
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};

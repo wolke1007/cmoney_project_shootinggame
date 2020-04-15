@@ -24,7 +24,6 @@ public class Move {
     GameObject obj;
     private JabStep goal;
     private Graph selfCollider;
-
     //測試用ElasticCollision
     private VectorCollision vectorMove;
 
@@ -37,33 +36,37 @@ public class Move {
         this.vectorMove = new VectorCollision(this.obj, 0, 0, null);
     }
 
-    public void moving(int distance, ArrayList<GameObject> list) {
+    public void setAllObjects(ArrayList<GameObject> list) {
+        this.vectorMove.setAllObjects(list);
+    }
+
+    public void moving(int distance) {
         int dir = movingDir();
 //        int distance = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {
             case Global.UP: // go up
-                this.vectorMove.newSet(0, -distance, list);
+                this.vectorMove.newOffset(0, -distance);
                 break;
             case Global.DOWN: //  go down
-                this.vectorMove.newSet(0, distance, list);
+                this.vectorMove.newOffset(0, distance);
                 break;
             case Global.LEFT: // go left
-                this.vectorMove.newSet(-distance, 0, list);
+                this.vectorMove.newOffset(-distance, 0);
                 break;
             case Global.RIGHT: // go right
-                this.vectorMove.newSet(distance, 0, list);
+                this.vectorMove.newOffset(distance, 0);
                 break;
             case Global.UP_LEFT: // go up-left
-                this.vectorMove.newSet(-distance, -distance, list);
+                this.vectorMove.newOffset(-distance, -distance);
                 break;
             case Global.UP_RIGHT: // go up-right
-                this.vectorMove.newSet(distance, -distance, list);
+                this.vectorMove.newOffset(distance, -distance);
                 break;
             case Global.DOWN_LEFT: //  go down-left
-                this.vectorMove.newSet(-distance, distance, list);
+                this.vectorMove.newOffset(-distance, distance);
                 break;
             case Global.DOWN_RIGHT: // go down-right
-                this.vectorMove.newSet(distance, distance, list);
+                this.vectorMove.newOffset(distance, distance);
                 break;
         }
     }

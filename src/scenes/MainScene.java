@@ -340,6 +340,9 @@ public class MainScene extends Scene {
 
         @Override
         public void keyTyped(char c, long trigTime) {
+            if(c == Global.KEY_G){
+                System.out.println("!!!!");
+            }
         }
 
     }
