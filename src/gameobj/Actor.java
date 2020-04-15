@@ -13,7 +13,7 @@ import effects.LowHpEffect;
 import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import renderer.Renderer;
 import util.Angle;
 import util.Delay;
@@ -32,8 +32,8 @@ public class Actor extends GameObject {
     private Angle angle;
     private boolean isStand;
     private View view;
-    private LinkedList<GameObject> allObjects;
-    private LinkedList<Effect> effects;
+    private ArrayList<GameObject> allObjects;
+    private ArrayList<Effect> effects;
 
     private Delay moveDelay;
 
@@ -56,12 +56,12 @@ public class Actor extends GameObject {
         super.paintPriority = 0;
         setHpPoint(100);
         setType("Actor");
-        this.effects = new LinkedList();
+        this.effects = new ArrayList();
         this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y, this));
     }//多載 建構子 當前版本
 
     //位置資訊
-    public void setAllObjects(LinkedList<GameObject> list) {
+    public void setAllObjects(ArrayList<GameObject> list) {
         this.allObjects = list;
     }
 

@@ -10,6 +10,7 @@ import graph.Graph;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import util.Angle;
 import util.AverageSpeed;
@@ -24,7 +25,7 @@ public class Ammo extends GameObject {
 
     private RendererToRotate renderer;//旋轉圖渲染器
     private boolean isShootOut;//是否射擊的狀態 Origine true 創建時就是要射出
-    private LinkedList<GameObject> allObjects;
+    private ArrayList<GameObject> allObjects;
     private GameObject start;
 
     //子彈移動控制
@@ -45,7 +46,7 @@ public class Ammo extends GameObject {
         setAngle();
         this.renderer = new RendererToRotate(path, this, getAngle());
         setMoveSpeedDetail(moveSpeed);//初始化移動應為最大值，暫時不該限制delay
-        this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), Global.mapMouseX, Global.mapMouseY, 95, true);//30為子彈的移動距離值
+        this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), Global.mapMouseX, Global.mapMouseY, 97, true);//30為子彈的移動距離值
         setIsShootOut(true);
         super.paintPriority = 1; // 畫圖順序僅次於主角，此順序可討論
         setType("Ammo");
@@ -55,7 +56,7 @@ public class Ammo extends GameObject {
         this.start = start;
     }
 
-    public void setAllObjects(LinkedList<GameObject> list) {
+    public void setAllObjects(ArrayList<GameObject> list) {
         this.allObjects = list;
     }
 
@@ -155,25 +156,25 @@ public class Ammo extends GameObject {
             } else {
                 this.offset(dx, dy);
             }
-        }
-        Graph other;
-        for (int i = 0; i < this.allObjects.size(); i++) {
-            GameObject obj = this.allObjects.get(i);
-            if (obj.getType().equals("Map")
-                    || obj.getType().equals("Ammo")
-                    || obj.getType().equals("Actor")) {
-                continue;
-            }
-            other = this.allObjects.get(i).getCollider();
-            if (!(obj.getType().equals("Maps")) && this.getCollider().intersects(other)) {
-                if (obj.getType().equals("Enemy") && this.getCollider().intersects(other)) {
-                    obj.subtractHp();
+            Graph other;
+            for (int i = 0; i < this.allObjects.size(); i++) {
+                GameObject obj = this.allObjects.get(i);
+                if (obj.getType().equals("Map")
+                        || obj.getType().equals("Ammo")
+                        || obj.getType().equals("Actor")) {
+                    continue;
                 }
-                setIsShootOut(false);
-                this.setXY(-1000, -1000);
-            } else if (obj.getType().equals(" Maps") && this.getCollider().innerCollisionToCollision(other)) {
-                setIsShootOut(false);
-                this.setXY(-1000, -1000);
+                other = this.allObjects.get(i).getCollider();
+                if (!(obj.getType().equals("Maps")) && this.getCollider().intersects(other)) {
+                    if (obj.getType().equals("Enemy") && this.getCollider().intersects(other)) {
+                        obj.subtractHp();
+                    }
+                    setIsShootOut(false);
+                    this.setXY(-1000, -1000);
+                } else if (obj.getType().equals(" Maps") && this.getCollider().innerCollisionToCollision(other)) {
+                    setIsShootOut(false);
+                    this.setXY(-1000, -1000);
+                }
             }
         }
     }

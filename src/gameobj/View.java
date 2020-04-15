@@ -8,7 +8,7 @@ package gameobj;
 import renderer.Renderer;
 import controllers.ImagePath;
 import java.awt.Graphics;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import util.Delay;
 import util.Global;
 import util.Move;
@@ -29,7 +29,7 @@ public class View extends GameObject {
 
     private Move movement;
     private int moveDistance;
-    private LinkedList<GameObject> sawObjects;
+    private ArrayList<GameObject> sawObjects;
     private GameObject focusOn;
 
     public View(int moveSpeed, int width, int height, GameObject focusOn) {
@@ -41,7 +41,7 @@ public class View extends GameObject {
         this.height = height;
         setViewMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
-        sawObjects = new LinkedList<GameObject>();
+        sawObjects = new ArrayList<GameObject>();
         this.moveDistance = 10;
         this.focusOn = focusOn;
     }
@@ -50,7 +50,7 @@ public class View extends GameObject {
         this.sawObjects.add(obj);
     }
 
-    public LinkedList getSaw() {
+    public ArrayList getSaw() {
         return this.sawObjects;
     }
 

@@ -10,6 +10,7 @@ import graph.Graph;
 import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import util.Angle;
 import util.AverageSpeed;
@@ -28,7 +29,7 @@ public class Enemy extends GameObject {
     private GameObject target;
     private Delay targetHp;
     //血量控制end
-    private LinkedList<GameObject> allObjects;
+    private ArrayList<GameObject> allObjects;
 
     //敵人對目標的移動控制
     private Delay moveDelay;
@@ -113,7 +114,7 @@ public class Enemy extends GameObject {
     }
     //delay控制end
 
-    public void setAllObject(LinkedList<GameObject> list) {
+    public void setAllObject(ArrayList<GameObject> list) {
         this.allObjects = list;
         this.vectorMove.setAllObjects(this.allObjects);
     }
@@ -133,8 +134,14 @@ public class Enemy extends GameObject {
             if (this.targetHp.isTrig()) {
                 this.vectorMove.setIsHurt(true);
             }//移動前 扣血 啟動
-            this.vectorMove.newSet(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY(), this.allObjects);
+            Long start = System.currentTimeMillis();
+            this.vectorMove.newSet(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY(), this.allObjects); // 這行有 performance issue!!
+            Long stop = System.currentTimeMillis();
+            if ((stop - start) >= 1L) {
+                Global.log("enemy move setAverageSpeed time: " + (stop - start));
+            }
             this.vectorMove.setIsHurt(false);
+            
         }
     }
 
@@ -146,7 +153,7 @@ public class Enemy extends GameObject {
             }
         } else {
             this.setXY(-50, -50);
-        }
+        }       
     }
 
     @Override

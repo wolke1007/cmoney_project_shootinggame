@@ -5,7 +5,6 @@
  */
 package graph;
 
-import util.Global;
 
 /**
  *
@@ -14,12 +13,12 @@ import util.Global;
 public class Rect extends Graph {
     
     public Rect(float left, float top, float right, float bottom) {
-        super(left, top, right, bottom);
+        super(left, top, right, bottom, "rect");
     }
     
     @Override
     public boolean intersects(Graph a, Graph b) {
-        if (b instanceof Circle) {
+        if (b.getColliderType().equals("circle")) {
             Circle tmp = (Circle) b;
             return a.intersects(tmp.centerX(), tmp.centerY(), tmp.r());
         }
@@ -83,7 +82,7 @@ public class Rect extends Graph {
     
     @Override
     public boolean intersects(Graph target) {
-        if (target instanceof Rect) {
+        if (target.getColliderType().equals("rect")) {
             return intersects(target.left(), target.top(), target.right(), target.bottom());
         } else {
             Circle tmp = (Circle) target;
@@ -122,7 +121,7 @@ public class Rect extends Graph {
     
     @Override
     public boolean innerCollisionToCollision(Graph target) {
-        if (target instanceof Rect) {
+        if (target.getColliderType().equals("rect")) {
             return innerCollisionToCollision(target.left(), target.top(), target.right(), target.bottom());
         } else {
             Circle tmp = (Circle) target;
@@ -132,7 +131,7 @@ public class Rect extends Graph {
     
     @Override
     public boolean innerCollisionToCollision(Graph a, Graph b) {
-        if (b instanceof Circle) {
+        if (b.getColliderType().equals("circle")) {
             Circle tmp = (Circle) b;
             return a.innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
         }

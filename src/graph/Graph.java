@@ -24,8 +24,10 @@ public abstract class Graph {
 
     private float dx;
     private float dy;
+    
+    private String colliderType;
 
-    public Graph(float left, float top, float right, float bottom) {
+    public Graph(float left, float top, float right, float bottom, String type) {
         setLeft(left);
         setTop(top);
         setRight(right);
@@ -34,6 +36,11 @@ public abstract class Graph {
         setHeight();
         setDx(0);
         setDy(0);
+        this.colliderType = type;
+    }
+    
+    public String getColliderType(){
+        return this.colliderType;
     }
 
     public void setLeft(float left) {

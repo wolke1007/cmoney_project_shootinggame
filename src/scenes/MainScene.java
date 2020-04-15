@@ -43,7 +43,7 @@ public class MainScene extends Scene {
     private ArrayList<Enemy> enemys;
     private Maps maps;
     private View view;
-    private LinkedList<GameObject> allObjects;
+    private ArrayList<GameObject> allObjects;
     private Renderer hpFrameRenderer;
     private Renderer hpRenderer;
     private ScoreCalculator scoreCal;
@@ -51,7 +51,7 @@ public class MainScene extends Scene {
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
-        this.allObjects = new LinkedList<GameObject>();
+        this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
     }
@@ -64,7 +64,7 @@ public class MainScene extends Scene {
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = (int) Math.sqrt(Global.MAP_QTY);
-        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH , mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
+        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
         Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
@@ -102,7 +102,9 @@ public class MainScene extends Scene {
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
         for (int i = 0; i < this.allObjects.size(); i++) {
-            this.allObjects.get(i).update();
+            if (!this.allObjects.get(i).getType().equals("Ammo")) {
+                this.allObjects.get(i).update();
+            }
             if (this.view.isCollision(this.allObjects.get(i))) {
                 if (!(this.view.stillSeeing(this.allObjects.get(i)))) {
                     this.view.saw(this.allObjects.get(i));
@@ -111,9 +113,9 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
-        if(this.actor.getHp() <= 0){ // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        if (this.actor.getHp() <= 0) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
             this.gameOverEffect.update();
-            if(!this.gameOverEffect.getRun()){
+            if (!this.gameOverEffect.getRun()) {
                 this.scoreCal.addInHistoryIfInTop(5);
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
@@ -176,7 +178,10 @@ public class MainScene extends Scene {
             }
 //            Global.mouseState++;
         }
-//        System.out.println(this.ammos.size());
+        System.out.println(this.ammos.size());
+        for (int i = 0; i < this.ammos.size(); i++) {
+            this.ammos.get(i).update();
+        }
     }
 
     private void paintSmallMap(Graphics g) {
@@ -228,7 +233,7 @@ public class MainScene extends Scene {
     }
 
     private void paintScore(Graphics g) {
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 40)); 
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
     }
 
@@ -246,7 +251,7 @@ public class MainScene extends Scene {
         paintHPbar(g);
         paintSmallMap(g);
         paintScore(g);
-        if(this.gameOverEffect.getRun()){
+        if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
         }
     }

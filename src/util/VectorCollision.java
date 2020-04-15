@@ -11,7 +11,7 @@ import gameobj.Maps;
 import graph.Circle;
 import graph.Graph;
 import graph.Rect;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -22,7 +22,7 @@ public class VectorCollision {
     private GameObject self;//想要移動的本體
     private float dx;//給予 x 的移動向量
     private float dy;//給予 y 的移動向量
-    private LinkedList<GameObject> allObjects;
+    private ArrayList<GameObject> allObjects;
 
     //被取移動距離
     private float multiple;
@@ -31,7 +31,7 @@ public class VectorCollision {
     
     private boolean isHurt;
 
-    public VectorCollision(GameObject self, float dx, float dy, LinkedList<GameObject> allObjects) {
+    public VectorCollision(GameObject self, float dx, float dy, ArrayList<GameObject> allObjects) {
         setSelf(self);
         setDXY(dx, dy);
         setAllObjects(allObjects);
@@ -57,7 +57,7 @@ public class VectorCollision {
         setDY(dy);
     }
 
-    public void setAllObjects(LinkedList<GameObject> allObjects) {
+    public void setAllObjects(ArrayList<GameObject> allObjects) {
         this.allObjects = allObjects;
     }
 
@@ -76,7 +76,7 @@ public class VectorCollision {
         return this.isHurt;
     }
 
-    public void newSet(float dx, float dy, LinkedList<GameObject> allObjects) {
+    public void newSet(float dx, float dy, ArrayList<GameObject> allObjects) {
         setDXY(dx, dy);
         setAllObjects(allObjects);
         offsetDX();

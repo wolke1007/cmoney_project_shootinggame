@@ -8,6 +8,7 @@ package util;
 import gameobj.GameObject;
 import graph.Graph;
 import graph.Rect;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -36,7 +37,7 @@ public class Move {
         this.vectorMove = new VectorCollision(this.obj, 0, 0, null);
     }
 
-    public void moving(int distance, LinkedList<GameObject> list) {
+    public void moving(int distance, ArrayList<GameObject> list) {
         int dir = movingDir();
 //        int distance = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
         switch (dir) {

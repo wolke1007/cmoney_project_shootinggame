@@ -16,7 +16,7 @@ public class Circle extends Graph {
     private float r;
 
     public Circle(float left, float top, float right, float bottom, float r) {
-        super(left, top, right, bottom);
+        super(left, top, right, bottom, "circle");
         setR(r);
     }
 
@@ -30,7 +30,7 @@ public class Circle extends Graph {
 
     @Override
     public boolean intersects(Graph a, Graph b) {
-        if (b instanceof Rect) {
+        if (b.getColliderType().equals("rect")) {
             return a.intersects(b.left(), b.top(), b.right(), b.bottom());
         }
         Circle tmp = (Circle) b;
@@ -38,7 +38,7 @@ public class Circle extends Graph {
     }
 
     @Override
-    public boolean intersects(float x, float y, float r) {
+    public boolean intersects(float x, float y, float r) { // 1ms
         float dx = super.centerX() - x;
         float dy = super.centerY() - y;
         double distance = Math.sqrt(dx * dx + dy * dy);
@@ -54,7 +54,7 @@ public class Circle extends Graph {
 
     @Override
     public boolean intersects(Graph target) {
-        if (target instanceof Circle) {
+        if (target.getColliderType().equals("circle")) {
             Circle tmp = (Circle) target;
             return intersects(tmp.centerX(), tmp.centerY(), tmp.r());
         }
@@ -118,7 +118,7 @@ public class Circle extends Graph {
 
     @Override
     public boolean innerCollisionToCollision(Graph target) {
-        if (target instanceof Circle) {
+        if (target.getColliderType().equals("circle")) {
             Circle tmp = (Circle) target;
             return innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
         }
@@ -127,7 +127,7 @@ public class Circle extends Graph {
 
     @Override
     public boolean innerCollisionToCollision(Graph a, Graph b) {
-        if (b instanceof Rect) {
+        if (b.getColliderType().equals("rect")) {
             return a.innerCollisionToCollision(b.left(), b.top(), b.right(), b.bottom());
         }
         Circle tmp = (Circle) b;

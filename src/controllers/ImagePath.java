@@ -23,7 +23,7 @@ public class ImagePath {
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
     public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/clawsmark.png"};
     public static final String[] BULLET = {ImagePath.ROOT + "/bullet_fire_small.png"};
-    public static final String[] ENEMY = {ImagePath.ROOT + "/zombie.gif"};
+    public static final String[] ENEMY = {ImagePath.ROOT + "/zombie_1.png", ImagePath.ROOT + "/zombie_2.png", ImagePath.ROOT + "/zombie_3.png"};
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
     public static final String[] BUILDING = {ImagePath.ROOT + "/roof1.jpg"};
     public static final String[] START_MENU = {ImagePath.ROOT + "/startmenu.jpeg",

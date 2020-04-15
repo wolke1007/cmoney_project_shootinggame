@@ -10,7 +10,6 @@ import gameobj.Actor;
 import java.awt.Graphics;
 import renderer.Renderer;
 import util.Delay;
-import util.Global;
 
 /**
  *
