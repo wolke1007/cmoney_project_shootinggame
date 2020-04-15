@@ -9,7 +9,6 @@ import gameobj.GameObject;
 import graph.Graph;
 import graph.Rect;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  *
@@ -33,7 +32,7 @@ public class Move {
         this.leftPressed = false;
         this.rightPressed = false;
         this.obj = obj;
-        this.vectorMove = new VectorCollision(this.obj, 0, 0, null);
+        this.vectorMove = new VectorCollision(this.obj, 0, 0);
     }
 
     public void setAllObjects(ArrayList<GameObject> list) {

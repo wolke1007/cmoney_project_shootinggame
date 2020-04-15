@@ -25,7 +25,7 @@ public class LowHpEffect implements Effect {
     private boolean run;
     private Actor actor;
     private Renderer renderer;
-    
+
     public LowHpEffect(int x, int y, int width, int height, Actor actor) {
         this.imagePath = ImagePath.BLOOD[0];
         this.x = x;
@@ -36,7 +36,7 @@ public class LowHpEffect implements Effect {
         this.actor = actor;
         this.renderer = new Renderer();
     }
-    
+
     @Override
     public boolean getRun() {
         return this.run;

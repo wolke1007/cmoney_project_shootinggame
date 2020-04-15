@@ -79,12 +79,12 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
             this.dragDistance = this.dragDistance + 4;
         } // 手掌往下拖
         if (this.width >= 500 && this.dragDistance < 600) {
-            this.bloodRenderer.paint(g, this.x1, (int) this.actor.getY() - this.height / 2, 
-                    this.x2, (int) this.actor.getY() + this.dragDistance, 
+            this.bloodRenderer.paint(g, this.x1, (int) this.actor.getY() - this.height / 2,
+                    this.x2, (int) this.actor.getY() + this.dragDistance,
                     0, 0, 287, this.dragDistance);
         } // 血跡
         this.handRenderer.paint(g, this.x1, this.y1, this.x2, this.y2);
-        if(this.dragDistance >= 600){
+        if (this.dragDistance >= 600) {
             this.run = false;
         }
     }

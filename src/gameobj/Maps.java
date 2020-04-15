@@ -7,9 +7,7 @@ package gameobj;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import util.Delay;
 import util.Global;
-import util.Move;
 
 /**
  *
@@ -45,13 +43,13 @@ public class Maps extends GameObject {
         for (int i = 0; i < this.maps.size(); i++) {
             ArrayList<Barrier> barriers = this.maps.get(i).getBarriers();
             ArrayList<Building> buildings = this.maps.get(i).getBuildings();
-            for(int index = 0; index < barriers.size(); index++){
-                if(barriers.get(index).getCollider().intersects(x, y, x + width, y + height)){
+            for (int index = 0; index < barriers.size(); index++) {
+                if (barriers.get(index).getCollider().intersects(x, y, x + width, y + height)) {
                     return false;
                 }
             }
-            for(int index = 0; index < buildings.size(); index++){
-                if(buildings.get(index).getCollider().intersects(x, y, x + width, y + height)){
+            for (int index = 0; index < buildings.size(); index++) {
+                if (buildings.get(index).getCollider().intersects(x, y, x + width, y + height)) {
                     return false;
                 }
             }

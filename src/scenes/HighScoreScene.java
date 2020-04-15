@@ -107,7 +107,7 @@ public class HighScoreScene extends Scene {
 
     @Override
     public void sceneUpdate() {
-    }   
+    }
 
     @Override
     public void sceneEnd() {
@@ -124,13 +124,13 @@ public class HighScoreScene extends Scene {
         }
         return false;
     }
-    
-    private void paintEndlessScore(Graphics g){
+
+    private void paintEndlessScore(Graphics g) {
         int textGap = 60;
         g.setColor(Color.WHITE);
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30)); 
-        for(int i = 0; i < HighScoreScene.this.scoreList.size(); i++){
-            if(i < HighScoreScene.this.printLimit){
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        for (int i = 0; i < HighScoreScene.this.scoreList.size(); i++) {
+            if (i < HighScoreScene.this.printLimit) {
                 Record record = HighScoreScene.this.scoreList.get(i);
                 g.drawString(Integer.toString(i + 1) + ".", endlessBtn.left - 50, endlessBtn.bottom + 30 * (i + 2) + textGap);
                 g.drawString(record.getName(), endlessBtn.left, endlessBtn.bottom + 30 * (i + 2) + textGap);
@@ -174,22 +174,22 @@ public class HighScoreScene extends Scene {
             this.renderer.paint(g, this.savingBtn.left + 10, this.savingBtn.top - 10, this.savingBtn.right + 10, this.savingBtn.bottom - 10); // Saving mode 按鈕
         }
         g.setColor(Color.WHITE);
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30)); 
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
         g.drawString("Name", this.endlessBtn.left, this.endlessBtn.bottom + 50);
         g.drawString("Score", this.endlessBtn.left + 400, this.endlessBtn.bottom + 50);
         g.drawString("Date", this.endlessBtn.left + 800, this.endlessBtn.bottom + 50);
         g.setColor(Color.BLACK);
-        if(this.scoreList == null){
+        if (this.scoreList == null) {
             return;
         }
-        if(this.scoreType.equals(HighScoreScene.this.gameMode[0])){
+        if (this.scoreType.equals(HighScoreScene.this.gameMode[0])) {
             paintEndlessScore(g);
         }
-        if(this.scoreType.equals(HighScoreScene.this.gameMode[1])){
-            
+        if (this.scoreType.equals(HighScoreScene.this.gameMode[1])) {
+
         }
-        if(this.scoreType.equals(HighScoreScene.this.gameMode[2])){
-            
+        if (this.scoreType.equals(HighScoreScene.this.gameMode[2])) {
+
         }
     }
 

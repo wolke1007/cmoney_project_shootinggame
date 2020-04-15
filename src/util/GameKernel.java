@@ -29,8 +29,8 @@ public class GameKernel extends Canvas {
             this.gi = gi;
             this.gk = new GameKernel(gi, limitDeltaTimePerNano, nanosecPerUpdate);
         }
-        
-        public Builder initListener(){
+
+        public Builder initListener() {
             builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate);
             return this;
         }
@@ -39,7 +39,7 @@ public class GameKernel extends Canvas {
             builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate, array);
             return this;
         }
-        
+
         public Builder initListener(ArrayList<int[]> cmArray) {
             builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate, cmArray);
             return this;
@@ -74,8 +74,8 @@ public class GameKernel extends Canvas {
             builder.trackChar();
             return this;
         }
-        
-        public GameKernel gen(){
+
+        public GameKernel gen() {
             gk.cs = builder.gen();
             return gk;
         }

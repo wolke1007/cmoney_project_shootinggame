@@ -5,17 +5,16 @@
  */
 package graph;
 
-
 /**
  *
  * @author Cloud-Razer
  */
 public class Rect extends Graph {
-    
+
     public Rect(float left, float top, float right, float bottom) {
         super(left, top, right, bottom, "rect");
     }
-    
+
     @Override
     public boolean intersects(Graph a, Graph b) {
         if (b.getColliderType().equals("circle")) {
@@ -24,7 +23,7 @@ public class Rect extends Graph {
         }
         return a.intersects(b.left(), b.top(), b.right(), b.bottom());
     }
-    
+
     @Override
     public boolean intersects(float x, float y, float r) {
         if (x > left() && x < right() && y > top() && y < bottom()) {
@@ -79,7 +78,7 @@ public class Rect extends Graph {
         super.setDy(0);
         return false;
     }
-    
+
     @Override
     public boolean intersects(Graph target) {
         if (target.getColliderType().equals("rect")) {
@@ -89,7 +88,7 @@ public class Rect extends Graph {
             return intersects(tmp.centerX(), tmp.centerY(), tmp.r());
         }
     }
-    
+
     @Override
     public boolean intersects(float left, float top, float right, float bottom) {
         super.setDx(0);
@@ -118,7 +117,7 @@ public class Rect extends Graph {
         }
         return true;
     }
-    
+
     @Override
     public boolean innerCollisionToCollision(Graph target) {
         if (target.getColliderType().equals("rect")) {
@@ -128,7 +127,7 @@ public class Rect extends Graph {
             return innerCollisionToCollision(tmp.centerX(), tmp.centerY(), tmp.r());
         }
     }
-    
+
     @Override
     public boolean innerCollisionToCollision(Graph a, Graph b) {
         if (b.getColliderType().equals("circle")) {
@@ -137,7 +136,7 @@ public class Rect extends Graph {
         }
         return a.innerCollisionToCollision(b.left(), b.top(), b.right(), b.bottom());
     }
-    
+
     @Override
     public boolean innerCollisionToCollision(float left, float top, float right, float bottom) {
         if (super.left() <= left || super.right() >= right || super.top() <= top || super.bottom() >= bottom) {
@@ -161,7 +160,7 @@ public class Rect extends Graph {
         super.setDy(0);
         return false;
     }
-    
+
     @Override
     public boolean innerCollisionToCollision(float x, float y, float r) {
         float dx = Math.abs(super.right() - x);
@@ -182,5 +181,5 @@ public class Rect extends Graph {
         super.setDy(0);
         return false;
     }
-    
+
 }

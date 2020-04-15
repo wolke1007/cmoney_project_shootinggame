@@ -18,6 +18,6 @@ public interface Effect {
     public abstract void setImg(String src);
 
     public abstract void paint(Graphics g);
-    
+
     public abstract boolean getRun();
 }

@@ -17,12 +17,12 @@ import util.Global;
  * @author F-NB
  */
 public class Gun extends GameObject {
-    
+
     private RendererToRotate renderer;//畫道具
     private Renderer rendererShadow;//畫影子
-    
+
     private boolean canHave;//當目標碰撞後可以拿到
-    
+
     //浮動控制
     private Delay moveDelay;
     private float moveSpeed;

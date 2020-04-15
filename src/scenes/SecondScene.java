@@ -6,30 +6,24 @@
 package scenes;
 
 import controllers.SceneController;
-//import gameobj.TestObj;
-import graph.Rect;
+import java.awt.Graphics;
 import util.CommandSolver;
 import util.Delay;
-import util.Global;
-import java.awt.Color;
-import java.awt.Graphics;
-import gameobj.Actor;
-import renderer.Renderer;
 
 /**
  *
  * @author user1
  */
-public class SecondScene extends Scene{
+public class SecondScene extends Scene {
 
 //    TestObj obj;
 //    TestObj obj2;
     Delay delay;
-    
+
     public SecondScene(SceneController sceneController) {
         super(sceneController);
     }
-    
+
     @Override
     public void sceneBegin() {
 //        obj = new TestObj(1, 1, 50, 50, 130, 130, 50, 50);
@@ -40,7 +34,7 @@ public class SecondScene extends Scene{
 
     @Override
     public void sceneUpdate() {
-        if(delay.isTrig()){
+        if (delay.isTrig()) {
 //            obj2.update();
 //            obj.update();
 //            if(obj.isCollision(obj2)){
@@ -67,8 +61,8 @@ public class SecondScene extends Scene{
     public CommandSolver.MouseCommandListener getMouseListener() {
         return null;
     }
-    
-    public static class MyKeyListener implements CommandSolver.KeyListener{
+
+    public static class MyKeyListener implements CommandSolver.KeyListener {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
@@ -80,8 +74,8 @@ public class SecondScene extends Scene{
 
         @Override
         public void keyTyped(char c, long trigTime) {
-            
+
         }
-        
+
     }
 }

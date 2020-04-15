@@ -5,13 +5,11 @@
  */
 package scenes;
 
-import controllers.AudioPath;
-import controllers.AudioResourceController;
 import controllers.ImagePath;
 import controllers.SceneController;
-import renderer.Renderer;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import renderer.Renderer;
 import util.CommandSolver;
 import util.Global;
 
@@ -37,6 +35,7 @@ public class StartMenuScene extends Scene {
     }
 
     public abstract class Button {
+
         public int top;
         public int bottom;
         public int left;
@@ -44,7 +43,8 @@ public class StartMenuScene extends Scene {
     }
 
     public class startButton extends Button {
-        public startButton(){
+
+        public startButton() {
             super.left = Global.SCREEN_X / 2 - 150;
             super.top = Global.SCREEN_Y - 90;
             super.right = Global.SCREEN_X / 2 + 110;
@@ -53,7 +53,8 @@ public class StartMenuScene extends Scene {
     }
 
     public class scoreButton extends Button {
-        public scoreButton(){
+
+        public scoreButton() {
             super.left = 30;
             super.top = Global.SCREEN_Y - 90;
             super.right = 167;
@@ -132,11 +133,11 @@ public class StartMenuScene extends Scene {
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
             if (state == CommandSolver.MouseState.PRESSED) {
-                if(cursorInBtn(new startButton())){
+                if (cursorInBtn(new startButton())) {
                     // Enter main scene
                     StartMenuScene.super.sceneController.changeScene(new MainScene(StartMenuScene.super.sceneController));
                 }
-                if(cursorInBtn(new scoreButton())){
+                if (cursorInBtn(new scoreButton())) {
                     // Enter score history scene
                     StartMenuScene.super.sceneController.changeScene(new HighScoreScene(StartMenuScene.super.sceneController));
                 }

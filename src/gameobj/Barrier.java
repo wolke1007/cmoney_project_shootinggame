@@ -5,8 +5,8 @@
  */
 package gameobj;
 
-import renderer.Renderer;
 import java.awt.Graphics;
+import renderer.Renderer;
 
 /**
  *
@@ -35,7 +35,7 @@ public class Barrier extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int)super.x, (int)super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height());
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height());
     }
 
 }

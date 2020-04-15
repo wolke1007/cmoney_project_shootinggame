@@ -5,8 +5,6 @@
  */
 package graph;
 
-import util.Global;
-
 /**
  *
  * @author Cloud-Razer
@@ -24,7 +22,7 @@ public abstract class Graph {
 
     private float dx;
     private float dy;
-    
+
     private String colliderType;
 
     public Graph(float left, float top, float right, float bottom, String type) {
@@ -38,8 +36,8 @@ public abstract class Graph {
         setDy(0);
         this.colliderType = type;
     }
-    
-    public String getColliderType(){
+
+    public String getColliderType() {
         return this.colliderType;
     }
 

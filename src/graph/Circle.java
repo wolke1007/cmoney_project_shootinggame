@@ -5,8 +5,6 @@
  */
 package graph;
 
-import util.Global;
-
 /**
  *
  * @author F-NB

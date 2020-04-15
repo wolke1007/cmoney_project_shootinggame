@@ -10,8 +10,7 @@ import util.GameKernel;
 import shootinggame.GI;
 import util.Global;
 import java.awt.event.KeyEvent;
-import javax.swing.*;
-
+import javax.swing.JFrame;
 /**
  *
  * @author Cloud-Razer

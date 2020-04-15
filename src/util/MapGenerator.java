@@ -87,7 +87,7 @@ public class MapGenerator {
             Map newMap = new Map(ImagePath.BACKGROUND[Global.random(0, ImagePath.BACKGROUND.length - 1)], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
             int mapType = Global.random(1, 6);
-            switch(mapType){
+            switch (mapType) {
                 case 1:
                     pattern_1(newMap);
                     break;
@@ -114,7 +114,7 @@ public class MapGenerator {
     }
 
     private void pattern_1(Map newMap) { // 十字街道加障礙物
-        int tmp = 5;
+        int tmp = 3;
         newMap.getBuildings().add(new Building("rect", 0f, 0f, Global.SCREEN_X / tmp, Global.SCREEN_Y / tmp, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", (Global.SCREEN_X / 3 * 2), 0f, Global.SCREEN_X / tmp, Global.SCREEN_Y / tmp, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", 0f, (Global.SCREEN_Y / 3 * 2), Global.SCREEN_X / tmp, Global.SCREEN_Y / tmp, ImagePath.BUILDING, 0));
@@ -130,14 +130,14 @@ public class MapGenerator {
         newMap.getBuildings().add(new Building("rect", 0f, 0f, Global.SCREEN_X, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", 0f, (Global.SCREEN_Y / 3 * 2), Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", (Global.SCREEN_X / 3 * 2), (Global.SCREEN_Y / 3 * 2), Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
-     }
+    }
 
     private void pattern_3(Map newMap) { // 凸 型街道
         newMap.getBuildings().add(new Building("rect", 0f, 0f, Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", (Global.SCREEN_X / 3 * 2), 0f, Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", 0f, (Global.SCREEN_Y / 3 * 2), Global.SCREEN_X, (Global.SCREEN_Y / 3), ImagePath.BUILDING, 0));
-     }
-    
+    }
+
     private void pattern_4(Map newMap) { // 十字街道
         newMap.getBuildings().add(new Building("rect", 0f, 0f, Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", (Global.SCREEN_X / 3 * 2), 0f, Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));

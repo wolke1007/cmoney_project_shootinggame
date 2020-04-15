@@ -14,7 +14,7 @@ import gameobj.Maps;
 import graph.Circle;
 import graph.Graph;
 import graph.Rect;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,10 +25,10 @@ public class JabStep {//試探碰撞
     private Graph self;
     private float dx;
     private float dy;
-    private LinkedList<GameObject> allObjects;
+    private ArrayList<GameObject> allObjects;
     private float divisor;//切割的等分
 
-    public JabStep(Graph self, float dx, float dy, LinkedList<GameObject> allObjects) {
+    public JabStep(Graph self, float dx, float dy, ArrayList<GameObject> allObjects) {
         setSelf(self);
         setDXY(dx, dy);
         setAllObjects(allObjects);
@@ -64,11 +64,11 @@ public class JabStep {//試探碰撞
         setDY(dy);
     }
 
-    public void setAllObjects(LinkedList<GameObject> allObjects) {
+    public void setAllObjects(ArrayList<GameObject> allObjects) {
         this.allObjects = allObjects;
     }
 
-    public void newSet(Graph self, float dx, float dy, LinkedList<GameObject> allObjects) {
+    public void newOffset(Graph self, float dx, float dy, ArrayList<GameObject> allObjects) {
         setSelf(self);
         setDXY(dx, dy);
         setAllObjects(allObjects);

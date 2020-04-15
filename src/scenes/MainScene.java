@@ -18,18 +18,15 @@ import gameobj.Gun;
 import gameobj.Map;
 import gameobj.Maps;
 import renderer.Renderer;
-//import gameobj.TestObj;
 import gameobj.View;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-//import java.awt.event.KeyEvent;
 import util.Delay;
 import util.Global;
 import util.CommandSolver;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import util.MapGenerator;
 import util.ScoreCalculator;
 
@@ -183,7 +180,7 @@ public class MainScene extends Scene {
             }
 //            Global.mouseState++;
         }
-//        System.out.println("ammo size: "+this.ammos.size());
+        System.out.println("ammo size: "+this.ammos.size());
     }
 
     private void paintSmallMap(Graphics g) {
@@ -340,7 +337,7 @@ public class MainScene extends Scene {
 
         @Override
         public void keyTyped(char c, long trigTime) {
-            if(c == Global.KEY_G){
+            if (c == Global.KEY_G) {
                 System.out.println("!!!!");
             }
         }

@@ -8,9 +8,9 @@ package gameobj;
 import graph.Circle;
 import graph.Graph;
 import graph.Rect;
+import java.awt.Color;
 import java.awt.Graphics;
 import util.Global;
-import java.awt.Color;
 
 /**
  *
@@ -30,7 +30,6 @@ public abstract class GameObject {
     private float dividend;
 
     //血量end
-
     public GameObject(String colliderType, float x, float y, int width, int height, int colliderWidth, int colliderHeight) {
         switch (colliderType) {
             case "circle":
@@ -70,10 +69,10 @@ public abstract class GameObject {
         this.hpBarWidth += this.dividend;
         return true;
     }
-    public float getHpBarWidth(){
+
+    public float getHpBarWidth() {
         return this.hpBarWidth;
     }
-    
 
     public float getHp() {
         this.hp = this.hpBarWidth / this.dividend;

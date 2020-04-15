@@ -5,13 +5,10 @@
  */
 package gameobj;
 
-import renderer.RendererToRotate;
-import graph.Graph;
-import graph.Rect;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import renderer.RendererToRotate;
 import util.Angle;
 import util.AverageSpeed;
 import util.Delay;
@@ -29,7 +26,7 @@ public class Enemy extends GameObject {
     private GameObject target;
     private Delay targetHp;
     //血量控制end
-    private ArrayList<GameObject> allObjects;
+//    private ArrayList<GameObject> allObjects;
 
     //敵人對目標的移動控制
     private Delay moveDelay;
@@ -52,7 +49,7 @@ public class Enemy extends GameObject {
         setMoveSpeedDetail(moveSpeed);//裡面有 扣血 & 移動 的時間設定
         this.averageSpeed = new AverageSpeed(this.getCenterX(), this.getCenterY(), this.target.getCenterX(), this.target.getCenterY(), 55, true);
         super.paintPriority = 1;
-        this.vectorMove = new VectorCollision(this, 0, 0, null);
+        this.vectorMove = new VectorCollision(this, 0, 0);
         this.vectorMove.setMultiple(4f);
         this.vectorMove.setDivisor(5);
         this.setType("Enemy");
@@ -116,8 +113,8 @@ public class Enemy extends GameObject {
     //delay控制end
 
     public void setAllObject(ArrayList<GameObject> list) {
-        this.allObjects = list;
-        this.vectorMove.setAllObjects(this.allObjects);
+//        this.allObjects = list;
+        this.vectorMove.setAllObjects(list);
     }
 
     private void setAverageSpeed() {
@@ -136,8 +133,7 @@ public class Enemy extends GameObject {
                 this.vectorMove.setIsHurt(true);
             }//移動前 扣血 啟動
             this.vectorMove.newOffset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
-            this.vectorMove.setIsHurt(false);
-            
+            this.vectorMove.setIsHurt(false);//移動後要再關閉
         }
     }
 
@@ -148,8 +144,8 @@ public class Enemy extends GameObject {
                 move();
             }
         } else {
-            this.setXY(-50, -50);
-        }       
+            this.setXY(-100, -100);
+        }
     }
 
     @Override

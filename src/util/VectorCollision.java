@@ -23,7 +23,6 @@ public class VectorCollision {
     private float dx;//給予 x 的移動向量
     private float dy;//給予 y 的移動向量
     private ArrayList<GameObject> allObjects;
-    private ArrayList<GameObject> allObjectArrs;
     private int listSize;
 
     //被取移動距離
@@ -33,47 +32,13 @@ public class VectorCollision {
 
     private boolean isHurt;
 
-    public VectorCollision(GameObject self, float dx, float dy, ArrayList<GameObject> allObjects) {
+    public VectorCollision(GameObject self, float dx, float dy) {
         setSelf(self);
         setDXY(dx, dy);
-        setAllObjects(allObjects);
-        this.setDivisor(50);
+        setDivisor(100);
         setMultiple(3f);
         setIsHurt(false);
-        this.allObjectArrs = new ArrayList<>();
-    }
-
-    private void secret() {
-        Long start = System.currentTimeMillis();
-        if (this.allObjects != null && this.allObjectArrs.size() != this.listSize) {
-            this.listSize = this.allObjects.size();
-            this.allObjectArrs.clear();
-            for (int i = 0; i < this.allObjects.size(); i++) {
-                if (Math.abs(this.allObjects.get(i).getCenterX() - this.self.getCenterX()) > 300
-                        || Math.abs(this.allObjects.get(i).getCenterY() - this.self.getCenterY()) > 200) {
-                    continue;
-                }
-                if (this.allObjects.get(i).getType().equals(this.self.getType())) {
-                    continue;
-                }
-                boolean escape = false;
-                for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
-                    if (this.allObjects.get(i).getType().equals(Global.EXCLUDE[z])) {
-                        escape = true;
-                        break;
-                    }
-                }
-                if (escape) {
-                    continue;
-                }
-                this.allObjectArrs.add(this.allObjects.get(i));
-            }
-            System.out.println(this.allObjectArrs.size());
-        }
-        Long stop = System.currentTimeMillis();
-        if ((stop - start) > 1l) {
-            Global.log("secreet:" + (stop - start));
-        }
+        setAllObjects(null);
     }
 
     public void setSelf(GameObject self) {
@@ -95,7 +60,6 @@ public class VectorCollision {
 
     public void setAllObjects(ArrayList<GameObject> allObjects) {
         this.allObjects = allObjects;
-
     }
 
     public void setDivisor(float divisor) {
@@ -115,40 +79,34 @@ public class VectorCollision {
     }
 
     public void newOffset(float dx, float dy) {
-        secret();
-        if (this.allObjects != null) {
-            this.listSize = this.allObjects.size();
-        }
         setDXY(dx, dy);
         offsetDX();
         offsetDY();
     }
 
     private void offsetDX() {
-        if (this.allObjectArrs == null) {
-            return;
-        }
         float tmp = this.dx / this.divisor;//等分的距離
         GameObject another;
         for (int i = 0; i < this.divisor; i++) {
-            for (int k = 0; k < this.allObjectArrs.size(); k++) {
-                another = this.allObjectArrs.get(k);
-//                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
-//                    continue;
-//                }
-//                boolean escape = false;
-//                for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
-//                    if (another.getType().equals(Global.EXCLUDE[z])) {
-//                        escape = true;
-//                    }
-//                }
-//                if (escape) {
-//                    continue;
-//                }
+            for (int k = 0; k < this.allObjects.size(); k++) {
+                another = this.allObjects.get(k);
+                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
+                    continue;
+                }
+
+                boolean escape = false;
+                for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
+                    if (another.getType().equals(Global.EXCLUDE[z])) {
+                        escape = true;
+                    }
+                }
+                if (escape) {
+                    continue;
+                }
                 for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
                     if (another.getType().equals(Global.INNER[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
+                        this.self.offset(this.self.getCollider().getDx() /* tmp*/, this.self.getCollider().getDy() /* tmp*/);
                         return;
                     }
                 }
@@ -169,30 +127,28 @@ public class VectorCollision {
     }
 
     private void offsetDY() {
-        if (this.allObjectArrs == null) {
-            return;
-        }
         float tmp = this.dy / this.divisor;//等分的距離
         GameObject another;
         for (int i = 0; i < this.divisor; i++) {
-            for (int k = 0; k < this.allObjectArrs.size(); k++) {
-                another = this.allObjectArrs.get(k);
-//                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
-//                    continue;
-//                }
-//                boolean escape = false;
-//                for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
-//                    if (another.getType().equals(Global.EXCLUDE[z])) {
-//                        escape = true;
-//                    }
-//                }
-//                if (escape) {
-//                    continue;
-//                }
+            for (int k = 0; k < this.allObjects.size(); k++) {
+                another = this.allObjects.get(k);
+                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
+                    continue;
+                }
+
+                boolean escape = false;
+                for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
+                    if (another.getType().equals(Global.EXCLUDE[z])) {
+                        escape = true;
+                    }
+                }
+                if (escape) {
+                    continue;
+                }
                 for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
                     if (another.getType().equals(Global.INNER[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
+                        this.self.offset(this.self.getCollider().getDx() /* tmp*/, this.self.getCollider().getDy() /* tmp*/);
                         return;
                     }
                 }
@@ -212,6 +168,14 @@ public class VectorCollision {
         return;
     }
 }
+///////////////////////////////////////////////
+//待驗證功能，誤刪
+//                if (Math.abs(this.allObjects.get(i).getCenterX() - this.self.getCenterX()) > 350) {
+//                    continue;
+//                }
+//                if (Math.abs(this.allObjects.get(i).getCenterY() - this.self.getCenterY()) > 200) {
+//                    continue;
+//                }
 ///////////////////////////////////////////////
 //offsetDx()向量解
 //                        caculateAngle(another);
