@@ -106,9 +106,7 @@ public class MainScene extends Scene {
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
         for (int i = 0; i < this.allObjects.size(); i++) {
-            if (!this.allObjects.get(i).getType().equals("Ammo")) {
-                this.allObjects.get(i).update();
-            }
+            this.allObjects.get(i).update();
             if (this.view.isCollision(this.allObjects.get(i))) {
                 if (!(this.view.stillSeeing(this.allObjects.get(i)))) {
                     this.view.saw(this.allObjects.get(i));
@@ -185,10 +183,7 @@ public class MainScene extends Scene {
             }
 //            Global.mouseState++;
         }
-        System.out.println(this.ammos.size());
-        for (int i = 0; i < this.ammos.size(); i++) {
-            this.ammos.get(i).update();
-        }
+//        System.out.println("ammo size: "+this.ammos.size());
     }
 
     private void paintSmallMap(Graphics g) {

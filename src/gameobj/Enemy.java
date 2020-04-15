@@ -134,12 +134,7 @@ public class Enemy extends GameObject {
             if (this.targetHp.isTrig()) {
                 this.vectorMove.setIsHurt(true);
             }//移動前 扣血 啟動
-            Long start = System.currentTimeMillis();
             this.vectorMove.newSet(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY(), this.allObjects); // 這行有 performance issue!!
-            Long stop = System.currentTimeMillis();
-            if ((stop - start) >= 1L) {
-                Global.log("enemy move setAverageSpeed time: " + (stop - start));
-            }
             this.vectorMove.setIsHurt(false);
             
         }
