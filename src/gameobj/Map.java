@@ -44,7 +44,7 @@ public class Map extends GameObject {
         return this.buildings;
     }
 
-    public void updateAllBarriersBuildingsXY() {
+    public void updateAllXY() {
         for (int i = 0; i < this.barriers.size(); i++) {
             Barrier b = this.barriers.get(i);
             b.setX(super.x + b.x);
@@ -52,8 +52,10 @@ public class Map extends GameObject {
         }
         for (int i = 0; i < this.buildings.size(); i++) {
             Building b = this.buildings.get(i);
+            ArrayList<GameObject> walls = b.getWalls();
             b.setX(super.x + b.x);
             b.setY(super.y + b.y);
+            b.genWalls(); // 設定好該地圖 XY 後才建立牆壁
         }
     }
 
@@ -67,7 +69,7 @@ public class Map extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int) super.getX(), (int) super.getY(), (int) super.getX() + (int) this.width, (int) super.getY() + (int) this.height);
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) this.graph.width(), (int) super.getY() + (int) this.graph.height());
     }
 
 }

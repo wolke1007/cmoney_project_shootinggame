@@ -34,10 +34,9 @@ public class Actor extends GameObject {
 
     private float moveSpeed; // per frame
     private float actMoveSpeed;
-
     private Move movement;
-
     private int moveDistance;
+    
 
     private int keyModeChange;// 0 徒手, 1 步槍, 2 手榴彈 , 3 迫擊砲
     private boolean haveRifle;//有步槍
@@ -91,14 +90,14 @@ public class Actor extends GameObject {
     public void setAllObjects(ArrayList<GameObject> list) {
         this.movement.setAllObjects(list);
     }
-
-    private void setMoveDistance(int moveDistance) {
-        this.moveDistance = moveDistance;
-    }
-
-    private int getMoveDistance() {
-        return this.moveDistance;
-    }
+//
+//    private void setMoveDistance(int moveDistance) {
+//        this.moveDistance = moveDistance;
+//    }
+//
+//    private int getMoveDistance() {
+//        return this.moveDistance;
+//    }
     //位置資訊end
 
     //角度計算
@@ -200,8 +199,6 @@ public class Actor extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        g.drawLine(-10000, (int) (this.getCollider().centerY() - Global.viewY), 10000, (int) (this.getCollider().centerY() - Global.viewY));
-        g.drawLine((int) (this.getCollider().centerX() - Global.viewX), -10000, (int) (this.getCollider().centerX() - Global.viewX), 10000);
         this.rotateRenderer.paint(g);
         paintEffects(g);
     }

@@ -5,6 +5,7 @@
  */
 package gameobj;
 
+import graph.Graph;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import util.Delay;
@@ -50,6 +51,13 @@ public class View extends GameObject {
 
     public ArrayList getSaw() {
         return this.sawObjects;
+    }
+
+    public boolean isCollision(Graph graph) {
+        if (getCollider() == null || graph == null) {
+            return false;
+        }
+        return getCollider().intersects(graph);
     }
 
     public void removeSeen(GameObject obj) {

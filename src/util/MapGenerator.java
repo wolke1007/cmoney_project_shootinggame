@@ -77,7 +77,7 @@ public class MapGenerator {
 
     private void updateAllBarriersBuildingsXY() {
         for (int i = 0; i < this.maps.getMaps().size(); i++) {
-            this.maps.get(i).updateAllBarriersBuildingsXY();
+            this.maps.get(i).updateAllXY();
         }
     }
 

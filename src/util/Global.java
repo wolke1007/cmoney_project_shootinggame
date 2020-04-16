@@ -14,7 +14,7 @@ public class Global {
     // Debug Mode
     public static final boolean IS_DEBUG = true;
 
-    public static void log(String str) {
+    public static void log(String str) { 
         if (IS_DEBUG) {
             System.out.println(str);
         }
@@ -78,7 +78,7 @@ public class Global {
     //角度需求
     public static final float PI = 3.14f;
     // 地圖數量
-    public static final int MAP_QTY = 64;
+    public static final int MAP_QTY = 9;
     // 地圖邊界
     public static int mapEdgeUp;
     public static int mapEdgeDown;

@@ -19,6 +19,7 @@ import gameobj.Map;
 import gameobj.Maps;
 import renderer.Renderer;
 import gameobj.View;
+import gameobj.Wall;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -83,6 +84,7 @@ public class MainScene extends Scene {
         this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         this.allObjects.add(this.gun);
+        Global.log("scene begin allObject size: "+this.allObjects.size());
     }
 
     private void addAllMapsToAllObjects() {
@@ -94,6 +96,10 @@ public class MainScene extends Scene {
             }
             for (int j = 0; j < map.getBuildings().size(); j++) {
                 this.allObjects.add(map.getBuildings().get(j));
+                ArrayList<GameObject> walls = map.getBuildings().get(j).getWalls();
+                for (int w = 0; w < walls.size(); w++) {
+                    this.allObjects.add(walls.get(w));
+                }
             }
         }
     }
@@ -106,8 +112,12 @@ public class MainScene extends Scene {
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
         for (int i = 0; i < this.allObjects.size(); i++) {
-                this.allObjects.get(i ).update();
-            if (this.view.isCollision(this.allObjects.get(i))) {
+            if (i == this.allObjects.size() - 1) {
+                this.allObjects.get(0).update();
+            } else {
+                this.allObjects.get(i + 1).update();
+            }
+            if (this.view.isCollision(this.allObjects.get(i).getGraph())) {
                 if (!(this.view.stillSeeing(this.allObjects.get(i)))) {
                     this.view.saw(this.allObjects.get(i));
                 }

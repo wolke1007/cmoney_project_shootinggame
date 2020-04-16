@@ -25,6 +25,12 @@ public class Barrier extends GameObject {
         setType("Barrier");
     }
 
+    public Barrier(String colliderType, float x, float y, int width, int height) { // 給 Wall 用的建構子，不需要圖片資訊
+        super(colliderType, x, y, width, height, width, height);
+        super.paintPriority = 2;
+        setType("Barrier");
+    }
+
     @Override
     public void setDir(int dir) {
     }
@@ -35,7 +41,7 @@ public class Barrier extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) super.width(), (int) super.getY() + (int) super.height());
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) this.graph.width(), (int) super.getY() + (int) this.graph.height());
     }
 
 }
