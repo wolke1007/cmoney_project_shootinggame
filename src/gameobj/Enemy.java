@@ -33,7 +33,7 @@ public class Enemy extends GameObject {
     public void selectionKind(GameObject target, int kind) {
         switch (kind) {
             case 1:
-                this.moveMode = new ZombieNormal(this, target, 60, ImagePath.ZOMBIE_NORMAL);
+                this.moveMode = new ZombieNormal(this, target, 59, ImagePath.ZOMBIE_NORMAL);
                 break;
             case 2:
                 this.moveMode = new ZombieShock(this, target, 60, ImagePath.ZOMBIE_SHOCK);

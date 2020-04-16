@@ -25,7 +25,7 @@ public class Move {
     private Graph selfCollider;
     //測試用ElasticCollision
     private VectorCollision vectorMove;
-    public Delay myHurt;
+    public int myHurt;
 
     public Move(GameObject obj) {
         this.upPressed = false;
@@ -34,8 +34,7 @@ public class Move {
         this.rightPressed = false;
         this.obj = obj;
         this.vectorMove = new VectorCollision(this.obj, 0, 0);
-        this.myHurt = new Delay(20);
-        this.myHurt.start();
+        this.myHurt = 0;
     }
 
     public void setAllObjects(ArrayList<GameObject> list) {
@@ -71,8 +70,9 @@ public class Move {
                 this.vectorMove.newOffset(distance, distance);
                 break;
         }
-        if (this.vectorMove.getCollisionType() != null && this.myHurt.isTrig() && this.vectorMove.getCollisionType().equals("Enemy")) {
+        if (this.myHurt++ > 30 && this.vectorMove.getCollisionType() != null && this.vectorMove.getCollisionType().equals("Enemy")) {
             this.obj.subtractHp();
+            this.myHurt = 0;
         }
     }
 

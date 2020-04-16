@@ -62,7 +62,7 @@ public class Global {
     public static final int[] STEPS_WALK_SHORT = {0, 2};
     public static final int[] STEPS_WALK_ACTOR = null;
     //敵人上限
-    public static final int ENEMY_LIMIT = 15;
+    public static final int ENEMY_LIMIT = 30;
     //碰撞判斷    
     public static final String[] EXCLUDE = {"Map", "Ammo", "Gun"};
     public static final String[] INNER = {"Maps"};

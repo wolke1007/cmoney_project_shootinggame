@@ -84,7 +84,7 @@ public class MainScene extends Scene {
         this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         this.allObjects.add(this.gun);
-        Global.log("scene begin allObject size: "+this.allObjects.size());
+        Global.log("scene begin allObject size: " + this.allObjects.size());
     }
 
     private void addAllMapsToAllObjects() {
@@ -139,7 +139,7 @@ public class MainScene extends Scene {
             float height = Global.UNIT_Y;
             if (this.maps.canDeploy(x, y, width, height)) {
                 Enemy enemy = new Enemy("circle", x, y, 5,
-                        this.actor, 2);
+                        this.actor, Global.random(1, 2));
                 this.enemys.add(enemy);
                 this.allObjects.add(enemy);
                 enemy.setAllObject(this.allObjects);
