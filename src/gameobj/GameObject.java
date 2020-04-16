@@ -19,7 +19,7 @@ import util.Global;
 public abstract class GameObject {
 
     private Graph collider;
-    protected Graph graph;
+    private Graph graph;
     protected float x;
     protected float y;
     protected int paintPriority;
@@ -29,8 +29,13 @@ public abstract class GameObject {
     private float hpBarWidth;
     private float dividend;
 
+    private int graphWidth;
+    private int graphHeight;
+
     //血量end
     public GameObject(String colliderType, float x, float y, int width, int height, int colliderWidth, int colliderHeight) {
+        this.graphWidth = width;
+        this.graphHeight = height;
         switch (colliderType) {
             case "circle":
                 this.graph = new Circle(x, y, x + width, y + height, width / 2f);
@@ -107,7 +112,7 @@ public abstract class GameObject {
         this.x = x;
         this.graph.setLeft(this.x);
         this.collider.setLeft(this.x);
-        this.graph.setRight(this.x + width());
+        this.graph.setRight(this.x + this.graphWidth);
         this.collider.setRight(this.x + width());
     }
 
@@ -115,7 +120,7 @@ public abstract class GameObject {
         this.y = y;
         this.graph.setTop(this.y);
         this.collider.setTop(this.y);
-        this.graph.setBottom(this.y + height());
+        this.graph.setBottom(this.y + this.graphHeight);
         this.collider.setBottom(this.y + height());
     }
 

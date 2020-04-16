@@ -17,8 +17,8 @@ public abstract class Graph {
     private float top;
     private float right;
     private float bottom;
-    public float width;
-    public float hight;
+    private float width;
+    private float hight;
 
     private float dx;
     private float dy;

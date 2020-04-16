@@ -69,7 +69,7 @@ public class Map extends GameObject {
 
     @Override
     public void paintComponent(Graphics g) {
-        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) this.graph.width(), (int) super.getY() + (int) this.graph.height());
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) this.getGraph().width(), (int) super.getY() + (int) this.getGraph().height());
     }
 
 }
