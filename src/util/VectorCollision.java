@@ -30,15 +30,17 @@ public class VectorCollision {
 
     private float divisor;//細分預判的等份數 //暫時不一定用到
 
-    private boolean isHurt;
+    private int isHurt;
+    private boolean isCollision;
 
     public VectorCollision(GameObject self, float dx, float dy) {
         setSelf(self);
         setDXY(dx, dy);
         setDivisor(20);
         setMultiple(2f);
-        setIsHurt(false);
+        setIsHurt(0);
         setAllObjects(null);
+        setIsCollision(false);
     }
 
     public void setSelf(GameObject self) {
@@ -70,12 +72,20 @@ public class VectorCollision {
         this.multiple = multiple;
     }
 
-    public void setIsHurt(boolean isHurt) {
+    public void setIsHurt(int isHurt) {
         this.isHurt = isHurt;
     }
 
-    public boolean getIsHurt() {
+    public int getIsHurt() {
         return this.isHurt;
+    }
+
+    public void setIsCollision(boolean isCollision) {
+        this.isCollision = isCollision;
+    }
+
+    public boolean getIsCollision() {
+        return this.isCollision;
     }
 
     public void newOffset(float dx, float dy) {
@@ -106,6 +116,7 @@ public class VectorCollision {
                     if (another.getType().equals(Global.INNER[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
+                        setIsCollision(true);
                         return;
                     }
                 }
@@ -120,7 +131,8 @@ public class VectorCollision {
                     if (!(another.getType().equals(Global.INNER[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
-                        if (getIsHurt()) {
+                        setIsCollision(true);
+                        for (int j = 0; j < getIsHurt(); j++) {
                             another.subtractHp();
                         }
                         return;
@@ -129,6 +141,7 @@ public class VectorCollision {
             }
             this.self.offset(tmp, 0);
         }
+        setIsCollision(false);
         return;
     }
 
@@ -154,6 +167,7 @@ public class VectorCollision {
                     if (another.getType().equals(Global.INNER[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
+                        setIsCollision(true);
                         return;
                     }
                 }
@@ -168,7 +182,8 @@ public class VectorCollision {
                     if (!(another.getType().equals(Global.INNER[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
-                        if (getIsHurt()) {
+                        setIsCollision(true);
+                        for (int j = 0; j < getIsHurt(); j++) {
                             another.subtractHp();
                         }
                         return;
@@ -177,20 +192,10 @@ public class VectorCollision {
             }
             this.self.offset(0, tmp);
         }
+        setIsCollision(false);
         return;
     }
 }
-///////////////////////////////////////////////
-//待驗證功能，勿刪
-//                if (Math.abs(this.allObjects.get(i).getCenterX() - this.self.getCenterX()) > 350) {
-//                    continue;
-//                }
-//                if (Math.abs(this.allObjects.get(i).getCenterY() - this.self.getCenterY()) > 200) {
-//                    continue;
-//                }
-//                if (Math.sqrt(Math.pow(Math.abs(this.allObjects.get(i).getCenterX() - this.self.getCenterX()), 2) + Math.pow(Math.abs(this.allObjects.get(i).getCenterY() - this.self.getCenterY()), 2)) > 400) {
-//                    continue;
-//                }
 ///////////////////////////////////////////////
 //offsetDx()向量解
 //                        caculateAngle(another);

@@ -5,17 +5,14 @@
  */
 package gameobj;
 
+import controllers.ImagePath;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
-import renderer.RendererToRotate;
-import util.Angle;
-import util.AverageSpeed;
-import util.Delay;
 import util.Global;
 import util.MoveMode;
-import util.VectorCollision;
 import util.ZombieNormal;
+import util.ZombieShock;
 
 /**
  *
@@ -25,12 +22,23 @@ public class Enemy extends GameObject {
 
     private MoveMode moveMode;
 
-    public Enemy(String colliderType, float x, float y, float hp, GameObject target, int moveSpeed, String[] path) {
+    public Enemy(String colliderType, float x, float y, float hp, GameObject target, int kind) {
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
-        this.moveMode = new ZombieNormal(this, target, moveSpeed, path);
         setHpPoint(hp);
         this.setType("Enemy");
+        selectionKind(target, kind);
         super.paintPriority = 1;
+    }
+
+    public void selectionKind(GameObject target, int kind) {
+        switch (kind) {
+            case 1:
+                this.moveMode = new ZombieNormal(this, target, 60, ImagePath.ZOMBIE_NORMAL);
+                break;
+            case 2:
+                this.moveMode = new ZombieShock(this, target, 60, ImagePath.ZOMBIE_SHOCK);
+                break;
+        }
     }
 
     public void setAllObject(ArrayList<GameObject> list) {
@@ -45,7 +53,7 @@ public class Enemy extends GameObject {
     @Override
     public void paintComponent(Graphics g) {
         this.moveMode.paintComponent(g);
-        g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.width(), 4);
+        g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.graph.width(), 4);
         g.setColor(Color.RED);
         g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.getHpBarWidth(), 4);
         g.setColor(Color.BLACK);
