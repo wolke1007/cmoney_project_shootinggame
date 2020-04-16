@@ -47,12 +47,15 @@ public class MainScene extends Scene {
     private Renderer hpRenderer;
     private ScoreCalculator scoreCal;
     private Effect gameOverEffect;
+    private Delay stateChage;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
+        this.stateChage = new Delay(20);
+        this.stateChage.start();
     }
 
     @Override
@@ -103,7 +106,11 @@ public class MainScene extends Scene {
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
         for (int i = 0; i < this.allObjects.size(); i++) {
-            this.allObjects.get(i).update();
+            if (i == this.allObjects.size() - 1) {
+                this.allObjects.get(0).update();
+            } else {
+                this.allObjects.get(i + 1).update();
+            }
             if (this.view.isCollision(this.allObjects.get(i))) {
                 if (!(this.view.stillSeeing(this.allObjects.get(i)))) {
                     this.view.saw(this.allObjects.get(i));
@@ -130,7 +137,7 @@ public class MainScene extends Scene {
             float height = Global.UNIT_Y;
             if (this.maps.canDeploy(x, y, width, height)) {
                 Enemy enemy = new Enemy("circle", x, y, 5,
-                        this.actor, 58, ImagePath.ENEMY);
+                        this.actor, 59, ImagePath.ENEMY);
                 this.enemys.add(enemy);
                 this.allObjects.add(enemy);
                 enemy.setAllObject(this.allObjects);
@@ -153,32 +160,33 @@ public class MainScene extends Scene {
 
     //子彈測試更新中
     public void ammoUpdate() {
-        if (Global.mouseState == 1) {
-            boolean create = true;
-            if (this.ammos == null) {
-                Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
-                this.ammos.add(ammo);
-                this.allObjects.add(ammo);
-                ammo.setAllObjects(this.allObjects);
-            } else {
-                for (int i = 0; i < this.ammos.size(); i++) {
-                    if (this.ammos.get(i).getIsShootOut() == false) {
-                        this.ammos.get(i).setIsShootOut(create);
-                        this.ammos.get(i).setNewStart();
-                        create = false;
-                        break;
-                    } else {
-                        continue;
-                    }
-                }
-                if (create) {
+        if (Global.mouseState) {
+            if (this.stateChage.isTrig()) {
+                boolean create = true;
+                if (this.ammos == null) {
                     Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
                     this.ammos.add(ammo);
                     this.allObjects.add(ammo);
                     ammo.setAllObjects(this.allObjects);
+                } else {
+                    for (int i = 0; i < this.ammos.size(); i++) {
+                        if (this.ammos.get(i).getIsShootOut() == false) {
+                            this.ammos.get(i).setIsShootOut(create);
+                            this.ammos.get(i).setNewStart();
+                            create = false;
+                            break;
+                        } else {
+                            continue;
+                        }
+                    }
+                    if (create) {
+                        Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
+                        this.ammos.add(ammo);
+                        this.allObjects.add(ammo);
+                        ammo.setAllObjects(this.allObjects);
+                    }
                 }
             }
-//            Global.mouseState++;
         }
 //        System.out.println("ammo size: "+this.ammos.size());
     }
@@ -348,12 +356,14 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (state == CommandSolver.MouseState.PRESSED || state == CommandSolver.MouseState.DRAGGED) {
-                Global.mouseState = 1;
+            if (state == CommandSolver.MouseState.PRESSED) {
+                Global.mouseState = true;
+                MainScene.this.stateChage.click();
+            } else if (state == CommandSolver.MouseState.DRAGGED) {
+                Global.mouseState = true;
             } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
-                Global.mouseState = 0;
+                Global.mouseState = false;
             }
         }
-
     }
 }

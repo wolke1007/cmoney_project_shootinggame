@@ -54,8 +54,8 @@ public class Global {
     public static final int UP_LEFT = UP + LEFT;
     public static final int DOWN_LEFT = DOWN + LEFT;
     //槍的模式
-    public static final int KEY_1 = 21;
-    public static final int KEY_2 = 22;
+    public static final int KEY_1 = 25;
+    public static final int KEY_2 = 10;
     public static final char KEY_G = 'g';
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
@@ -93,8 +93,8 @@ public class Global {
     //滑鼠當前的相對座標
     public static float mapMouseX;
     public static float mapMouseY;
-    //測試用滑鼠狀態
-    public static float mouseState;
+    //滑鼠狀態
+    public static boolean mouseState;
     // HP 圖案資訊
     public static final int HP_FRAME_WIDTH = 199;
     public static final int HP_FRAME_HEIGHT = 31;

@@ -26,9 +26,6 @@ public class Rect extends Graph {
 
     @Override
     public boolean intersects(float x, float y, float r) {
-        if (x > left() && x < right() && y > top() && y < bottom()) {
-            return true;
-        }
         if (x < left() || x > right()) {
             float dx;
             if (x < left()) {
@@ -46,7 +43,7 @@ public class Rect extends Graph {
             }
             float dy = y - tmp;
             double distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r) {
+            if (distance <= r) {
                 super.setDx(((left() + right()) / 2 - x < 0) ? -1 : 1);
                 super.setDy(((top() + bottom()) / 2 - y < 0) ? -1 : 1);
                 return true;
@@ -68,11 +65,14 @@ public class Rect extends Graph {
                 dy = y - bottom();
             }
             double distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r) {
+            if (distance <= r) {
                 super.setDx(((left() + right()) / 2 - x < 0) ? -1 : 1);
                 super.setDy(((top() + bottom()) / 2 - y < 0) ? -1 : 1);
                 return true;
             }
+        }
+        if (x > left() && x < right() && y > top() && y < bottom()) {
+            return true;
         }
         super.setDx(0);
         super.setDy(0);

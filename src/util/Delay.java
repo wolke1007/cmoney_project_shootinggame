@@ -17,7 +17,7 @@ public class Delay {
 
     public Delay(float delayFrame) {
         this.delayFrame = delayFrame;
-        this.counter = 0;
+        this.counter = this.delayFrame;
         this.isPause = true;
     }
 
@@ -41,6 +41,9 @@ public class Delay {
 
     public void pause() {
         this.isPause = true;
+    }
+    public void click(){
+        this.counter = this.delayFrame;
     }
 
     public boolean isTrig() {

@@ -35,8 +35,8 @@ public class VectorCollision {
     public VectorCollision(GameObject self, float dx, float dy) {
         setSelf(self);
         setDXY(dx, dy);
-        setDivisor(100);
-        setMultiple(3f);
+        setDivisor(20);
+        setMultiple(2f);
         setIsHurt(false);
         setAllObjects(null);
     }
@@ -90,10 +90,6 @@ public class VectorCollision {
         for (int i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObjects.size(); k++) {
                 another = this.allObjects.get(k);
-                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
-                    continue;
-                }
-
                 boolean escape = false;
                 for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
                     if (another.getType().equals(Global.EXCLUDE[z])) {
@@ -103,11 +99,21 @@ public class VectorCollision {
                 if (escape) {
                     continue;
                 }
+                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
+                    continue;
+                }
                 for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
                     if (another.getType().equals(Global.INNER[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx() /* tmp*/, this.self.getCollider().getDy() /* tmp*/);
+                        this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
                         return;
+                    }
+                }
+                for (int z = 0; z < Global.INNER.length; z++) {
+                    if (!(another.getType().equals(Global.INNER[z]))) {
+                        if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2) + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
+                            continue;
+                        }
                     }
                 }
                 for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
@@ -132,10 +138,6 @@ public class VectorCollision {
         for (int i = 0; i < this.divisor; i++) {
             for (int k = 0; k < this.allObjects.size(); k++) {
                 another = this.allObjects.get(k);
-                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
-                    continue;
-                }
-
                 boolean escape = false;
                 for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
                     if (another.getType().equals(Global.EXCLUDE[z])) {
@@ -145,11 +147,21 @@ public class VectorCollision {
                 if (escape) {
                     continue;
                 }
+                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
+                    continue;
+                }
                 for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
                     if (another.getType().equals(Global.INNER[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx() /* tmp*/, this.self.getCollider().getDy() /* tmp*/);
+                        this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
                         return;
+                    }
+                }
+                for (int z = 0; z < Global.INNER.length; z++) {
+                    if (!(another.getType().equals(Global.INNER[z]))) {
+                        if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2) + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
+                            continue;
+                        }
                     }
                 }
                 for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷

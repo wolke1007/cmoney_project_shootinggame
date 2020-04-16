@@ -40,7 +40,7 @@ public class Circle extends Graph {
         float dx = super.centerX() - x;
         float dy = super.centerY() - y;
         double distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < (this.r + r)) {
+        if (distance <= (this.r + r)) {
             super.setDx((dx < 0) ? -1 : 1);
             super.setDy((dy < 0) ? -1 : 1);
             return true;
@@ -61,9 +61,6 @@ public class Circle extends Graph {
 
     @Override
     public boolean intersects(float left, float top, float right, float bottom) {
-        if (super.centerX() > left && super.centerX() < right && super.centerY() > top && super.centerY() < bottom) {
-            return true;
-        }
         if (super.centerX() < left || super.centerX() > right) {
             float dx;
             if (super.centerX() < left) {
@@ -81,7 +78,7 @@ public class Circle extends Graph {
             }
             float dy = super.centerY() - tmp;
             double distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r()) {
+            if (distance <= r()) {
                 super.setDx((dx < 0) ? -1 : 1);
                 super.setDy(0);
                 return true;
@@ -103,11 +100,14 @@ public class Circle extends Graph {
             }
             float dx = super.centerX() - tmp;
             double distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < r()) {
+            if (distance <= r()) {
                 super.setDx(0);
                 super.setDy((dy < 0) ? -1 : 1);
                 return true;
             }
+        }
+        if (super.centerX() > left && super.centerX() < right && super.centerY() > top && super.centerY() < bottom) {
+            return true;
         }
         super.setDx(0);
         super.setDy(0);

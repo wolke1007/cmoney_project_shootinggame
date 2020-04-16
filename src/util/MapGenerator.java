@@ -114,7 +114,7 @@ public class MapGenerator {
     }
 
     private void pattern_1(Map newMap) { // 十字街道加障礙物
-        int tmp = 3;
+        int tmp = 5;
         newMap.getBuildings().add(new Building("rect", 0f, 0f, Global.SCREEN_X / tmp, Global.SCREEN_Y / tmp, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", (Global.SCREEN_X / 3 * 2), 0f, Global.SCREEN_X / tmp, Global.SCREEN_Y / tmp, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", 0f, (Global.SCREEN_Y / 3 * 2), Global.SCREEN_X / tmp, Global.SCREEN_Y / tmp, ImagePath.BUILDING, 0));
