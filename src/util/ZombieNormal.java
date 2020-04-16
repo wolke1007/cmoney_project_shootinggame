@@ -17,8 +17,6 @@ import renderer.RendererToRotate;
  */
 public class ZombieNormal extends MoveMode {
 
-    public final int[] normalStep = {0, 1, 2, 1};
-
     //圖片
     private RendererToRotate renderer;//旋轉圖渲染器
     private Delay imageDelay;
@@ -41,11 +39,6 @@ public class ZombieNormal extends MoveMode {
         setVectorMove();
         setMoveSpeedDetail();
         this.imageState = 0;
-    }
-
-    @Override
-    public void setAllObject(ArrayList<GameObject> list) {
-        this.vectorMove.setAllObjects(list);
     }
 
     private void setAverageSpeed() {
@@ -77,14 +70,19 @@ public class ZombieNormal extends MoveMode {
             this.renderer.setAngle(this.getAngle());
             this.setAverageSpeed();
             if (this.imageDelay.isTrig()) {
-                this.renderer.setState(this.normalStep[this.imageState++ % 4]);
+                this.renderer.setState(Global.STEPS_WALK_NORMAL[this.imageState++ % 4]);
             }
             if (this.targetHp.isTrig()) {
-                this.vectorMove.setIsHurt(true);
+                this.vectorMove.setIsHurt(1);
             }
             this.vectorMove.newOffset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
-            this.vectorMove.setIsHurt(false);
+            this.vectorMove.setIsHurt(0);
         }
+    }
+    
+    @Override
+    public void setAllObject(ArrayList<GameObject> list) {
+        this.vectorMove.setAllObjects(list);
     }
 
     @Override
@@ -99,10 +97,6 @@ public class ZombieNormal extends MoveMode {
     @Override
     public void paintComponent(Graphics g) {
         this.renderer.paint(g);
-        g.fillRect((int) (getSelf().getX() - Global.viewX), (int) (getSelf().getY() - Global.viewY) - 8, (int) getSelf().width(), 4);
-        g.setColor(Color.RED);
-        g.fillRect((int) (getSelf().getX() - Global.viewX), (int) (getSelf().getY() - Global.viewY) - 8, (int) getSelf().getHpBarWidth(), 4);
-        g.setColor(Color.BLACK);
     }
 
 }

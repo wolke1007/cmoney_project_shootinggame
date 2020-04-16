@@ -12,9 +12,9 @@ import util.Global;
  * @author Cloud
  */
 public class ImagePath {
-
+    
     private static final String ROOT = "/resources";
-
+    
     // 圖片庫    
 //    public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png",
 //        ImagePath.ROOT + "/background2.png",

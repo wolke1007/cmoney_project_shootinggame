@@ -112,11 +112,7 @@ public class MainScene extends Scene {
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
         for (int i = 0; i < this.allObjects.size(); i++) {
-            if (i == this.allObjects.size() - 1) {
-                this.allObjects.get(0).update();
-            } else {
-                this.allObjects.get(i + 1).update();
-            }
+            this.allObjects.get(i).update();
             if (this.view.isCollision(this.allObjects.get(i).getGraph())) {
                 if (!(this.view.stillSeeing(this.allObjects.get(i)))) {
                     this.view.saw(this.allObjects.get(i));
@@ -143,7 +139,7 @@ public class MainScene extends Scene {
             float height = Global.UNIT_Y;
             if (this.maps.canDeploy(x, y, width, height)) {
                 Enemy enemy = new Enemy("circle", x, y, 5,
-                        this.actor, 59, ImagePath.ZOMBIE_NORMAL);
+                        this.actor, 2);
                 this.enemys.add(enemy);
                 this.allObjects.add(enemy);
                 enemy.setAllObject(this.allObjects);

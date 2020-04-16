@@ -91,7 +91,6 @@ public abstract class MoveMode {
     }
     //角度計算end
     public abstract void setAllObject(ArrayList<GameObject> lisi);
-//    public abstract void move();
     public abstract void update();
     public abstract void paintComponent(Graphics g);
 }
