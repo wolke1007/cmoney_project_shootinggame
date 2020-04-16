@@ -29,6 +29,7 @@ public class ZombieShock extends MoveMode {
     private AverageSpeed averageSpeed;
     private VectorCollision vectorMove;
     //移動分段
+    private int delayCount;
 
     public ZombieShock(GameObject self, GameObject target, int moveSpeed, String[] path) {
         super(self, target, moveSpeed);
@@ -36,6 +37,7 @@ public class ZombieShock extends MoveMode {
         setAverageSpeed();
         setVectorMove();
         setMoveSpeedDetail();
+        this.delayCount = 0;
     }
 
     private void setAverageSpeed() {
@@ -60,21 +62,22 @@ public class ZombieShock extends MoveMode {
     }
 
     private void move() {
-//        if (this.getMoveDelay().isTrig()) {
+        if (this.getMoveDelay().isTrig()) {
             if (this.vectorMove.getIsCollision()) {
                 this.setAngle();
-                this.renderer.setAngle(this.getAngle());
                 this.setAverageSpeed();
+                this.renderer.setAngle(this.getAngle());
+            }
+            if (this.delayCount++ > 60) {
+                this.delayCount = 0;
                 this.vectorMove.setIsCollision(false);
             }
-            if (this.targetHp.isTrig()) {
-                this.vectorMove.setIsHurt(1);
-            }
+            this.vectorMove.setIsHurt(2);
             if (!this.vectorMove.getIsCollision()) {
-                this.vectorMove.newOffset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
+                this.vectorMove.newOffset(this.averageSpeed.offsetDX() * 3, this.averageSpeed.offsetDY() * 3);
             }
             this.vectorMove.setIsHurt(0);
-//        }
+        }
     }
 
     @Override

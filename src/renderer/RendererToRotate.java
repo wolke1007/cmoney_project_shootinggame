@@ -63,7 +63,7 @@ public class RendererToRotate {
         return getImgY() + this.img.get(getState()).getHeight() / 2f;
     }
 
-    private double getAngle() {
+    public double getAngle() {
         return this.angle;
     }
 

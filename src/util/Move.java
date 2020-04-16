@@ -20,11 +20,12 @@ public class Move {
     private boolean downPressed;
     private boolean leftPressed;
     private boolean rightPressed;
-    GameObject obj;
+    private GameObject obj;
     private JabStep goal;
     private Graph selfCollider;
     //測試用ElasticCollision
     private VectorCollision vectorMove;
+    public Delay myHurt;
 
     public Move(GameObject obj) {
         this.upPressed = false;
@@ -33,6 +34,8 @@ public class Move {
         this.rightPressed = false;
         this.obj = obj;
         this.vectorMove = new VectorCollision(this.obj, 0, 0);
+        this.myHurt = new Delay(20);
+        this.myHurt.start();
     }
 
     public void setAllObjects(ArrayList<GameObject> list) {
@@ -67,6 +70,9 @@ public class Move {
             case Global.DOWN_RIGHT: // go down-right
                 this.vectorMove.newOffset(distance, distance);
                 break;
+        }
+        if (this.vectorMove.getCollisionType() != null && this.myHurt.isTrig() && this.vectorMove.getCollisionType().equals("Enemy")) {
+            this.obj.subtractHp();
         }
     }
 

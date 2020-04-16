@@ -93,7 +93,6 @@ public class Rect extends Graph {
     public boolean intersects(float left, float top, float right, float bottom) {
         super.setDx(0);
         super.setDy(0);
-        
         if (this.left() > right) {
             return false;
         }

@@ -32,6 +32,7 @@ public class VectorCollision {
 
     private int isHurt;
     private boolean isCollision;
+    private String collisionType;
 
     public VectorCollision(GameObject self, float dx, float dy) {
         setSelf(self);
@@ -87,6 +88,13 @@ public class VectorCollision {
     public boolean getIsCollision() {
         return this.isCollision;
     }
+    
+    public void setCollitionType(String type){
+        this.collisionType = type;
+    }
+    public String getCollisionType(){
+        return this.collisionType;
+    }
 
     public void newOffset(float dx, float dy) {
         setDXY(dx, dy);
@@ -131,6 +139,7 @@ public class VectorCollision {
                     if (!(another.getType().equals(Global.INNER[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
+                        setCollitionType(another.getType());
                         setIsCollision(true);
                         for (int j = 0; j < getIsHurt(); j++) {
                             another.subtractHp();
@@ -139,6 +148,7 @@ public class VectorCollision {
                     }
                 }
             }
+            setCollitionType(null);
             this.self.offset(tmp, 0);
         }
         setIsCollision(false);
@@ -182,6 +192,7 @@ public class VectorCollision {
                     if (!(another.getType().equals(Global.INNER[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
                         this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
+                        setCollitionType(another.getType());
                         setIsCollision(true);
                         for (int j = 0; j < getIsHurt(); j++) {
                             another.subtractHp();
@@ -192,6 +203,7 @@ public class VectorCollision {
             }
             this.self.offset(0, tmp);
         }
+        setCollitionType(null);
         setIsCollision(false);
         return;
     }
