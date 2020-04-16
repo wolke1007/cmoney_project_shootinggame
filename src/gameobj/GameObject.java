@@ -88,19 +88,19 @@ public abstract class GameObject {
     }
 
     public float getCenterX() {
-        return this.graph.centerX();
+        return this.collider.centerX();
     }
 
     public float getCenterY() {
-        return this.graph.centerY();
+        return this.collider.centerY();
     }
 
     public float width() {
-        return this.graph.width();
+        return this.collider.width();
     }
 
     public float height() {
-        return this.graph.height();
+        return this.collider.height();
     }
 
     public void setX(float x) {

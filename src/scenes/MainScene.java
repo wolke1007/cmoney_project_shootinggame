@@ -54,7 +54,7 @@ public class MainScene extends Scene {
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
-        this.stateChage = new Delay(20);
+        this.stateChage = new Delay(30);
         this.stateChage.start();
     }
 
@@ -106,11 +106,7 @@ public class MainScene extends Scene {
         ammoUpdate();//Ammo必須比敵人早更新
         enemyUpdate();
         for (int i = 0; i < this.allObjects.size(); i++) {
-            if (i == this.allObjects.size() - 1) {
-                this.allObjects.get(0).update();
-            } else {
-                this.allObjects.get(i + 1).update();
-            }
+                this.allObjects.get(i ).update();
             if (this.view.isCollision(this.allObjects.get(i))) {
                 if (!(this.view.stillSeeing(this.allObjects.get(i)))) {
                     this.view.saw(this.allObjects.get(i));
@@ -137,7 +133,7 @@ public class MainScene extends Scene {
             float height = Global.UNIT_Y;
             if (this.maps.canDeploy(x, y, width, height)) {
                 Enemy enemy = new Enemy("circle", x, y, 5,
-                        this.actor, 59, ImagePath.ENEMY);
+                        this.actor, 59, ImagePath.ZOMBIE_NORMAL);
                 this.enemys.add(enemy);
                 this.allObjects.add(enemy);
                 enemy.setAllObject(this.allObjects);
@@ -278,6 +274,7 @@ public class MainScene extends Scene {
         @Override
         public void keyPressed(int commandCode, long trigTime) {
             actorMoveRule(commandCode);
+            ammoModeChange(commandCode);
         }
 
         @Override
@@ -339,6 +336,25 @@ public class MainScene extends Scene {
                     break;
                 case Global.RIGHT:
                     setDirAndPressedStatus(actor, Global.RIGHT, false);
+                    break;
+            }
+        }
+
+        private void ammoModeChange(int commandCode) {
+            switch (commandCode) {
+                case Global.KEY_1:
+                    if (MainScene.this.stateChage.getDelayFrame() == Global.KEY_2) {
+                        MainScene.this.stateChage.setDelayFrame(Global.KEY_1);
+                        MainScene.this.stateChage.start();
+                        MainScene.this.stateChage.click();
+                    }
+                    break;
+                case Global.KEY_2:
+                    if (MainScene.this.stateChage.getDelayFrame() == Global.KEY_1) {
+                        MainScene.this.stateChage.setDelayFrame(Global.KEY_2);
+                        MainScene.this.stateChage.start();
+                        MainScene.this.stateChage.click();
+                    }
                     break;
             }
         }

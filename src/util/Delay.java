@@ -45,6 +45,9 @@ public class Delay {
     public void click(){
         this.counter = this.delayFrame;
     }
+    public float getDelayFrame(){
+        return this.delayFrame;
+    }
 
     public boolean isTrig() {
         if (!this.isPause && this.counter++ == this.delayFrame) {
