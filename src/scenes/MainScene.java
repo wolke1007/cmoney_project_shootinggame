@@ -12,10 +12,10 @@ import controllers.SceneController;
 import effects.DeadEffect;
 import effects.Effect;
 import gameobj.Actor;
-import gameobj.Ammo;
-import gameobj.Enemy;
+import gameobj.enemy.ammo.Ammo;
+import gameobj.enemy.Enemy;
 import gameobj.GameObject;
-import gameobj.Gun;
+import gameobj.item.Item;
 import gameobj.Map;
 import gameobj.Maps;
 import renderer.Renderer;
@@ -42,7 +42,6 @@ public class MainScene extends Scene {
     private ArrayList<Enemy> enemys;
     private Maps maps;
     private View view;
-    private Gun gun;
     private ArrayList<GameObject> allObjects;
     private Renderer hpFrameRenderer;
     private Renderer hpRenderer;
@@ -73,7 +72,6 @@ public class MainScene extends Scene {
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
-        this.gun = new Gun("circle", 600, 500, this.actor, "Gun", ImagePath.GUN);
         int mapLength = (int) Math.sqrt(Global.MAP_QTY);
         this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
@@ -90,7 +88,6 @@ public class MainScene extends Scene {
         this.scoreCal = ScoreCalculator.getInstance();
         this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
-        this.allObjects.add(this.gun);
         Global.log("scene begin allObject size: " + this.allObjects.size());
     }
 

@@ -35,16 +35,6 @@ public class Actor extends GameObject {
     private float moveSpeed; // per frame
     private float actMoveSpeed;
     private Move movement;
-    private int moveDistance;
-    
-
-    private int keyModeChange;// 0 徒手, 1 步槍, 2 手榴彈 , 3 迫擊砲
-    private boolean haveRifle;//有步槍
-    private int rifleNum;//步槍彈數量
-    private boolean haveGuava;//有手榴彈
-    private int guavaNum;//手榴彈數量
-    private boolean haveMortar;//有迫擊砲
-    private int mortarNum;//迫擊砲數量
 
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
@@ -54,7 +44,6 @@ public class Actor extends GameObject {
         this.isStand = true;
         setActorMoveSpeedDetail(moveSpeed);
         this.movement = new Move(this);
-        this.moveDistance = 10;
         super.paintPriority = 0;
         setHpPoint(100);
         setType("Actor");
@@ -62,42 +51,11 @@ public class Actor extends GameObject {
         this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y, this));
     }//多載 建構子 當前版本
 
-    public void setHaveRifle(boolean haveRifle) {
-        this.haveRifle = haveRifle;
-    }
-
-    public boolean getHaveRifle() {
-        return this.haveRifle;
-    }
-
-    public void setHaveGuava(boolean haveGuava) {
-        this.haveGuava = haveGuava;
-    }
-
-    public boolean getHaveGuava() {
-        return this.haveGuava;
-    }
-
-    public void setHaveMortar(boolean haveMortar) {
-        this.haveMortar = haveMortar;
-    }
-
-    public boolean getHaveMortar() {
-        return this.haveMortar;
-    }
-
     //位置資訊
     public void setAllObjects(ArrayList<GameObject> list) {
         this.movement.setAllObjects(list);
     }
-//
-//    private void setMoveDistance(int moveDistance) {
-//        this.moveDistance = moveDistance;
-//    }
-//
-//    private int getMoveDistance() {
-//        return this.moveDistance;
-//    }
+
     //位置資訊end
 
     //角度計算
@@ -182,6 +140,10 @@ public class Actor extends GameObject {
         }
     }
 
+    private void move() {
+        this.movement.moving(10);
+    }
+
     @Override
     public void update() {
         if (!this.isStand && this.moveDelay.isTrig()) {
@@ -193,10 +155,6 @@ public class Actor extends GameObject {
         updateEffects();
     }
 
-    private void move() {
-        this.movement.moving(this.moveDistance);
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         this.rotateRenderer.paint(g);
@@ -204,3 +162,48 @@ public class Actor extends GameObject {
     }
 
 }
+//////////////////////////////////////////////////////////////
+//    private int moveDistance;
+
+//    private int keyModeChange;// 0 徒手, 1 步槍, 2 手榴彈 , 3 迫擊砲
+//    private boolean haveRifle;//有步槍
+//    private int rifleNum;//步槍彈數量
+//    private boolean haveGuava;//有手榴彈
+//    private int guavaNum;//手榴彈數量
+//    private boolean haveMortar;//有迫擊砲
+//    private int mortarNum;//迫擊砲數量
+//////////////////////////////////////////////////////////////
+//        this.moveDistance = 10;
+//////////////////////////////////////////////////////////////
+
+//    public void setHaveRifle(boolean haveRifle) {
+//        this.haveRifle = haveRifle;
+//    }
+//
+//    public boolean getHaveRifle() {
+//        return this.haveRifle;
+//    }
+//
+//    public void setHaveGuava(boolean haveGuava) {
+//        this.haveGuava = haveGuava;
+//    }
+//
+//    public boolean getHaveGuava() {
+//        return this.haveGuava;
+//    }
+//
+//    public void setHaveMortar(boolean haveMortar) {
+//        this.haveMortar = haveMortar;
+//    }
+//
+//    public boolean getHaveMortar() {
+//        return this.haveMortar;
+//    }
+
+//    private void setMoveDistance(int moveDistance) {
+//        this.moveDistance = moveDistance;
+//    }
+//
+//    private int getMoveDistance() {
+//        return this.moveDistance;
+//    }

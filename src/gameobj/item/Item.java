@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameobj;
+package gameobj.item;
 
 import controllers.ImagePath;
+import gameobj.GameObject;
 import java.awt.Graphics;
 import renderer.Renderer;
 import renderer.RendererToRotate;
@@ -16,7 +17,7 @@ import util.Global;
  *
  * @author F-NB
  */
-public class Gun extends GameObject {
+public class Item extends GameObject {
 
     private RendererToRotate renderer;//畫道具
     private Renderer rendererShadow;//畫影子
@@ -35,7 +36,7 @@ public class Gun extends GameObject {
 
     private int bulletNum;//給予的子彈數量
 
-    public Gun(String colliderType, float x, float y, GameObject target, String type, String[] path) {
+    public Item(String colliderType, float x, float y, GameObject target, String type, String[] path) {
         super(colliderType, x, y, Global.UNIT_MIN * 4, Global.UNIT_MIN * 4, Global.UNIT_MIN * 4, Global.UNIT_MIN * 4);
         this.renderer = new RendererToRotate(path, this, 0);//讓圖片固定在 0 度
         this.rendererShadow = new Renderer();
@@ -47,6 +48,7 @@ public class Gun extends GameObject {
         this.change = -1;
         this.angle = 0;
         this.shadowWidth = 0;
+        this.paintPriority = 0;
     }
 
     //狀態控制 //目的為了升降的效果
