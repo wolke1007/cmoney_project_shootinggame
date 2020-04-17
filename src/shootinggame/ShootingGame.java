@@ -36,6 +36,7 @@ public class ShootingGame {
                 .initListener(commands)
                 .enableMouseTrack(gi)
                 .enableKeyboardTrack(gi)
+                .keyTypedMode().trackChar()
                 .keyCleanMode()
                 .gen();
 
