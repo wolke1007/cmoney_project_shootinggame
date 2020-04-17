@@ -13,8 +13,11 @@ import java.awt.Graphics;
  */
 public class Wall extends Barrier{
 
+    protected static int doorLength = 200;
+    
     public Wall(float x, float y, int width, int height) {
         super("rect", x, y, width, height);
+        
     }
     
     @Override

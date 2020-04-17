@@ -37,7 +37,7 @@ public class Building extends GameObject {
     }
     
     public void genWalls(){ // 設定好該地圖 XY 後才建立牆壁，由 MapGenerator 呼叫
-        int doorHeight = 100;
+        int doorHeight = Wall.doorLength;
         int wallX = (int) x;
         int wallY = (int) y;
         int wallHeight = (height - doorHeight) / 2;

@@ -11,7 +11,6 @@ import effects.DeadEffect;
 import effects.Effect;
 import gameobj.Actor;
 import gameobj.Ammo;
-import gameobj.Barrier;
 import gameobj.Enemy;
 import gameobj.GameObject;
 import gameobj.Gun;
@@ -19,7 +18,6 @@ import gameobj.Map;
 import gameobj.Maps;
 import renderer.Renderer;
 import gameobj.View;
-import gameobj.Wall;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -74,8 +72,8 @@ public class MainScene extends Scene {
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-        mg.genSequenceMap();  // 產生一樣的地圖(沒有障礙物的十字路口)
-//        mg.genRandomMap(); // 產生隨機地圖
+//        mg.genSequenceMap();  // 產生一樣的地圖
+        mg.genRandomMap(); // 產生隨機地圖
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
         this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();

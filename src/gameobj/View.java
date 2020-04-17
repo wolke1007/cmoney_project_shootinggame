@@ -27,7 +27,6 @@ public class View extends GameObject {
     private float height;
 
     private Move movement;
-    private int moveDistance;
     private ArrayList<GameObject> sawObjects;
     private GameObject focusOn;
 
@@ -41,7 +40,6 @@ public class View extends GameObject {
         setViewMoveSpeedDetail(moveSpeed);
         movement = new Move(this);
         sawObjects = new ArrayList<GameObject>();
-        this.moveDistance = 10;
         this.focusOn = focusOn;
     }
 
@@ -117,6 +115,8 @@ public class View extends GameObject {
             super.offsetY(y);
             Global.viewY = super.y;
         }
+        // 判斷 focus target 是否有走進房間裡面，有的話只把該房間的 GameObject 印出來
+//        for
     }
 
     @Override

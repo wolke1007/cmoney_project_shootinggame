@@ -6,7 +6,6 @@
 package util;
 
 import controllers.ImagePath;
-import controllers.ImageResourceController;
 import gameobj.Barrier;
 import gameobj.Building;
 import gameobj.Map;
@@ -86,7 +85,7 @@ public class MapGenerator {
             // 預設 x, y 座標都為 0 需於加入時被另外設定
             Map newMap = new Map(ImagePath.BACKGROUND[Global.random(0, ImagePath.BACKGROUND.length - 1)], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
-            int mapType = Global.random(1, 6);
+            int mapType = Global.random(4, 5);
             switch (mapType) {
                 case 1:
                     pattern_1(newMap);
@@ -97,8 +96,11 @@ public class MapGenerator {
                 case 3:
                     pattern_3(newMap);
                     break;
-                default:
+                case 4:
                     pattern_4(newMap);
+                    break;
+                default:
+                    pattern_5(newMap);
                     break;
             }
             // 新增元素(障礙物、建築物等等)進該地圖中 end
@@ -107,7 +109,7 @@ public class MapGenerator {
             // 固定用第一張背景圖
             Map newMap = new Map(ImagePath.BACKGROUND[0], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT);
             // 新增元素(障礙物、建築物等等)進該地圖中 start
-            pattern_1(newMap);
+            pattern_5(newMap);
             // 新增元素(障礙物、建築物等等)進該地圖中 end
             this.mapPool.add(newMap);
         }
@@ -143,5 +145,12 @@ public class MapGenerator {
         newMap.getBuildings().add(new Building("rect", (Global.SCREEN_X / 3 * 2), 0f, Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", 0f, (Global.SCREEN_Y / 3 * 2), Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
         newMap.getBuildings().add(new Building("rect", (Global.SCREEN_X / 3 * 2), (Global.SCREEN_Y / 3 * 2), Global.SCREEN_X / 3, Global.SCREEN_Y / 3, ImagePath.BUILDING, 0));
+    }
+
+    private void pattern_5(Map newMap) { // 大房間
+        float sizeRate = 6f / 6f; // 目前先不調整比例
+        Global.log("size" + sizeRate);
+        Global.log("(int)((float)Global.SCREEN_X * sizeRate) " + (int)((float)Global.SCREEN_X * sizeRate));
+        newMap.getBuildings().add(new Building("rect", 0f, 0f, (int)((float)Global.SCREEN_X * sizeRate), (int)((float)Global.SCREEN_Y * sizeRate), ImagePath.BUILDING, 0));
     }
 }
