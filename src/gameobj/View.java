@@ -48,8 +48,8 @@ public class View extends GameObject {
     public void saw(GameObject obj) {
         this.sawObjects.add(obj);
     }
-
-    public ArrayList getSaw() {
+    
+    public ArrayList<GameObject> getSaw() {
         return this.sawObjects;
     }
 
