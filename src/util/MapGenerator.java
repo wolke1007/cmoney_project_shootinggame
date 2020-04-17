@@ -19,13 +19,11 @@ import util.Global;
  */
 public class MapGenerator {
 
-//     預期外面用法
-//     mg = new MapGenerator(9);
-//     mg.genRandomMap()  or  mg.genSequenceMap()
     private int mapQty;
     private Maps maps;
     private int mapLength;
     private ArrayList<Map> mapPool;
+    private ArrayList<Float[]> buildingContainsXY;
 
     public MapGenerator(int mapQty, Maps maps) {
         this.mapQty = mapQty;
@@ -36,6 +34,33 @@ public class MapGenerator {
         }
         this.maps = maps;
         this.mapPool = new ArrayList<Map>();
+        this.buildingContainsXY = new ArrayList<Float[]>();
+    }
+
+    private void getBuildingContainsXY() {
+        float x1;
+        float x2;
+        float y1;
+        float y2;
+        for (int i = 0; i < this.maps.getMaps().size(); i++) {
+            Map map = this.maps.getMaps().get(i);
+            for (int ba = 0; ba < map.getBarriers().size(); ba++) {
+                Barrier barrier = map.getBarriers().get(ba);
+                x1 = barrier.getX();
+                y1 = barrier.getY();
+                x2 = barrier.getX() + barrier.getCollider().width();
+                y2 = barrier.getY() + barrier.getCollider().height();
+                this.buildingContainsXY.add(new Float[]{x1, y1, x2, y2});
+            }
+            for (int bu = 0; bu < map.getBuildings().size(); bu++) {
+                Building building = map.getBuildings().get(bu);
+                x1 = building.getX();
+                y1 = building.getY();
+                x2 = building.getX() + building.getCollider().width();
+                y2 = building.getY() + building.getCollider().height();
+                this.buildingContainsXY.add(new Float[]{x1, y1, x2, y2});
+            }
+        }
     }
 
     public void genRandomMap() {
@@ -54,6 +79,7 @@ public class MapGenerator {
             }
         }
         updateAllBarriersBuildingsXY();
+        getBuildingContainsXY(); // 取得所有物件座標存於 buildingContainsXY
     }
 
     public void genSequenceMap() {
@@ -72,6 +98,7 @@ public class MapGenerator {
             }
         }
         updateAllBarriersBuildingsXY();
+        getBuildingContainsXY(); // 取得所有物件座標存於 buildingContainsXY
     }
 
     private void updateAllBarriersBuildingsXY() {
@@ -150,7 +177,7 @@ public class MapGenerator {
     private void pattern_5(Map newMap) { // 大房間
         float sizeRate = 6f / 6f; // 目前先不調整比例
         Global.log("size" + sizeRate);
-        Global.log("(int)((float)Global.SCREEN_X * sizeRate) " + (int)((float)Global.SCREEN_X * sizeRate));
-        newMap.getBuildings().add(new Building("rect", 0f, 0f, (int)((float)Global.SCREEN_X * sizeRate), (int)((float)Global.SCREEN_Y * sizeRate), ImagePath.BUILDING, 0));
+        Global.log("(int)((float)Global.SCREEN_X * sizeRate) " + (int) ((float) Global.SCREEN_X * sizeRate));
+        newMap.getBuildings().add(new Building("rect", 0f, 0f, (int) ((float) Global.SCREEN_X * sizeRate), (int) ((float) Global.SCREEN_Y * sizeRate), ImagePath.BUILDING, 0));
     }
 }

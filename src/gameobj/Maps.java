@@ -35,7 +35,7 @@ public class Maps extends GameObject {
         }
     }
 
-    public ArrayList getMaps() {
+    public ArrayList<Map> getMaps() {
         return this.maps;
     }
 
