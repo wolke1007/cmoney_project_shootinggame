@@ -95,6 +95,8 @@ public class Global {
     public static float mapMouseY;
     //滑鼠狀態
     public static boolean mouseState;
+    //敵人進入view聲效控制
+    public static boolean enemyAudio;
     // HP 圖案資訊
     public static final int HP_FRAME_WIDTH = 199;
     public static final int HP_FRAME_HEIGHT = 31;

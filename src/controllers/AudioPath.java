@@ -33,6 +33,7 @@ public class AudioPath {
         AudioPath.ZOMBIE + "/moan02.wav",
         AudioPath.ZOMBIE + "/moan09.wav",
         AudioPath.ZOMBIE + "/zombie_die(death_45).wav"};
+    public static final String[] ZOMBIE_STEP_MOVE = {AudioPath.ZOMBIE + "/zombieFootStep.wav"};
     public static final String[] ZOMBIE_BOSS_MOVES = {AudioPath.ZOMBIE_BOSS + "/boss_die(charger_die_01).wav"};
     public static final String[] COMMONS = {AudioPath.COMMON + "/button.wav"};
     public static final String[][] EFFECTS = {{AudioPath.EFFECT + "/attack" + "/bomb.wav",

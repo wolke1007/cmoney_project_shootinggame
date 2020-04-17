@@ -5,6 +5,8 @@
  */
 package scenes;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import controllers.ImagePath;
 import controllers.SceneController;
 import effects.DeadEffect;
@@ -47,14 +49,21 @@ public class MainScene extends Scene {
     private ScoreCalculator scoreCal;
     private Effect gameOverEffect;
     private Delay stateChage;
+    private Delay enemyAudio;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
+        allDelayControl();
+    }
+
+    private void allDelayControl() {
         this.stateChage = new Delay(30);
         this.stateChage.start();
+        this.enemyAudio = new Delay(60);
+        this.enemyAudio.start();
     }
 
     @Override
@@ -119,12 +128,27 @@ public class MainScene extends Scene {
                 this.view.removeSeen(this.allObjects.get(i));
             }
         }
+        zombieFootStepAudio();
         if (this.actor.getHp() <= 0) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
             this.gameOverEffect.update();
             if (!this.gameOverEffect.getRun()) {
                 this.scoreCal.addInHistoryIfInTop(5);
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
+        }
+    }
+
+    //zombie foot step audio
+    public void zombieFootStepAudio() {
+        for (int i = 0; i < this.view.getSaw().size(); i++) {
+            if (this.view.getSaw().get(i).getType().equals("Enemy")) {
+                Global.enemyAudio = true;
+                break;
+            }
+            Global.enemyAudio = false;
+        }
+        if (Global.enemyAudio && this.enemyAudio.isTrig()) {
+            AudioResourceController.getInstance().play(AudioPath.ZOMBIE_STEP_MOVE[0]);
         }
     }
 
