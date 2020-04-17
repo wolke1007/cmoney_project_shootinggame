@@ -50,6 +50,7 @@ public class MainScene extends Scene {
     private Effect gameOverEffect;
     private Delay stateChage;
     private Delay enemyAudio;
+    private final int actorDeadThreshold = 0; // 角色死亡應該要是多少血，通常應該是 0
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -129,7 +130,7 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        if (this.actor.getHp() <= 0) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        if (this.actor.getHp() <= actorDeadThreshold) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
             this.gameOverEffect.update();
             if (!this.gameOverEffect.getRun()) {
                 this.scoreCal.addInHistoryIfInTop(5);
@@ -318,6 +319,9 @@ public class MainScene extends Scene {
 
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
+            if(actor.getHp() <= actorDeadThreshold){
+                return;
+            }
             switch (commandCode) {
                 case Global.UP:
                     if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
