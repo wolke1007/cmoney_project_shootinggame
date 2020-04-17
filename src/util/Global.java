@@ -14,7 +14,7 @@ public class Global {
     // Debug Mode
     public static final boolean IS_DEBUG = true;
 
-    public static void log(String str) { 
+    public static void log(String str) {
         if (IS_DEBUG) {
             System.out.println(str);
         }
@@ -41,9 +41,11 @@ public class Global {
     public static final int UNIT_Y = 64;
     private static final int HALF = 2;
     public static final int UNIT_MIN = 16 / Global.HALF;//子彈 像素
+    // 地圖數量
+    public static final int MAP_QTY = 64;
     // 角色於地圖位置
-    public static final int DEFAULT_ACTOR_X = FRAME_X / 2 - UNIT_X / 2;
-    public static final int DEFAULT_ACTOR_Y = FRAME_Y / 2 - UNIT_Y / 2;
+    public static final int DEFAULT_ACTOR_X = (int) (Math.sqrt(MAP_QTY) * FRAME_X / 3 - (UNIT_X * 2 / 3));
+    public static final int DEFAULT_ACTOR_Y = (int) (Math.sqrt(MAP_QTY) * FRAME_Y / 3 - (UNIT_Y * 2 / 3));
     // 方向 
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -77,8 +79,6 @@ public class Global {
 //    public static final String[] BULLET = {Global.ROOT+"/bullet.png"};
     //角度需求
     public static final float PI = 3.14f;
-    // 地圖數量
-    public static final int MAP_QTY = 9;
     // 地圖邊界
     public static int mapEdgeUp;
     public static int mapEdgeDown;
