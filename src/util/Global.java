@@ -56,7 +56,7 @@ public class Global {
     //槍的模式
     public static final int KEY_1 = 30;
     public static final int KEY_2 = 5;
-    public static final char KEY_G = 'g';
+    public static final char KEY_G = 'G';
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};

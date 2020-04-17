@@ -21,22 +21,32 @@ import util.ZombieShock;
 public class Enemy extends GameObject {
 
     private MoveMode moveMode;
+    private GameObject target;
 
     public Enemy(String colliderType, float x, float y, float hp, GameObject target, int kind) {
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
         setHpPoint(hp);
         this.setType("Enemy");
-        selectionKind(target, kind);
+        setTarget(target);
+        selectionKind(kind);
         super.paintPriority = 1;
     }
 
-    public void selectionKind(GameObject target, int kind) {
+    public void setTarget(GameObject target) {
+        this.target = target;
+    }
+
+    public GameObject getTarget() {
+        return this.target;
+    }
+
+    public void selectionKind(int kind) {
         switch (kind) {
             case 1:
-                this.moveMode = new ZombieNormal(this, target, 59, ImagePath.ZOMBIE_NORMAL);
+                this.moveMode = new ZombieNormal(this, getTarget(), 59, ImagePath.ZOMBIE_NORMAL);
                 break;
             case 2:
-                this.moveMode = new ZombieShock(this, target, 60, ImagePath.ZOMBIE_SHOCK);
+                this.moveMode = new ZombieShock(this, getTarget(), 60, ImagePath.ZOMBIE_SHOCK);
                 break;
         }
     }

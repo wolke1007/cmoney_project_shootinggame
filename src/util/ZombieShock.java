@@ -19,6 +19,8 @@ public class ZombieShock extends MoveMode {
 
     //圖片
     private RendererToRotate renderer;//旋轉圖渲染器
+    private Delay imageDelay;
+    private int imageState;
     //圖片end
 
     //目標的血量控制
@@ -59,6 +61,8 @@ public class ZombieShock extends MoveMode {
     private void setMoveSpeedDetail() {
         this.targetHp = new Delay(30);
         this.targetHp.start();
+        this.imageDelay = new Delay(3);
+        this.imageDelay.start();
     }
 
     private void move() {
@@ -67,6 +71,7 @@ public class ZombieShock extends MoveMode {
                 this.setAngle();
                 this.setAverageSpeed();
                 this.renderer.setAngle(this.getAngle());
+                this.renderer.setState(1);
             }
             if (this.delayCount++ > 60) {
                 this.delayCount = 0;
@@ -74,6 +79,9 @@ public class ZombieShock extends MoveMode {
             }
             this.vectorMove.setIsHurt(2);
             if (!this.vectorMove.getIsCollision()) {
+                if (this.imageDelay.isTrig()) {
+                    this.renderer.setState(Global.STEPS_WALK_NORMAL[this.imageState++ % 4]);
+                }
                 this.vectorMove.newOffset(this.averageSpeed.offsetDX() * 3, this.averageSpeed.offsetDY() * 3);
             }
             this.vectorMove.setIsHurt(0);
