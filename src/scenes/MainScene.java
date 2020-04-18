@@ -81,7 +81,11 @@ public class MainScene extends Scene {
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
 //        mg.genSequenceMap();  // 產生一樣的地圖
-        mg.genRandomMap(); // 產生隨機地圖
+//        mg.genRandomMap(); // 產生隨機地圖
+        mg.genSevenMaps(); // 產生 7 個橫向地圖
+        for(int i = 0; i < this.maps.getMaps().size();i++){ // DEBUG
+            Global.log("map" + i + " x:" + this.maps.getMaps().get(i).getX() + " y:" + this.maps.getMaps().get(i).getY());
+        }
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
         this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();

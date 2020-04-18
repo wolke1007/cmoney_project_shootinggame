@@ -27,7 +27,6 @@ public class Actor extends GameObject {
     private Renderer renderer;
     private Angle angle;
     private boolean isStand;
-    private View view;
     private ArrayList<Effect> effects;
 
     private Delay moveDelay;

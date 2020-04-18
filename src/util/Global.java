@@ -42,10 +42,12 @@ public class Global {
     private static final int HALF = 2;
     public static final int UNIT_MIN = 16 / Global.HALF;//子彈 像素
     // 地圖數量
-    public static final int MAP_QTY = 25;
+    public static final int MAP_QTY = 36;
     // 角色於地圖位置
-    public static final int DEFAULT_ACTOR_X = (int) (Math.sqrt(MAP_QTY) * FRAME_X / 3 - (UNIT_X * 2 / 3));
-    public static final int DEFAULT_ACTOR_Y = (int) (Math.sqrt(MAP_QTY) * FRAME_Y / 3 - (UNIT_Y * 2 / 3));
+//    public static final int DEFAULT_ACTOR_X = (int) (FRAME_X / 3 - (UNIT_X * 2 / 3));
+//    public static final int DEFAULT_ACTOR_Y = (int) (FRAME_Y / 3 - (UNIT_Y * 2 / 3));
+    public static final int DEFAULT_ACTOR_X = (int) (FRAME_X / 2);
+    public static final int DEFAULT_ACTOR_Y = (int) (FRAME_Y / 2);
     // 方向 
     public static final int UP = 1;
     public static final int DOWN = 2;
@@ -64,7 +66,7 @@ public class Global {
     public static final int[] STEPS_WALK_SHORT = {0, 2};
     public static final int[] STEPS_WALK_ACTOR = null;
     //敵人上限
-    public static final int ENEMY_LIMIT = 15;
+    public static final int ENEMY_LIMIT = 1;
     //碰撞判斷    
     public static final String[] EXCLUDE = {"Map", "Ammo", "Gun"};
     public static final String[] INNER = {"Maps"};
