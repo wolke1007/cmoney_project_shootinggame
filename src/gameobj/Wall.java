@@ -11,15 +11,15 @@ import java.awt.Graphics;
  *
  * @author Cloud-Razer
  */
-public class Wall extends Barrier{
+public class Wall extends Barrier {
 
     protected static int doorLength = 200;
-    
+
     public Wall(float x, float y, int width, int height) {
         super("rect", x, y, width, height);
-        
+        this.setType("Wall");
     }
-    
+
     @Override
     public void paintComponent(Graphics g) {
     }

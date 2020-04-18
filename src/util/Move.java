@@ -33,7 +33,8 @@ public class Move {
         this.leftPressed = false;
         this.rightPressed = false;
         this.obj = obj;
-        this.vectorMove = new VectorCollision(this.obj, 0, 0);
+        this.vectorMove = new VectorCollision(this.obj, 0, 0, Global.EXCLUDE, Global.INNER);
+        this.vectorMove.setDivisor(15);
         this.myHurt = 0;
     }
 
@@ -70,7 +71,8 @@ public class Move {
                 this.vectorMove.newOffset(distance, distance);
                 break;
         }
-        if (this.myHurt++ > 30 && this.vectorMove.getCollisionType() != null && this.vectorMove.getCollisionType().equals("Enemy")) {
+        if (this.myHurt++ > 30
+                && this.vectorMove.getCollisionType().equals("Enemy")) {
             this.obj.subtractHp();
             this.myHurt = 0;
         }

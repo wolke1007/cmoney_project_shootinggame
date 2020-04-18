@@ -32,7 +32,7 @@ public abstract class MoveMode {
     private float actMoveSpeed;
     //自己對目標的移動控制end
 
-    public MoveMode(GameObject self, GameObject target,int moveSpeed) {
+    public MoveMode(GameObject self, GameObject target, int moveSpeed) {
         setSelf(self);
         setTarget(target);
         setAngle();
@@ -42,22 +42,28 @@ public abstract class MoveMode {
     public void setSelf(GameObject self) {
         this.self = self;
     }
+
     public GameObject getSelf() {
         return this.self;
     }
+
     public void setTarget(GameObject target) {
         this.target = target;
     }
+
     public GameObject getTarget() {
         return this.target;
     }
+
     //移動delay控制
+
     private void setMoveSpeedDetail(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
         this.moveDelay = new Delay(this.actMoveSpeed);
         this.moveDelay.start();
     }
+
     private float limitRange(float range) {
         if (range < 0) {
             return 0;
@@ -66,19 +72,22 @@ public abstract class MoveMode {
         }
         return range;
     }
+
     public void setMoveSpeed(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = this.moveSpeed;
         this.moveDelay.setDelayFrame(this.actMoveSpeed);
     }
+
     public float getMoveSpeed() {
         return this.moveSpeed;
     }
-    public Delay getMoveDelay(){
+
+    public Delay getMoveDelay() {
         return this.moveDelay;
     }
     //移動delay控制end
-    
+
     //角度計算
     public void setAngle() {
         if (this.angle == null) {
@@ -90,11 +99,16 @@ public abstract class MoveMode {
         this.angle.setGoalCenterX(getTarget().getCenterX());
         this.angle.setGoalCenterY(getTarget().getCenterY());
     }
+
     public double getAngle() {
         return this.angle.getAngle();
     }
+
     //角度計算end
+
     public abstract void setAllObject(ArrayList<GameObject> list);
+
     public abstract void update();
+
     public abstract void paintComponent(Graphics g);
 }

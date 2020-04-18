@@ -12,7 +12,7 @@ import controllers.SceneController;
 import effects.DeadEffect;
 import effects.Effect;
 import gameobj.Actor;
-import gameobj.enemy.ammo.Ammo;
+import gameobj.ammo.Ammo;
 import gameobj.enemy.Enemy;
 import gameobj.GameObject;
 import gameobj.item.Item;
@@ -185,7 +185,7 @@ public class MainScene extends Scene {
             if (this.stateChage.isTrig()) {
                 boolean create = true;
                 if (this.ammos == null) {
-                    Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
+                    Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 1);
                     this.ammos.add(ammo);
                     this.allObjects.add(ammo);
                     ammo.setAllObjects(this.allObjects);
@@ -201,7 +201,7 @@ public class MainScene extends Scene {
                         }
                     }
                     if (create) {
-                        Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 60, ImagePath.BULLET);
+                        Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 1);
                         this.ammos.add(ammo);
                         this.allObjects.add(ammo);
                         ammo.setAllObjects(this.allObjects);
