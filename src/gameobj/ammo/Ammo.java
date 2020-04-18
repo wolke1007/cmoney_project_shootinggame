@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameobj.enemy.ammo;
+package gameobj.ammo;
 
+import controllers.ImagePath;
 import gameobj.GameObject;
 import graph.Graph;
 import java.awt.Graphics;
@@ -26,15 +27,23 @@ public class Ammo extends GameObject {
 
     private GameObject start;
 
-    public Ammo(String colliderType, float x, float y, GameObject start, float moveSpeed, String[] path) {
+    public Ammo(String colliderType, float x, float y, GameObject start, int kind) {
         super(colliderType, x, y, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2, Global.UNIT_MIN * 2);
         setType("Ammo");
         setStart(start);
-        this.bullet = new Bullet(this, getStart(), moveSpeed, path);
-
+        selectKind(kind);
         setIsShootOut(true);
         super.paintPriority = 1; // 畫圖順序僅次於主角，此順序可討論
+    }
 
+    public void selectKind(int kind) {
+        switch (kind) {
+            case 1:
+                this.bullet = new Bullet(this, getStart(), 60, ImagePath.BULLET);
+                break;
+            case 2:
+                break;
+        }
     }
 
     public void setStart(GameObject start) {
@@ -52,7 +61,6 @@ public class Ammo extends GameObject {
     //狀態控制
     public void setIsShootOut(boolean isShootOut) {
         this.isShootOut = isShootOut;
-        this.bullet.setCount(0);
     }
 
     public boolean getIsShootOut() {

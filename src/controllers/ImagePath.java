@@ -27,7 +27,7 @@ public class ImagePath {
     public static final String[] GUN = {ImagePath.ROOT + "/handGun.png"};
     public static final String SHADOW = ImagePath.ROOT + "/shadow.png";
     public static final String[] ZOMBIE_NORMAL = {ImagePath.ROOT + "/zombie_1.png", ImagePath.ROOT + "/zombie_2.png", ImagePath.ROOT + "/zombie_3.png"};
-    public static final String[] ZOMBIE_SHOCK = {ImagePath.ROOT + "/shock_monster_1.png", ImagePath.ROOT + "/shock_monster_2.png", ImagePath.ROOT + "/shock_monster_3.png"};
+    public static final String[] ZOMBIE_SHOCK = {ImagePath.ROOT + "/monster_1.png", ImagePath.ROOT + "/monster_2.png", ImagePath.ROOT + "/monster_3.png"};
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
     public static final String[] BUILDING = {ImagePath.ROOT + "/room.png"};
     public static final String[] START_MENU = {ImagePath.ROOT + "/startmenu.jpeg",

@@ -26,7 +26,7 @@ public class Enemy extends GameObject {
         setHpPoint(hp);
         this.setType("Enemy");
         setTarget(target);
-        selectionKind(kind);
+        selectKind(kind);
         super.paintPriority = 1;
     }
 
@@ -38,7 +38,7 @@ public class Enemy extends GameObject {
         return this.target;
     }
 
-    public void selectionKind(int kind) {
+    public void selectKind(int kind) {
         switch (kind) {
             case 1:
                 this.moveMode = new ZombieNormal(this, getTarget(), 59, ImagePath.ZOMBIE_NORMAL);

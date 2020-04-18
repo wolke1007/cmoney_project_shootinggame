@@ -56,9 +56,9 @@ public class ZombieNormal extends MoveMode {
     }
 
     private void setVectorMove() {
-        this.vectorMove = new VectorCollision(getSelf(), 0, 0);
-        this.vectorMove.setMultiple(1f);
-        this.vectorMove.setDivisor(5);
+        this.vectorMove = new VectorCollision(getSelf(), 0, 0, Global.EXCLUDE, Global.INNER);
+//        this.vectorMove.setMultiple(3f);
+        this.vectorMove.setDivisor(5f);
     }
 
     private void setMoveSpeedDetail() {
@@ -69,21 +69,21 @@ public class ZombieNormal extends MoveMode {
     }
 
     private void move() {
+        this.setAngle();
+        this.renderer.setAngle(this.getAngle());
+        this.setAverageSpeed();
         if (this.getMoveDelay().isTrig()) {
-            this.setAngle();
-            this.renderer.setAngle(this.getAngle());
-            this.setAverageSpeed();
             if (this.imageDelay.isTrig()) {
                 this.renderer.setState(Global.STEPS_WALK_NORMAL[this.imageState++ % 4]);
             }
             if (this.targetHp.isTrig()) {
-                this.vectorMove.setIsHurt(1);
+                this.vectorMove.setHurtPoint(1);
             }
             this.vectorMove.newOffset(this.averageSpeed.offsetDX(), this.averageSpeed.offsetDY());
-            this.vectorMove.setIsHurt(0);
+            this.vectorMove.setHurtPoint(0);
         }
     }
-    
+
     @Override
     public void setAllObject(ArrayList<GameObject> list) {
         this.vectorMove.setAllObjects(list);

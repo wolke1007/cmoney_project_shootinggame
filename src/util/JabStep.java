@@ -6,7 +6,7 @@
 package util;
 
 import gameobj.Actor;
-import gameobj.enemy.ammo.Ammo;
+import gameobj.ammo.Ammo;
 import gameobj.enemy.Enemy;
 import gameobj.GameObject;
 import gameobj.Map;

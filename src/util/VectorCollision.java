@@ -23,25 +23,31 @@ public class VectorCollision {
     private float dx;//給予 x 的移動向量
     private float dy;//給予 y 的移動向量
     private ArrayList<GameObject> allObjects;
-    private int listSize;
-
-    //被取移動距離
-    private float multiple;
 
     private float divisor;//細分預判的等份數 //暫時不一定用到
+    private float multiple;//退後的移動距離倍數
 
-    private int isHurt;
-    private boolean isCollision;
-    private String collisionType;
+    private int hurtPoint;//設定扣血的量
+    private boolean isCollision;//是否撞到
+    private boolean isBackMove;//是否碰撞後向後退
+    private String collisionType;//給予被碰撞的型別
+    private int radius;
 
-    public VectorCollision(GameObject self, float dx, float dy) {
+    private String[] exclude;
+    private String[] inner;
+
+    public VectorCollision(GameObject self, float dx, float dy, String[] exclude, String[] inner) {
         setSelf(self);
         setDXY(dx, dy);
-        setDivisor(20);
+        setDivisor(40);
         setMultiple(2f);
-        setIsHurt(0);
+        setHurtPoint(0);
         setAllObjects(null);
         setIsCollision(false);
+        setIsBackMove(true);
+        setCollitionType("");
+        this.exclude = exclude;
+        this.inner = inner;
     }
 
     public void setSelf(GameObject self) {
@@ -73,12 +79,12 @@ public class VectorCollision {
         this.multiple = multiple;
     }
 
-    public void setIsHurt(int isHurt) {
-        this.isHurt = isHurt;
+    public void setHurtPoint(int hurtPoint) {
+        this.hurtPoint = hurtPoint;
     }
 
-    public int getIsHurt() {
-        return this.isHurt;
+    public int getHurtPoint() {
+        return this.hurtPoint;
     }
 
     public void setIsCollision(boolean isCollision) {
@@ -88,18 +94,31 @@ public class VectorCollision {
     public boolean getIsCollision() {
         return this.isCollision;
     }
-    
-    public void setCollitionType(String type){
+
+    public void setIsBackMove(boolean isBackMove) {
+        this.isBackMove = isBackMove;
+    }
+
+    public boolean getIsBackMove() {
+        return this.isBackMove;
+    }
+
+    public void setCollitionType(String type) {
         this.collisionType = type;
     }
-    public String getCollisionType(){
+
+    public String getCollisionType() {
         return this.collisionType;
     }
 
     public void newOffset(float dx, float dy) {
         setDXY(dx, dy);
         offsetDX();
+        if (this.getIsCollision()) {
+            return;
+        }
         offsetDY();
+        return;
     }
 
     private void offsetDX() {
@@ -109,8 +128,8 @@ public class VectorCollision {
             for (int k = 0; k < this.allObjects.size(); k++) {
                 another = this.allObjects.get(k);
                 boolean escape = false;
-                for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
-                    if (another.getType().equals(Global.EXCLUDE[z])) {
+                for (int z = 0; z < this.exclude.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
+                    if (another.getType().equals(this.exclude[z])) {
                         escape = true;
                     }
                 }
@@ -120,38 +139,52 @@ public class VectorCollision {
                 if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
                     continue;
                 }
-                for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
-                    if (another.getType().equals(Global.INNER[z])
+                for (int z = 0; z < this.inner.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
+                    if (another.getType().equals(this.inner[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
-                        setIsCollision(true);
+                        if (this.self.getType().equals("Actor")) {
+                            setIsCollision(false);
+                        } else {
+                            setIsCollision(true);
+                        }
+                        setCollitionType(another.getType());
+                        if (this.getIsBackMove()) {
+                            this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
+                        }
                         return;
                     }
                 }
-                for (int z = 0; z < Global.INNER.length; z++) {
-                    if (!(another.getType().equals(Global.INNER[z]))) {
-                        if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2) + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
+                for (int z = 0; z < this.inner.length; z++) {
+                    if (!another.getType().equals("Wall") || !another.getType().equals(this.inner[z])) {
+                        if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2)
+                                + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
                             continue;
                         }
                     }
                 }
-                for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
-                    if (!(another.getType().equals(Global.INNER[z]))
+                for (int z = 0; z < this.inner.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
+                    if (!(another.getType().equals(this.inner[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
+                        if (this.self.getType().equals("Actor")) {
+                            setIsCollision(false);
+                        } else {
+                            setIsCollision(true);
+                        }
                         setCollitionType(another.getType());
-                        setIsCollision(true);
-                        for (int j = 0; j < getIsHurt(); j++) {
+                        if (this.getIsBackMove()) {
+                            this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
+                        }
+                        for (int j = 0; j < getHurtPoint(); j++) {
                             another.subtractHp();
                         }
                         return;
                     }
                 }
             }
-            setCollitionType(null);
             this.self.offset(tmp, 0);
         }
         setIsCollision(false);
+        setCollitionType("");
         return;
     }
 
@@ -162,39 +195,45 @@ public class VectorCollision {
             for (int k = 0; k < this.allObjects.size(); k++) {
                 another = this.allObjects.get(k);
                 boolean escape = false;
-                for (int z = 0; z < Global.EXCLUDE.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
-                    if (another.getType().equals(Global.EXCLUDE[z])) {
+                for (int z = 0; z < this.exclude.length; z++) {//排除型別的判斷 //目前 不和"小地圖"判斷 
+                    if (another.getType().equals(this.exclude[z])) {
                         escape = true;
                     }
                 }
                 if (escape) {
                     continue;
                 }
-                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
+                if (!another.getType().equals("Wall") || another.getType().equals(this.self.getType())) {//跳過自己 不判斷
                     continue;
                 }
-                for (int z = 0; z < Global.INNER.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
-                    if (another.getType().equals(Global.INNER[z])
+                for (int z = 0; z < this.inner.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
+                    if (another.getType().equals(this.inner[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
                         setIsCollision(true);
+                        setCollitionType(another.getType());
+                        if (this.getIsBackMove()) {
+                            this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
+                        }
                         return;
                     }
                 }
-                for (int z = 0; z < Global.INNER.length; z++) {
-                    if (!(another.getType().equals(Global.INNER[z]))) {
-                        if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2) + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
+                for (int z = 0; z < this.inner.length; z++) {
+                    if (!another.getType().equals(this.inner[z])) {
+                        if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2)
+                                + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
                             continue;
                         }
                     }
                 }
-                for (int z = 0; z < Global.INNER.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
-                    if (!(another.getType().equals(Global.INNER[z]))
+                for (int z = 0; z < this.inner.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
+                    if (!(another.getType().equals(this.inner[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
-                        this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
-                        setCollitionType(another.getType());
                         setIsCollision(true);
-                        for (int j = 0; j < getIsHurt(); j++) {
+                        setCollitionType(another.getType());
+                        if (this.getIsBackMove()) {
+                            this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
+                        }
+                        for (int j = 0; j < getHurtPoint(); j++) {
                             another.subtractHp();
                         }
                         return;
@@ -203,8 +242,8 @@ public class VectorCollision {
             }
             this.self.offset(0, tmp);
         }
-        setCollitionType(null);
         setIsCollision(false);
+        setCollitionType("");
         return;
     }
 }
