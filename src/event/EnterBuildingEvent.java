@@ -5,22 +5,20 @@
  */
 package event;
 
-import gameobj.Actor;
-import gameobj.Building;
 import gameobj.GameObject;
+import util.Global;
 
 /**
  *
  * @author Cloud-Razer
  */
-public class AcrossEvent implements Event {
+public class EnterBuildingEvent implements Event {
 
     private boolean trig;
     private GameObject[] keyObjs;
     private Event nextEvent;
     
-    public AcrossEvent(GameObject[] objs, Event nextEvent){
-        // 
+    public EnterBuildingEvent(GameObject[] objs, Event nextEvent){
         this.trig = false;
         this.keyObjs = objs;
         this.nextEvent = nextEvent;
@@ -36,16 +34,17 @@ public class AcrossEvent implements Event {
     public void update() {
         // 檢查有沒有事件有沒有被完成
         GameObject actor = null;
-        GameObject room = null;
+        GameObject targetRoom = null;
         for(int i = 0; i < this.keyObjs.length; i++){
-            if(this.keyObjs[i] instanceof Actor){
+            if(this.keyObjs[i].getType().equals("Actor")){
                 actor = this.keyObjs[i];
             }
-            if(this.keyObjs[i] instanceof Building){
-                room = this.keyObjs[i];
+            if(this.keyObjs[i].getType().equals("Building")){
+                targetRoom = this.keyObjs[i];
             }
         }
-        if(actor.getCollider().intersects(room.getCollider())){
+        if(actor.getCollider().intersects(targetRoom.getGraph())){
+            // actor 走進建築物的 "圖片" 裡(而不是碰撞機)就該要觸發任務
             this.trig = true;
         }
     }
@@ -56,8 +55,13 @@ public class AcrossEvent implements Event {
     }
 
     @Override
-    public Event next() {
+    public Event getNext() {
         return this.nextEvent;
+    }
+    
+    @Override
+    public Event setNext(Event event) {
+        return this.nextEvent = event;
     }
     
 }

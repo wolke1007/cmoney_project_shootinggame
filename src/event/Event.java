@@ -19,6 +19,8 @@ public interface Event {
 
     public abstract boolean isTrig();
     
-    public abstract Event next();
+    public abstract Event getNext();
+    
+    public abstract Event setNext(Event event);
 
 }
