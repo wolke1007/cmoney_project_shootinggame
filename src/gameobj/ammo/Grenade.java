@@ -10,6 +10,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import renderer.RendererToRotate;
 import util.AverageSpeed;
+import util.VectorCollision;
 
 /**
  *
@@ -23,11 +24,16 @@ public class Grenade extends ShootMode {
 
     private AverageSpeed averageSpeed;
     private int count;//初始位置的狀態設定
+    private VectorCollision vecterMove;
 
     public Grenade(GameObject self, GameObject start, float moveSpeed, String[] path) {
         super(start, moveSpeed);
+        setSelf(self);
     }
-
+    public void setVectorMove() {
+        this.vecterMove = new VectorCollision(getSelf(), 0, 0, new String[]{"Map", "Ammo", "Actor"}, new String[]{"Maps"});
+        this.vecterMove.setIsBackMove(false);
+    }
     public void setSelf(GameObject self) {
         this.self = self;
     }

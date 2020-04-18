@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @author Cloud-Razer 此類別定義了 GameObject 的通用八方向移動方法 目前通用的邏輯為移動時如果撞到視窗邊際會不能移動
  */
 public class Move {
-
+    
     private boolean upPressed;
     private boolean downPressed;
     private boolean leftPressed;
@@ -26,7 +26,7 @@ public class Move {
     //測試用ElasticCollision
     private VectorCollision vectorMove;
     public int myHurt;
-
+    
     public Move(GameObject obj) {
         this.upPressed = false;
         this.downPressed = false;
@@ -37,11 +37,11 @@ public class Move {
         this.vectorMove.setDivisor(15);
         this.myHurt = 0;
     }
-
+    
     public void setAllObjects(ArrayList<GameObject> list) {
         this.vectorMove.setAllObjects(list);
     }
-
+    
     public void moving(int distance) {
         int dir = movingDir();
 //        int distance = 1; // 一次走幾個 pixel，越少看起來越滑順但走越慢
@@ -77,7 +77,7 @@ public class Move {
             this.myHurt = 0;
         }
     }
-
+    
     public void setPressedStatus(int pressedBtn, boolean status) {
         switch (pressedBtn) {
             case Global.UP:
@@ -94,7 +94,7 @@ public class Move {
                 break;
         }
     }
-
+    
     private int movingDir() {
         int dir = 0;
         dir += this.upPressed ? Global.UP : 0;
@@ -103,5 +103,5 @@ public class Move {
         dir += this.rightPressed ? Global.RIGHT : 0;
         return dir;
     }
-
+    
 }

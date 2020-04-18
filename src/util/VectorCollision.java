@@ -142,7 +142,11 @@ public class VectorCollision {
                 for (int z = 0; z < this.inner.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
                     if (another.getType().equals(this.inner[z])
                             && this.self.getCollider().innerCollisionToCollision(another.getCollider())) {
-                        setIsCollision(true);
+                        if (this.self.getType().equals("Actor")) {
+                            setIsCollision(false);
+                        } else {
+                            setIsCollision(true);
+                        }
                         setCollitionType(another.getType());
                         if (this.getIsBackMove()) {
                             this.self.offset(this.self.getCollider().getDx(), this.self.getCollider().getDy());
@@ -161,7 +165,11 @@ public class VectorCollision {
                 for (int z = 0; z < this.inner.length; z++) {//判斷圖形為各自獨立的個體 // 除了以上的都需要判斷
                     if (!(another.getType().equals(this.inner[z]))
                             && this.self.getCollider().intersects(another.getCollider())) {
-                        setIsCollision(true);
+                        if (this.self.getType().equals("Actor")) {
+                            setIsCollision(false);
+                        } else {
+                            setIsCollision(true);
+                        }
                         setCollitionType(another.getType());
                         if (this.getIsBackMove()) {
                             this.self.offset(this.self.getCollider().getDx() * this.multiple, this.self.getCollider().getDy() * this.multiple);
