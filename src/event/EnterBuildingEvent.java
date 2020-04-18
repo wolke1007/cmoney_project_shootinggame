@@ -5,7 +5,9 @@
  */
 package event;
 
+import gameobj.Building;
 import gameobj.GameObject;
+import java.util.ArrayList;
 import util.Global;
 
 /**
@@ -43,6 +45,14 @@ public class EnterBuildingEvent implements Event {
                 targetRoom = this.keyObjs[i];
             }
         }
+        if(targetRoom == null){
+            Global.log("!!!!!!!!!!!BUG: targetRoom IS NULL!!!!!!!!!!!"); // 若沒有 room 實體被傳進來則噴 bug log
+            return; 
+        }
+        if(actor == null){
+            Global.log("!!!!!!!!!!!BUG: actor IS NULL!!!!!!!!!!!"); // 若沒有 room 實體被傳進來則噴 bug log
+            return; 
+        }
         if(actor.getCollider().intersects(targetRoom.getGraph())){
             // actor 走進建築物的 "圖片" 裡(而不是碰撞機)就該要觸發任務
             this.trig = true;
@@ -62,6 +72,11 @@ public class EnterBuildingEvent implements Event {
     @Override
     public Event setNext(Event event) {
         return this.nextEvent = event;
+    }
+
+    @Override
+    public void setKeyObj(ArrayList<GameObject> objs) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

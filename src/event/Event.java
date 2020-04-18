@@ -5,7 +5,9 @@
  */
 package event;
 
+import gameobj.Building;
 import gameobj.GameObject;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,6 +16,8 @@ import gameobj.GameObject;
 public interface Event {
 
     public abstract void setKeyObj(GameObject[] obj);
+    
+    public abstract void setKeyObj(ArrayList<GameObject> objs);
     
     public abstract void update();
 
