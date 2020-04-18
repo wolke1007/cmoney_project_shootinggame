@@ -23,7 +23,7 @@ public class Map extends GameObject {
     private float height;
 
     public Map(String src, float x, float y, int width, int height) {
-        super("rect", x, y, width - 2, height - 2, width - 2, height - 2);
+        super("rect", x, y, width , height , width , height );
         this.width = width;
         this.height = height;
         this.renderer = r(src);

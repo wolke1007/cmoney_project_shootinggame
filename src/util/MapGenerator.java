@@ -102,30 +102,16 @@ public class MapGenerator {
     }
     
     public void genSevenMaps(){
-//        for (int i = 0; i < this.mapQty; i++) {
-//            genSingleMapIntoPool(false);
-//        }
-//        for (int i = 0; i < this.mapQty; i++) {
-//            // 固定使用第一組背景圖
-//            Map newMap = this.mapPool.get(i);
-//            // 設定完 x, y 後再加入，不然預設地圖位置皆為 0, 0
-//            newMap.setX((float) Global.MAP_WIDTH * i);
-//            this.maps.add(newMap);
-//        }
-//        updateAllBarriersBuildingsXY();
         for (int i = 0; i < this.mapQty; i++) {
             genSingleMapIntoPool(false);
         }
         int poolIndex = 0;
-        for (int y = 0; y < this.mapLength; y++) {
-//            for (int x = 0; x < this.mapLength; x++) {
-                // 固定使用第一組背景圖
-                Map newMap = this.mapPool.get(poolIndex++);
-                // 設定完 x, y 後再加入，不然預設地圖位置皆為 0, 0
-                newMap.setX((float) Global.MAP_WIDTH * y);
-//                newMap.setY((float) Global.MAP_HEIGHT * y);
-                this.maps.add(newMap);
-//            }
+        for (int i = 0; i < this.mapQty; i++) {
+            // 固定使用第一組背景圖
+            Map newMap = this.mapPool.get(poolIndex++);
+            // 設定完 x, y 後再加入，不然預設地圖位置皆為 0, 0
+            newMap.setX((float) Global.MAP_WIDTH * i);
+            this.maps.add(newMap);
         }
         updateAllBarriersBuildingsXY();
         getBuildingContainsXY(); // 取得所有物件座標存於 buildingContainsXY
@@ -206,6 +192,6 @@ public class MapGenerator {
 
     private void pattern_5(Map newMap) { // 大房間
         float sizeRate = 6f / 6f; // 目前先不調整比例
-        newMap.getBuildings().add(new Building("rect", 0f, 0f, (int) ((float) Global.SCREEN_X * sizeRate), (int) ((float) Global.SCREEN_Y * sizeRate), ImagePath.BUILDING, 0));
+        newMap.getBuildings().add(new Building("rect", 0f, 0f, (int)newMap.getGraph().width(), (int)newMap.getGraph().height(), ImagePath.BUILDING, 0));
     }
 }

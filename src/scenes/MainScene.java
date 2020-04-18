@@ -38,7 +38,7 @@ import util.ScoreCalculator;
  * @author Cloud-Razer
  */
 public class MainScene extends Scene {
-    
+
     private Actor actor;
     private ArrayList<Ammo> ammos;
     private ArrayList<Enemy> enemys;
@@ -54,7 +54,7 @@ public class MainScene extends Scene {
     private final int actorDeadThreshold = 0; // 角色死亡應該要是多少血，通常應該是 0
     private Event currentEvent;
     private ArrayList<Event> events;
-    
+
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.allObjects = new ArrayList<GameObject>();
@@ -62,14 +62,14 @@ public class MainScene extends Scene {
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
         allDelayControl();
     }
-    
+
     private void allDelayControl() {
         this.stateChage = new Delay(30);
         this.stateChage.start();
         this.enemyAudio = new Delay(60);
         this.enemyAudio.start();
     }
-    
+
     @Override
     public void sceneBegin() {
         // 開始背景音樂
@@ -77,8 +77,8 @@ public class MainScene extends Scene {
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
-        int mapLength = (int) Math.sqrt(Global.MAP_QTY);
-        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
+        int mapLength = Global.MAP_QTY;
+        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT);
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
         Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
@@ -101,18 +101,19 @@ public class MainScene extends Scene {
         this.events = new ArrayList<Event>();
         // 從最後一個 event 往前加至第一個
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(3).getBuildings().get(0)}, null));
         setNextEvent();
         this.currentEvent = this.events.get(0);
+        for (int i = 0;i < this.allObjects.size();i++) {
+            Global.log(this.allObjects.get(i).getType() + "  x, y:" + this.allObjects.get(i).getGraph().left() + ", " + this.allObjects.get(i).getGraph().top());
+        }
     }
-    
-    private void setNextEvent(){
-        for(int i = 0; i < this.events.size() - 1; i++){
+
+    private void setNextEvent() {
+        for (int i = 0; i < this.events.size() - 1; i++) {
             this.events.get(i).setNext(this.events.get(i + 1));
         }
     }
-    
+
     private void addAllMapsToAllObjects() {
         for (int i = 0; i < this.maps.getMaps().size(); i++) {
             Map map = this.maps.get(i);
@@ -129,7 +130,7 @@ public class MainScene extends Scene {
             }
         }
     }
-    
+
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -200,7 +201,7 @@ public class MainScene extends Scene {
             }
         }
     }
-    
+
     public void remove(GameObject obj) {
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
@@ -238,7 +239,7 @@ public class MainScene extends Scene {
         }
 //        System.out.println("ammo size: "+this.ammos.size());
     }
-    
+
     private void paintSmallMap(Graphics g) {
         int smallMapWidth = 200;
         int smallMapHeight = 200;
@@ -270,9 +271,9 @@ public class MainScene extends Scene {
         }
         // 畫敵人 end
         g.setColor(Color.BLACK);
-        
+
     }
-    
+
     private void paintHPbar(Graphics g) {
         float hp = this.actor.getHp();
         if (this.actor.getHp() >= 0f) {
@@ -286,12 +287,12 @@ public class MainScene extends Scene {
                     0, 0, (int) (555 * hpRate), 74);
         }
     }
-    
+
     private void paintScore(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
     }
-    
+
     @Override
     public void sceneEnd() {
         // 停止背景音樂
@@ -299,7 +300,7 @@ public class MainScene extends Scene {
         Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
         Global.viewY = 0f;
     }
-    
+
     @Override
     public void paint(Graphics g) {
         this.view.paint(g);
@@ -310,36 +311,36 @@ public class MainScene extends Scene {
             this.gameOverEffect.paint(g);
         }
     }
-    
+
     @Override
     public CommandSolver.KeyListener getKeyListener() {
         return new MyKeyListener();
     }
-    
+
     @Override
     public CommandSolver.MouseCommandListener getMouseListener() {
         return new MyMouseListener();
     }
-    
+
     public class MyKeyListener implements CommandSolver.KeyListener {
-        
+
         @Override
         public void keyPressed(int commandCode, long trigTime) {
             actorMoveRule(commandCode);
             ammoModeChange(commandCode);
         }
-        
+
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
         }
-        
+
         private void setDirAndPressedStatus(Actor actor, int dir, boolean status) {
             actor.setStand(false);
             actor.setDir(dir);
             actor.setMovementPressedStatus(dir, status);
         }
-        
+
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
             if (actor.getHp() <= actorDeadThreshold) {
@@ -394,7 +395,7 @@ public class MainScene extends Scene {
                     break;
             }
         }
-        
+
         private void ammoModeChange(int commandCode) {
             switch (commandCode) {
                 case Global.KEY_1:
@@ -413,18 +414,18 @@ public class MainScene extends Scene {
                     break;
             }
         }
-        
+
         @Override
         public void keyTyped(char c, long trigTime) {
             if (c == Global.KEY_G) {
                 System.out.println("!!!!");
             }
         }
-        
+
     }
-    
+
     public class MyMouseListener implements CommandSolver.MouseCommandListener {
-        
+
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
             if (state == CommandSolver.MouseState.PRESSED) {
