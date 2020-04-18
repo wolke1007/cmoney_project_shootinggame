@@ -3,16 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gameobj;
+package gameobj.enemy;
 
 import controllers.ImagePath;
+import gameobj.GameObject;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import util.Global;
-import util.MoveMode;
-import util.ZombieNormal;
-import util.ZombieShock;
 
 /**
  *

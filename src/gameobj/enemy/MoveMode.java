@@ -3,11 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package util;
+package gameobj.enemy;
 
 import gameobj.GameObject;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import util.Angle;
+import util.Angle;
+import util.Delay;
+import util.Delay;
 
 /**
  *
@@ -18,9 +22,9 @@ public abstract class MoveMode {
     private GameObject self;
     private GameObject target;
 
-    //移動分段
+    //角度計算
     private Angle angle;
-    //移動分段end
+    //角度計算
 
     //自己對目標的移動控制
     private Delay moveDelay;
@@ -29,10 +33,10 @@ public abstract class MoveMode {
     //自己對目標的移動控制end
 
     public MoveMode(GameObject self, GameObject target,int moveSpeed) {
-        this.setSelf(self);
-        this.setTarget(target);
-        this.setAngle();
-        this.setMoveSpeedDetail(moveSpeed);
+        setSelf(self);
+        setTarget(target);
+        setAngle();
+        setMoveSpeedDetail(moveSpeed);
     }
 
     public void setSelf(GameObject self) {
@@ -90,7 +94,7 @@ public abstract class MoveMode {
         return this.angle.getAngle();
     }
     //角度計算end
-    public abstract void setAllObject(ArrayList<GameObject> lisi);
+    public abstract void setAllObject(ArrayList<GameObject> list);
     public abstract void update();
     public abstract void paintComponent(Graphics g);
 }

@@ -20,8 +20,8 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 1280;
-    public static final int FRAME_Y = 720;
+    public static final int FRAME_X = 1600;
+    public static final int FRAME_Y = 900;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
     public static final int SCREEN_Y = FRAME_Y - 31 - 8;
     // 角色視野大小
@@ -42,7 +42,7 @@ public class Global {
     private static final int HALF = 2;
     public static final int UNIT_MIN = 16 / Global.HALF;//子彈 像素
     // 地圖數量
-    public static final int MAP_QTY = 64;
+    public static final int MAP_QTY = 25;
     // 角色於地圖位置
     public static final int DEFAULT_ACTOR_X = (int) (Math.sqrt(MAP_QTY) * FRAME_X / 3 - (UNIT_X * 2 / 3));
     public static final int DEFAULT_ACTOR_Y = (int) (Math.sqrt(MAP_QTY) * FRAME_Y / 3 - (UNIT_Y * 2 / 3));
