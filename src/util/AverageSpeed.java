@@ -28,7 +28,7 @@ public class AverageSpeed {
         setCenterY(centerY);
         setGoalCenterX(goalCenterX);
         setGoalCenterY(goalCenterY);
-        isFixedLength(true);
+        isFixedLength(isFixedLength);
         setLength(100f);
         SlopeValue();
         setMoveSpeed(moveSpeed);

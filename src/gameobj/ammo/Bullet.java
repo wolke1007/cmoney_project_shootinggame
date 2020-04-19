@@ -38,6 +38,7 @@ public class Bullet extends ShootMode {
         this.rendererEffectDlay.start();
         this.averageSpeed = new AverageSpeed(self.getCenterX(), self.getCenterY(), Global.mapMouseX, Global.mapMouseY, 97, true);//子彈的移動速度
         setCount(0);
+        setType("Bullet");
     }
 
     public void setVectorMove() {

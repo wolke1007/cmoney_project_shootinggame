@@ -22,7 +22,7 @@ public class ImagePath {
     public static final String[] BACKGROUND = {ImagePath.ROOT + "/map.png"};
 
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
-    public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/clawsmark.png"};
+    public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/selfActor_grenade.png"};
     public static final String[] BULLET = {ImagePath.ROOT + "/fire_start.png", ImagePath.ROOT + "/bullet_fire_small.png"};
     public static final String[] GRENADE = {ImagePath.ROOT + "/grenade_1.png"};
     public static final String BOOM_CONTINUE = ImagePath.ROOT + "/boom_continue.png";

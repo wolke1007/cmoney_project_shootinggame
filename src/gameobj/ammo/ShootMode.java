@@ -30,10 +30,13 @@ public abstract class ShootMode {
     private float actMoveSpeed;
     //自己對目標的移動控制end
 
+    private String type;
+
     public ShootMode(GameObject start, float moveSpeed) {
         setStart(start);
         setAngle();
         setMoveSpeedDetail(moveSpeed);
+        setType("");
     }
 
     public void setStart(GameObject start) {
@@ -42,6 +45,14 @@ public abstract class ShootMode {
 
     public GameObject getStart() {
         return this.start;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
     //移動delay控制
@@ -60,7 +71,7 @@ public abstract class ShootMode {
         }
         return range;
     }
-    
+
     public void setMoveSpeed(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = this.moveSpeed;
@@ -75,7 +86,7 @@ public abstract class ShootMode {
         return this.moveDelay;
     }
     //移動delay控制end
-    
+
     //角度計算
     public void setAngle() {
         if (this.angle == null) {
@@ -91,8 +102,11 @@ public abstract class ShootMode {
     public double getAngle() {
         return this.angle.getAngle();
     }
+
     //角度計算end
+
     public abstract void setNewStart();
+
     public abstract void setAllObject(ArrayList<GameObject> list);
 
     public abstract boolean update();

@@ -12,7 +12,7 @@ package util;
 public class Global {
 
     // Debug Mode
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
 
     public static void log(String str) {
         if (IS_DEBUG) {
@@ -58,7 +58,7 @@ public class Global {
     //槍的模式
     public static final int KEY_1 = 30;
     public static final int KEY_2 = 5;
-    public static final char KEY_G = 'G';
+    public static final int KEY_G = -1;
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};
@@ -95,6 +95,8 @@ public class Global {
     public static float mapMouseY;
     //滑鼠狀態
     public static boolean mouseState;
+    //Ammo切換
+    public static int ammoState;
     //敵人進入view聲效控制
     public static boolean enemyAudio;
     // HP 圖案資訊

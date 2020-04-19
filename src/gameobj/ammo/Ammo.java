@@ -33,7 +33,7 @@ public class Ammo extends GameObject {
         setStart(start);
         selectKind(kind);
         setIsShootOut(true);
-        super.paintPriority = 1; // 畫圖順序僅次於主角，此順序可討論
+        super.paintPriority = 0; // 畫圖順序僅次於主角，此順序可討論
     }
 
     public void selectKind(int kind) {
@@ -42,9 +42,13 @@ public class Ammo extends GameObject {
                 this.shootMode = new Bullet(this, getStart(), 60, ImagePath.BULLET);
                 break;
             case 2:
-                this.shootMode = new Grenade(this, getStart(), 60, ImagePath.GRENADE);
+                this.shootMode = new Grenade(this, getStart(), 59, ImagePath.GRENADE);
                 break;
         }
+    }
+
+    public ShootMode getShootMode() {
+        return this.shootMode;
     }
 
     public void setStart(GameObject start) {

@@ -26,6 +26,7 @@ public class Grenade extends ShootMode {
     private Renderer rendererEffect;//爆炸特效圖
     private Delay effectDelay;
     private int delayCount;
+    private int attackRange;
     private ArrayList<GameObject> allObjects;
     private GameObject self;
 
@@ -47,6 +48,12 @@ public class Grenade extends ShootMode {
         setCountdown(0);
         setMoveDistance(3);
         setEffectDelay();
+        setAttackRange(150);
+        setType("Grenade");
+    }
+
+    private void setAttackRange(int attackRange) {
+        this.attackRange = attackRange;
     }
 
     public void setVectorMove() {
@@ -91,7 +98,7 @@ public class Grenade extends ShootMode {
 
     private void setEffectDelay() {
         if (this.effectDelay == null) {
-            this.effectDelay = new Delay(10);
+            this.effectDelay = new Delay(2);
             this.effectDelay.stop();
             this.delayCount = 0;
         }
@@ -114,17 +121,9 @@ public class Grenade extends ShootMode {
     }
 
     private void setAerageSpeed() {
-        boolean isFixedLength = false;
         if (this.averageSpeed == null) {
-            if (Math.sqrt(Math.pow(getSelf().getCenterX() - Global.mapMouseX, 2) + Math.pow(getSelf().getCenterY() - Global.mapMouseY, 2)) > 100) {
-                isFixedLength = true;
-            }
-            this.averageSpeed = new AverageSpeed(getSelf().getCenterX(), getSelf().getCenterY(), Global.mapMouseX, Global.mapMouseY, 50, isFixedLength);
+            this.averageSpeed = new AverageSpeed(getSelf().getCenterX(), getSelf().getCenterY(), Global.mapMouseX, Global.mapMouseY, 50, false);
         }
-        if (Math.sqrt(Math.pow(getStart().getCenterX() - Global.mapMouseX, 2) + Math.pow(getStart().getCenterY() - Global.mapMouseY, 2)) > 100) {
-            isFixedLength = true;
-        }
-        this.averageSpeed.isFixedLength(isFixedLength);
         this.averageSpeed.setCenterX(getStart().getCenterX());//被給予start的centerX
         this.averageSpeed.setCenterY(getStart().getCenterY());//被給予start的centerY
         this.averageSpeed.setGoalCenterX(Global.mapMouseX);//直接拿目標的x
@@ -143,7 +142,7 @@ public class Grenade extends ShootMode {
         if (this.getMoveDelay().isTrig()) {
             float dx = this.averageSpeed.offsetDX();
             float dy = this.averageSpeed.offsetDY();
-            this.vecterMove.newOffset(dx * getMoveDistance() * 5, dy * getMoveDistance() * 5);
+            this.vecterMove.newOffset(dx * getMoveDistance() * 1.5f, dy * getMoveDistance() * 1.5f);
             if (getCountdown() >= 0 && getCountdown() < 3) {
                 this.plusMoveDistance();
             } else if (getCountdown() >= 3) {
@@ -154,7 +153,7 @@ public class Grenade extends ShootMode {
                 if (this.delayCount == 0) {
                     for (int i = 0; i < this.allObjects.size(); i++) {
                         if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - getSelf().getCenterX(), 2)
-                                + Math.pow(this.allObjects.get(i).getCenterY() - getSelf().getCenterY(), 2)) < 150) {
+                                + Math.pow(this.allObjects.get(i).getCenterY() - getSelf().getCenterY(), 2)) < this.attackRange) {
                             if (this.allObjects.get(i).getType().equals("Actor")) {
                                 continue;
                             }
@@ -184,10 +183,10 @@ public class Grenade extends ShootMode {
             this.renderer.paint(g);
         } else {
             this.rendererEffect.paint(g,
-                    (int) getSelf().getCenterX() - 150,
-                    (int) getSelf().getCenterY() + 150,
-                    (int) getSelf().getCenterX() + 150,
-                    (int) getSelf().getCenterY() - 150,
+                    (int) getSelf().getCenterX() - this.attackRange,
+                    (int) getSelf().getCenterY() + this.attackRange,
+                    (int) getSelf().getCenterX() + this.attackRange,
+                    (int) getSelf().getCenterY() - this.attackRange,
                     (this.delayCount % 5) * 150,
                     (this.delayCount / 5) * 150,
                     (this.delayCount % 5) * 150 + 150,
