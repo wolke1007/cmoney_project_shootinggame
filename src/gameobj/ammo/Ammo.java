@@ -22,7 +22,7 @@ import util.Global;
  */
 public class Ammo extends GameObject {
 
-    private Bullet bullet;
+    private ShootMode shootMode;
     private boolean isShootOut;//是否射擊的狀態 Origine true 創建時就是要射出
 
     private GameObject start;
@@ -39,9 +39,10 @@ public class Ammo extends GameObject {
     public void selectKind(int kind) {
         switch (kind) {
             case 1:
-                this.bullet = new Bullet(this, getStart(), 60, ImagePath.BULLET);
+                this.shootMode = new Bullet(this, getStart(), 60, ImagePath.BULLET);
                 break;
             case 2:
+                this.shootMode = new Grenade(this, getStart(), 60, ImagePath.GRENADE);
                 break;
         }
     }
@@ -55,7 +56,7 @@ public class Ammo extends GameObject {
     }
 
     public void setAllObjects(ArrayList<GameObject> list) {
-        this.bullet.setAllObject(list);
+        this.shootMode.setAllObject(list);
     }
 
     //狀態控制
@@ -71,7 +72,7 @@ public class Ammo extends GameObject {
     //再一次 開始 設定
     public boolean setNewStart() {
         if (getIsShootOut()) {
-            this.bullet.setNewStart();
+            this.shootMode.setNewStart();
             return true;
         }
         return false;
@@ -80,13 +81,13 @@ public class Ammo extends GameObject {
     @Override
     public void update() {
         if (getIsShootOut()) {//如果是 射擊出去的狀態 就移動
-            setIsShootOut(this.bullet.update());
+            setIsShootOut(this.shootMode.update());
         }
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        this.bullet.paintComponent(g);
+        this.shootMode.paintComponent(g);
     }
 
     //以下 暫時先不設計 / 用不到

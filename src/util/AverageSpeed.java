@@ -128,6 +128,6 @@ public class AverageSpeed {
             double dy = this.length * Math.sin(degree);
             return (float) (((this.centerY < this.goalCenterY) ? 1 : -1) * dy) / this.reMoveSpeed;
         }
-        return (this.goalCenterX - this.centerX) / this.reMoveSpeed;
+        return (this.goalCenterY - this.centerY) / this.reMoveSpeed;
     }
 }

@@ -23,8 +23,9 @@ public class ImagePath {
 
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
     public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/clawsmark.png"};
-    public static final String[] BULLET = {ImagePath.ROOT + "/bullet_fire_small.png"};
-    public static final String[] GUN = {ImagePath.ROOT + "/handGun.png"};
+    public static final String[] BULLET = {ImagePath.ROOT + "/fire_start.png", ImagePath.ROOT + "/bullet_fire_small.png"};
+    public static final String[] GRENADE = {ImagePath.ROOT + "/grenade_1.png"};
+    public static final String BOOM_CONTINUE = ImagePath.ROOT + "/boom_continue.png";
     public static final String SHADOW = ImagePath.ROOT + "/shadow.png";
     public static final String[] ZOMBIE_NORMAL = {ImagePath.ROOT + "/zombie_1.png", ImagePath.ROOT + "/zombie_2.png", ImagePath.ROOT + "/zombie_3.png"};
     public static final String[] ZOMBIE_SHOCK = {ImagePath.ROOT + "/monster_1.png", ImagePath.ROOT + "/monster_2.png", ImagePath.ROOT + "/monster_3.png"};

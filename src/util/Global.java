@@ -40,7 +40,7 @@ public class Global {
     public static final int UNIT_X = 64;
     public static final int UNIT_Y = 64;
     private static final int HALF = 2;
-    public static final int UNIT_MIN = 16 / Global.HALF;//子彈 像素
+    public static final int UNIT_MIN = 24 / Global.HALF;//子彈 像素
     // 地圖數量
     public static final int MAP_QTY = 25;
     // 角色於地圖位置
