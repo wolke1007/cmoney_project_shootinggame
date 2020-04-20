@@ -69,6 +69,9 @@ public class Renderer {
     public void setImage(String src) {
         this.img = this.irc.tryGetImage(src);
     }
+     public BufferedImage getImage(){
+         return this.img;
+     }
 
     public void update() {
 //        if (delay.isTrig()) {

@@ -56,7 +56,6 @@ public class Actor extends GameObject {
     }
 
     //位置資訊end
-
     //角度計算
     public void setAngle() {
         if (this.angle == null) {
@@ -100,6 +99,10 @@ public class Actor extends GameObject {
     public float getMoveSpeed() {
         return this.moveSpeed;
     }//取得目前的速度設定
+
+    public RendererToRotate getRenderer() {
+        return this.rotateRenderer;
+    }
     //角色移動相關資訊end
 
     public void setStand(boolean isStand) {
@@ -174,7 +177,6 @@ public class Actor extends GameObject {
 //////////////////////////////////////////////////////////////
 //        this.moveDistance = 10;
 //////////////////////////////////////////////////////////////
-
 //    public void setHaveRifle(boolean haveRifle) {
 //        this.haveRifle = haveRifle;
 //    }
@@ -198,7 +200,6 @@ public class Actor extends GameObject {
 //    public boolean getHaveMortar() {
 //        return this.haveMortar;
 //    }
-
 //    private void setMoveDistance(int moveDistance) {
 //        this.moveDistance = moveDistance;
 //    }

@@ -57,6 +57,7 @@ public class MainScene extends Scene {
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
+        Global.ammoState = 1;
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
@@ -209,6 +210,37 @@ public class MainScene extends Scene {
 
     //子彈測試更新中
     public void ammoUpdate() {
+        if (Global.ammoState == 2) {
+            boolean create = true;
+            if (this.ammos == null) {
+                Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 2);
+                this.ammos.add(ammo);
+                this.allObjects.add(ammo);
+                ammo.setAllObjects(this.allObjects);
+            } else {
+                for (int i = 0; i < this.ammos.size(); i++) {
+                    if (this.ammos.get(i).getIsShootOut() == false) {
+                        if (this.ammos.get(i).getShootMode().getType().equals("Bullet")) {
+                            this.ammos.get(i).selectKind(2);
+                            this.ammos.get(i).setAllObjects(this.allObjects);
+                        }
+                        this.ammos.get(i).setIsShootOut(create);
+                        this.ammos.get(i).setNewStart();
+                        create = false;
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                if (create) {
+                    Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 2);
+                    this.ammos.add(ammo);
+                    this.allObjects.add(ammo);
+                    ammo.setAllObjects(this.allObjects);
+                }
+            }
+            Global.ammoState++;
+        }
         if (Global.mouseState) {
             if (this.stateChage.isTrig()) {
                 boolean create = true;
@@ -220,6 +252,10 @@ public class MainScene extends Scene {
                 } else {
                     for (int i = 0; i < this.ammos.size(); i++) {
                         if (this.ammos.get(i).getIsShootOut() == false) {
+                            if (this.ammos.get(i).getShootMode().getType().equals("Grenade")) {
+                                this.ammos.get(i).selectKind(1);
+                                this.ammos.get(i).setAllObjects(this.allObjects);
+                            }
                             this.ammos.get(i).setIsShootOut(create);
                             this.ammos.get(i).setNewStart();
                             create = false;
@@ -333,6 +369,13 @@ public class MainScene extends Scene {
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
+            switch (commandCode) {
+                case Global.KEY_G:
+                    MainScene.this.stateChage.start();
+                    MainScene.this.actor.getRenderer().setState(0);
+                    Global.ammoState = 2;
+                    break;
+            }
         }
 
         private void setDirAndPressedStatus(Actor actor, int dir, boolean status) {
@@ -412,14 +455,15 @@ public class MainScene extends Scene {
                         MainScene.this.stateChage.click();
                     }
                     break;
+                case Global.KEY_G:
+                    MainScene.this.stateChage.stop();
+                    MainScene.this.actor.getRenderer().setState(1);
+                    break;
             }
         }
 
         @Override
         public void keyTyped(char c, long trigTime) {
-            if (c == Global.KEY_G) {
-                System.out.println("!!!!");
-            }
         }
 
     }

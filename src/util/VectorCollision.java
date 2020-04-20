@@ -31,7 +31,6 @@ public class VectorCollision {
     private boolean isCollision;//是否撞到
     private boolean isBackMove;//是否碰撞後向後退
     private String collisionType;//給予被碰撞的型別
-    private int radius;
 
     private String[] exclude;
     private String[] inner;
