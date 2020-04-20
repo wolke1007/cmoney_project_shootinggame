@@ -326,7 +326,9 @@ public class MainScene extends Scene {
 
     private void paintScore(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        g.setColor(Color.white);
         g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
+        g.setColor(Color.black);
     }
 
     @Override
