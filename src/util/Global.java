@@ -94,9 +94,9 @@ public class Global {
     public static float mapMouseX;
     public static float mapMouseY;
     //滑鼠狀態
-    public static boolean mouseState;
+//    public static boolean mouseState;
     //Ammo切換
-    public static boolean ammoState;
+//    public static boolean ammoState;
     //敵人進入view聲效控制
     public static boolean enemyAudio;
     // HP 圖案資訊
