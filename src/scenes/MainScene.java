@@ -22,6 +22,7 @@ import gameobj.Map;
 import gameobj.Maps;
 import renderer.Renderer;
 import gameobj.View;
+import gameobj.Wall;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -129,7 +130,7 @@ public class MainScene extends Scene {
             }
             for (int j = 0; j < map.getBuildings().size(); j++) {
                 this.allObjects.add(map.getBuildings().get(j));
-                ArrayList<GameObject> walls = map.getBuildings().get(j).getWalls();
+                ArrayList<Wall> walls = map.getBuildings().get(j).getWalls();
                 for (int w = 0; w < walls.size(); w++) {
                     this.allObjects.add(walls.get(w));
                 }

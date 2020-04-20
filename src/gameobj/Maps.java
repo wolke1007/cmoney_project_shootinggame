@@ -52,6 +52,12 @@ public class Maps extends GameObject {
                 if (buildings.get(index).getCollider().intersects(x, y, x + width, y + height)) {
                     return false;
                 }
+                ArrayList<Wall> walls = this.maps.get(i).getBuildings().get(index).getWalls();
+                for(int w =0 ; w < walls.size(); w++){
+                    if(walls.get(index).getCollider().intersects(x, y, x + width, y + height)){
+                        return false;
+                    }
+                }
             }
         }
         return true;

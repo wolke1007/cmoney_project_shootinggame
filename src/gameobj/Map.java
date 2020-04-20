@@ -52,7 +52,7 @@ public class Map extends GameObject {
         }
         for (int i = 0; i < this.buildings.size(); i++) {
             Building b = this.buildings.get(i);
-            ArrayList<GameObject> walls = b.getWalls();
+            ArrayList<Wall> walls = b.getWalls();
             b.setX(super.x + b.x);
             b.setY(super.y + b.y);
             b.genWalls(); // 設定好該地圖 XY 後才建立牆壁

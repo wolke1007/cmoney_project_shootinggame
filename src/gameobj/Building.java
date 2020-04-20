@@ -18,7 +18,7 @@ public class Building extends GameObject {
     private Renderer renderer;
     private float inMapX;
     private float inMapY;
-    private ArrayList<GameObject> walls;
+    private ArrayList<Wall> walls;
     private int height;
     private int width;
 
@@ -27,12 +27,12 @@ public class Building extends GameObject {
         this.renderer = new Renderer(new int[0], 0, path[imgIndex]);
         super.paintPriority = 2;
         setType("Building");
-        this.walls = new ArrayList<GameObject>();
+        this.walls = new ArrayList<Wall>();
         this.width = width;
         this.height = height;
     }
     
-    public ArrayList<GameObject> getWalls(){
+    public ArrayList<Wall> getWalls(){
         return this.walls;
     }
     
