@@ -77,8 +77,8 @@ public class ScoreCalculator implements Serializable {
 
     private void sort(ArrayList<Record> list) {
         for (int f = 0; f < list.size() - 1; f++) {
-            for(int s = f + 1; s < list.size(); s++){
-                if (list.get(f).getScore() < list.get(s).getScore()){
+            for (int s = f + 1; s < list.size(); s++) {
+                if (list.get(f).getScore() < list.get(s).getScore()) {
                     Record tmp;
                     tmp = list.get(f);
                     list.remove(f);
@@ -89,15 +89,21 @@ public class ScoreCalculator implements Serializable {
     }
 
     private int inHistoryPostion(int inTopNum, int score, ArrayList<Record> list) {
+        if(score == 0){
+            return -1;
+        }
         sort(list);
-        if(list.size() == 0){
+        if (list.size() == 0) {
             return 0;
         }
-        for (int i = 0; i < list.size(); i++) {
-            if (score > list.get(i).getScore() && inTopNum > 0) {
+        int i = 0;
+        for (; i < list.size(); i++) {
+            if (score > list.get(i).getScore() && i <= inTopNum) {
                 return i;
             }
-            inTopNum--;
+        }
+        if (i <= inTopNum) {
+            return i;
         }
         return -1;
     }
@@ -109,6 +115,7 @@ public class ScoreCalculator implements Serializable {
         Scanner sc = new Scanner(System.in);
         switch (this.currentGameMode) {
             case "endless":
+                Global.log("enter endless addInHistoryIfInTop");
                 if (inHistoryPostion(top, this.totalScore, this.endlessGameScore) != -1) {
                     System.out.print("NEW HIGH SCORE!! PLEASE ENTER YOUR NAME: ");
                     Record newRecord = new Record(this.totalScore, sc.nextLine());
@@ -120,13 +127,15 @@ public class ScoreCalculator implements Serializable {
                 }
                 break;
             case "campaign":
+                Global.log("enter campaign addInHistoryIfInTop");
                 break;
             case "saving":
+                Global.log("enter saving addInHistoryIfInTop");
                 break;
         }
     }
-    
-    private void writeFile(){
+
+    private void writeFile() {
         //  寫入歷史紀錄 start
         FileOutputStream fos;
         try {
@@ -145,9 +154,9 @@ public class ScoreCalculator implements Serializable {
         }
         //  寫入歷史紀錄 end
     }
-    
-    public ArrayList<Record> getHistory(String gameMode){
-        switch(gameMode){
+
+    public ArrayList<Record> getHistory(String gameMode) {
+        switch (gameMode) {
             case "endless":
                 sort(this.endlessGameScore);
                 return this.endlessGameScore;

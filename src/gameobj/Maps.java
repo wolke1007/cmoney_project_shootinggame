@@ -59,11 +59,11 @@ public class Maps extends GameObject {
 
     @Override
     public void update() {
+        if(this.maps.size() <= 1){
+            return;
+        }
         if (this.maps.get(0).getX() - this.maps.get(1).getX() != -Global.MAP_WIDTH) {
             Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(0).getX() - this.maps.get(1).getX()));
-        }
-        if (this.maps.get(1).getX() - this.maps.get(2).getX() != -Global.MAP_WIDTH) {
-            Global.log("========= BUG OCCUR! PLEASE DELETE BUILD FOLDER AND TRY COMPILE AGAIN =======" + (this.maps.get(1).getX() - this.maps.get(2).getX()));
         }
     }
 

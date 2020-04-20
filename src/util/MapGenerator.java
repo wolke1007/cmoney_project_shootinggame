@@ -29,9 +29,9 @@ public class MapGenerator {
         this.mapQty = mapQty;
         this.mapLength = (int) Math.sqrt(mapQty); // 全地圖的地圖邊長為總數開根號
         // 地圖設計為 3x3 or 4x4 這樣的形式所以不能開根號的數字報錯
-        if (!(this.mapLength % 1 == 0) && !(this.mapLength >= 3)) {
-            throw new IllegalArgumentException("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
-        }
+//        if (!(this.mapLength % 1 == 0) && !(this.mapLength >= 3)) {
+//            throw new IllegalArgumentException("地圖不符合規定 預期為可被開根號的數且大於 9，如 9 16");
+//        }
         this.maps = maps;
         this.mapPool = new ArrayList<Map>();
         this.buildingContainsXY = new ArrayList<Float[]>();
@@ -96,6 +96,22 @@ public class MapGenerator {
                 newMap.setY((float) Global.MAP_HEIGHT * y);
                 this.maps.add(newMap);
             }
+        }
+        updateAllBarriersBuildingsXY();
+        getBuildingContainsXY(); // 取得所有物件座標存於 buildingContainsXY
+    }
+    
+    public void genSevenMaps(){
+        for (int i = 0; i < this.mapQty; i++) {
+            genSingleMapIntoPool(false);
+        }
+        int poolIndex = 0;
+        for (int i = 0; i < this.mapQty; i++) {
+            // 固定使用第一組背景圖
+            Map newMap = this.mapPool.get(poolIndex++);
+            // 設定完 x, y 後再加入，不然預設地圖位置皆為 0, 0
+            newMap.setX((float) Global.MAP_WIDTH * i);
+            this.maps.add(newMap);
         }
         updateAllBarriersBuildingsXY();
         getBuildingContainsXY(); // 取得所有物件座標存於 buildingContainsXY
@@ -176,8 +192,6 @@ public class MapGenerator {
 
     private void pattern_5(Map newMap) { // 大房間
         float sizeRate = 6f / 6f; // 目前先不調整比例
-        Global.log("size" + sizeRate);
-        Global.log("(int)((float)Global.SCREEN_X * sizeRate) " + (int) ((float) Global.SCREEN_X * sizeRate));
-        newMap.getBuildings().add(new Building("rect", 0f, 0f, (int) ((float) Global.SCREEN_X * sizeRate), (int) ((float) Global.SCREEN_Y * sizeRate), ImagePath.BUILDING, 0));
+        newMap.getBuildings().add(new Building("rect", 0f, 0f, (int)newMap.getGraph().width(), (int)newMap.getGraph().height(), ImagePath.BUILDING, 0));
     }
 }

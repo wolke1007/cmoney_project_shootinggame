@@ -11,6 +11,8 @@ import controllers.ImagePath;
 import controllers.SceneController;
 import effects.DeadEffect;
 import effects.Effect;
+import event.EnterBuildingEvent;
+import event.Event;
 import gameobj.Actor;
 import gameobj.ammo.Ammo;
 import gameobj.enemy.Enemy;
@@ -52,6 +54,9 @@ public class MainScene extends Scene {
     private int mousePress;
     private boolean ammoState;//Ammo切換
     private Delay enemyAudio;
+    private final int actorDeadThreshold = 0; // 角色死亡應該要是多少血，通常應該是 0
+    private Event currentEvent;
+    private ArrayList<Event> events;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -78,15 +83,19 @@ public class MainScene extends Scene {
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
-        int mapLength = (int) Math.sqrt(Global.MAP_QTY);
-        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, mapLength * Global.MAP_HEIGHT);
+        int mapLength = Global.MAP_QTY;
+        this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT);
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
         Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
 //        mg.genSequenceMap();  // 產生一樣的地圖
-        mg.genRandomMap(); // 產生隨機地圖
+//        mg.genRandomMap(); // 產生隨機地圖
+        mg.genSevenMaps(); // 產生 7 個橫向地圖
+        for (int i = 0; i < this.maps.getMaps().size(); i++) { // DEBUG
+            Global.log("map" + i + " x:" + this.maps.getMaps().get(i).getX() + " y:" + this.maps.getMaps().get(i).getY());
+        }
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
         this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();
@@ -95,6 +104,20 @@ public class MainScene extends Scene {
         this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         Global.log("scene begin allObject size: " + this.allObjects.size());
+        this.events = new ArrayList<Event>();
+        // 從最後一個 event 往前加至第一個
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
+        setNextEvent();
+        this.currentEvent = this.events.get(0);
+        for (int i = 0;i < this.allObjects.size();i++) {
+            Global.log(this.allObjects.get(i).getType() + "  x, y:" + this.allObjects.get(i).getGraph().left() + ", " + this.allObjects.get(i).getGraph().top());
+        }
+    }
+
+    private void setNextEvent() {
+        for (int i = 0; i < this.events.size() - 1; i++) {
+            this.events.get(i).setNext(this.events.get(i + 1));
+        }
     }
 
     private void addAllMapsToAllObjects() {
@@ -132,12 +155,17 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        if (this.actor.getHp() <= 0) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        if (this.actor.getHp() <= actorDeadThreshold) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
             this.gameOverEffect.update();
             if (!this.gameOverEffect.getRun()) {
                 this.scoreCal.addInHistoryIfInTop(5);
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
+        }
+        this.currentEvent.update();
+        if (this.currentEvent.isTrig() && this.currentEvent.getNext() != null) {
+            Global.log("Trig event: " + this.currentEvent.getClass().getName());
+            this.currentEvent = this.currentEvent.getNext();
         }
     }
 
@@ -258,20 +286,20 @@ public class MainScene extends Scene {
         int smallMapHeight = 200;
         int unitWidth = 5;
         int unitHeight = 5;
-        double mapWidthRatio = smallMapWidth / (Global.MAP_WIDTH * Math.sqrt(Global.MAP_QTY));
-        double mapHeightRatio = smallMapHeight / (Global.MAP_HEIGHT * Math.sqrt(Global.MAP_QTY));
+        double mapWidthRatio = smallMapWidth / (double)(Global.MAP_WIDTH * Global.MAP_QTY);
+        double mapHeightRatio = smallMapHeight / (double)(Global.MAP_HEIGHT - Global.MAP_HEIGHT / 10);
         int smallMapX = Global.SCREEN_X - smallMapWidth;
         g.setColor(Color.GREEN);
         g.drawRect(smallMapX, 0, smallMapWidth, smallMapHeight); // 小地圖外框
         g.setColor(Color.GREEN);
-        int actorOnSmallMapX = smallMapX + (int) Math.ceil((double) this.actor.getX() * mapWidthRatio);
+        double actorOnSmallMapX = smallMapX + Math.ceil(this.actor.getX() * mapWidthRatio);
         actorOnSmallMapX = actorOnSmallMapX + unitWidth >= Global.SCREEN_X ? Global.SCREEN_X - unitWidth : actorOnSmallMapX;
-        int actorOnSmallMapY = (int) ((double) this.actor.getY() * mapHeightRatio);
-        actorOnSmallMapY = actorOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight : actorOnSmallMapY;
-        g.drawRect(actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
+        int actorOnSmallMapY = (int) Math.ceil(((double) this.actor.getY() * mapHeightRatio));
+        actorOnSmallMapY = actorOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight - 1 : actorOnSmallMapY;
+        g.drawRect((int)actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
         // 畫敵人 start
         for (int i = 0; i < this.allObjects.size(); i++) {
-            if (this.allObjects.get(i) instanceof Enemy) {
+            if (this.allObjects.get(i).getType().equals("Enemy")) {
                 int enemyX = (int) this.allObjects.get(i).getX();
                 int enemyY = (int) this.allObjects.get(i).getY();
                 g.setColor(Color.CYAN);
@@ -303,7 +331,9 @@ public class MainScene extends Scene {
 
     private void paintScore(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        g.setColor(Color.white);
         g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
+        g.setColor(Color.black);
     }
 
     @Override
@@ -356,6 +386,9 @@ public class MainScene extends Scene {
 
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
+            if (actor.getHp() <= actorDeadThreshold) {
+                return;
+            }
             switch (commandCode) {
                 case Global.UP:
                     if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
