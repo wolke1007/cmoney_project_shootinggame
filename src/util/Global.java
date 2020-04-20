@@ -46,8 +46,8 @@ public class Global {
     // 角色於地圖位置
 //    public static final int DEFAULT_ACTOR_X = (int) (FRAME_X / 3 - (UNIT_X * 2 / 3));
 //    public static final int DEFAULT_ACTOR_Y = (int) (FRAME_Y / 3 - (UNIT_Y * 2 / 3));
-    public static final int DEFAULT_ACTOR_X = (int) (FRAME_X / 2);
-    public static final int DEFAULT_ACTOR_Y = (int) (FRAME_Y / 2);
+    public static final int DEFAULT_ACTOR_X = (int) (FRAME_X / 2) - (UNIT_X / 2);
+    public static final int DEFAULT_ACTOR_Y = (int) (FRAME_Y / 2) - (UNIT_Y) + 15;
     // 方向 
     public static final int UP = 1;
     public static final int DOWN = 2;
