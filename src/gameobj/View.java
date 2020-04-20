@@ -108,12 +108,10 @@ public class View extends GameObject {
         float x = focusOn.getCenterX() - this.width / 2;
         float y = focusOn.getCenterY() - this.height / 2;
         if (x >= 0 && x + Global.VIEW_WIDTH <= (Global.MAP_WIDTH * Global.MAP_QTY)) {
-            Global.log("offsetx " + x);
             super.offsetX(x);
             Global.viewX = super.x;
         }
         if (y >= 0 && y + Global.VIEW_HEIGHT <= Global.MAP_HEIGHT) {
-            Global.log("offsety " + y);
             super.offsetY(y);
             Global.viewY = super.y;
         }

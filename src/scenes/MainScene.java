@@ -281,20 +281,20 @@ public class MainScene extends Scene {
         int smallMapHeight = 200;
         int unitWidth = 5;
         int unitHeight = 5;
-        double mapWidthRatio = smallMapWidth / (Global.MAP_WIDTH * Math.sqrt(Global.MAP_QTY));
-        double mapHeightRatio = smallMapHeight / (Global.MAP_HEIGHT * Math.sqrt(Global.MAP_QTY));
+        double mapWidthRatio = smallMapWidth / (double)(Global.MAP_WIDTH * Global.MAP_QTY);
+        double mapHeightRatio = smallMapHeight / (double)(Global.MAP_HEIGHT - Global.MAP_HEIGHT / 10);
         int smallMapX = Global.SCREEN_X - smallMapWidth;
         g.setColor(Color.GREEN);
         g.drawRect(smallMapX, 0, smallMapWidth, smallMapHeight); // 小地圖外框
         g.setColor(Color.GREEN);
-        int actorOnSmallMapX = smallMapX + (int) Math.ceil((double) this.actor.getX() * mapWidthRatio);
+        double actorOnSmallMapX = smallMapX + Math.ceil(this.actor.getX() * mapWidthRatio);
         actorOnSmallMapX = actorOnSmallMapX + unitWidth >= Global.SCREEN_X ? Global.SCREEN_X - unitWidth : actorOnSmallMapX;
-        int actorOnSmallMapY = (int) ((double) this.actor.getY() * mapHeightRatio);
-        actorOnSmallMapY = actorOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight : actorOnSmallMapY;
-        g.drawRect(actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
+        int actorOnSmallMapY = (int) Math.ceil(((double) this.actor.getY() * mapHeightRatio));
+        actorOnSmallMapY = actorOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight - 1 : actorOnSmallMapY;
+        g.drawRect((int)actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
         // 畫敵人 start
         for (int i = 0; i < this.allObjects.size(); i++) {
-            if (this.allObjects.get(i) instanceof Enemy) {
+            if (this.allObjects.get(i).getType().equals("Enemy")) {
                 int enemyX = (int) this.allObjects.get(i).getX();
                 int enemyY = (int) this.allObjects.get(i).getY();
                 g.setColor(Color.CYAN);
