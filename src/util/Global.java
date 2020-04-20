@@ -98,7 +98,7 @@ public class Global {
     //滑鼠狀態
     public static boolean mouseState;
     //Ammo切換
-    public static int ammoState;
+    public static boolean ammoState;
     //敵人進入view聲效控制
     public static boolean enemyAudio;
     // HP 圖案資訊

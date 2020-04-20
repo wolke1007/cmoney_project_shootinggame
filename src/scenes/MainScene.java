@@ -57,7 +57,7 @@ public class MainScene extends Scene {
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
-        Global.ammoState = 1;
+        Global.ammoState = false;
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
@@ -210,7 +210,7 @@ public class MainScene extends Scene {
 
     //子彈測試更新中
     public void ammoUpdate() {
-        if (Global.ammoState == 2) {
+        if (Global.ammoState) {
             boolean create = true;
             if (this.ammos == null) {
                 Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 2);
@@ -239,7 +239,7 @@ public class MainScene extends Scene {
                     ammo.setAllObjects(this.allObjects);
                 }
             }
-            Global.ammoState++;
+            Global.ammoState = false;
         }
         if (Global.mouseState) {
             if (this.stateChage.isTrig()) {
@@ -371,13 +371,13 @@ public class MainScene extends Scene {
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
-            switch (commandCode) {
-                case Global.KEY_G:
-                    MainScene.this.stateChage.start();
-                    MainScene.this.actor.getRenderer().setState(0);
-                    Global.ammoState = 2;
-                    break;
-            }
+//            switch (commandCode) {
+//                case Global.KEY_G:
+//                    MainScene.this.stateChage.start();
+//                    MainScene.this.actor.getRenderer().setState(0);
+//                    Global.ammoState = 2;
+//                    break;
+//            }
         }
 
         private void setDirAndPressedStatus(Actor actor, int dir, boolean status) {
@@ -457,10 +457,10 @@ public class MainScene extends Scene {
                         MainScene.this.stateChage.click();
                     }
                     break;
-                case Global.KEY_G:
-                    MainScene.this.stateChage.stop();
-                    MainScene.this.actor.getRenderer().setState(1);
-                    break;
+//                case Global.KEY_G:
+//                    MainScene.this.stateChage.stop();
+//                    MainScene.this.actor.getRenderer().setState(1);
+//                    break;
             }
         }
 
@@ -474,13 +474,27 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (state == CommandSolver.MouseState.PRESSED) {
-                Global.mouseState = true;
-                MainScene.this.stateChage.click();
-            } else if (state == CommandSolver.MouseState.DRAGGED) {
-                Global.mouseState = true;
-            } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
-                Global.mouseState = false;
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
+                    Global.ammoState = true;
+                    MainScene.this.stateChage.start();
+                    MainScene.this.actor.getRenderer().setState(0);
+                } else if (state == CommandSolver.MouseState.PRESSED || state == CommandSolver.MouseState.DRAGGED) {
+                    MainScene.this.stateChage.stop();
+                    MainScene.this.actor.getRenderer().setState(1);
+                }
+            } else if (e.getButton() == MouseEvent.BUTTON1) {
+                if (state == CommandSolver.MouseState.PRESSED) {
+                    Global.mouseState = true;
+                    MainScene.this.stateChage.click();
+                    MainScene.this.stateChage.start();
+                } else if (state == CommandSolver.MouseState.DRAGGED) {
+                    Global.mouseState = true;
+                    MainScene.this.stateChage.start();
+                } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
+                    Global.mouseState = false;
+                    MainScene.this.stateChage.stop();
+                }
             }
         }
     }
