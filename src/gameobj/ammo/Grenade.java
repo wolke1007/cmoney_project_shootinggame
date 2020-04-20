@@ -158,6 +158,8 @@ public class Grenade extends ShootMode {
                                 continue;
                             }
                             this.allObjects.get(i).subtractHp();
+                            this.allObjects.get(i).subtractHp();
+                            this.allObjects.get(i).subtractHp();
                         }
                     }
                 }
