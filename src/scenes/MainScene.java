@@ -109,9 +109,10 @@ public class MainScene extends Scene {
         // 新增 Event start
         Global.log("maps size: " + this.maps.getMaps().size());
         Global.log("building size: " + this.maps.getMaps().get(0).getBuildings().size());
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(0).getBuildings().get(0)}, null));
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
+//        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null));
+
         // 新增 Event end
         setNextEvent();
         this.currentEvent = this.events.get(0);
@@ -138,6 +139,7 @@ public class MainScene extends Scene {
         for (int i = 0; i < this.events.size() - 1; i++) {
             this.events.get(i).setNext(this.events.get(i + 1));
             this.events.get(i).setSerialNo(i);
+            this.events.get(i + 1).setSerialNo(i + 1);
         }
     }
 
@@ -187,9 +189,30 @@ public class MainScene extends Scene {
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
         }
+        if(currentEvent == null){
+            return; // 如果再也沒有事件，則直接跳出判斷
+        }
         this.currentEvent.update();
-        if (this.currentEvent.isTrig() && this.currentEvent.getNext() != null) {
-            Global.log("Trig event: " + this.currentEvent.getClass().getName());
+        switch(this.currentEvent.getSerialNo()){
+            case 0:
+                if(this.currentEvent.isTrig()){
+                    // 事件 1 觸發後做的事情
+                    Door door = this.maps.getMaps().get(1).getBuildings().get(0).open("right");
+                    remove(door);
+                    Global.log("map 1 door open");
+                }
+                break;
+            case 1:
+                if(this.currentEvent.isTrig()){
+                    // 事件 2 觸發後做的事情
+                    Door door = this.maps.getMaps().get(2).getBuildings().get(0).open("right");
+                    remove(door);
+                    Global.log("map 2 door open");
+                }
+                break;
+        }
+        if (this.currentEvent.isTrig()) {
+            this.currentEvent.setTrig(false); // 關閉 trig 並置換 event 成下一個
             this.currentEvent = this.currentEvent.getNext();
         }
     }
@@ -238,6 +261,16 @@ public class MainScene extends Scene {
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
     }//不顯示的remove 作為不顯示和判斷用 可以再放計分的地方
+    
+    public ArrayList<GameObject> getEnemy(){
+        ArrayList<GameObject> allEnemy = new ArrayList<GameObject>();
+        for(int i = 0; i < this.allObjects.size(); i++){
+            if(this.allObjects.get(i).getType().equals("Enemy")){
+                allEnemy.add(this.allObjects.get(i));
+            }
+        }
+        return allEnemy;
+    }
 
     //子彈測試更新中
     public void ammoUpdate() {

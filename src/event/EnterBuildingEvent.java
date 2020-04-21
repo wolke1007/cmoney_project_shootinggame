@@ -19,11 +19,22 @@ public class EnterBuildingEvent implements Event {
     private boolean trig;
     private GameObject[] keyObjs;
     private Event nextEvent;
+    private int serialNo;
     
     public EnterBuildingEvent(GameObject[] objs, Event nextEvent){
         this.trig = false;
         this.keyObjs = objs;
         this.nextEvent = nextEvent;
+    }
+    
+    @Override
+    public void setSerialNo(int serial){
+        this.serialNo = serial;
+    }
+    
+    @Override
+    public int getSerialNo(){
+        return this.serialNo;
     }
     
     @Override
@@ -62,6 +73,11 @@ public class EnterBuildingEvent implements Event {
     @Override
     public boolean isTrig() {
         return this.trig;
+    }
+    
+    @Override
+    public void setTrig(boolean status){
+        this.trig = status;
     }
 
     @Override

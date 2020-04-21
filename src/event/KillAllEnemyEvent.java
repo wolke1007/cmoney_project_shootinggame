@@ -18,11 +18,24 @@ public class KillAllEnemyEvent implements Event {
     private boolean trig;
     private ArrayList<GameObject> allObjects;
     private Event nextEvent;
+    private int serialNo;
+    private int used;
     
     public KillAllEnemyEvent(ArrayList<GameObject> objs, Event nextEvent){
         this.trig = false;
         this.allObjects = objs;
         this.nextEvent = nextEvent;
+        this.used = 0;
+    }
+    
+    @Override
+    public void setSerialNo(int serial){
+        this.serialNo = serial;
+    }
+    
+    @Override
+    public int getSerialNo(){
+        return this.serialNo;
     }
     
     @Override
@@ -44,12 +57,20 @@ public class KillAllEnemyEvent implements Event {
             }
         }
         // 地圖中都沒有 Enemy 的時候成立
-        this.trig = true;
+        this.used++;
+        if(this.used == 1){
+            this.trig = true;
+        }
     }
 
     @Override
     public boolean isTrig() {
         return this.trig;
+    }
+    
+    @Override
+    public void setTrig(boolean status){
+        this.trig = status;
     }
 
     @Override

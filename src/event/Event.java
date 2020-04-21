@@ -22,9 +22,14 @@ public interface Event {
     public abstract void update();
 
     public abstract boolean isTrig();
+
+    public abstract void setTrig(boolean status);
     
     public abstract Event getNext();
     
     public abstract Event setNext(Event event);
+    
+    public abstract void setSerialNo(int serial);
 
+    public abstract int getSerialNo();
 }
