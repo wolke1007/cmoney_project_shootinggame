@@ -5,13 +5,12 @@
  */
 package util;
 
+import util.CommandSolver.*;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
-import util.CommandSolver.KeyListener;
-import util.CommandSolver.MouseCommandListener;
 
 /**
  *
@@ -29,8 +28,8 @@ public class GameKernel extends Canvas {
             this.gi = gi;
             this.gk = new GameKernel(gi, limitDeltaTimePerNano, nanosecPerUpdate);
         }
-
-        public Builder initListener() {
+        
+        public Builder initListener(){
             builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate);
             return this;
         }
@@ -39,7 +38,7 @@ public class GameKernel extends Canvas {
             builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate, array);
             return this;
         }
-
+        
         public Builder initListener(ArrayList<int[]> cmArray) {
             builder = new CommandSolver.Builder(this.gk, this.gk.nanosecPerUpdate, cmArray);
             return this;
@@ -59,6 +58,11 @@ public class GameKernel extends Canvas {
             builder.enableKeyboardTrack(kl);
             return this;
         }
+        
+        public Builder mouseForcedRelease() {
+            builder.mouseForceRelease();
+            return this;
+        }
 
         public Builder keyTypedMode() {
             builder.keyTypedMode();
@@ -74,8 +78,8 @@ public class GameKernel extends Canvas {
             builder.trackChar();
             return this;
         }
-
-        public GameKernel gen() {
+        
+        public GameKernel gen(){
             gk.cs = builder.gen();
             return gk;
         }
