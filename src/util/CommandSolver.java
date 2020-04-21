@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package util;
 
 import java.awt.*;
@@ -12,12 +7,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 /**
  *
- * @author Cloud
+ * @author user1
  */
 public class CommandSolver extends Thread {
 
@@ -286,12 +285,17 @@ public class CommandSolver extends Thread {
         private CommandRecorder<MouseData> recorder;
         private MouseEvent currentEvent;
         private MouseState currentState;
+        private boolean isForcedReleased;
 
-        private MouseTracker() {
+        private MouseTracker(boolean isForcedReleased) {
             recorder = new CommandRecorder<>();
+            this.isForcedReleased = isForcedReleased;
         }
 
         private void trig(MouseEvent e, MouseState state) {
+            if(isForcedReleased && currentState == MouseState.RELEASED){
+                return;
+            }
             currentEvent = e;
             currentState = state;
         }
@@ -423,9 +427,11 @@ public class CommandSolver extends Thread {
         private long deltaTime;
         private MouseTracker mt;
         private boolean isKeyTracker;
+        private boolean isMouseTracker;
         private boolean clear;
         private boolean isKeyDeletion;
         private boolean isTrackChar;
+        private boolean isForcedReleased;
         private MouseCommandListener ml;
         private KeyListener kl;
         private Component c;//mt.bind(c);
@@ -434,6 +440,7 @@ public class CommandSolver extends Thread {
             this.c = c;
             this.deltaTime = deltaTime;
             isKeyTracker = false;
+            isMouseTracker = false;
             clear = false;
         }
 
@@ -459,8 +466,7 @@ public class CommandSolver extends Thread {
 
         public Builder enableMouseTrack(MouseCommandListener ml) {
             this.ml = ml;
-            mt = new MouseTracker();
-            mt.bind(c);
+            isMouseTracker = true;
             return this;
         }
 
@@ -471,13 +477,17 @@ public class CommandSolver extends Thread {
         }
 
         public Builder enableMouseTrack() {
-            mt = new MouseTracker();
-            mt.bind(c);
+            isMouseTracker = true;
             return this;
         }
 
         public Builder enableKeyboardTrack() {
             isKeyTracker = true;
+            return this;
+        }
+        
+        public Builder mouseForceRelease() {
+            isForcedReleased = true;
             return this;
         }
 
@@ -513,6 +523,11 @@ public class CommandSolver extends Thread {
                     }
                 }
                 kt.bind(c);
+            }
+            
+            if (isMouseTracker) {
+                mt = new MouseTracker(isForcedReleased);
+                mt.bind(c);
             }
 
             CommandSolver cs = new CommandSolver(deltaTime, kt, mt);

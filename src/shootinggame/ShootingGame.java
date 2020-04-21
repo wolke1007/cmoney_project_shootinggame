@@ -5,12 +5,12 @@
  */
 package shootinggame;
 
-import util.CommandSolver;
-import util.GameKernel;
-import shootinggame.GI;
-import util.Global;
 import java.awt.event.KeyEvent;
+import util.Global;
 import javax.swing.JFrame;
+import util.GameKernel;
+import util.CommandSolver;
+
 /**
  *
  * @author Cloud-Razer
@@ -30,13 +30,13 @@ public class ShootingGame {
             {KeyEvent.VK_D, Global.RIGHT},
             {KeyEvent.VK_1, Global.KEY_1},
             {KeyEvent.VK_2, Global.KEY_2},
-            {KeyEvent.VK_SPACE, Global.KEY_SPACE},
-        };
+            {KeyEvent.VK_SPACE, Global.KEY_SPACE},};
         GameKernel gk = new GameKernel.Builder(gi, Global.LIMIT_DELTA_TIME, Global.MILLISEC_PER_UPDATE)
                 .initListener(commands)
                 .enableMouseTrack(gi)
                 .enableKeyboardTrack(gi)
-//                .keyTypedMode().trackChar()
+                .mouseForcedRelease()
+                //                .keyTypedMode().trackChar()
                 .keyCleanMode()
                 .gen();
 

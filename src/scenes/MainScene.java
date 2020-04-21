@@ -447,15 +447,15 @@ public class MainScene extends Scene {
         private void ammoModeChange(int commandCode) {
             switch (commandCode) {
                 case Global.KEY_1:
-                    if (MainScene.this.stateChage.getDelayFrame() == Global.KEY_2) {
-                        MainScene.this.stateChage.setDelayFrame(Global.KEY_1);
+                    if (MainScene.this.stateChage.getDelayFrame() == 5) {
+                        MainScene.this.stateChage.setDelayFrame(30);
                         MainScene.this.stateChage.start();
                         MainScene.this.stateChage.click();
                     }
                     break;
                 case Global.KEY_2:
-                    if (MainScene.this.stateChage.getDelayFrame() == Global.KEY_1) {
-                        MainScene.this.stateChage.setDelayFrame(Global.KEY_2);
+                    if (MainScene.this.stateChage.getDelayFrame() == 30) {
+                        MainScene.this.stateChage.setDelayFrame(5);
                         MainScene.this.stateChage.start();
                         MainScene.this.stateChage.click();
                     }
