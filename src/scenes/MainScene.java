@@ -59,6 +59,9 @@ public class MainScene extends Scene {
     private final int actorDeadThreshold = 0; // 角色死亡應該要是多少血，通常應該是 0
     private Event currentEvent;
     private ArrayList<Event> events;
+    private boolean gameOver;
+    private boolean enterPressed;
+    private String name;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -68,6 +71,7 @@ public class MainScene extends Scene {
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
         allDelayControl();
+        this.name = "";
     }
 
     private void allDelayControl() {
@@ -80,6 +84,8 @@ public class MainScene extends Scene {
     @Override
     public void sceneBegin() {
         // 開始背景音樂
+        this.gameOver = false;
+        this.enterPressed = false;
         this.ammos = new ArrayList<>();
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
@@ -182,14 +188,18 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        if (this.actor.getHp() <= actorDeadThreshold) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        // 腳色死亡後的行為  start  // 若不想切回主畫面則註解這一段
+        if (this.actor.getHp() <= actorDeadThreshold) { 
+            this.gameOver = true;
             this.gameOverEffect.update();
-            if (!this.gameOverEffect.getRun()) {
+            if(this.enterPressed){
                 this.scoreCal.addInHistoryIfInTop(5);
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
         }
-        if (currentEvent == null) {
+        // 腳色死亡後的行為 end
+        // Event 控制 start
+        if(currentEvent == null){
             return; // 如果再也沒有事件，則直接跳出判斷
         }
         this.currentEvent.update();
@@ -210,11 +220,13 @@ public class MainScene extends Scene {
                     Global.log("map 2 door open");
                 }
                 break;
+            // 後面以此類推
         }
         if (this.currentEvent.isTrig()) {
             this.currentEvent.setTrig(false); // 關閉 trig 並置換 event 成下一個
             this.currentEvent = this.currentEvent.getNext();
         }
+        // Event 控制 end
     }
 
     //zombie foot step audio
@@ -402,6 +414,17 @@ public class MainScene extends Scene {
         Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
         Global.viewY = 0f;
     }
+        
+    private void inputName(Graphics g) {
+        int textGap = 60;
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        g.drawString("Enter your english name: " + this.name, Global.SCREEN_X / 2 - 200, Global.SCREEN_Y / 2);
+//            g.drawString(record.getName(), endlessBtn.left, endlessBtn.bottom + 30 * (i + 2) + textGap);
+//            g.drawString(Integer.toString(record.getScore()), endlessBtn.left + 400, endlessBtn.bottom + 30 * (i + 2) + textGap);
+//            g.drawString(record.getDate().toString(), endlessBtn.left + 800, endlessBtn.bottom + 30 * (i + 2) + textGap);
+        g.setColor(Color.BLACK);
+    }
 
     @Override
     public void paint(Graphics g) {
@@ -411,6 +434,9 @@ public class MainScene extends Scene {
         paintScore(g);
         if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
+        }
+        if(this.gameOver){
+            inputName(g);
         }
     }
 
@@ -441,6 +467,16 @@ public class MainScene extends Scene {
                     MainScene.this.actor.getRenderer().setState(0);
                     MainScene.this.ammoState = true;
                     break;
+            }
+            if(gameOver){
+                if(commandCode == Global.KEY_ENTER){
+                    enterPressed = true;
+                }
+                if(!enterPressed && commandCode == Global.KEY_BACK_SPACE && name.length() > 0){
+                    name = name.substring(0, name.length() - 1);
+                }else if(!enterPressed && commandCode != Global.KEY_BACK_SPACE){
+                    name += (char)commandCode;
+                }
             }
         }
 
