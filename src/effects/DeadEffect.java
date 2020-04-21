@@ -80,23 +80,23 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
             this.width += 60;
             this.height += 50;
         } // 手掌從小變大
+        this.dragDistance = this.dragDistance >= this.dragDistanceLimit ? this.dragDistance : this.dragDistance + 4;
         if (this.width >= this.handSizeLimit && this.dragDistance < this.dragDistanceLimit) {
             this.x1 = (int) this.actor.getX() - this.width / 2;
             this.y1 = (int) this.actor.getY() - this.height / 2 + this.dragDistance;
             this.x2 = (int) this.actor.getX() + this.width / 2;
             this.y2 = (int) this.actor.getY() + this.height / 2 + this.dragDistance;
-            this.dragDistance = this.dragDistance + 4;
         } // 手掌往下拖
-        if (this.width >= this.handSizeLimit && this.dragDistance < this.dragDistanceLimit) {
+        if (this.width >= this.handSizeLimit && this.dragDistance <= this.dragDistanceLimit) {
             this.bloodRenderer.paint(g, this.x1, (int) this.actor.getY() - this.height / 2,
                     this.x2, (int) this.actor.getY() + this.dragDistance,
                     0, 0, 287, this.dragDistance);
         } // 血跡
         this.handRenderer.paint(g, this.x1, this.y1, this.x2, this.y2);
-        if (this.dragDistance >= this.dragDistanceLimit) {
-            this.playTimes++;
-            this.run = false;
-            Global.log("this.run set to false");
-        }
+//        if (this.dragDistance >= this.dragDistanceLimit) {
+//            this.playTimes++;
+//            this.run = false;
+//            Global.log("this.run set to false");
+//        }
     }
 }
