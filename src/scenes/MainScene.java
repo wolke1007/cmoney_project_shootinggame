@@ -13,7 +13,9 @@ import effects.DeadEffect;
 import effects.Effect;
 import event.EnterBuildingEvent;
 import event.Event;
+import event.KillAllEnemyEvent;
 import gameobj.Actor;
+import gameobj.Door;
 import gameobj.ammo.Ammo;
 import gameobj.enemy.Enemy;
 import gameobj.GameObject;
@@ -104,18 +106,38 @@ public class MainScene extends Scene {
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         Global.log("scene begin allObject size: " + this.allObjects.size());
         this.events = new ArrayList<Event>();
-        // 從最後一個 event 往前加至第一個
+        // 新增 Event start
+        Global.log("maps size: " + this.maps.getMaps().size());
+        Global.log("building size: " + this.maps.getMaps().get(0).getBuildings().size());
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(0).getBuildings().get(0)}, null));
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
+        // 新增 Event end
         setNextEvent();
         this.currentEvent = this.events.get(0);
         for (int i = 0; i < this.allObjects.size(); i++) {
             Global.log(this.allObjects.get(i).getType() + "  x, y:" + this.allObjects.get(i).getGraph().left() + ", " + this.allObjects.get(i).getGraph().top());
         }
+        // DEBUG 生成固定數量怪物，死掉後不生成新的
+        for (int i = 0; i < Global.ENEMY_LIMIT; i++) {
+            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
+            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
+            float width = Global.UNIT_X;
+            float height = Global.UNIT_Y;
+            if (this.maps.canDeploy(x, y, width, height)) {
+                Enemy enemy = new Enemy("circle", x, y, 5,
+                        this.actor, Global.random(1, 2));
+                this.enemys.add(enemy);
+                this.allObjects.add(enemy);
+                enemy.setAllObject(this.allObjects);
+            }
+        }// DEBUG 生成固定數量怪物，死掉後不生成新的
     }
 
     private void setNextEvent() {
         for (int i = 0; i < this.events.size() - 1; i++) {
             this.events.get(i).setNext(this.events.get(i + 1));
+            this.events.get(i).setSerialNo(i);
         }
     }
 
@@ -131,6 +153,10 @@ public class MainScene extends Scene {
                 ArrayList<Wall> walls = map.getBuildings().get(j).getWalls();
                 for (int w = 0; w < walls.size(); w++) {
                     this.allObjects.add(walls.get(w));
+                }
+                ArrayList<Door> doors = map.getBuildings().get(j).getDoors();
+                for (int d = 0; d < doors.size(); d++) {
+                    this.allObjects.add(doors.get(d));
                 }
             }
         }
@@ -184,19 +210,20 @@ public class MainScene extends Scene {
 
     //敵人測試更新中
     public void enemyUpdate() {
-        if (this.enemys.size() < Global.ENEMY_LIMIT && Global.random(20)) {
-            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
-            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
-            float width = Global.UNIT_X;
-            float height = Global.UNIT_Y;
-            if (this.maps.canDeploy(x, y, width, height)) {
-                Enemy enemy = new Enemy("circle", x, y, 5,
-                        this.actor, Global.random(1, 2));
-                this.enemys.add(enemy);
-                this.allObjects.add(enemy);
-                enemy.setAllObject(this.allObjects);
-            }
-        }
+    // DEBUG 生成固定數量怪物，死掉後不生成新的
+        //        if (this.enemys.size() < Global.ENEMY_LIMIT && Global.random(20)) {
+        //            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
+        //            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
+        //            float width = Global.UNIT_X;
+        //            float height = Global.UNIT_Y;
+        //            if (this.maps.canDeploy(x, y, width, height)) {
+        //                Enemy enemy = new Enemy("circle", x, y, 5,
+        //                        this.actor, Global.random(1, 2));
+        //                this.enemys.add(enemy);
+        //                this.allObjects.add(enemy);
+        //                enemy.setAllObject(this.allObjects);
+        //            }
+        //        }
         for (int i = 0; i < this.enemys.size(); i++) {
             if (this.enemys.get(i).getHp() <= 1) {
                 remove(this.enemys.get(i));

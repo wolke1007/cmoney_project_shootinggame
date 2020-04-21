@@ -106,6 +106,10 @@ public class Global {
     public static final int HP_HEIGHT = 30;
     public static final int HP_IMG_W = 555;
     public static final int HP_IMG_H = 74;
+    // 牆壁寬度
+    public static final int WALL_THICK = 5;
+    // 門高度
+    public static final int DOOR_LENGTH = 200;
 
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
