@@ -30,6 +30,7 @@ public class ShootingGame {
             {KeyEvent.VK_D, Global.RIGHT},
             {KeyEvent.VK_1, Global.KEY_1},
             {KeyEvent.VK_2, Global.KEY_2},
+            {KeyEvent.VK_SPACE, Global.KEY_SPACE},
         };
         GameKernel gk = new GameKernel.Builder(gi, Global.LIMIT_DELTA_TIME, Global.MILLISEC_PER_UPDATE)
                 .initListener(commands)

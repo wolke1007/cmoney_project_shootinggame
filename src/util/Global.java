@@ -60,7 +60,7 @@ public class Global {
     //槍的模式
     public static final int KEY_1 = 30;
     public static final int KEY_2 = 5;
-    public static final int KEY_G = -1;
+    public static final int KEY_SPACE = -1;
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};
@@ -95,10 +95,6 @@ public class Global {
     //滑鼠當前的相對座標
     public static float mapMouseX;
     public static float mapMouseY;
-    //滑鼠狀態
-//    public static boolean mouseState;
-    //Ammo切換
-//    public static boolean ammoState;
     //敵人進入view聲效控制
     public static boolean enemyAudio;
     // HP 圖案資訊

@@ -52,7 +52,6 @@ public class MainScene extends Scene {
     private Effect gameOverEffect;
     private Delay stateChage;
     private boolean mouseState;//滑鼠狀態
-    private int mousePress;
     private boolean ammoState;//Ammo切換
     private Delay enemyAudio;
     private final int actorDeadThreshold = 0; // 角色死亡應該要是多少血，通常應該是 0
@@ -63,7 +62,6 @@ public class MainScene extends Scene {
         super(sceneController);
         this.mouseState = false;
         this.ammoState = false;
-        this.mousePress = -1;
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
@@ -110,7 +108,7 @@ public class MainScene extends Scene {
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
         setNextEvent();
         this.currentEvent = this.events.get(0);
-        for (int i = 0;i < this.allObjects.size();i++) {
+        for (int i = 0; i < this.allObjects.size(); i++) {
             Global.log(this.allObjects.get(i).getType() + "  x, y:" + this.allObjects.get(i).getGraph().left() + ", " + this.allObjects.get(i).getGraph().top());
         }
     }
@@ -287,8 +285,8 @@ public class MainScene extends Scene {
         int smallMapHeight = 200;
         int unitWidth = 5;
         int unitHeight = 5;
-        double mapWidthRatio = smallMapWidth / (double)(Global.MAP_WIDTH * Global.MAP_QTY);
-        double mapHeightRatio = smallMapHeight / (double)(Global.MAP_HEIGHT - Global.MAP_HEIGHT / 10);
+        double mapWidthRatio = smallMapWidth / (double) (Global.MAP_WIDTH * Global.MAP_QTY);
+        double mapHeightRatio = smallMapHeight / (double) (Global.MAP_HEIGHT - Global.MAP_HEIGHT / 10);
         int smallMapX = Global.SCREEN_X - smallMapWidth;
         g.setColor(Color.GREEN);
         g.drawRect(smallMapX, 0, smallMapWidth, smallMapHeight); // 小地圖外框
@@ -297,7 +295,7 @@ public class MainScene extends Scene {
         actorOnSmallMapX = actorOnSmallMapX + unitWidth >= Global.SCREEN_X ? Global.SCREEN_X - unitWidth : actorOnSmallMapX;
         int actorOnSmallMapY = (int) Math.ceil(((double) this.actor.getY() * mapHeightRatio));
         actorOnSmallMapY = actorOnSmallMapY + unitHeight >= smallMapHeight ? smallMapHeight - unitHeight - 1 : actorOnSmallMapY;
-        g.drawRect((int)actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
+        g.drawRect((int) actorOnSmallMapX, actorOnSmallMapY, unitWidth, unitHeight); // 角色
         // 畫敵人 start
         for (int i = 0; i < this.allObjects.size(); i++) {
             if (this.allObjects.get(i).getType().equals("Enemy")) {
@@ -377,6 +375,13 @@ public class MainScene extends Scene {
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
+            switch (commandCode) {
+                case Global.KEY_SPACE:
+                    MainScene.this.stateChage.start();
+                    MainScene.this.actor.getRenderer().setState(0);
+                    MainScene.this.ammoState = true;
+                    break;
+            }
         }
 
         private void setDirAndPressedStatus(Actor actor, int dir, boolean status) {
@@ -456,6 +461,10 @@ public class MainScene extends Scene {
                         MainScene.this.stateChage.click();
                     }
                     break;
+                case Global.KEY_SPACE:
+                    MainScene.this.stateChage.stop();
+                    MainScene.this.actor.getRenderer().setState(1);
+                    break;
             }
         }
 
@@ -469,22 +478,7 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (e.getButton() == MouseEvent.BUTTON3) {
-                if ((state == CommandSolver.MouseState.PRESSED || state == CommandSolver.MouseState.DRAGGED)) {
-                    MainScene.this.actor.getRenderer().setState(1);
-                    MainScene.this.stateChage.stop();
-                    MainScene.this.mousePress = e.getButton();
-                } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.RELEASED || state == CommandSolver.MouseState.MOVED) {
-                    MainScene.this.actor.getRenderer().setState(0);
-                    MainScene.this.ammoState = true;
-                    MainScene.this.stateChage.start();
-                    MainScene.this.mousePress = -1;
-                }
-            } else if (e.getButton() == MouseEvent.BUTTON1 && e.getButton() == MouseEvent.BUTTON3) {
-                MainScene.this.actor.getRenderer().setState(1);
-                MainScene.this.stateChage.stop();
-                MainScene.this.mousePress = e.getButton();
-            } else if (e.getButton() == MouseEvent.BUTTON1) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
                 if (state == CommandSolver.MouseState.PRESSED) {
                     MainScene.this.mouseState = true;
                     MainScene.this.stateChage.click();
@@ -493,12 +487,6 @@ public class MainScene extends Scene {
                 } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
                     MainScene.this.mouseState = false;
                 }
-            }
-            if (state == CommandSolver.MouseState.MOVED && MainScene.this.mousePress == MouseEvent.BUTTON3) {
-                MainScene.this.actor.getRenderer().setState(0);
-                MainScene.this.ammoState = true;
-                MainScene.this.stateChage.start();
-                MainScene.this.mousePress = -1;
             }
         }
     }
