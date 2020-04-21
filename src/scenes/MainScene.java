@@ -189,13 +189,13 @@ public class MainScene extends Scene {
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
         }
-        if(currentEvent == null){
+        if (currentEvent == null) {
             return; // 如果再也沒有事件，則直接跳出判斷
         }
         this.currentEvent.update();
-        switch(this.currentEvent.getSerialNo()){
+        switch (this.currentEvent.getSerialNo()) {
             case 0:
-                if(this.currentEvent.isTrig()){
+                if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
                     Door door = this.maps.getMaps().get(1).getBuildings().get(0).open("right");
                     remove(door);
@@ -203,7 +203,7 @@ public class MainScene extends Scene {
                 }
                 break;
             case 1:
-                if(this.currentEvent.isTrig()){
+                if (this.currentEvent.isTrig()) {
                     // 事件 2 觸發後做的事情
                     Door door = this.maps.getMaps().get(2).getBuildings().get(0).open("right");
                     remove(door);
@@ -233,7 +233,7 @@ public class MainScene extends Scene {
 
     //敵人測試更新中
     public void enemyUpdate() {
-    // DEBUG 生成固定數量怪物，死掉後不生成新的
+        // DEBUG 生成固定數量怪物，死掉後不生成新的
         //        if (this.enemys.size() < Global.ENEMY_LIMIT && Global.random(20)) {
         //            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
         //            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
@@ -261,11 +261,11 @@ public class MainScene extends Scene {
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
     }//不顯示的remove 作為不顯示和判斷用 可以再放計分的地方
-    
-    public ArrayList<GameObject> getEnemy(){
+
+    public ArrayList<GameObject> getEnemy() {
         ArrayList<GameObject> allEnemy = new ArrayList<GameObject>();
-        for(int i = 0; i < this.allObjects.size(); i++){
-            if(this.allObjects.get(i).getType().equals("Enemy")){
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            if (this.allObjects.get(i).getType().equals("Enemy")) {
                 allEnemy.add(this.allObjects.get(i));
             }
         }
@@ -538,15 +538,13 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (e.getButton() == MouseEvent.BUTTON1) {
-                if (state == CommandSolver.MouseState.PRESSED) {
-                    MainScene.this.mouseState = true;
-                    MainScene.this.stateChage.click();
-                } else if (state == CommandSolver.MouseState.DRAGGED) {
-                    MainScene.this.mouseState = true;
-                } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
-                    MainScene.this.mouseState = false;
-                }
+            if (state == CommandSolver.MouseState.PRESSED) {
+                MainScene.this.mouseState = true;
+                MainScene.this.stateChage.click();
+            } else if (state == CommandSolver.MouseState.DRAGGED) {
+                MainScene.this.mouseState = true;
+            } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
+                MainScene.this.mouseState = false;
             }
         }
     }
