@@ -58,8 +58,8 @@ public class Global {
     public static final int UP_LEFT = UP + LEFT;
     public static final int DOWN_LEFT = DOWN + LEFT;
     //槍的模式
-    public static final int KEY_1 = 31;
-    public static final int KEY_2 = 32;
+    public static final int KEY_1 = 49;
+    public static final int KEY_2 = 50;
     public static final int KEY_SPACE = 0;
     public static final int KEY_ENTER = -1;
     public static final int KEY_BACK_SPACE = -2;
