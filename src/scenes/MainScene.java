@@ -122,23 +122,7 @@ public class MainScene extends Scene {
         // 新增 Event end
         setNextEvent();
         this.currentEvent = this.events.get(0);
-        for (int i = 0; i < this.allObjects.size(); i++) {
-            Global.log(this.allObjects.get(i).getType() + "  x, y:" + this.allObjects.get(i).getGraph().left() + ", " + this.allObjects.get(i).getGraph().top());
-        }
-        // DEBUG 生成固定數量怪物，死掉後不生成新的
-        for (int i = 0; i < Global.ENEMY_LIMIT; i++) {
-            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
-            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
-            float width = Global.UNIT_X;
-            float height = Global.UNIT_Y;
-            if (this.maps.canDeploy(x, y, width, height)) {
-                Enemy enemy = new Enemy("circle", x, y, 5,
-                        this.actor, Global.random(1, 2));
-                this.enemys.add(enemy);
-                this.allObjects.add(enemy);
-                enemy.setAllObject(this.allObjects);
-            }
-        }// DEBUG 生成固定數量怪物，死掉後不生成新的
+        genEnemies(100, 100, 600, 600, 5); //DEBUG 用
     }
 
     private void setNextEvent() {
@@ -170,6 +154,24 @@ public class MainScene extends Scene {
         }
     }
 
+    public void genEnemies(int x1, int y1, int x2, int y2, int qty) { // 於指定區域生成敵人
+        for (int i = 0; i < qty; i++) {
+            float x;
+            float y;
+            float width = Global.UNIT_X;
+            float height = Global.UNIT_Y;
+            do {
+                x = Global.random(x1, x2);
+                y = Global.random(y1, y2);
+            } while (!this.maps.canDeploy(x, y, width, height));
+            Enemy enemy = new Enemy("circle", x, y, 5,
+                    this.actor, Global.random(1, 2));
+            this.enemys.add(enemy);
+            this.allObjects.add(enemy);
+            enemy.setAllObject(this.allObjects);
+        }
+    } // 於指定區域生成敵人
+
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -189,23 +191,23 @@ public class MainScene extends Scene {
         }
         zombieFootStepAudio();
         // 腳色死亡後的行為  start  // 若不想切回主畫面則註解這一段
-        if (this.actor.getHp() <= actorDeadThreshold) { 
+        if (this.actor.getHp() <= actorDeadThreshold) {
             this.gameOver = true;
             this.gameOverEffect.update();
-            if(this.enterPressed){
+            if (this.enterPressed) {
                 this.scoreCal.addInHistoryIfInTop(5);
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
         }
         // 腳色死亡後的行為 end
         // Event 控制 start
-        if(currentEvent == null){
+        if (currentEvent == null) {
             return; // 如果再也沒有事件，則直接跳出判斷
         }
         this.currentEvent.update();
-        switch(this.currentEvent.getSerialNo()){
+        switch (this.currentEvent.getSerialNo()) {
             case 0:
-                if(this.currentEvent.isTrig()){
+                if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
                     Door door = this.maps.getMaps().get(1).getBuildings().get(0).open("right");
                     remove(door);
@@ -213,7 +215,7 @@ public class MainScene extends Scene {
                 }
                 break;
             case 1:
-                if(this.currentEvent.isTrig()){
+                if (this.currentEvent.isTrig()) {
                     // 事件 2 觸發後做的事情
                     Door door = this.maps.getMaps().get(2).getBuildings().get(0).open("right");
                     remove(door);
@@ -229,8 +231,7 @@ public class MainScene extends Scene {
         // Event 控制 end
     }
 
-    //zombie foot step audio
-    public void zombieFootStepAudio() {
+    public void zombieFootStepAudio() { //zombie foot step audio
         for (int i = 0; i < this.view.getSaw().size(); i++) {
             if (this.view.getSaw().get(i).getType().equals("Enemy")) {
                 Global.enemyAudio = true;
@@ -241,24 +242,9 @@ public class MainScene extends Scene {
         if (Global.enemyAudio && this.enemyAudio.isTrig()) {
             AudioResourceController.getInstance().play(AudioPath.ZOMBIE_STEP_MOVE[0]);
         }
-    }
+    } //zombie foot step audio
 
-    //敵人測試更新中
-    public void enemyUpdate() {
-    // DEBUG 生成固定數量怪物，死掉後不生成新的
-        //        if (this.enemys.size() < Global.ENEMY_LIMIT && Global.random(20)) {
-        //            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
-        //            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
-        //            float width = Global.UNIT_X;
-        //            float height = Global.UNIT_Y;
-        //            if (this.maps.canDeploy(x, y, width, height)) {
-        //                Enemy enemy = new Enemy("circle", x, y, 5,
-        //                        this.actor, Global.random(1, 2));
-        //                this.enemys.add(enemy);
-        //                this.allObjects.add(enemy);
-        //                enemy.setAllObject(this.allObjects);
-        //            }
-        //        }
+    public void enemyUpdate() { //敵人測試更新中
         for (int i = 0; i < this.enemys.size(); i++) {
             if (this.enemys.get(i).getHp() <= 1) {
                 remove(this.enemys.get(i));
@@ -267,25 +253,24 @@ public class MainScene extends Scene {
                 i--;
             }
         }
-    }
+    } //敵人測試更新中
 
-    public void remove(GameObject obj) {
+    public void remove(GameObject obj) { // 從 allObjects 與 view 中刪除
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
-    }//不顯示的remove 作為不顯示和判斷用 可以再放計分的地方
-    
-    public ArrayList<GameObject> getEnemy(){
+    } // 從 allObjects 與 view 中刪除
+
+    public ArrayList<GameObject> getEnemy() {
         ArrayList<GameObject> allEnemy = new ArrayList<GameObject>();
-        for(int i = 0; i < this.allObjects.size(); i++){
-            if(this.allObjects.get(i).getType().equals("Enemy")){
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            if (this.allObjects.get(i).getType().equals("Enemy")) {
                 allEnemy.add(this.allObjects.get(i));
             }
         }
         return allEnemy;
     }
 
-    //子彈測試更新中
-    public void ammoUpdate() {
+    public void ammoUpdate() { //子彈測試更新中
         if (this.ammoState) {
             boolean create = true;
             if (this.ammos == null) {
@@ -350,9 +335,9 @@ public class MainScene extends Scene {
             }
         }
 //        System.out.println("ammo size: "+this.ammos.size());
-    }
+    } //子彈測試更新中
 
-    private void paintSmallMap(Graphics g) {
+    private void paintSmallMap(Graphics g) { // 右上角小地圖
         int smallMapWidth = 200;
         int smallMapHeight = 200;
         int unitWidth = 5;
@@ -384,7 +369,7 @@ public class MainScene extends Scene {
         // 畫敵人 end
         g.setColor(Color.BLACK);
 
-    }
+    } // 右上角小地圖
 
     private void paintHPbar(Graphics g) {
         float hp = this.actor.getHp();
@@ -398,14 +383,14 @@ public class MainScene extends Scene {
                     (int) (hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY - 7 + Global.HP_HEIGHT,
                     0, 0, (int) (555 * hpRate), 74);
         }
-    }
+    } // 角色 HP bar
 
     private void paintScore(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.setColor(Color.white);
         g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
         g.setColor(Color.black);
-    }
+    } // 分數顯示
 
     @Override
     public void sceneEnd() {
@@ -414,7 +399,7 @@ public class MainScene extends Scene {
         Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
         Global.viewY = 0f;
     }
-        
+
     private void inputName(Graphics g) {
         int textGap = 60;
         g.setColor(Color.WHITE);
@@ -435,7 +420,7 @@ public class MainScene extends Scene {
         if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
         }
-        if(this.gameOver){
+        if (this.gameOver) {
             inputName(g);
         }
     }
@@ -468,14 +453,14 @@ public class MainScene extends Scene {
                     MainScene.this.ammoState = true;
                     break;
             }
-            if(gameOver){
-                if(commandCode == Global.KEY_ENTER){
+            if (gameOver) {
+                if (commandCode == Global.KEY_ENTER) {
                     enterPressed = true;
                 }
-                if(!enterPressed && commandCode == Global.KEY_BACK_SPACE && name.length() > 0){
+                if (!enterPressed && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
                     name = name.substring(0, name.length() - 1);
-                }else if(!enterPressed && commandCode != Global.KEY_BACK_SPACE){
-                    name += (char)commandCode;
+                } else if (!enterPressed && commandCode != Global.KEY_BACK_SPACE) {
+                    name += (char) commandCode;
                 }
             }
         }
