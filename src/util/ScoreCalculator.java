@@ -23,25 +23,55 @@ public class ScoreCalculator implements Serializable {
 
     private static final long serialVersionUID = 1L; // 序列化版本控制
     public static final int[] scoreType = new int[]{100};
-    private int totalScore;
+    private long startTime;
+    private long endTime;
+    private long currentTime;
+    private boolean gameOver;
+    
     private ArrayList<Record> endlessGameScore;
     private ArrayList<Record> compaignGameScore;
     private ArrayList<Record> savingGameScore;
-    private String currentGameMode;
     private static FileInputStream fis;
 
     private static ScoreCalculator scoreCal;
 
     private ScoreCalculator() {
+        this.startTime = 0;
+        this.endTime = 0;
+        this.currentTime = 0;
         this.endlessGameScore = new ArrayList<Record>();
         this.compaignGameScore = new ArrayList<Record>();
         this.savingGameScore = new ArrayList<Record>();
-        this.currentGameMode = null;
+        this.gameOver = false;
+    }
+    
+    public void gameStart() {
+        this.startTime = System.currentTimeMillis();
+        this.currentTime = this.endTime - this.startTime;
+    }
+    
+    public boolean isStopTiming(){
+        return this.gameOver;
     }
 
-    public void setGameMode(String mode) {
-        this.currentGameMode = mode;
-        this.totalScore = 0; // 當重新設定遊戲模式時重新計算分數應該挺合理
+    public void gameOver(){
+        this.gameOver = true;
+        this.endTime = System.currentTimeMillis();
+    }
+    
+    public void reset(){
+        this.startTime = 0;
+        this.endTime = 0;
+        this.currentTime = 0;
+        this.gameOver = false;
+    }
+    
+    public long getCurrentTime(){
+        if(!this.gameOver){
+            this.endTime = System.currentTimeMillis();
+        }
+        this.currentTime = this.endTime - this.startTime;
+        return this.currentTime;
     }
 
     public static ScoreCalculator getInstance() {
@@ -67,12 +97,9 @@ public class ScoreCalculator implements Serializable {
         return scoreCal;
     }
 
-    public void addScore() {
-        this.totalScore += ScoreCalculator.scoreType[0];
-    }
-
-    public int getCurrentScore() {
-        return this.totalScore;
+    public int calculateScore() {
+        return (int)((Global.PIVOT_TIME / (this.endTime - this.startTime)) * 1000L); // 概念上是超過當初設定的 pivotTime 則分數是 0 分
+        // 乘以 1000 只是為了讓數字看起來比較好看XD
     }
 
     private void sort(ArrayList<Record> list) {
@@ -107,32 +134,25 @@ public class ScoreCalculator implements Serializable {
         }
         return -1;
     }
+    
+    public boolean isOnTop(int top){
+        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(), this.endlessGameScore) <= top) {
+            return true;
+        }
+        return false;
+    }
 
-    public void addInHistoryIfInTop(int top) {
-        if (this.currentGameMode == null) {
+    public void addInHistoryIfOnTop(int top, String name) {
+        Global.log("enter endless addInHistoryIfInTop");
+        if(isOnTop(top)){
+            Record newRecord = new Record(calculateScore(), name);
+            this.endlessGameScore.add(newRecord);
+            reset(); // reset score
+            sort(this.endlessGameScore);
+            writeFile();
             return;
         }
-        Scanner sc = new Scanner(System.in);
-        switch (this.currentGameMode) {
-            case "endless":
-                Global.log("enter endless addInHistoryIfInTop");
-                if (inHistoryPostion(top, this.totalScore, this.endlessGameScore) != -1) {
-                    System.out.print("NEW HIGH SCORE!! PLEASE ENTER YOUR NAME: ");
-                    Record newRecord = new Record(this.totalScore, sc.nextLine());
-                    this.endlessGameScore.add(newRecord);
-                    this.totalScore = 0; // reset score
-                    this.currentGameMode = null; // reset game mode
-                    sort(this.endlessGameScore);
-                    writeFile();
-                }
-                break;
-            case "campaign":
-                Global.log("enter campaign addInHistoryIfInTop");
-                break;
-            case "saving":
-                Global.log("enter saving addInHistoryIfInTop");
-                break;
-        }
+        Global.log("not on top " + top);
     }
 
     private void writeFile() {

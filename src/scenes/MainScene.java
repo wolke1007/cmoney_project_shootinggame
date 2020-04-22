@@ -60,8 +60,9 @@ public class MainScene extends Scene {
     private Event currentEvent;
     private ArrayList<Event> events;
     private boolean gameOver;
-    private boolean enterPressed;
+    private boolean nameTyped;
     private String name;
+    private int top; // 多少名次內可以進排行榜
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -72,6 +73,7 @@ public class MainScene extends Scene {
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
         allDelayControl();
         this.name = "";
+        this.top = 5;
     }
 
     private void allDelayControl() {
@@ -85,7 +87,7 @@ public class MainScene extends Scene {
     public void sceneBegin() {
         // 開始背景音樂
         this.gameOver = false;
-        this.enterPressed = false;
+        this.nameTyped = false;
         this.ammos = new ArrayList<>();
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
@@ -108,7 +110,6 @@ public class MainScene extends Scene {
         addAllMapsToAllObjects();
         this.actor.setAllObjects(this.allObjects);
         this.scoreCal = ScoreCalculator.getInstance();
-        this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         Global.log("scene begin allObject size: " + this.allObjects.size());
         this.events = new ArrayList<Event>();
@@ -123,6 +124,7 @@ public class MainScene extends Scene {
         setNextEvent();
         this.currentEvent = this.events.get(0);
         genEnemies(100, 100, 600, 600, 5); //DEBUG 用
+        this.scoreCal.gameStart();
     }
 
     private void setNextEvent() {
@@ -172,6 +174,13 @@ public class MainScene extends Scene {
         }
     } // 於指定區域生成敵人
 
+    private void inputName(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        g.drawString("Enter your english name: " + this.name, Global.SCREEN_X / 2 - 300, Global.SCREEN_Y / 2);
+        g.setColor(Color.BLACK);
+    }
+
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -190,16 +199,20 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        // 腳色死亡後的行為  start  // 若不想切回主畫面則註解這一段
+        // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
         if (this.actor.getHp() <= actorDeadThreshold) {
             this.gameOver = true;
             this.gameOverEffect.update();
-            if (this.enterPressed) {
-                this.scoreCal.addInHistoryIfInTop(5);
+        }
+        // 角色死亡後的行為 end
+        if (this.gameOver) {
+            if (!this.scoreCal.isOnTop(this.top)) {
+                MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
+            }
+            if (this.nameTyped) {
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
         }
-        // 腳色死亡後的行為 end
         // Event 控制 start
         if (currentEvent == null) {
             return; // 如果再也沒有事件，則直接跳出判斷
@@ -208,18 +221,16 @@ public class MainScene extends Scene {
         switch (this.currentEvent.getSerialNo()) {
             case 0:
                 if (this.currentEvent.isTrig()) {
-                    // 事件 1 觸發後做的事情
-                    Door door = this.maps.getMaps().get(1).getBuildings().get(0).open("right");
-                    remove(door);
+                    // 事件 0 觸發後做的事情
+                    remove(this.maps.getMaps().get(1).getBuildings().get(0).open("right"));
                     Global.log("map 1 door open");
                 }
                 break;
             case 1:
                 if (this.currentEvent.isTrig()) {
-                    // 事件 2 觸發後做的事情
-                    Door door = this.maps.getMaps().get(2).getBuildings().get(0).open("right");
-                    remove(door);
-                    Global.log("map 2 door open");
+                    // 事件 1 觸發後做的事情
+                    this.gameOver = true;
+                    Global.log("end scene");
                 }
                 break;
             // 後面以此類推
@@ -249,7 +260,6 @@ public class MainScene extends Scene {
             if (this.enemys.get(i).getHp() <= 1) {
                 remove(this.enemys.get(i));
                 this.enemys.remove(this.enemys.get(i)); // 真實的刪除
-                this.scoreCal.addScore(); // 計算分數
                 i--;
             }
         }
@@ -385,10 +395,12 @@ public class MainScene extends Scene {
         }
     } // 角色 HP bar
 
-    private void paintScore(Graphics g) {
+    private void paintTime(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.setColor(Color.white);
-        g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
+        g.drawString(String.valueOf("Time: " + this.scoreCal.getCurrentTime() / 1000 / 60 + "\""
+                + this.scoreCal.getCurrentTime() / 1000 + "\"" + this.scoreCal.getCurrentTime() % 1000 / 100),
+                Global.HP_FRAME_WIDTH + 10, 30);
         g.setColor(Color.black);
     } // 分數顯示
 
@@ -398,17 +410,8 @@ public class MainScene extends Scene {
         Global.log("main scene end");
         Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
         Global.viewY = 0f;
-    }
-
-    private void inputName(Graphics g) {
-        int textGap = 60;
-        g.setColor(Color.WHITE);
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-        g.drawString("Enter your english name: " + this.name, Global.SCREEN_X / 2 - 200, Global.SCREEN_Y / 2);
-//            g.drawString(record.getName(), endlessBtn.left, endlessBtn.bottom + 30 * (i + 2) + textGap);
-//            g.drawString(Integer.toString(record.getScore()), endlessBtn.left + 400, endlessBtn.bottom + 30 * (i + 2) + textGap);
-//            g.drawString(record.getDate().toString(), endlessBtn.left + 800, endlessBtn.bottom + 30 * (i + 2) + textGap);
-        g.setColor(Color.BLACK);
+        this.scoreCal.addInHistoryIfOnTop(this.top, this.name);
+        this.scoreCal.reset();
     }
 
     @Override
@@ -416,11 +419,14 @@ public class MainScene extends Scene {
         this.view.paint(g);
         paintHPbar(g);
         paintSmallMap(g);
-        paintScore(g);
+        paintTime(g);
         if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
         }
-        if (this.gameOver) {
+        if (this.gameOver && this.scoreCal.isOnTop(this.top)) { // 有在排名內才會要求輸入名字
+            if (!this.scoreCal.isStopTiming() && this.gameOver) {
+                this.scoreCal.gameOver(); // 停止計時
+            }
             inputName(g);
         }
     }
@@ -439,6 +445,9 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
+            if (gameOver) {
+                return;
+            }
             actorMoveRule(commandCode);
             ammoModeChange(commandCode);
         }
@@ -446,22 +455,23 @@ public class MainScene extends Scene {
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
+            if (gameOver) {
+                if (commandCode == Global.KEY_ENTER) {
+                    nameTyped = true;
+                }
+                if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
+                    name = name.substring(0, name.length() - 1);
+                } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
+                    name += (char) commandCode;
+                }
+                return;
+            }
             switch (commandCode) {
                 case Global.KEY_SPACE:
                     MainScene.this.stateChage.start();
                     MainScene.this.actor.getRenderer().setState(0);
                     MainScene.this.ammoState = true;
                     break;
-            }
-            if (gameOver) {
-                if (commandCode == Global.KEY_ENTER) {
-                    enterPressed = true;
-                }
-                if (!enterPressed && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
-                    name = name.substring(0, name.length() - 1);
-                } else if (!enterPressed && commandCode != Global.KEY_BACK_SPACE) {
-                    name += (char) commandCode;
-                }
             }
         }
 

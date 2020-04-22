@@ -112,6 +112,8 @@ public class Global {
     public static final int WALL_THICK = 5;
     // 門高度
     public static final int DOOR_LENGTH = 200;
+    // 預設遊戲勝利時間
+    public static final float PIVOT_TIME = 30000; // 基準時間，單位為毫秒，例: 如果預計玩家 2 分鐘內能跑完全程，則設為 2 x 60 x 1000 = 120000
 
     public static boolean random(int rate) {
         return random(1, 100) <= rate;
