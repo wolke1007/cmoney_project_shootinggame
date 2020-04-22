@@ -136,7 +136,7 @@ public class ScoreCalculator implements Serializable {
     }
     
     public boolean isOnTop(int top){
-        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(), this.endlessGameScore) <= top) {
+        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(), this.endlessGameScore) != -1 && inHistoryPostion(top, calculateScore(), this.endlessGameScore) <= top) {
             return true;
         }
         return false;

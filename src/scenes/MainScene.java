@@ -177,7 +177,7 @@ public class MainScene extends Scene {
     private void inputName(Graphics g) {
         g.setColor(Color.WHITE);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-        g.drawString("Enter your english name: " + this.name, Global.SCREEN_X / 2 - 300, Global.SCREEN_Y / 2);
+        g.drawString("Enter Your English Name: " + this.name, Global.SCREEN_X / 2 - 300, Global.SCREEN_Y / 2);
         g.setColor(Color.BLACK);
     }
 
