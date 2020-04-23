@@ -49,18 +49,20 @@ public class Global {
     public static final int DEFAULT_ACTOR_X = (int) (FRAME_X / 2) - (UNIT_X / 2);
     public static final int DEFAULT_ACTOR_Y = (int) (FRAME_Y / 2) - (UNIT_Y) + 15;
     // 方向 
-    public static final int UP = 1;
-    public static final int DOWN = 2;
-    public static final int LEFT = 4;
-    public static final int RIGHT = 8;
+    public static final int UP = 87;
+    public static final int DOWN = 83;
+    public static final int LEFT = 65;
+    public static final int RIGHT = 68;
     public static final int UP_RIGHT = UP + RIGHT;
     public static final int DOWN_RIGHT = DOWN + RIGHT;
     public static final int UP_LEFT = UP + LEFT;
     public static final int DOWN_LEFT = DOWN + LEFT;
     //槍的模式
-    public static final int KEY_1 = 30;
-    public static final int KEY_2 = 5;
-    public static final int KEY_SPACE = -1;
+    public static final int KEY_1 = 49;
+    public static final int KEY_2 = 50;
+    public static final int KEY_SPACE = 0;
+    public static final int KEY_ENTER = -1;
+    public static final int KEY_BACK_SPACE = -2;
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};
@@ -110,6 +112,8 @@ public class Global {
     public static final int WALL_THICK = 5;
     // 門高度
     public static final int DOOR_LENGTH = 200;
+    // 預設遊戲勝利時間
+    public static final float PIVOT_TIME = 30000; // 基準時間，單位為毫秒，例: 如果預計玩家 2 分鐘內能跑完全程，則設為 2 x 60 x 1000 = 120000
 
     public static boolean random(int rate) {
         return random(1, 100) <= rate;

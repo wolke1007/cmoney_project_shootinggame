@@ -61,6 +61,10 @@ public class MainScene extends Scene {
     private Event currentEvent;
     private ArrayList<Event> events;
     private Boss boss;
+    private boolean gameOver;
+    private boolean nameTyped;
+    private String name;
+    private int top; // 多少名次內可以進排行榜
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -70,6 +74,8 @@ public class MainScene extends Scene {
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
         allDelayControl();
+        this.name = "";
+        this.top = 5;
     }
 
     private void allDelayControl() {
@@ -82,6 +88,8 @@ public class MainScene extends Scene {
     @Override
     public void sceneBegin() {
         // 開始背景音樂
+        this.gameOver = false;
+        this.nameTyped = false;
         this.ammos = new ArrayList<>();
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
@@ -104,7 +112,6 @@ public class MainScene extends Scene {
         addAllMapsToAllObjects();
         this.actor.setAllObjects(this.allObjects);
         this.scoreCal = ScoreCalculator.getInstance();
-        this.scoreCal.setGameMode("endless"); // 設定此場景遊戲模式
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         Global.log("scene begin allObject size: " + this.allObjects.size());
         this.events = new ArrayList<Event>();
@@ -118,26 +125,11 @@ public class MainScene extends Scene {
         // 新增 Event end
         setNextEvent();
         this.currentEvent = this.events.get(0);
-        for (int i = 0; i < this.allObjects.size(); i++) {
-            Global.log(this.allObjects.get(i).getType() + "  x, y:" + this.allObjects.get(i).getGraph().left() + ", " + this.allObjects.get(i).getGraph().top());
-        }
-        // DEBUG 生成固定數量怪物，死掉後不生成新的
-        for (int i = 0; i < Global.ENEMY_LIMIT; i++) {
-            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
-            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
-            float width = Global.UNIT_X;
-            float height = Global.UNIT_Y;
-            if (this.maps.canDeploy(x, y, width, height)) {
-                Enemy enemy = new Enemy("circle", x, y, 5,
-                        this.actor, Global.random(1, 2));
-                this.enemys.add(enemy);
-                this.allObjects.add(enemy);
-                enemy.setAllObject(this.allObjects);
-            }
-        }// DEBUG 生成固定數量怪物，死掉後不生成新的
         this.boss = new Boss("rect", 100f, 50f, this.actor, 60);
         this.allObjects.add(this.boss);
         this.boss.setAllObject(this.allObjects);
+        genEnemies(100, 100, 600, 600, 5); //DEBUG 用
+        this.scoreCal.gameStart();
     }
 
     private void setNextEvent() {
@@ -169,6 +161,31 @@ public class MainScene extends Scene {
         }
     }
 
+    public void genEnemies(int x1, int y1, int x2, int y2, int qty) { // 於指定區域生成敵人
+        for (int i = 0; i < qty; i++) {
+            float x;
+            float y;
+            float width = Global.UNIT_X;
+            float height = Global.UNIT_Y;
+            do {
+                x = Global.random(x1, x2);
+                y = Global.random(y1, y2);
+            } while (!this.maps.canDeploy(x, y, width, height));
+            Enemy enemy = new Enemy("circle", x, y, 5,
+                    this.actor, Global.random(1, 2));
+            this.enemys.add(enemy);
+            this.allObjects.add(enemy);
+            enemy.setAllObject(this.allObjects);
+        }
+    } // 於指定區域生成敵人
+
+    private void inputName(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        g.drawString("Enter Your English Name: " + this.name, Global.SCREEN_X / 2 - 300, Global.SCREEN_Y / 2);
+        g.setColor(Color.BLACK);
+    }
+
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -187,13 +204,21 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        if (this.actor.getHp() <= actorDeadThreshold) { // 腳色死亡後的行為，若不想切回主畫面則註解這一段
+        // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
+        if (this.actor.getHp() <= actorDeadThreshold) {
+            this.gameOver = true;
             this.gameOverEffect.update();
-            if (!this.gameOverEffect.getRun()) {
-                this.scoreCal.addInHistoryIfInTop(5);
+        }
+        // 角色死亡後的行為 end
+        if (this.gameOver) {
+            if (!this.scoreCal.isOnTop(this.top)) {
+                MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
+            }
+            if (this.nameTyped) {
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
         }
+        // Event 控制 start
         if (currentEvent == null) {
             return; // 如果再也沒有事件，則直接跳出判斷
         }
@@ -201,29 +226,28 @@ public class MainScene extends Scene {
         switch (this.currentEvent.getSerialNo()) {
             case 0:
                 if (this.currentEvent.isTrig()) {
-                    // 事件 1 觸發後做的事情
-                    Door door = this.maps.getMaps().get(1).getBuildings().get(0).open("right");
-                    remove(door);
+                    // 事件 0 觸發後做的事情
+                    remove(this.maps.getMaps().get(1).getBuildings().get(0).open("right"));
                     Global.log("map 1 door open");
                 }
                 break;
             case 1:
                 if (this.currentEvent.isTrig()) {
-                    // 事件 2 觸發後做的事情
-                    Door door = this.maps.getMaps().get(2).getBuildings().get(0).open("right");
-                    remove(door);
-                    Global.log("map 2 door open");
+                    // 事件 1 觸發後做的事情
+                    this.gameOver = true;
+                    Global.log("end scene");
                 }
                 break;
+            // 後面以此類推
         }
         if (this.currentEvent.isTrig()) {
             this.currentEvent.setTrig(false); // 關閉 trig 並置換 event 成下一個
             this.currentEvent = this.currentEvent.getNext();
         }
+        // Event 控制 end
     }
 
-    //zombie foot step audio
-    public void zombieFootStepAudio() {
+    public void zombieFootStepAudio() { //zombie foot step audio
         for (int i = 0; i < this.view.getSaw().size(); i++) {
             if (this.view.getSaw().get(i).getType().equals("Enemy")) {
                 Global.enemyAudio = true;
@@ -234,38 +258,22 @@ public class MainScene extends Scene {
         if (Global.enemyAudio && this.enemyAudio.isTrig()) {
             AudioResourceController.getInstance().play(AudioPath.ZOMBIE_STEP_MOVE[0]);
         }
-    }
+    } //zombie foot step audio
 
-    //敵人測試更新中
-    public void enemyUpdate() {
-        // DEBUG 生成固定數量怪物，死掉後不生成新的
-        //        if (this.enemys.size() < Global.ENEMY_LIMIT && Global.random(20)) {
-        //            float x = Global.random(Global.mapEdgeLeft, Global.mapEdgeRight);
-        //            float y = Global.random(Global.mapEdgeUp, Global.mapEdgeDown);
-        //            float width = Global.UNIT_X;
-        //            float height = Global.UNIT_Y;
-        //            if (this.maps.canDeploy(x, y, width, height)) {
-        //                Enemy enemy = new Enemy("circle", x, y, 5,
-        //                        this.actor, Global.random(1, 2));
-        //                this.enemys.add(enemy);
-        //                this.allObjects.add(enemy);
-        //                enemy.setAllObject(this.allObjects);
-        //            }
-        //        }
+    public void enemyUpdate() { //敵人測試更新中
         for (int i = 0; i < this.enemys.size(); i++) {
             if (this.enemys.get(i).getHp() <= 1) {
                 remove(this.enemys.get(i));
                 this.enemys.remove(this.enemys.get(i)); // 真實的刪除
-                this.scoreCal.addScore(); // 計算分數
                 i--;
             }
         }
-    }
+    } //敵人測試更新中
 
-    public void remove(GameObject obj) {
+    public void remove(GameObject obj) { // 從 allObjects 與 view 中刪除
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
-    }//不顯示的remove 作為不顯示和判斷用 可以再放計分的地方
+    } // 從 allObjects 與 view 中刪除
 
     public ArrayList<GameObject> getEnemy() {
         ArrayList<GameObject> allEnemy = new ArrayList<GameObject>();
@@ -277,8 +285,7 @@ public class MainScene extends Scene {
         return allEnemy;
     }
 
-    //子彈測試更新中
-    public void ammoUpdate() {
+    public void ammoUpdate() { //子彈測試更新中
         if (this.ammoState) {
             boolean create = true;
             if (this.ammos == null) {
@@ -343,9 +350,9 @@ public class MainScene extends Scene {
             }
         }
 //        System.out.println("ammo size: "+this.ammos.size());
-    }
+    } //子彈測試更新中
 
-    private void paintSmallMap(Graphics g) {
+    private void paintSmallMap(Graphics g) { // 右上角小地圖
         int smallMapWidth = 200;
         int smallMapHeight = 200;
         int unitWidth = 5;
@@ -377,7 +384,7 @@ public class MainScene extends Scene {
         // 畫敵人 end
         g.setColor(Color.BLACK);
 
-    }
+    } // 右上角小地圖
 
     private void paintHPbar(Graphics g) {
         float hp = this.actor.getHp();
@@ -391,14 +398,16 @@ public class MainScene extends Scene {
                     (int) (hpFrameX + 12 + (Global.HP_WIDTH * hpRate)), hpFrameY - 7 + Global.HP_HEIGHT,
                     0, 0, (int) (555 * hpRate), 74);
         }
-    }
+    } // 角色 HP bar
 
-    private void paintScore(Graphics g) {
+    private void paintTime(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.setColor(Color.white);
-        g.drawString(String.valueOf("Score: " + this.scoreCal.getCurrentScore()), Global.HP_FRAME_WIDTH + 10, 30);
+        g.drawString(String.valueOf("Time: " + this.scoreCal.getCurrentTime() / 1000 / 60 + "\""
+                + this.scoreCal.getCurrentTime() / 1000 + "\"" + this.scoreCal.getCurrentTime() % 1000 / 100),
+                Global.HP_FRAME_WIDTH + 10, 30);
         g.setColor(Color.black);
-    }
+    } // 分數顯示
 
     @Override
     public void sceneEnd() {
@@ -406,6 +415,8 @@ public class MainScene extends Scene {
         Global.log("main scene end");
         Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
         Global.viewY = 0f;
+        this.scoreCal.addInHistoryIfOnTop(this.top, this.name);
+        this.scoreCal.reset();
     }
 
     @Override
@@ -413,9 +424,15 @@ public class MainScene extends Scene {
         this.view.paint(g);
         paintHPbar(g);
         paintSmallMap(g);
-        paintScore(g);
+        paintTime(g);
         if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
+        }
+        if (this.gameOver && this.scoreCal.isOnTop(this.top)) { // 有在排名內才會要求輸入名字
+            if (!this.scoreCal.isStopTiming() && this.gameOver) {
+                this.scoreCal.gameOver(); // 停止計時
+            }
+            inputName(g);
         }
     }
 
@@ -433,6 +450,9 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
+            if (gameOver) {
+                return;
+            }
             actorMoveRule(commandCode);
             ammoModeChange(commandCode);
         }
@@ -440,6 +460,17 @@ public class MainScene extends Scene {
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
+            if (gameOver) {
+                if (commandCode == Global.KEY_ENTER) {
+                    nameTyped = true;
+                }
+                if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
+                    name = name.substring(0, name.length() - 1);
+                } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
+                    name += (char) commandCode;
+                }
+                return;
+            }
             switch (commandCode) {
                 case Global.KEY_SPACE:
                     MainScene.this.stateChage.start();

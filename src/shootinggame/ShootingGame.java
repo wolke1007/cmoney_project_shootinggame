@@ -24,13 +24,22 @@ public class ShootingGame {
         JFrame f = new JFrame();
         GI gi = new GI();
         int[][] commands = new int[][]{
-            {KeyEvent.VK_W, Global.UP},
-            {KeyEvent.VK_S, Global.DOWN},
-            {KeyEvent.VK_A, Global.LEFT},
-            {KeyEvent.VK_D, Global.RIGHT},
-            {KeyEvent.VK_1, Global.KEY_1},
-            {KeyEvent.VK_2, Global.KEY_2},
-            {KeyEvent.VK_SPACE, Global.KEY_SPACE},};
+            {KeyEvent.VK_A, 'A'}, {KeyEvent.VK_B, 'B'}, {KeyEvent.VK_C, 'C'},
+            {KeyEvent.VK_D, 'D'}, {KeyEvent.VK_E, 'E'}, {KeyEvent.VK_F, 'F'},
+            {KeyEvent.VK_G, 'G'}, {KeyEvent.VK_H, 'H'}, {KeyEvent.VK_I, 'I'},
+            {KeyEvent.VK_J, 'J'}, {KeyEvent.VK_K, 'K'}, {KeyEvent.VK_L, 'L'},
+            {KeyEvent.VK_M, 'M'}, {KeyEvent.VK_N, 'N'}, {KeyEvent.VK_O, 'O'},
+            {KeyEvent.VK_P, 'P'}, {KeyEvent.VK_Q, 'Q'}, {KeyEvent.VK_R, 'R'},
+            {KeyEvent.VK_S, 'S'}, {KeyEvent.VK_T, 'T'}, {KeyEvent.VK_U, 'U'},
+            {KeyEvent.VK_V, 'V'}, {KeyEvent.VK_W, 'W'}, {KeyEvent.VK_X, 'X'},
+            {KeyEvent.VK_Y, 'Y'}, {KeyEvent.VK_Z, 'Z'},
+            {KeyEvent.VK_0, 48}, {KeyEvent.VK_1, 49}, {KeyEvent.VK_2, 50}, 
+            {KeyEvent.VK_3, 51}, {KeyEvent.VK_4, 52}, {KeyEvent.VK_5, 53}, 
+            {KeyEvent.VK_6, 54}, {KeyEvent.VK_7, 55}, {KeyEvent.VK_8, 56}, 
+            {KeyEvent.VK_9, 57},
+            {KeyEvent.VK_SPACE, Global.KEY_SPACE},
+            {KeyEvent.VK_ENTER, Global.KEY_ENTER},
+            {KeyEvent.VK_BACK_SPACE, Global.KEY_BACK_SPACE},};
         GameKernel gk = new GameKernel.Builder(gi, Global.LIMIT_DELTA_TIME, Global.MILLISEC_PER_UPDATE)
                 .initListener(commands)
                 .enableMouseTrack(gi)
