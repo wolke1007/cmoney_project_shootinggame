@@ -119,6 +119,7 @@ public class MainScene extends Scene {
         Global.log("maps size: " + this.maps.getMaps().size());
         Global.log("building size: " + this.maps.getMaps().get(0).getBuildings().size());
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
 //        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
         this.events.add(new KillAllEnemyEvent(this.allObjects, null));
 
@@ -227,13 +228,19 @@ public class MainScene extends Scene {
             case 0:
                 if (this.currentEvent.isTrig()) {
                     // 事件 0 觸發後做的事情
-                    remove(this.maps.getMaps().get(1).getBuildings().get(0).open("right"));
+                    this.maps.getMaps().get(1).getBuildings().get(0).open("right");
                     Global.log("map 1 door open");
                 }
                 break;
             case 1:
                 if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
+                    this.maps.getMaps().get(2).getBuildings().get(0).open("right");
+                }
+                break;
+            case 2:
+                if (this.currentEvent.isTrig()) {
+                    // 事件 2 觸發後做的事情
                     this.gameOver = true;
                     Global.log("end scene");
                 }
