@@ -15,6 +15,7 @@ import event.EnterBuildingEvent;
 import event.Event;
 import event.KillAllEnemyEvent;
 import gameobj.Actor;
+import gameobj.Boss.Boss;
 import gameobj.Door;
 import gameobj.ammo.Ammo;
 import gameobj.enemy.Enemy;
@@ -59,6 +60,7 @@ public class MainScene extends Scene {
     private final int actorDeadThreshold = 0; // 角色死亡應該要是多少血，通常應該是 0
     private Event currentEvent;
     private ArrayList<Event> events;
+    private Boss boss;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -133,6 +135,9 @@ public class MainScene extends Scene {
                 enemy.setAllObject(this.allObjects);
             }
         }// DEBUG 生成固定數量怪物，死掉後不生成新的
+        this.boss = new Boss("rect", 100f, 50f, this.actor, 60);
+        this.allObjects.add(this.boss);
+        this.boss.setAllObject(this.allObjects);
     }
 
     private void setNextEvent() {

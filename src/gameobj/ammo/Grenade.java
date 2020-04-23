@@ -33,7 +33,7 @@ public class Grenade extends ShootMode {
     private AverageSpeed averageSpeed;
     private int countdown;//計數
     private int moveDistance;//移動距離倍數 3 -> 4 -> 5 -> 4 -> 3 -> 2 -> 1 -> 0 
-    private VectorCollision vecterMove;
+    private VectorCollision vectorMove;
 
     public Grenade(GameObject self, GameObject start, float moveSpeed, String[] path) {
         super(start, moveSpeed);
@@ -57,11 +57,10 @@ public class Grenade extends ShootMode {
     }
 
     public void setVectorMove() {
-        this.vecterMove = new VectorCollision(getSelf(), 0, 0,
-                new String[]{"Map", "Ammo", "Actor", "Enemy", "Barrier"}, new String[]{"Maps"});
-        this.vecterMove.setIsBackMove(false);
-        this.vecterMove.setHurtPoint(0);
-        this.vecterMove.setDivisor(5);
+        this.vectorMove = new VectorCollision(getSelf(), 0, 0,
+                new String[]{"Map", "Ammo", "Actor", "Enemy", "Barrier"}, Global.INNER);
+        this.vectorMove.setIsBackMove(false);
+        this.vectorMove.setDivisor(5f);
     }
 
     public void setSelf(GameObject self) {
@@ -99,8 +98,6 @@ public class Grenade extends ShootMode {
     private void setEffectDelay() {
         if (this.effectDelay == null) {
             this.effectDelay = new Delay(2);
-            this.effectDelay.stop();
-            this.delayCount = 0;
         }
         this.effectDelay.stop();
         this.delayCount = 0;
@@ -134,7 +131,7 @@ public class Grenade extends ShootMode {
     @Override
     public void setAllObject(ArrayList<GameObject> list) {
         this.allObjects = list;
-        this.vecterMove.setAllObjects(list);
+        this.vectorMove.setAllObjects(list);
     }
 
     @Override
@@ -142,14 +139,14 @@ public class Grenade extends ShootMode {
         if (this.getMoveDelay().isTrig()) {
             float dx = this.averageSpeed.offsetDX();
             float dy = this.averageSpeed.offsetDY();
-            this.vecterMove.newOffset(dx * getMoveDistance() * 1.5f, dy * getMoveDistance() * 1.5f);
+            this.vectorMove.newOffset(dx * getMoveDistance() * 1.5f, dy * getMoveDistance() * 1.5f);
             if (getCountdown() >= 0 && getCountdown() < 3) {
                 this.plusMoveDistance();
             } else if (getCountdown() >= 3) {
                 this.lessMoveDistance();
             }
             this.countdown++;
-            if (this.vecterMove.getIsCollision() || getMoveDistance() == 0) {//撞上障礙物 或 不能再移動
+            if (this.vectorMove.getIsCollision() || getMoveDistance() == 0) {//撞上障礙物 或 不能再移動
                 if (this.delayCount == 0) {
                     for (int i = 0; i < this.allObjects.size(); i++) {
                         if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - getSelf().getCenterX(), 2)
@@ -186,9 +183,9 @@ public class Grenade extends ShootMode {
         } else {
             this.rendererEffect.paint(g,
                     (int) getSelf().getCenterX() - this.attackRange,
-                    (int) getSelf().getCenterY() + this.attackRange,
-                    (int) getSelf().getCenterX() + this.attackRange,
                     (int) getSelf().getCenterY() - this.attackRange,
+                    (int) getSelf().getCenterX() + this.attackRange,
+                    (int) getSelf().getCenterY() + this.attackRange,
                     (this.delayCount % 5) * 150,
                     (this.delayCount / 5) * 150,
                     (this.delayCount % 5) * 150 + 150,

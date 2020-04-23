@@ -40,6 +40,7 @@ public class Ammo extends GameObject {
         switch (kind) {
             case 1:
                 this.shootMode = new Bullet(this, getStart(), 60, ImagePath.BULLET);
+
                 break;
             case 2:
                 this.shootMode = new Grenade(this, getStart(), 59, ImagePath.GRENADE);

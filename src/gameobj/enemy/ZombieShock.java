@@ -57,8 +57,7 @@ public class ZombieShock extends MoveMode {
     }
 
     private void setVectorMove() {
-        this.vectorMove = new VectorCollision(getSelf(), 0, 0, Global.EXCLUDE, Global.INNER);
-//        this.vectorMove.setMultiple(3f);
+        this.vectorMove = new VectorCollision(getSelf(), 0, 0, new String[]{"Map", "Boss"}, Global.INNER);
         this.vectorMove.setDivisor(5f);
     }
 

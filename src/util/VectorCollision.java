@@ -154,7 +154,7 @@ public class VectorCollision {
                     }
                 }
                 for (int z = 0; z < this.inner.length; z++) {
-                    if (!another.getType().equals("Wall") || !another.getType().equals(this.inner[z])) {
+                    if (!another.getType().equals("Wall") || !another.getType().equals("Boss") || !another.getType().equals(this.inner[z])) {
                         if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2)
                                 + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
                             continue;
@@ -202,7 +202,7 @@ public class VectorCollision {
                 if (escape) {
                     continue;
                 }
-                if (!another.getType().equals("Wall") || another.getType().equals(this.self.getType())) {//跳過自己 不判斷
+                if (another.getType().equals(this.self.getType())) {//跳過自己 不判斷
                     continue;
                 }
                 for (int z = 0; z < this.inner.length; z++) {//判斷為在圖形內的 // 目前 Maps 判斷
@@ -217,7 +217,7 @@ public class VectorCollision {
                     }
                 }
                 for (int z = 0; z < this.inner.length; z++) {
-                    if (!another.getType().equals(this.inner[z])) {
+                    if (!another.getType().equals("Wall") || !another.getType().equals("Boss") || !another.getType().equals(this.inner[z])) {
                         if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.self.getCenterX(), 2)
                                 + Math.pow(this.allObjects.get(i).getCenterY() - this.self.getCenterY(), 2)) > 300) {
                             continue;

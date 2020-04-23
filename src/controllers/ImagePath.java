@@ -40,4 +40,27 @@ public class ImagePath {
         ImagePath.ROOT + "/take_damage.png",
         ImagePath.ROOT + "/hand.png",
         ImagePath.ROOT + "/blood_drag.png"};
+    public static final String BOSS = ImagePath.ROOT + "/boss/boss_1.png";
+    public static final String BOSS_BOOM_CONTINUE = ImagePath.ROOT + "/boss/boss_boom.png";
+    public static final String[] BOSS_HEAD = {ImagePath.ROOT + "/boss/boss_head.png",
+        ImagePath.ROOT + "/boss/boss_head.png",
+        ImagePath.ROOT + "/boss/boss_head.png"};
+    private static final String[] BOSS_LEFTHAND = {ImagePath.ROOT + "/boss/boos_hand_left_origine.png",
+        ImagePath.ROOT + "/boss/boos_hand_left_origine.png",
+        ImagePath.ROOT + "/boss/boos_hand_left_origine.png"};
+    public static final String[] BOSS_ATTACK_LEFTHAND = {ImagePath.ROOT + "/boss/boos_hand_left.png",
+        ImagePath.ROOT + "/boss/boos_hand_left.png",
+        ImagePath.ROOT + "/boss/boos_hand_left.png",
+        ImagePath.ROOT + "/boss/boos_hand_left_1.png",
+        ImagePath.ROOT + "/boss/boos_hand_left_2.png",
+        ImagePath.ROOT + "/boss/boos_hand_left_3.png",
+        ImagePath.ROOT + "/boss/boos_hand_left_2.png"};
+    public static final String[] BOSS_ATTACK_RIGHTHAND = {ImagePath.ROOT + "/boss/boos_hand_right.png",
+        ImagePath.ROOT + "/boss/boos_hand_right.png",
+        ImagePath.ROOT + "/boss/boos_hand_right.png",
+        ImagePath.ROOT + "/boss/boos_hand_right_1.png",
+        ImagePath.ROOT + "/boss/boos_hand_right_2.png",
+        ImagePath.ROOT + "/boss/boos_hand_right_3.png",
+        ImagePath.ROOT + "/boss/boos_hand_right_2.png"};
+    public static final String[] BOSS_ATTACK_MOUTH = {};
 }
