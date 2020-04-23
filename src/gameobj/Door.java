@@ -5,7 +5,10 @@
  */
 package gameobj;
 
+import controllers.ImagePath;
+import static gameobj.Map.r;
 import java.awt.Graphics;
+import renderer.Renderer;
 import util.Delay;
 import util.Global;
 
@@ -19,6 +22,7 @@ public class Door extends Barrier {
     private boolean open;
     private Delay delay;
     private float closeDoorY;
+    private Renderer renderer;
     
     public Door(float x, float y, int width, int height, String name) {
         super("rect", x, y, width, height);
@@ -28,6 +32,7 @@ public class Door extends Barrier {
         this.delay = new Delay(5);
         this.delay.start();
         this.closeDoorY = this.y;
+        this.renderer = r(ImagePath.DOOR[0]);
     }
     
     public void open(){
@@ -52,6 +57,7 @@ public class Door extends Barrier {
 
     @Override
     public void paintComponent(Graphics g) {
+        this.renderer.paint(g, (int) super.x, (int) super.y, (int) super.getX() + (int) this.getGraph().width(), (int) super.getY() + (int) this.getGraph().height());
     }
     
     public String getName(){

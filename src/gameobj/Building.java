@@ -72,14 +72,13 @@ public class Building extends GameObject {
                     this.doors.add(new Door(leftDoorX + doorWidth, leftDoorY, doorWidth, doorHeight, "left")); // 左邊門
                     break;
                 case "right":
-                    this.doors.add(new Door(rightDoorX - doorWidth, rightDoorY, doorWidth, doorHeight, "right")); // 右邊門
+                    this.doors.add(new Door(rightDoorX, rightDoorY, doorWidth, doorHeight, "right")); // 右邊門
                     break;
             }
         }
     }
     
     public void close(String side){
-        // 關門等於是把門給 new 回來
         int leftDoorX = (int)this.walls.get(0).getCollider().left(); // 第 1 面牆固定是左上的牆壁
         int leftDoorY = (int)this.walls.get(0).getCollider().bottom(); 
         int rightDoorX = (int)this.walls.get(2).getCollider().left(); // 第 3 面牆固定是右上的牆壁
@@ -102,7 +101,6 @@ public class Building extends GameObject {
     }
     
     public void open(String side){
-        // 開門等於是把門給 remove
         for(int d = 0; d < this.doors.size(); d++){
             if(this.doors.get(d).name.equals(side)){
                 Door door = this.doors.get(d);
