@@ -139,7 +139,11 @@ public class Grenade extends ShootMode {
         if (this.getMoveDelay().isTrig()) {
             float dx = this.averageSpeed.offsetDX();
             float dy = this.averageSpeed.offsetDY();
+//            if (this.delayCount == 0) {
+            this.vectorMove.setHurtPoint(1);
+//            }
             this.vectorMove.newOffset(dx * getMoveDistance() * 1.5f, dy * getMoveDistance() * 1.5f);
+            this.vectorMove.setHurtPoint(0);
             if (getCountdown() >= 0 && getCountdown() < 3) {
                 this.plusMoveDistance();
             } else if (getCountdown() >= 3) {
@@ -151,12 +155,12 @@ public class Grenade extends ShootMode {
                     for (int i = 0; i < this.allObjects.size(); i++) {
                         if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - getSelf().getCenterX(), 2)
                                 + Math.pow(this.allObjects.get(i).getCenterY() - getSelf().getCenterY(), 2)) < this.attackRange) {
-                            if (this.allObjects.get(i).getType().equals("Actor")) {
-                                continue;
-                            }
-                            this.allObjects.get(i).subtractHp();
-                            this.allObjects.get(i).subtractHp();
-                            this.allObjects.get(i).subtractHp();
+                        if (this.allObjects.get(i).getType().equals("Actor")) {
+                            continue;
+                        }
+                        this.allObjects.get(i).subtractHp();
+                        this.allObjects.get(i).subtractHp();
+                        this.allObjects.get(i).subtractHp();
                         }
                     }
                 }

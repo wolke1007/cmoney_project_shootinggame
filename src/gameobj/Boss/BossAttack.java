@@ -38,7 +38,6 @@ public class BossAttack extends GameObject {
 
     private Delay effectDelay;//換圖的 Delay //已設定
     private int effectCount;//一般特效的切圖切換
-    private boolean showEffect;//是否顯示特效
     private int attackRange;//攻擊範圍
 
     private AverageSpeed averageSpeed;
@@ -69,6 +68,10 @@ public class BossAttack extends GameObject {
         setAttackRange(width);
         setType("BossAttack");
     }
+    
+    public RendererToRotate getRenderer(){
+        return this.renderer;
+    }
 
     public void setIsMove(boolean isMove) {
         this.isMove = isMove;
@@ -89,7 +92,7 @@ public class BossAttack extends GameObject {
     }//已設定
 
     private void setVectorMove() {
-        this.vectorMove = new VectorCollision(this, 0, 0, new String[]{"Map", "Ammo", "Enemy", "Boss", "Barrier","BossAttack"}, Global.INNER);
+        this.vectorMove = new VectorCollision(this, 0, 0, new String[]{"Map", "Ammo", "Enemy", "Boss", "Barrier", "BossAttack"}, Global.INNER);
         this.vectorMove.setIsBackMove(false);
         this.vectorMove.setDivisor(5f);
     }//已設定
@@ -173,7 +176,10 @@ public class BossAttack extends GameObject {
                 setAngle();
                 setAverageSpeed();
                 this.renderer.setAngle(getAngle());//隨時面對目標方向
-                this.renderer.setState(this.trigCount++ % 3); //特效  0 / 1 / 2  輪流放
+                this.effectDelay.start();
+                if (this.effectDelay.isTrig()) {
+                    this.renderer.setState(this.trigCount++ % 3); //特效  0 / 1 / 2  輪流放
+                }
             } else {//可以移動的狀況下，就不再旋轉直接移動
                 if (!this.vectorMove.getIsCollision()) {//如果沒有撞到，持續移動
                     this.effectDelay.start();
@@ -203,7 +209,7 @@ public class BossAttack extends GameObject {
                         this.effectCount++;
                         this.effectCount++;
                     }
-                    if (this.effectCount > 62) {
+                    if (this.effectCount > 63) {
                         this.setXY(-10000, -10000);
 //                        this.effectDelay.stop();
                         this.moveDelay.stop();
