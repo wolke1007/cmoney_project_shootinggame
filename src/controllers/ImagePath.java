@@ -20,7 +20,8 @@ public class ImagePath {
 //        ImagePath.ROOT + "/background2.png",
 //        ImagePath.ROOT + "/background3.png"};
     public static final String[] BACKGROUND = {ImagePath.ROOT + "/map.png"};
-
+    public static final String[] DOOR = {ImagePath.ROOT + "/originalDoor.png"};
+    
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
     public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/selfActor_grenade.png"};
     public static final String[] BULLET = {ImagePath.ROOT + "/fire_start.png", ImagePath.ROOT + "/bullet_fire_small.png"};
@@ -30,7 +31,7 @@ public class ImagePath {
     public static final String[] ZOMBIE_NORMAL = {ImagePath.ROOT + "/zombie_1.png", ImagePath.ROOT + "/zombie_2.png", ImagePath.ROOT + "/zombie_3.png"};
     public static final String[] ZOMBIE_SHOCK = {ImagePath.ROOT + "/monster_1.png", ImagePath.ROOT + "/monster_2.png", ImagePath.ROOT + "/monster_3.png"};
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
-    public static final String[] BUILDING = {ImagePath.ROOT + "/room.png"};
+    public static final String[] BUILDING = {ImagePath.ROOT + "/originalRoom.png"};
     public static final String[] START_MENU = {ImagePath.ROOT + "/startmenu.jpeg",
         ImagePath.ROOT + "/playgame.png",
         ImagePath.ROOT + "/score_history.png"};
