@@ -34,6 +34,7 @@ import util.Global;
 import util.CommandSolver;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import textbar.TextBar;
 import util.MapGenerator;
 import util.ScoreCalculator;
 
@@ -65,6 +66,7 @@ public class MainScene extends Scene {
     private boolean nameTyped;
     private String name;
     private int top; // 多少名次內可以進排行榜
+    private TextBar textBar; // 讀稿機
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -76,6 +78,7 @@ public class MainScene extends Scene {
         allDelayControl();
         this.name = "";
         this.top = 5;
+        this.textBar = new TextBar(0, 500, Global.SCREEN_X, 40);
     }
 
     private void allDelayControl() {
@@ -229,13 +232,17 @@ public class MainScene extends Scene {
                 if (this.currentEvent.isTrig()) {
                     // 事件 0 觸發後做的事情
                     this.maps.getMaps().get(1).getBuildings().get(0).open("right");
-                    Global.log("map 1 door open");
+                    String[] scripts = {"map 1 door open~", "event 2 trigger"};
+                    this.textBar.addScript(scripts);
+                    Global.log("event 0 trigger");
                 }
                 break;
             case 1:
                 if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
+                    this.textBar.play();
                     this.maps.getMaps().get(2).getBuildings().get(0).open("right");
+                    Global.log("event 1 trigger");
                 }
                 break;
             case 2:
@@ -440,6 +447,9 @@ public class MainScene extends Scene {
                 this.scoreCal.gameOver(); // 停止計時
             }
             inputName(g);
+        }
+        if(this.textBar.isPlaying()){
+            this.textBar.paint(g);
         }
     }
 
