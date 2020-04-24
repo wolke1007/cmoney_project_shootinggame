@@ -11,6 +11,7 @@ import controllers.ImagePath;
 import controllers.SceneController;
 import effects.DeadEffect;
 import effects.Effect;
+import event.DialogEvent;
 import event.EnterBuildingEvent;
 import event.Event;
 import event.KillAllEnemyEvent;
@@ -78,7 +79,6 @@ public class MainScene extends Scene {
         allDelayControl();
         this.name = "";
         this.top = 5;
-        this.textBar = new TextBar(0, 500, Global.SCREEN_X, 40);
     }
 
     private void allDelayControl() {
@@ -96,44 +96,44 @@ public class MainScene extends Scene {
         this.ammos = new ArrayList<>();
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
+        this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = Global.MAP_QTY;
         this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT);
+        this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         Global.mapEdgeUp = (int) this.maps.getCollider().top();
         Global.mapEdgeDown = (int) this.maps.getCollider().bottom();
         Global.mapEdgeLeft = (int) this.maps.getCollider().left();
         Global.mapEdgeRight = (int) this.maps.getCollider().right();
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
-//        mg.genSequenceMap();  // 產生一樣的地圖
-//        mg.genRandomMap(); // 產生隨機地圖
         mg.genSevenMaps(); // 產生 7 個橫向地圖
-        for (int i = 0; i < this.maps.getMaps().size(); i++) { // DEBUG
-            Global.log("map" + i + " x:" + this.maps.getMaps().get(i).getX() + " y:" + this.maps.getMaps().get(i).getY());
-        }
-        this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
-        this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
         addAllMapsToAllObjects();
         this.actor.setAllObjects(this.allObjects);
         this.scoreCal = ScoreCalculator.getInstance();
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
-        Global.log("scene begin allObject size: " + this.allObjects.size());
         this.events = new ArrayList<Event>();
-        // 新增 Event start
-        Global.log("maps size: " + this.maps.getMaps().size());
-        Global.log("building size: " + this.maps.getMaps().get(0).getBuildings().size());
+        this.textBar = new TextBar(0, (int) this.view.getY() - 7 + Global.HP_HEIGHT + 5, Global.SCREEN_X, 40);
+        // --------------- 新增 Event start --------------- 
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
-//        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
+        String[] scripts = {"身為一名工程師",
+            "你在一次輪班睡醒後發現基地所有人都消失了",
+            "基地的緊急備用燈光處於開啟的狀態",
+            "你判斷鍋爐核心區應該有問題因此前去查看",
+            "但你發現遇到的可不是什麼工程問題..."
+        };
+        this.textBar.addScript(scripts);
+        this.events.add(new DialogEvent(this.textBar, null));
         this.events.add(new KillAllEnemyEvent(this.allObjects, null));
-
-        // 新增 Event end
+        // ---------------  新增 Event end --------------- 
         setNextEvent();
         this.currentEvent = this.events.get(0);
-        this.boss = new Boss("rect", 100f, 50f, this.actor, 60);
+        this.boss = new Boss("rect", 0f, 0f, this.actor, 60);
         this.allObjects.add(this.boss);
         this.boss.setAllObject(this.allObjects);
         genEnemies(100, 100, 600, 600, 5); //DEBUG 用
         this.scoreCal.gameStart();
+        this.textBar.play();
     }
 
     private void setNextEvent() {
@@ -232,8 +232,6 @@ public class MainScene extends Scene {
                 if (this.currentEvent.isTrig()) {
                     // 事件 0 觸發後做的事情
                     this.maps.getMaps().get(1).getBuildings().get(0).open("right");
-                    String[] scripts = {"map 1 door open~", "event 2 trigger"};
-                    this.textBar.addScript(scripts);
                     Global.log("event 0 trigger");
                 }
                 break;
@@ -241,7 +239,10 @@ public class MainScene extends Scene {
                 if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
                     this.textBar.play();
-                    this.maps.getMaps().get(2).getBuildings().get(0).open("right");
+//                    this.maps.getMaps().get(2).getBuildings().get(0).open("right");
+                    String[] scripts = {"你聽聞隔壁房間傳來低吼"};
+                    this.textBar.addScript(scripts);
+                    this.textBar.play();
                     Global.log("event 1 trigger");
                 }
                 break;
@@ -448,7 +449,7 @@ public class MainScene extends Scene {
             }
             inputName(g);
         }
-        if(this.textBar.isPlaying()){
+        if (this.textBar.isPlaying()) {
             this.textBar.paint(g);
         }
     }

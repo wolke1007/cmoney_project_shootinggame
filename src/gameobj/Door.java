@@ -47,11 +47,9 @@ public class Door extends Barrier {
     public void update(){
         if(this.open && this.delay.isTrig() && this.closeDoorY - this.height() < this.y){
             this.offset(0, -2);
-            Global.log("y " + y);
         }
         if(!this.open && this.delay.isTrig() && this.closeDoorY > this.y){
             this.offset(0, 2);
-            Global.log("y " + y);
         }
     }
 
