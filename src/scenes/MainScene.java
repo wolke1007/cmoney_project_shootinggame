@@ -418,7 +418,7 @@ public class MainScene extends Scene {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.setColor(Color.white);
         g.drawString(String.valueOf("Time: " + this.scoreCal.getCurrentTime() / 1000 / 60 + "\""
-                + this.scoreCal.getCurrentTime() / 1000 + "\"" + this.scoreCal.getCurrentTime() % 1000 / 100),
+                + this.scoreCal.getCurrentTime() / 1000 % 60 + "\"" + this.scoreCal.getCurrentTime() % 1000 / 100),
                 Global.HP_FRAME_WIDTH + 10, 30);
         g.setColor(Color.black);
     } // 分數顯示
