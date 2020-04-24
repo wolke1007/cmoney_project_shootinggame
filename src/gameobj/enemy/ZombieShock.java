@@ -64,7 +64,7 @@ public class ZombieShock extends MoveMode {
     private void setMoveSpeedDetail() {
         this.targetHp = new Delay(30);
         this.targetHp.start();
-        this.imageDelay = new Delay(3);
+        this.imageDelay = new Delay(2);
         this.imageDelay.start();
     }
 
@@ -83,7 +83,7 @@ public class ZombieShock extends MoveMode {
             this.vectorMove.setHurtPoint(2);
             if (!this.vectorMove.getIsCollision()) {
                 if (this.imageDelay.isTrig()) {
-                    this.renderer.setState(Global.STEPS_WALK_NORMAL[this.imageState++ % 4]);
+                    this.renderer.setState(this.imageState++ % 15);
                 }
                 this.vectorMove.newOffset(this.averageSpeed.offsetDX() * 3, this.averageSpeed.offsetDY() * 3);
             }

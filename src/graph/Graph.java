@@ -37,6 +37,13 @@ public abstract class Graph {
         this.colliderType = type;
     }
 
+    public void setCenter(float offsetX, float offsetY) {
+        this.left = left() + offsetX;
+        this.right = this.left + width();
+        this.top = top() + offsetY;
+        this.bottom = bottom() + offsetY;
+    }
+
     public String getColliderType() {
         return this.colliderType;
     }

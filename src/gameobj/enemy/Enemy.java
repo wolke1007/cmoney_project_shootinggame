@@ -22,7 +22,8 @@ public class Enemy extends GameObject {
     private GameObject target;
 
     public Enemy(String colliderType, float x, float y, float hp, GameObject target, int kind) {
-        super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
+        super(colliderType, x, y, Global.UNIT_MIN * 8, Global.UNIT_MIN * 8, Global.UNIT_MIN * 4, Global.UNIT_MIN * 4);
+        this.getCollider().setCenter(this.getCollider().width() / 2, this.getCollider().height() / 2);
         setHpPoint(hp);
         this.setType("Enemy");
         setTarget(target);

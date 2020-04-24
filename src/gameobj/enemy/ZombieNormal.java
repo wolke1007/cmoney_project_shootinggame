@@ -64,7 +64,7 @@ public class ZombieNormal extends MoveMode {
     private void setMoveSpeedDetail() {
         this.targetHp = new Delay(30);
         this.targetHp.start();
-        this.imageDelay = new Delay(10);
+        this.imageDelay = new Delay(1);
         this.imageDelay.start();
     }
 
@@ -74,7 +74,7 @@ public class ZombieNormal extends MoveMode {
         this.setAverageSpeed();
         if (this.getMoveDelay().isTrig()) {
             if (this.imageDelay.isTrig()) {
-                this.renderer.setState(Global.STEPS_WALK_NORMAL[this.imageState++ % 4]);
+                this.renderer.setState(this.imageState++ % 31);
             }
             if (this.targetHp.isTrig()) {
                 this.vectorMove.setHurtPoint(1);
