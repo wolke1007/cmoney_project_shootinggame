@@ -84,6 +84,10 @@ public abstract class GameObject {
         return this.hp;
     }
 
+    public float getHpPercent() {
+        return this.hpBarWidth / this.width() * 100f;
+    }
+
     public float getX() {
         return this.x;
     }

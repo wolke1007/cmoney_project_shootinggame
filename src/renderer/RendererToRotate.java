@@ -19,14 +19,14 @@ import util.Global;
  * @author Cloud-Razer
  */
 public class RendererToRotate {
-
+    
     private ArrayList<BufferedImage> img;
     private int state;//目前狀態
 
     private GameObject obj;
     private double angle;
     private ImageResourceController irc;
-
+    
     public RendererToRotate(String[] path, GameObject obj, double angle) {
         this.img = new ArrayList<>();
         this.irc = ImageResourceController.getInstance();
@@ -38,35 +38,41 @@ public class RendererToRotate {
         setState(0);
     }
 
+    public void setImage(String[] path) {
+        for (int i = 0; i < path.length; i++) {
+            this.img.set(i, this.irc.tryGetImage(path[i]));
+        }
+    }
+
     //圖片資訊
     public void setAngle(double angle) {
         this.angle = angle;
     }
-
+    
     public void setState(int state) {
         this.state = state;
     }
-
+    
     private float getImgX() {
         return this.obj.getX() - Global.viewX;
     }
-
+    
     private float getImgY() {
         return this.obj.getY() - Global.viewY;
     }
-
+    
     private double getImgCenterX() {
         return getImgX() + this.img.get(getState()).getWidth() / 2f;
     }
-
+    
     private double getImgCenterY() {
         return getImgY() + this.img.get(getState()).getHeight() / 2f;
     }
-
+    
     public double getAngle() {
         return this.angle;
     }
-
+    
     public int getState() {
         return this.state;
     }
