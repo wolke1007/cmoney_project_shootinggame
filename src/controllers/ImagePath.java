@@ -74,7 +74,17 @@ public class ImagePath {
         ImagePath.ROOT + "/monster/monster_ (12).png",
         ImagePath.ROOT + "/monster/monster_ (13).png",
         ImagePath.ROOT + "/monster/monster_ (14).png",
-        ImagePath.ROOT + "/monster/monster_ (15).png"};
+        ImagePath.ROOT + "/monster/monster_ (15).png",
+        ImagePath.ROOT + "/monster/monster_ (16).png",
+        ImagePath.ROOT + "/monster/monster_ (17).png",
+        ImagePath.ROOT + "/monster/monster_ (18).png",
+        ImagePath.ROOT + "/monster/monster_ (19).png",
+        ImagePath.ROOT + "/monster/monster_ (20).png",
+        ImagePath.ROOT + "/monster/monster_ (21).png",
+        ImagePath.ROOT + "/monster/monster_ (22).png",
+        ImagePath.ROOT + "/monster/monster_ (23).png",
+        ImagePath.ROOT + "/monster/monster_ (24).png",
+        ImagePath.ROOT + "/monster/monster_ (25).png"};
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
     public static final String[] BUILDING = {ImagePath.ROOT + "/room.png"};
     public static final String[] START_MENU = {ImagePath.ROOT + "/startmenu.jpeg",

@@ -64,18 +64,20 @@ public class ZombieShock extends MoveMode {
     private void setMoveSpeedDetail() {
         this.targetHp = new Delay(30);
         this.targetHp.start();
-        this.imageDelay = new Delay(2);
+        this.imageDelay = new Delay(3);
         this.imageDelay.start();
     }
 
     private void move() {
-        if (this.vectorMove.getIsCollision()) {
-            this.setAngle();
-            this.setAverageSpeed();
-            this.renderer.setAngle(this.getAngle());
-            this.renderer.setState(1);
-        }
         if (this.getMoveDelay().isTrig()) {
+            if (this.vectorMove.getIsCollision()) {
+                this.setAngle();
+                this.setAverageSpeed();
+                this.renderer.setAngle(this.getAngle());
+                if (this.imageDelay.isTrig()) {
+                    this.renderer.setState(this.imageState++ % 25);
+                }
+            }
             if (this.delayCount++ > 60) {
                 this.delayCount = 0;
                 this.vectorMove.setIsCollision(false);
@@ -83,7 +85,7 @@ public class ZombieShock extends MoveMode {
             this.vectorMove.setHurtPoint(2);
             if (!this.vectorMove.getIsCollision()) {
                 if (this.imageDelay.isTrig()) {
-                    this.renderer.setState(this.imageState++ % 15);
+                    this.renderer.setState(this.imageState++ % 25);
                 }
                 this.vectorMove.newOffset(this.averageSpeed.offsetDX() * 3, this.averageSpeed.offsetDY() * 3);
             }
