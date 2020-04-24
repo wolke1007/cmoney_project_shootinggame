@@ -48,6 +48,7 @@ public class BossAttack extends GameObject {
     private Delay moveDelay;//已設定
     private float moveSpeed;//已設定
     private float actMoveSpeed;//已設定
+    private float moveMultiple;//移動倍數
     //自己對目標的移動控制end
 
     public BossAttack(String colliderType, float x, float y, GameObject target, float moveSpeed, String[] path, int width, int height) {
@@ -58,6 +59,7 @@ public class BossAttack extends GameObject {
         setIsMove(false);
         setAverageSpeed();
         setVectorMove();
+        setMoveMultiple(4);
         this.renderer = new RendererToRotate(path, this, 0);//一開始在0度
         this.effect = new Renderer();
         this.effect.setImage(ImagePath.BOSS_BOOM_CONTINUE);//特效 圖片路徑
@@ -68,8 +70,8 @@ public class BossAttack extends GameObject {
         setAttackRange(width);
         setType("BossAttack");
     }
-    
-    public RendererToRotate getRenderer(){
+
+    public RendererToRotate getRenderer() {
         return this.renderer;
     }
 
@@ -156,6 +158,14 @@ public class BossAttack extends GameObject {
         this.moveDelay.start();
     }
 
+    public void setMoveMultiple(float moveMultiple) {
+        this.moveMultiple = moveMultiple;
+    }
+
+    public float getMoveMultiple() {
+        return this.moveMultiple;
+    }
+
     public void setAllObject(ArrayList<GameObject> list) {
         this.allObjects = list;
         this.vectorMove.setAllObjects(list);
@@ -185,7 +195,7 @@ public class BossAttack extends GameObject {
                     this.effectDelay.start();
                     float dx = this.averageSpeed.offsetDX();
                     float dy = this.averageSpeed.offsetDY();
-                    this.vectorMove.newOffset(dx * 4, dy * 4);
+                    this.vectorMove.newOffset(dx * this.getMoveMultiple(), dy * this.getMoveMultiple());
                     if (this.effectDelay.isTrig()) {//持續移動的同時也切換特效
                         this.renderer.setState(this.trigCount++ % 4 + 3);//特效 3 / 4 / 5 輪流放    
                     }

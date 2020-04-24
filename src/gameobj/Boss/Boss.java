@@ -21,8 +21,11 @@ import util.Global;
  */
 public class Boss extends GameObject {
 
+    //控制的資訊欄
     private boolean startAttack;//開始攻擊
     private boolean startPaint;//開始畫
+    private boolean isDead;//是否死亡
+    private boolean callEnemy;//召喚小怪
     //身體
     private Renderer renderer;
     //手
@@ -50,6 +53,19 @@ public class Boss extends GameObject {
 
     public Boss(String colliderType, float x, float y, GameObject target, int moveSpeed) {
         super(colliderType, x, y, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6);
+        bossRendererToRotate(target);
+        bossRenderer();
+        this.setHpPoint(500);
+        delayDetail();
+        setStartAttack(false);
+        setStartPaint(false);
+        setIsDead(false);
+        setCallEnemy(false);
+        super.paintPriority = 0;
+        setType("Boss");
+    }
+
+    private void bossRendererToRotate(GameObject target) {
         this.bossHead = new BossAttack("circle", this.getCenterX() - 226, this.getCenterY() - 82, target, 60, ImagePath.BOSS_HEAD, 452, 259);
         this.bossLeftHand = new BossAttack("circle", this.getCenterX() - 290, this.getCenterY() + 113, target, 60, ImagePath.BOSS_ATTACK_LEFTHAND, Global.UNIT_MIN * 13, Global.UNIT_MIN * 13);
         this.bossRightHand = new BossAttack("circle", this.getCenterX() + 130, this.getCenterY() + 115, target, 60, ImagePath.BOSS_ATTACK_RIGHTHAND, Global.UNIT_MIN * 13, Global.UNIT_MIN * 13);
@@ -58,13 +74,6 @@ public class Boss extends GameObject {
         this.bossRightHand.setXY(-10000, -10000);
         this.bossFire.setXY(-10000, -10000);
         this.moveDistance = 0;
-        bossRenderer();
-        this.setHpPoint(100);
-        delayDetail();
-        setStartAttack(false);
-        setStartPaint(false);
-        super.paintPriority = 0;
-        setType("Boss");
     }
 
     private void bossRenderer() {
@@ -84,9 +93,10 @@ public class Boss extends GameObject {
         this.moveCount = 0;
         this.change = -1;
         //觸發下一個攻擊間隔
-        this.nextTrig = new Delay(100);//下一次攻擊的觸發
+        this.nextTrig = new Delay(200);//下一次攻擊的觸發
         this.nextTrig.stop();
         this.stateMode = 0;
+        //boss 死亡後的效果控制
         this.bossEndDelay = new Delay(8);
         this.bossEndDelay.stop();
         this.bossEndCount = 0;
@@ -136,57 +146,103 @@ public class Boss extends GameObject {
         this.startAttack = startAttack;
     }
 
+    public boolean getStartAttack() {
+        return this.startAttack;
+    }
+
     public void setStartPaint(boolean startPaint) {
         this.startPaint = startPaint;
     }
 
-    public boolean getStartAttack() {
-        return this.startAttack;
+    public boolean getStartPaint() {
+        return this.startPaint;
+    }
+
+    public void setIsDead(boolean isDead) {
+        this.isDead = isDead;
+    }
+
+    public boolean getIsDead() {
+        return this.isDead;
+    }
+
+    public void setCallEnemy(boolean callEnemy) {
+        this.callEnemy = callEnemy;
+    }
+
+    public boolean getCallEnemy() {
+        return this.callEnemy;
+    }
+
+    private void bossEnd() {
+        this.bossFire.setXY(-10000, -10000);
+        this.bossHead.setXY(-10000, -10000);
+        this.bossLeftHand.setXY(-10000, -10000);
+        this.bossRightHand.setXY(-10000, -10000);
+        this.setStartAttack(false);
+        this.setStartPaint(false);
+        this.setIsDead(true);
+        this.bossEndDelay.start();
+        if (this.bossEndDelay.isTrig()) {
+            if (this.bossEndCount++ > 12) {
+                this.setXY(-10000, -10000);
+            }
+        }
+    }
+
+    private void bossAttackSwitch() {
+        this.nextTrig.start();
+        if (this.nextTrig.isTrig()) {
+            switch (this.stateMode++ % 4) {
+                case 0:
+                    this.setCallEnemy(false);
+                    if (this.bossRightHand.getX() == -10000) {
+                        this.bossRightHand.setNewStart();
+                    }
+                    break;
+                case 1:
+                    if (this.bossLeftHand.getX() == -10000) {
+                        this.bossLeftHand.setNewStart();
+                    }
+                    break;
+                case 2:
+                    if (this.bossFire.getX() == -10000) {
+                        this.bossFire.setNewStart();
+                        this.bossHead.getRenderer().setImage(ImagePath.BOSS_HEAD_FIRE);
+                    }
+                    break;
+                case 3:
+                    this.setCallEnemy(true);
+                    break;
+            }
+        }
     }
 
     @Override
     public void update() {
         if (this.getHp() <= 0) {
-            this.bossFire.setXY(-10000, -10000);
-            this.bossHead.setXY(-10000, -10000);
-            this.bossLeftHand.setXY(-10000, -10000);
-            this.bossRightHand.setXY(-10000, -10000);
-            this.setStartAttack(false);
-            this.setStartPaint(false);
-            this.bossEndDelay.start();
-            if (this.bossEndDelay.isTrig()) {
-                if (this.bossEndCount++ > 12) {
-                    this.setXY(-10000, -10000);
-                }
-            }
+            bossEnd();
             return;
+        }
+        if (this.getHpPercent() < 30) {
+            this.nextTrig.setDelayFrame(30);
+            this.bossRightHand.setMoveMultiple(6.5f);
+            this.bossLeftHand.setMoveMultiple(6.5f);
+            this.bossFire.setMoveMultiple(6.5f);
+        } else if (this.getHpPercent() < 60) {
+            this.nextTrig.setDelayFrame(100);
+            this.bossRightHand.setMoveMultiple(6f);
+            this.bossLeftHand.setMoveMultiple(6f);
+            this.bossFire.setMoveMultiple(6f);
         }
         bossHeadUpdate();
         if (this.startAttack) {
-            this.nextTrig.start();
-            if (this.nextTrig.isTrig()) {
-                switch (this.stateMode++ % 3) {
-                    case 0:
-                        if (this.bossRightHand.getX() == -10000) {
-                            this.bossRightHand.setNewStart();
-                        }
-                        break;
-                    case 1:
-                        if (this.bossLeftHand.getX() == -10000) {
-                            this.bossLeftHand.setNewStart();
-                        }
-                        break;
-                    case 2:
-                        if (this.bossFire.getX() == -10000) {
-                            this.bossFire.setNewStart();
-                            this.bossHead.getRenderer().setImage(ImagePath.BOSS_HEAD_FIRE);
-                        }
-                        break;
-                }
-            }
+            bossAttackSwitch();
             boosRightHaneUpdate();
             boosLeftHandUpdate();
             bossFireUpdate();
+        } else if (!this.startAttack && this.startPaint) {
+            this.setHpPoint(this.getHp());
         }
     }
 
@@ -205,15 +261,7 @@ public class Boss extends GameObject {
             bossRedPoint(g);
         }
         if (this.getHp() <= 0 && this.bossEndCount < 12) {
-            this.rendererOfBossEnd.paint(g,
-                    (int) this.getX(),
-                    (int) this.getY(),
-                    (int) (this.getX() + this.width()),
-                    (int) (this.getY() + this.height()),
-                    (this.bossEndCount % 3) * 375,
-                    (this.bossEndCount / 3) * 229,
-                    (this.bossEndCount % 3) * 375 + 375,
-                    (this.bossEndCount / 3) * 229 + 229);
+            bossEndBombPaint(g);
         }
 
     }
@@ -259,4 +307,15 @@ public class Boss extends GameObject {
         g.setColor(Color.BLACK);
     }
 
+    private void bossEndBombPaint(Graphics g) {
+        this.rendererOfBossEnd.paint(g,
+                (int) this.getX(),
+                (int) this.getY(),
+                (int) (this.getX() + this.width()),
+                (int) (this.getY() + this.height()),
+                (this.bossEndCount % 3) * 375,
+                (this.bossEndCount / 3) * 229,
+                (this.bossEndCount % 3) * 375 + 375,
+                (this.bossEndCount / 3) * 229 + 229);
+    }
 }

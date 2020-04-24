@@ -42,15 +42,17 @@ public class Delay {
     public void pause() {
         this.isPause = true;
     }
-    public void click(){
+
+    public void click() {
         this.counter = this.delayFrame;
     }
-    public float getDelayFrame(){
+
+    public float getDelayFrame() {
         return this.delayFrame;
     }
 
     public boolean isTrig() {
-        if (!this.isPause && this.counter++ == this.delayFrame) {
+        if (!this.isPause && this.counter++ >= this.delayFrame) {
             this.counter = 0;
             return true;
         }
