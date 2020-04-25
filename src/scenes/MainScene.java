@@ -116,17 +116,18 @@ public class MainScene extends Scene {
         // --------------- 新增 Event start --------------- 
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
-        String[] scripts = {"身為一名工程師",
-            "你在一次輪班睡醒後發現基地所有人都消失了",
-            "基地的緊急備用燈光處於開啟的狀態",
+        String[] scripts = {"身為一名基地工程師",
+            "一次在基地睡醒後發現基地所有人都消失了",
+            "基地的緊急備用燈光處於開啟狀態",
             "你判斷鍋爐核心區應該有問題因此前去查看",
-            "但你發現遇到的可不是什麼工程問題..."
+            "但你發現遇到的可不是什麼工程問題......"
         };
         this.textBar.addScript(scripts);
         this.events.add(new DialogEvent(this.textBar, null));
         this.events.add(new KillAllEnemyEvent(this.allObjects, null));
         // ---------------  新增 Event end --------------- 
         setNextEvent();
+        this.textBar.addScript(scripts);
         this.currentEvent = this.events.get(0);
         //boss
         this.boss = new Boss("rect", 100f, 50f, this.actor, 60);
@@ -242,6 +243,7 @@ public class MainScene extends Scene {
             case 1:
                 if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
+                    
                     this.textBar.play();
 //                    this.maps.getMaps().get(2).getBuildings().get(0).open("right");
                     String[] scripts = {"你聽聞隔壁房間傳來低吼"};
