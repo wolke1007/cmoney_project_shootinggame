@@ -34,8 +34,7 @@ public class ImagePath {
     public static final String[] BUILDING = {ImagePath.ROOT + "/originalRoom.png"};
     public static final String[] WELCOME_PAGE = {ImagePath.ROOT + "/title.png",
         ImagePath.ROOT + "/press_1.png", ImagePath.ROOT + "/press_2.png", ImagePath.ROOT + "/press_3.png"};
-    public static final String[] MENU_PAGE = {ImagePath.ROOT + "/playgame.png", ImagePath.ROOT + "/score_history.png",
-        ImagePath.ROOT + "/rank_1.png", ImagePath.ROOT + "/rank_2.png", ImagePath.ROOT + "/rank_3.png",
+    public static final String[] MENU_PAGE = {ImagePath.ROOT + "/rank_1.png", ImagePath.ROOT + "/rank_2.png", ImagePath.ROOT + "/rank_3.png",
         ImagePath.ROOT + "/start_1.png", ImagePath.ROOT + "/start_2.png", ImagePath.ROOT + "/start_3.png",
         ImagePath.ROOT + "/intro_1.png", ImagePath.ROOT + "/intro_2.png", ImagePath.ROOT + "/intro_3.png"};
     public static final String[] INTRO_PAGE = {ImagePath.ROOT + "/operationBackShadow.png", ImagePath.ROOT + "/keyBoradOperationInfo.png"};
