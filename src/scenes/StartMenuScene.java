@@ -27,9 +27,9 @@ public class StartMenuScene extends Scene {
 
     public StartMenuScene(SceneController sceneController) {
         super(sceneController);
-        this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[0]);
-        this.startBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[1]);
-        this.recordBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[2]);
+        this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[0]);
+        this.startBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[1]);
+        this.recordBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[2]);
         this.startBtn = new startButton();
         this.highScoreBtn = new scoreButton();
     }
