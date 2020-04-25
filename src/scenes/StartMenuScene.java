@@ -64,7 +64,6 @@ public class StartMenuScene extends Scene {
         public rankButton() {
             
             super.left = (Global.SCREEN_X - (StartMenuScene.this.buttonWidth * 3 + StartMenuScene.this.buttonGap * 2)) / 2;
-            Global.log("super.left: " + super.left);
             super.top = upDownPosition;
             super.right = left + StartMenuScene.this.buttonWidth;
             super.bottom = top + StartMenuScene.this.buttonHeight;

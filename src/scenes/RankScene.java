@@ -12,7 +12,9 @@ import java.awt.Font;
 import renderer.Renderer;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import util.CommandSolver;
 import util.Global;
 import util.Record;
@@ -30,6 +32,15 @@ public class RankScene extends Scene {
     private Renderer rankRenderer;
     private Renderer returnBtnRenderer;
     private Button returnBtn;
+    private ScoreCalculator scoreCal;
+    private ArrayList<Record> scoreList;
+    private String scoreType;
+    private int printLimit;
+    private int rankContentTop;
+    private int rankContentLeft;
+    private int rankContentBottom;
+    private int rankContentRight;
+    private SimpleDateFormat sdf;
 
     public RankScene(SceneController sceneController) {
         super(sceneController);
@@ -38,6 +49,13 @@ public class RankScene extends Scene {
         this.rankRenderer = new Renderer(new int[]{0}, 0, ImagePath.RANK_PAGE[0]);
         this.returnBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BUTTON[0]);
         this.returnBtn = new returnButton();
+        this.scoreType = "campaign";
+        this.printLimit = 5; // 要顯示幾行歷史紀錄
+        this.rankContentTop = (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(45));
+        this.rankContentLeft = (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(45));
+        this.rankContentBottom = (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(12));
+        this.rankContentRight = (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(5));
+        this.sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     }
 
     public abstract class Button {
@@ -64,6 +82,9 @@ public class RankScene extends Scene {
     @Override
     public void sceneBegin() {
         // 播放背景音樂
+        this.scoreCal = ScoreCalculator.getInstance();
+        this.scoreList = this.scoreCal.getHistory(this.scoreType);
+        Global.log("this.scoreList: " + this.scoreList);
     }
 
     @Override
@@ -85,28 +106,49 @@ public class RankScene extends Scene {
         }
         return false;
     }
-    
+
     private float ratio(float num){
         return num / 50f;
     }
 
+    private void paintEndlessScore(Graphics g) {
+        int textGap = 60;
+        int categoryGap1 = (int)((this.rankContentRight - this.rankContentLeft) * ratio(19));
+        int categoryGap2 = (int)((this.rankContentRight - this.rankContentLeft) * ratio(16) + 40 * ratio(16));
+        int leftOffset = (int)((this.rankContentRight - this.rankContentLeft) * ratio(5));
+        int topOffset = (int)((this.rankContentBottom - this.rankContentTop) * ratio(20));
+        g.setColor(Color.BLACK);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        for (int i = 0; i < RankScene.this.scoreList.size(); i++) {
+            if (i < RankScene.this.printLimit) {
+                Record record = RankScene.this.scoreList.get(i);
+                g.drawString(Integer.toString(i + 1) + ".", this.rankContentLeft + leftOffset, this.rankContentTop + topOffset + i * textGap);
+                g.drawString(record.getName(), this.rankContentLeft + leftOffset + textGap, this.rankContentTop + topOffset + i * textGap);
+                g.drawString(Integer.toString(record.getScore()), this.rankContentLeft + leftOffset + categoryGap1, this.rankContentTop + topOffset + i * textGap);
+                g.drawString(this.sdf.format(record.getDate()),
+                        this.rankContentLeft + leftOffset + (2 * categoryGap2), this.rankContentTop + topOffset + i * textGap);
+            }
+        }
+        g.setColor(Color.BLACK);
+    }
+    
     @Override
     public void paint(Graphics g) {
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
-        Global.log(""+ratio(30));
         this.backgroundRenderer2.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(49))
                 , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(49))
                 , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(1))
                 , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(1))); // 背景圖
-        this.rankRenderer.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(45))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(45))
-                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(5))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(12))); // 背景圖
+        this.rankRenderer.paint(g, this.rankContentLeft
+                , this.rankContentTop
+                , this.rankContentRight
+                , this.rankContentBottom);
         if (cursorInBtn(this.returnBtn)) {
             this.returnBtnRenderer.paint(g, this.returnBtn.left + 10, this.returnBtn.top + 10, this.returnBtn.right + 10, this.returnBtn.bottom + 10); // 開始按鈕
         } else {
             this.returnBtnRenderer.paint(g, this.returnBtn.left, this.returnBtn.top, this.returnBtn.right, this.returnBtn.bottom); // 開始按鈕
         }
+        paintEndlessScore(g);
     }
 
     @Override

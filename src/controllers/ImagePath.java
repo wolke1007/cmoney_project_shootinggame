@@ -19,7 +19,7 @@ public class ImagePath {
 //    public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png",
 //        ImagePath.ROOT + "/background2.png",
 //        ImagePath.ROOT + "/background3.png"};
-    public static final String[] BACKGROUND = {ImagePath.ROOT + "/map.png"};
+    public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png"};
     public static final String[] DOOR = {ImagePath.ROOT + "/originalDoor.png"};
 
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};

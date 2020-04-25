@@ -90,7 +90,6 @@ public class IntroScene extends Scene {
     @Override
     public void paint(Graphics g) {
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
-        Global.log(""+ratio(30));
         this.backgroundRenderer2.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(49))
                 , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(49))
                 , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(1))
