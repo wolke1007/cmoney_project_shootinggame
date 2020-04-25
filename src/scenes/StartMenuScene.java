@@ -170,7 +170,7 @@ public class StartMenuScene extends Scene {
             if (state == CommandSolver.MouseState.PRESSED) {
                 if (cursorInBtn(new startButton())) {
                     // Enter main scene
-                    StartMenuScene.super.sceneController.changeScene(new MainScene(StartMenuScene.super.sceneController));
+                    StartMenuScene.super.sceneController.changeScene(new InfoScene(StartMenuScene.super.sceneController));
                 }
                 if (cursorInBtn(new rankButton())) {
                     // Enter score history scene
