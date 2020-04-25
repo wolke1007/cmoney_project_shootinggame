@@ -133,8 +133,8 @@ public class MainScene extends Scene {
         this.boss = new Boss("rect", 100f, 50f, this.actor, 60);
         this.allObjects.add(this.boss);
         this.boss.setAllObject(this.allObjects);
-        this.boss.setStartAttack(true);
-        this.boss.setStartPaint(true);
+//        this.boss.setStartAttack(true);
+//        this.boss.setStartPaint(true);
         //boss end
         genEnemies(100, 100, 600, 600, 5); //DEBUG 用
         this.scoreCal.gameStart();
