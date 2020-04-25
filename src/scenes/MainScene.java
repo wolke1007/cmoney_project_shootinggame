@@ -423,11 +423,11 @@ public class MainScene extends Scene {
 
     private void paintTime(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        g.setColor(Color.white);
+        g.setColor(Color.WHITE);
         g.drawString(String.valueOf("Time: " + this.scoreCal.getCurrentTime() / 1000 / 60 + "\""
                 + this.scoreCal.getCurrentTime() / 1000 % 60 + "\"" + this.scoreCal.getCurrentTime() % 1000 / 100),
                 Global.HP_FRAME_WIDTH + 10, 30);
-        g.setColor(Color.black);
+        g.setColor(Color.BLACK);
     } // 分數顯示
 
     @Override
