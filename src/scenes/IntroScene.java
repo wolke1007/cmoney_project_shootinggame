@@ -21,18 +21,20 @@ import util.Global;
 public class IntroScene extends Scene {
 
     private Renderer backgroundRenderer;
-    private Renderer titleRenderer;
-    private Renderer pressBtnRenderer;
-    private Renderer recordBtnRenderer;
-    private Button pressBtn;
-    private Button highScoreBtn;
+    private Renderer backgroundRenderer2;
+    private Renderer shadowRenderer;
+    private Renderer introRenderer;
+    private Renderer returnBtnRenderer;
+    private Button returnBtn;
 
     public IntroScene(SceneController sceneController) {
         super(sceneController);
         this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[0]);
-        this.titleRenderer = new Renderer(new int[]{0}, 0, ImagePath.WELCOME_PAGE[0]);
-        this.pressBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.WELCOME_PAGE[1]);
-        this.pressBtn = new pressButton();
+        this.backgroundRenderer2 = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[1]);
+        this.shadowRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[2]);
+        this.introRenderer = new Renderer(new int[]{0}, 0, ImagePath.INTRO_PAGE[0]);
+        this.returnBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BUTTON[0]);
+        this.returnBtn = new returnButton();
     }
 
     public abstract class Button {
@@ -43,16 +45,16 @@ public class IntroScene extends Scene {
         public int right;
     }
 
-    public class pressButton extends Button {
+    public class returnButton extends Button {
 
-        public pressButton() {
-            int height = 80;
-            int width  = 150;
-            int upDownposition = -20;
-            super.left = Global.SCREEN_X / 2 - width;
-            super.top = Global.SCREEN_Y / 2 - height + upDownposition;
-            super.right = Global.SCREEN_X / 2 + width;
-            super.bottom = Global.SCREEN_Y / 2 + height + upDownposition;
+        public returnButton() {
+            int height = 130;
+            int width  = 250;
+            int upDownposition = -5;
+            super.left = Global.SCREEN_X - width;
+            super.top = Global.SCREEN_Y - height + upDownposition;
+            super.right = super.left + width;
+            super.bottom = super.top + height + upDownposition;
         }
     }
 
@@ -83,14 +85,23 @@ public class IntroScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        int titleHeight = 200;
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
-        this.titleRenderer.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 19 / 20)
-                , 10, (Global.SCREEN_X - Global.SCREEN_X * 1 / 20), 10 + titleHeight); // 背景圖
-        if (cursorInBtn(this.pressBtn)) {
-            this.pressBtnRenderer.paint(g, this.pressBtn.left + 10, this.pressBtn.top + 10, this.pressBtn.right + 10, this.pressBtn.bottom + 10); // 開始按鈕
+        this.backgroundRenderer2.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 19 / 20)
+                , (Global.SCREEN_Y - Global.SCREEN_Y * 19 / 20)
+                , (Global.SCREEN_X - Global.SCREEN_X * 1 / 20)
+                , (Global.SCREEN_Y - Global.SCREEN_Y * 1 / 20)); // 背景圖
+        this.shadowRenderer.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 18 / 20)
+                , (Global.SCREEN_Y - Global.SCREEN_Y * 18 / 20)
+                , (Global.SCREEN_X - Global.SCREEN_X * 2 / 20)
+                , (Global.SCREEN_Y - Global.SCREEN_Y * 3 / 20)); // 背景圖
+        this.introRenderer.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 17 / 20)
+                , (Global.SCREEN_Y - Global.SCREEN_Y * 17 / 20)
+                , (Global.SCREEN_X - Global.SCREEN_X * 3 / 20)
+                , (Global.SCREEN_Y - Global.SCREEN_Y * 4 / 20)); // 背景圖
+        if (cursorInBtn(this.returnBtn)) {
+            this.returnBtnRenderer.paint(g, this.returnBtn.left + 10, this.returnBtn.top + 10, this.returnBtn.right + 10, this.returnBtn.bottom + 10); // 開始按鈕
         } else {
-            this.pressBtnRenderer.paint(g, this.pressBtn.left, this.pressBtn.top, this.pressBtn.right, this.pressBtn.bottom); // 開始按鈕
+            this.returnBtnRenderer.paint(g, this.returnBtn.left, this.returnBtn.top, this.returnBtn.right, this.returnBtn.bottom); // 開始按鈕
         }
     }
 
@@ -125,7 +136,7 @@ public class IntroScene extends Scene {
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
             if (state == CommandSolver.MouseState.PRESSED) {
-                if (cursorInBtn(new pressButton())) {
+                if (cursorInBtn(new returnButton())) {
                     // Enter main scene
                     IntroScene.super.sceneController.changeScene(new StartMenuScene(IntroScene.super.sceneController));
                 }

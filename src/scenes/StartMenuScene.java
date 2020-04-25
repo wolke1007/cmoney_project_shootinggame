@@ -177,7 +177,7 @@ public class StartMenuScene extends Scene {
                     // Enter score history scene
                     StartMenuScene.super.sceneController.changeScene(new RankScene(StartMenuScene.super.sceneController));
                 }
-                if (cursorInBtn(new rankButton())) {
+                if (cursorInBtn(new introButton())) {
                     // Enter score history scene
                     StartMenuScene.super.sceneController.changeScene(new IntroScene(StartMenuScene.super.sceneController));
                 }

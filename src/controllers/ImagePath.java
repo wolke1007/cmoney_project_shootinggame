@@ -93,12 +93,12 @@ public class ImagePath {
     public static final String[] MENU_PAGE = {ImagePath.ROOT + "/rank_1.png", ImagePath.ROOT + "/rank_2.png", ImagePath.ROOT + "/rank_3.png",
         ImagePath.ROOT + "/start_1.png", ImagePath.ROOT + "/start_2.png", ImagePath.ROOT + "/start_3.png",
         ImagePath.ROOT + "/intro_1.png", ImagePath.ROOT + "/intro_2.png", ImagePath.ROOT + "/intro_3.png"};
-    public static final String[] INTRO_PAGE = {ImagePath.ROOT + "/operationBackShadow.png", ImagePath.ROOT + "/keyBoradOperationInfo.png"};
+    public static final String[] INTRO_PAGE = {ImagePath.ROOT + "/keyBoradOperationInfo.png"};
     public static final String[] RANK_PAGE = {ImagePath.ROOT + "/rank.png"};
     public static final String[] INFO_PAGE = {ImagePath.ROOT + "/infoStory.png",
         ImagePath.ROOT + "/skip_1.png", ImagePath.ROOT + "/skip_2.png", ImagePath.ROOT + "/skip_3.png"}; 
     public static final String[] COMMON_BUTTON = {ImagePath.ROOT + "/return_1.png", ImagePath.ROOT + "/return_2.png", ImagePath.ROOT + "/return_3.png"};
-    public static final String[] COMMON_BACKGROUND = {ImagePath.ROOT + "/homePage.png", ImagePath.ROOT + "/helpPage_backShadow.png"};
+    public static final String[] COMMON_BACKGROUND = {ImagePath.ROOT + "/homePage.png", ImagePath.ROOT + "/helpPage_backShadow.png", ImagePath.ROOT + "/operationBackShadow.png"};
     public static final String[] BLOOD = {ImagePath.ROOT + "/low_hp_1.png",
         ImagePath.ROOT + "/take_damage.png",
         ImagePath.ROOT + "/hand.png",
