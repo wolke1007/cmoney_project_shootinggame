@@ -143,7 +143,7 @@ public class RankScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        this.renderer.setImage(ImagePath.HIGH_SCORE[0]); // 背景圖
+        this.renderer.setImage(ImagePath.RANK_PAGE[0]); // 背景圖
         this.renderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y);
 
         this.renderer.setImage(ImagePath.COMMON_BUTTON[0]);
@@ -153,21 +153,21 @@ public class RankScene extends Scene {
             this.renderer.paint(g, this.backBtn.left + 10, this.backBtn.top - 10, this.backBtn.right + 10, this.backBtn.bottom - 10); // 歷史紀錄按鈕
         }
 
-        this.renderer.setImage(ImagePath.HIGH_SCORE[1]);
+        this.renderer.setImage(ImagePath.RANK_PAGE[1]);
         if (cursorInBtn(this.endlessBtn)) {
             this.renderer.paint(g, this.endlessBtn.left, this.endlessBtn.top, this.endlessBtn.right, this.endlessBtn.bottom); // Endless mode 按鈕
         } else {
             this.renderer.paint(g, this.endlessBtn.left + 10, this.endlessBtn.top - 10, this.endlessBtn.right + 10, this.endlessBtn.bottom - 10); // Endless mode 按鈕
         }
 
-        this.renderer.setImage(ImagePath.HIGH_SCORE[2]);
+        this.renderer.setImage(ImagePath.RANK_PAGE[2]);
         if (cursorInBtn(this.campaignBtn)) {
             this.renderer.paint(g, this.campaignBtn.left, this.campaignBtn.top, this.campaignBtn.right, this.campaignBtn.bottom); // Campaign mode 按鈕
         } else {
             this.renderer.paint(g, this.campaignBtn.left + 10, this.campaignBtn.top - 10, this.campaignBtn.right + 10, this.campaignBtn.bottom - 10); // Campaign mode 按鈕
         }
 
-        this.renderer.setImage(ImagePath.HIGH_SCORE[3]);
+        this.renderer.setImage(ImagePath.RANK_PAGE[3]);
         if (cursorInBtn(this.savingBtn)) {
             this.renderer.paint(g, this.savingBtn.left, this.savingBtn.top, this.savingBtn.right, this.savingBtn.bottom); // Saving mode 按鈕
         } else {
