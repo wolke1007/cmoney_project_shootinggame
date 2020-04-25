@@ -82,22 +82,27 @@ public class IntroScene extends Scene {
         }
         return false;
     }
+    
+    private float ratio(float num){
+        return num / 50f;
+    }
 
     @Override
     public void paint(Graphics g) {
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
-        this.backgroundRenderer2.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 19 / 20)
-                , (Global.SCREEN_Y - Global.SCREEN_Y * 19 / 20)
-                , (Global.SCREEN_X - Global.SCREEN_X * 1 / 20)
-                , (Global.SCREEN_Y - Global.SCREEN_Y * 1 / 20)); // 背景圖
-        this.shadowRenderer.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 18 / 20)
-                , (Global.SCREEN_Y - Global.SCREEN_Y * 18 / 20)
-                , (Global.SCREEN_X - Global.SCREEN_X * 2 / 20)
-                , (Global.SCREEN_Y - Global.SCREEN_Y * 3 / 20)); // 背景圖
-        this.introRenderer.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 17 / 20)
-                , (Global.SCREEN_Y - Global.SCREEN_Y * 17 / 20)
-                , (Global.SCREEN_X - Global.SCREEN_X * 3 / 20)
-                , (Global.SCREEN_Y - Global.SCREEN_Y * 4 / 20)); // 背景圖
+        Global.log(""+ratio(30));
+        this.backgroundRenderer2.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(49))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(49))
+                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(1))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(1))); // 背景圖
+        this.shadowRenderer.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(48))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(48))
+                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(2))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(8))); // 背景圖
+        this.introRenderer.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(45))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(45))
+                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(5))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(12))); // 背景圖
         if (cursorInBtn(this.returnBtn)) {
             this.returnBtnRenderer.paint(g, this.returnBtn.left + 10, this.returnBtn.top + 10, this.returnBtn.right + 10, this.returnBtn.bottom + 10); // 開始按鈕
         } else {
