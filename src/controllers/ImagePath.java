@@ -20,6 +20,7 @@ public class ImagePath {
 //        ImagePath.ROOT + "/background2.png",
 //        ImagePath.ROOT + "/background3.png"};
     public static final String[] BACKGROUND = {ImagePath.ROOT + "/map.png"};
+    public static final String[] DOOR = {ImagePath.ROOT + "/originalDoor.png"};
 
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png"};
     public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/selfActor_grenade.png"};
@@ -86,12 +87,18 @@ public class ImagePath {
         ImagePath.ROOT + "/monster/monster_ (24).png",
         ImagePath.ROOT + "/monster/monster_ (25).png"};
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
-    public static final String[] BUILDING = {ImagePath.ROOT + "/room.png"};
-    public static final String[] START_MENU = {ImagePath.ROOT + "/startmenu.jpeg",
-        ImagePath.ROOT + "/playgame.png",
-        ImagePath.ROOT + "/score_history.png"};
-    public static final String[] HIGH_SCORE = {ImagePath.ROOT + "/high_score.png", ImagePath.ROOT + "/endless.png", ImagePath.ROOT + "/compaign.png", ImagePath.ROOT + "/saving.png"};
-    public static final String[] COMMON_BUTTON = {ImagePath.ROOT + "/back.png"};
+    public static final String[] BUILDING = {ImagePath.ROOT + "/originalRoom.png"};
+    public static final String[] WELCOME_PAGE = {ImagePath.ROOT + "/title.png",
+        ImagePath.ROOT + "/press_1.png", ImagePath.ROOT + "/press_2.png", ImagePath.ROOT + "/press_3.png"};
+    public static final String[] MENU_PAGE = {ImagePath.ROOT + "/rank_1.png", ImagePath.ROOT + "/rank_2.png", ImagePath.ROOT + "/rank_3.png",
+        ImagePath.ROOT + "/start_1.png", ImagePath.ROOT + "/start_2.png", ImagePath.ROOT + "/start_3.png",
+        ImagePath.ROOT + "/intro_1.png", ImagePath.ROOT + "/intro_2.png", ImagePath.ROOT + "/intro_3.png"};
+    public static final String[] INTRO_PAGE = {ImagePath.ROOT + "/operationBackShadow.png", ImagePath.ROOT + "/keyBoradOperationInfo.png"};
+    public static final String[] RANK_PAGE = {ImagePath.ROOT + "/rank.png"};
+    public static final String[] INFO_PAGE = {ImagePath.ROOT + "/infoStory.png",
+        ImagePath.ROOT + "/skip_1.png", ImagePath.ROOT + "/skip_2.png", ImagePath.ROOT + "/skip_3.png"}; 
+    public static final String[] COMMON_BUTTON = {ImagePath.ROOT + "/return_1.png", ImagePath.ROOT + "/return_2.png", ImagePath.ROOT + "/return_3.png"};
+    public static final String[] COMMON_BACKGROUND = {ImagePath.ROOT + "/homePage.png", ImagePath.ROOT + "/helpPage_backShadow.png"};
     public static final String[] BLOOD = {ImagePath.ROOT + "/low_hp_1.png",
         ImagePath.ROOT + "/take_damage.png",
         ImagePath.ROOT + "/hand.png",

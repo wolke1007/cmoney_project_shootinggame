@@ -69,7 +69,7 @@ public class Building extends GameObject {
         for(int i = 0; i < this.doorSides.length; i++){
             switch(this.doorSides[i]){
                 case "left":
-                    this.doors.add(new Door(leftDoorX, leftDoorY, doorWidth, doorHeight, "left")); // 左邊門
+                    this.doors.add(new Door(leftDoorX + doorWidth, leftDoorY, doorWidth, doorHeight, "left")); // 左邊門
                     break;
                 case "right":
                     this.doors.add(new Door(rightDoorX, rightDoorY, doorWidth, doorHeight, "right")); // 右邊門
@@ -79,7 +79,6 @@ public class Building extends GameObject {
     }
     
     public void close(String side){
-        // 關門等於是把門給 new 回來
         int leftDoorX = (int)this.walls.get(0).getCollider().left(); // 第 1 面牆固定是左上的牆壁
         int leftDoorY = (int)this.walls.get(0).getCollider().bottom(); 
         int rightDoorX = (int)this.walls.get(2).getCollider().left(); // 第 3 面牆固定是右上的牆壁
@@ -101,16 +100,13 @@ public class Building extends GameObject {
         }
     }
     
-    public Door open(String side){
-        // 開門等於是把門給 remove
+    public void open(String side){
         for(int d = 0; d < this.doors.size(); d++){
             if(this.doors.get(d).name.equals(side)){
                 Door door = this.doors.get(d);
-                this.doors.remove(d);
-                return door;
+                this.doors.get(d).open();
             }
         }
-        return null;
     }
 
     @Override
@@ -119,6 +115,9 @@ public class Building extends GameObject {
 
     @Override
     public void update() {
+        for(int d = 0; d < this.doors.size(); d++){
+            this.doors.get(d).update();
+        }
     }
 
     @Override

@@ -22,7 +22,7 @@ import util.ScoreCalculator;
  *
  * @author Cloud-Razer
  */
-public class HighScoreScene extends Scene {
+public class RankScene extends Scene {
 
     private Renderer renderer;
     private ScoreCalculator scoreCal;
@@ -35,7 +35,7 @@ public class HighScoreScene extends Scene {
     Button savingBtn;
     String scoreType;
 
-    public HighScoreScene(SceneController sceneController) {
+    public RankScene(SceneController sceneController) {
         super(sceneController);
         this.renderer = new Renderer();
         this.printLimit = 5; // 要顯示幾行歷史紀錄
@@ -129,9 +129,9 @@ public class HighScoreScene extends Scene {
         int textGap = 60;
         g.setColor(Color.WHITE);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-        for (int i = 0; i < HighScoreScene.this.scoreList.size(); i++) {
-            if (i < HighScoreScene.this.printLimit) {
-                Record record = HighScoreScene.this.scoreList.get(i);
+        for (int i = 0; i < RankScene.this.scoreList.size(); i++) {
+            if (i < RankScene.this.printLimit) {
+                Record record = RankScene.this.scoreList.get(i);
                 g.drawString(Integer.toString(i + 1) + ".", endlessBtn.left - 50, endlessBtn.bottom + 30 * (i + 2) + textGap);
                 g.drawString(record.getName(), endlessBtn.left, endlessBtn.bottom + 30 * (i + 2) + textGap);
                 g.drawString(Integer.toString(record.getScore()), endlessBtn.left + 400, endlessBtn.bottom + 30 * (i + 2) + textGap);
@@ -143,7 +143,7 @@ public class HighScoreScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
-        this.renderer.setImage(ImagePath.HIGH_SCORE[0]); // 背景圖
+        this.renderer.setImage(ImagePath.RANK_PAGE[0]); // 背景圖
         this.renderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y);
 
         this.renderer.setImage(ImagePath.COMMON_BUTTON[0]);
@@ -153,21 +153,21 @@ public class HighScoreScene extends Scene {
             this.renderer.paint(g, this.backBtn.left + 10, this.backBtn.top - 10, this.backBtn.right + 10, this.backBtn.bottom - 10); // 歷史紀錄按鈕
         }
 
-        this.renderer.setImage(ImagePath.HIGH_SCORE[1]);
+        this.renderer.setImage(ImagePath.RANK_PAGE[1]);
         if (cursorInBtn(this.endlessBtn)) {
             this.renderer.paint(g, this.endlessBtn.left, this.endlessBtn.top, this.endlessBtn.right, this.endlessBtn.bottom); // Endless mode 按鈕
         } else {
             this.renderer.paint(g, this.endlessBtn.left + 10, this.endlessBtn.top - 10, this.endlessBtn.right + 10, this.endlessBtn.bottom - 10); // Endless mode 按鈕
         }
 
-        this.renderer.setImage(ImagePath.HIGH_SCORE[2]);
+        this.renderer.setImage(ImagePath.RANK_PAGE[2]);
         if (cursorInBtn(this.campaignBtn)) {
             this.renderer.paint(g, this.campaignBtn.left, this.campaignBtn.top, this.campaignBtn.right, this.campaignBtn.bottom); // Campaign mode 按鈕
         } else {
             this.renderer.paint(g, this.campaignBtn.left + 10, this.campaignBtn.top - 10, this.campaignBtn.right + 10, this.campaignBtn.bottom - 10); // Campaign mode 按鈕
         }
 
-        this.renderer.setImage(ImagePath.HIGH_SCORE[3]);
+        this.renderer.setImage(ImagePath.RANK_PAGE[3]);
         if (cursorInBtn(this.savingBtn)) {
             this.renderer.paint(g, this.savingBtn.left, this.savingBtn.top, this.savingBtn.right, this.savingBtn.bottom); // Saving mode 按鈕
         } else {
@@ -182,13 +182,13 @@ public class HighScoreScene extends Scene {
         if (this.scoreList == null) {
             return;
         }
-        if (this.scoreType.equals(HighScoreScene.this.gameMode[0])) {
+        if (this.scoreType.equals(RankScene.this.gameMode[0])) {
             paintEndlessScore(g);
         }
-        if (this.scoreType.equals(HighScoreScene.this.gameMode[1])) {
+        if (this.scoreType.equals(RankScene.this.gameMode[1])) {
 
         }
-        if (this.scoreType.equals(HighScoreScene.this.gameMode[2])) {
+        if (this.scoreType.equals(RankScene.this.gameMode[2])) {
 
         }
     }
@@ -226,19 +226,19 @@ public class HighScoreScene extends Scene {
             if (state == CommandSolver.MouseState.PRESSED) {
                 if (cursorInBtn(new BackButton())) {
                     // Enter main scene
-                    HighScoreScene.super.sceneController.changeScene(new StartMenuScene(HighScoreScene.super.sceneController));
+                    RankScene.super.sceneController.changeScene(new StartMenuScene(RankScene.super.sceneController));
                 }
                 if (cursorInBtn(new EndlessButton())) {
                     // Enter score history scene
-                    HighScoreScene.this.scoreType = HighScoreScene.this.gameMode[0];
+                    RankScene.this.scoreType = RankScene.this.gameMode[0];
                 }
                 if (cursorInBtn(new CampaignButton())) {
                     // Enter score history scene
-                    HighScoreScene.this.scoreType = HighScoreScene.this.gameMode[1];
+                    RankScene.this.scoreType = RankScene.this.gameMode[1];
                 }
                 if (cursorInBtn(new SavingButton())) {
                     // Enter score history scene
-                    HighScoreScene.this.scoreType = HighScoreScene.this.gameMode[2];
+                    RankScene.this.scoreType = RankScene.this.gameMode[2];
                 }
             }
         }

@@ -20,18 +20,34 @@ import util.Global;
 public class StartMenuScene extends Scene {
 
     private Renderer backgroundRenderer;
+    private Renderer backgroundRenderer2;
+    private Renderer rankBtnRenderer;
     private Renderer startBtnRenderer;
-    private Renderer recordBtnRenderer;
+    private Renderer introBtnRenderer;
+    private Button rankBtn;
     private Button startBtn;
-    private Button highScoreBtn;
+    private Button introBtn;
+    private int buttonWidth;
+    private int buttonHeight;
+    private int buttonGap;
 
     public StartMenuScene(SceneController sceneController) {
         super(sceneController);
-        this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[0]);
-        this.startBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[1]);
-        this.recordBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.START_MENU[2]);
+        this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[0]);
+        this.backgroundRenderer2 = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[1]);
+        this.rankBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[0]);
+        this.startBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[3]);
+        this.introBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[6]);
+        this.buttonWidth = 300;
+        this.buttonHeight = this.buttonWidth / 2;
+        this.buttonGap = 60;
+        this.rankBtn = new rankButton();
         this.startBtn = new startButton();
-        this.highScoreBtn = new scoreButton();
+        this.introBtn = new introButton();
+    }
+
+    public int getBtnGap() {
+        return this.buttonGap;
     }
 
     public abstract class Button {
@@ -40,25 +56,38 @@ public class StartMenuScene extends Scene {
         public int bottom;
         public int left;
         public int right;
+        public int upDownPosition = 230;
+    }
+
+    public class rankButton extends Button {
+
+        public rankButton() {
+            
+            super.left = (Global.SCREEN_X - (StartMenuScene.this.buttonWidth * 3 + StartMenuScene.this.buttonGap * 2)) / 2;
+            Global.log("super.left: " + super.left);
+            super.top = upDownPosition;
+            super.right = left + StartMenuScene.this.buttonWidth;
+            super.bottom = top + StartMenuScene.this.buttonHeight;
+        }
     }
 
     public class startButton extends Button {
 
         public startButton() {
-            super.left = Global.SCREEN_X / 2 - 150;
-            super.top = Global.SCREEN_Y - 90;
-            super.right = Global.SCREEN_X / 2 + 110;
-            super.bottom = Global.SCREEN_Y - 40;
+            super.left = StartMenuScene.this.rankBtn.right + StartMenuScene.this.buttonGap;
+            super.top = upDownPosition;
+            super.right = left + StartMenuScene.this.buttonWidth;
+            super.bottom = top + StartMenuScene.this.buttonHeight;
         }
     }
 
-    public class scoreButton extends Button {
+    public class introButton extends Button {
 
-        public scoreButton() {
-            super.left = 30;
-            super.top = Global.SCREEN_Y - 90;
-            super.right = 167;
-            super.bottom = Global.SCREEN_Y - 40;
+        public introButton() {
+            super.left = StartMenuScene.this.startBtn.right + StartMenuScene.this.buttonGap;
+            super.top = upDownPosition;
+            super.right = left + StartMenuScene.this.buttonWidth;
+            super.bottom = top + StartMenuScene.this.buttonHeight;
         }
     }
 
@@ -89,16 +118,23 @@ public class StartMenuScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
+        int secondEdge = 20;
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
+        this.backgroundRenderer2.paint(g, secondEdge, secondEdge, Global.SCREEN_X - secondEdge, Global.SCREEN_Y - secondEdge); // 背景圖
         if (cursorInBtn(this.startBtn)) {
             this.startBtnRenderer.paint(g, this.startBtn.left + 10, this.startBtn.top + 10, this.startBtn.right + 10, this.startBtn.bottom + 10); // 開始按鈕
         } else {
             this.startBtnRenderer.paint(g, this.startBtn.left, this.startBtn.top, this.startBtn.right, this.startBtn.bottom); // 開始按鈕
         }
-        if (cursorInBtn(this.highScoreBtn)) {
-            this.recordBtnRenderer.paint(g, this.highScoreBtn.left + 10, this.highScoreBtn.top + 10, this.highScoreBtn.right + 10, this.highScoreBtn.bottom + 10); // 歷史紀錄按鈕
+        if (cursorInBtn(this.rankBtn)) {
+            this.rankBtnRenderer.paint(g, this.rankBtn.left + 10, this.rankBtn.top + 10, this.rankBtn.right + 10, this.rankBtn.bottom + 10); // 歷史紀錄按鈕
         } else {
-            this.recordBtnRenderer.paint(g, this.highScoreBtn.left, this.highScoreBtn.top, this.highScoreBtn.right, this.highScoreBtn.bottom); // 歷史紀錄按鈕
+            this.rankBtnRenderer.paint(g, this.rankBtn.left, this.rankBtn.top, this.rankBtn.right, this.rankBtn.bottom); // 歷史紀錄按鈕
+        }
+        if (cursorInBtn(this.introBtn)) {
+            this.introBtnRenderer.paint(g, this.introBtn.left + 10, this.introBtn.top + 10, this.introBtn.right + 10, this.introBtn.bottom + 10); // 歷史紀錄按鈕
+        } else {
+            this.introBtnRenderer.paint(g, this.introBtn.left, this.introBtn.top, this.introBtn.right, this.introBtn.bottom); // 歷史紀錄按鈕
         }
     }
 
@@ -137,9 +173,13 @@ public class StartMenuScene extends Scene {
                     // Enter main scene
                     StartMenuScene.super.sceneController.changeScene(new MainScene(StartMenuScene.super.sceneController));
                 }
-                if (cursorInBtn(new scoreButton())) {
+                if (cursorInBtn(new rankButton())) {
                     // Enter score history scene
-                    StartMenuScene.super.sceneController.changeScene(new HighScoreScene(StartMenuScene.super.sceneController));
+                    StartMenuScene.super.sceneController.changeScene(new RankScene(StartMenuScene.super.sceneController));
+                }
+                if (cursorInBtn(new rankButton())) {
+                    // Enter score history scene
+                    StartMenuScene.super.sceneController.changeScene(new IntroScene(StartMenuScene.super.sceneController));
                 }
             }
         }
