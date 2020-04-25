@@ -15,6 +15,7 @@ import util.CommandSolver.MouseCommandListener;
 import util.GameKernel.GameInterface;
 import java.awt.event.MouseEvent;
 import scenes.StartMenuScene;
+import scenes.WelcomeScene;
 import util.Global;
 
 /**
@@ -27,7 +28,7 @@ public class GI implements KeyListener, MouseCommandListener, GameInterface {
 
     public GI() {
         sceneController = new SceneController();
-        sceneController.changeScene(new StartMenuScene(sceneController));
+        sceneController.changeScene(new WelcomeScene(sceneController));
     }
 
     public void update() {

@@ -32,17 +32,18 @@ public class ImagePath {
     public static final String[] ZOMBIE_SHOCK = {ImagePath.ROOT + "/monster_1.png", ImagePath.ROOT + "/monster_2.png", ImagePath.ROOT + "/monster_3.png"};
     public static final String[] HP = {ImagePath.ROOT + "/HP_frame.png", ImagePath.ROOT + "/HP.png", ImagePath.ROOT + "/HP_debug.png"};
     public static final String[] BUILDING = {ImagePath.ROOT + "/originalRoom.png"};
-    public static final String[] WELCOME_PAGE = {ImagePath.ROOT + "/press_1.png", ImagePath.ROOT + "/press_2.png", ImagePath.ROOT + "/press_3.png"};
+    public static final String[] WELCOME_PAGE = {ImagePath.ROOT + "/title.png",
+        ImagePath.ROOT + "/press_1.png", ImagePath.ROOT + "/press_2.png", ImagePath.ROOT + "/press_3.png"};
     public static final String[] MENU_PAGE = {ImagePath.ROOT + "/playgame.png", ImagePath.ROOT + "/score_history.png",
         ImagePath.ROOT + "/rank_1.png", ImagePath.ROOT + "/rank_2.png", ImagePath.ROOT + "/rank_3.png",
         ImagePath.ROOT + "/start_1.png", ImagePath.ROOT + "/start_2.png", ImagePath.ROOT + "/start_3.png",
         ImagePath.ROOT + "/intro_1.png", ImagePath.ROOT + "/intro_2.png", ImagePath.ROOT + "/intro_3.png"};
     public static final String[] INTRO_PAGE = {ImagePath.ROOT + "/operationBackShadow.png", ImagePath.ROOT + "/keyBoradOperationInfo.png"};
     public static final String[] RANK_PAGE = {ImagePath.ROOT + "/rank.png"};
-    public static final String[] INFO_PAGE = {ImagePath.ROOT + "/infoStory.png", 
+    public static final String[] INFO_PAGE = {ImagePath.ROOT + "/infoStory.png",
         ImagePath.ROOT + "/skip_1.png", ImagePath.ROOT + "/skip_2.png", ImagePath.ROOT + "/skip_3.png"}; 
     public static final String[] COMMON_BUTTON = {ImagePath.ROOT + "/return_1.png", ImagePath.ROOT + "/return_2.png", ImagePath.ROOT + "/return_3.png"};
-    public static final String[] COMMON_BACKGROUND = {ImagePath.ROOT + "/helpPage_backShadow.png", ImagePath.ROOT + "/homePage.png"};
+    public static final String[] COMMON_BACKGROUND = {ImagePath.ROOT + "/homePage.png", ImagePath.ROOT + "/helpPage_backShadow.png"};
     public static final String[] BLOOD = {ImagePath.ROOT + "/low_hp_1.png",
         ImagePath.ROOT + "/take_damage.png",
         ImagePath.ROOT + "/hand.png",
