@@ -70,6 +70,7 @@ public class MainScene extends Scene {
     private String name;
     private int top; // 多少名次內可以進排行榜
     private TextBar textBar; // 讀稿機
+    private Barrier box;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -115,6 +116,8 @@ public class MainScene extends Scene {
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         this.events = new ArrayList<Event>();
         this.textBar = new TextBar(0, (int) this.view.getY() - 7 + Global.HP_HEIGHT + 5, Global.SCREEN_X, 40);
+        this.box = new Barrier("rect", this.maps.getMaps().get(1).getCenterX(), this.maps.getMaps().get(1).getCenterY(), 150, 150, ImagePath.BARRIER, 1);
+        this.allObjects.add(this.box);
         eventSetup();
         this.scoreCal.gameStart();
     }
@@ -178,6 +181,8 @@ public class MainScene extends Scene {
                 break;
             case 2:
                 // 將箱子 remove 並產出怪物1
+                remove(this.box);
+                this.box = null;
                 map = this.maps.getMaps().get(1);
                 //remove 箱子
                 genEnemies((int) map.getCenterX(), (int) map.getCenterY(), (int) map.getCenterX() + 150, (int) map.getCenterY() + 150, 5, 1);
@@ -205,7 +210,7 @@ public class MainScene extends Scene {
                 this.textBar.play();
                 break;
             case 7:
-                
+
                 break;
             case 8:
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
@@ -218,20 +223,20 @@ public class MainScene extends Scene {
             case 10:
                 // 控制玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
                 // 控制玩家往前走 start
-                
+
                 // 控制玩家往前走 end
                 // 生 BOSS start
                 this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
                 this.allObjects.add(this.boss);
                 this.boss.setAllObject(this.allObjects);
         //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
-        //        this.allObjects.add(this.bossBarrier);
+                //        this.allObjects.add(this.bossBarrier);
                 this.boss.setStartAttack(true);
                 this.boss.setStartPaint(true);
                 // 生 BOSS end
                 break;
             case 11:
-               // 停止計時
+                // 停止計時
                 this.scoreCal.gameOver();
                 scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊」",
                     "醒來時已是怪物的樣貌",
@@ -377,7 +382,7 @@ public class MainScene extends Scene {
                 i--;
             }
         }
-        if(this.boss != null && this.boss.getIsDead()){
+        if (this.boss != null && this.boss.getIsDead()) {
             Global.log("remove boss");
             remove(this.boss);
             this.boss = null;
