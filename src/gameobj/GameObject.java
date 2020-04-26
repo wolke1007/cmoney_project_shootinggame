@@ -61,7 +61,7 @@ public abstract class GameObject {
     }
 
     public void setHpPoint(float dividend) {
-        this.hpBarWidth = this.width();
+        this.hpBarWidth = this.getGraph().width();
         this.dividend = this.hpBarWidth / dividend;
     }
 

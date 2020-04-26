@@ -70,11 +70,13 @@ public class MainScene extends Scene {
     private String name;
     private int top; // 多少名次內可以進排行榜
     private TextBar textBar; // 讀稿機
+    private boolean grenadeReady;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.mouseState = false;
         this.ammoState = false;
+        this.grenadeReady = true;
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
@@ -86,7 +88,7 @@ public class MainScene extends Scene {
     private void allDelayControl() {
         this.stateChage = new Delay(30);
         this.stateChage.start();
-        this.enemyAudio = new Delay(60);
+        this.enemyAudio = new Delay(180);
         this.enemyAudio.start();
     }
 
@@ -278,7 +280,7 @@ public class MainScene extends Scene {
             Global.enemyAudio = false;
         }
         if (Global.enemyAudio && this.enemyAudio.isTrig()) {
-            AudioResourceController.getInstance().play(AudioPath.ZOMBIE_STEP_MOVE[0]);
+            AudioResourceController.getInstance().play(AudioPath.ZOMBIE_STEP_MOVE);
         }
     } //zombie foot step audio
 
@@ -341,6 +343,7 @@ public class MainScene extends Scene {
         }
         if (this.mouseState) {
             if (this.stateChage.isTrig()) {
+                AudioResourceController.getInstance().play(AudioPath.AMMO_GUN_FIRE);
                 boolean create = true;
                 if (this.ammos == null) {
                     Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 1);
@@ -501,6 +504,7 @@ public class MainScene extends Scene {
                     MainScene.this.stateChage.start();
                     MainScene.this.actor.getRenderer().setState(0);
                     MainScene.this.ammoState = true;
+                    MainScene.this.grenadeReady = true;
                     break;
             }
         }
@@ -585,6 +589,10 @@ public class MainScene extends Scene {
                 case Global.KEY_SPACE:
                     MainScene.this.stateChage.stop();
                     MainScene.this.actor.getRenderer().setState(1);
+                    if (MainScene.this.grenadeReady) {
+                        AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
+                        MainScene.this.grenadeReady = false;
+                    }
                     break;
             }
         }

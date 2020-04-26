@@ -5,6 +5,8 @@
  */
 package gameobj.Boss;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import controllers.ImagePath;
 import gameobj.GameObject;
 import java.awt.Color;
@@ -124,12 +126,18 @@ public class Boss extends GameObject {
         if (this.nextTrig.isTrig() && this.bossLeftHand.getX() != -10000) {
             this.bossLeftHand.setIsMove(true);
         }
+        if (this.bossLeftHand.getIsMove() && this.bossLeftHand.getEffectCount() == 0) {
+            AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_CONTINUE);
+        }
         this.bossLeftHand.update();
     }
 
     public void boosRightHaneUpdate() {
         if (this.nextTrig.isTrig() && this.bossRightHand.getX() != -10000) {
             this.bossRightHand.setIsMove(true);
+        }
+        if (this.bossRightHand.getIsMove() && this.bossRightHand.getEffectCount() == 0) {
+            AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_CONTINUE);
         }
         this.bossRightHand.update();
     }
@@ -138,6 +146,9 @@ public class Boss extends GameObject {
         if (this.nextTrig.isTrig() && this.bossFire.getX() != -10000) {
             this.bossHead.getRenderer().setImage(ImagePath.BOSS_HEAD);
             this.bossFire.setIsMove(true);
+        }
+        if (this.bossFire.getIsMove() && this.bossFire.getEffectCount() == 0) {
+            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_CONTINUE);
         }
         this.bossFire.update();
     }
@@ -198,17 +209,26 @@ public class Boss extends GameObject {
                     this.setCallEnemy(false);
                     if (this.bossRightHand.getX() == -10000) {
                         this.bossRightHand.setNewStart();
+                        AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_MOVE);
                     }
                     break;
                 case 1:
                     if (this.bossLeftHand.getX() == -10000) {
                         this.bossLeftHand.setNewStart();
+                        AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_MOVE);
                     }
                     break;
                 case 2:
                     if (this.bossFire.getX() == -10000) {
                         this.bossFire.setNewStart();
                         this.bossHead.getRenderer().setImage(ImagePath.BOSS_HEAD_FIRE);
+                        if (this.nextTrig.getDelayFrame() == 200) {
+                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[0]);
+                        } else if (this.nextTrig.getDelayFrame() == 100) {
+                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[1]);
+                        } else if (this.nextTrig.getDelayFrame() == 30) {
+                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[2]);
+                        }
                     }
                     break;
                 case 3:
@@ -254,7 +274,6 @@ public class Boss extends GameObject {
     public void paintComponent(Graphics g) {
         if (this.startPaint) {
             g.setColor(Color.BLACK);
-//            g.fillRect((int) (this.getGraph().left() - Global.viewX - 20), (int) (this.getGraph().top() - Global.viewY - 10), (int) this.getGraph().width() + 40, (int) this.getGraph().height() + 80);
             g.fillOval((int) (this.getGraph().left() - Global.viewX - 40), (int) (this.getGraph().top() - Global.viewY - 20), (int) this.getGraph().width() + 80, (int) this.getGraph().height() + 150);
             bossHandAttackPaint(g);
             bossHandPaint(g);
@@ -307,6 +326,9 @@ public class Boss extends GameObject {
         g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.getGraph().width(), 10);
         g.setColor(Color.RED);
         g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.getHpBarWidth(), 10);
+        g.setColor(Color.YELLOW);
+        g.fillRect((int) (this.getX() - Global.viewX + 197), (int) (this.getY() - Global.viewY) - 8, 4, 10);
+        g.fillRect((int) (this.getX() - Global.viewX + 400), (int) (this.getY() - Global.viewY) - 8, 4, 10);
         g.setColor(Color.BLACK);
     }
 

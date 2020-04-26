@@ -5,6 +5,8 @@
  */
 package gameobj.Boss;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import controllers.ImagePath;
 import gameobj.GameObject;
 import java.awt.Graphics;
@@ -78,6 +80,10 @@ public class BossAttack extends GameObject {
     public void setIsMove(boolean isMove) {
         this.isMove = isMove;
     }//已設定
+
+    public boolean getIsMove() {
+        return this.isMove;
+    }
 
     private void setAttackRange(int attackRange) {
         this.attackRange = attackRange;
@@ -201,6 +207,7 @@ public class BossAttack extends GameObject {
                     }
                 } else {//如果有撞到，先扣血，再放特效
                     if (this.effectCount == 0) {
+                        AudioResourceController.getInstance().play(AudioPath.BOSS_ATTACK_BOMB);
                         this.effectDelay.click();
                         for (int i = 0; i < this.allObjects.size(); i++) {//扣血
                             if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.getCenterX(), 2)

@@ -10,6 +10,7 @@ import gameobj.GameObject;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import util.Delay;
 import util.Global;
 
 /**
@@ -20,14 +21,23 @@ public class Enemy extends GameObject {
 
     private MoveMode moveMode;
     private GameObject target;
+    private boolean isHpFull;
+    private Delay invincibleState;
+    private float hp;
 
     public Enemy(String colliderType, float x, float y, float hp, GameObject target, int kind) {
         super(colliderType, x, y, Global.UNIT_MIN * 8, Global.UNIT_MIN * 8, Global.UNIT_MIN * 4, Global.UNIT_MIN * 4);
         this.getCollider().setCenter(this.getCollider().width() / 2, this.getCollider().height() / 2);
+        this.hp = hp;
         setHpPoint(hp);
         this.setType("Enemy");
         setTarget(target);
         selectKind(kind);
+        this.isHpFull = true;
+        this.invincibleState = new Delay(60);
+        this.invincibleState.stop();
+        this.invincibleState.cleanCounter();
+        this.invincibleState.start();
         super.paintPriority = 1;
     }
 
@@ -56,6 +66,12 @@ public class Enemy extends GameObject {
 
     @Override
     public void update() {
+        if (this.isHpFull) {
+            this.setHpPoint(this.hp);
+        }
+        if (this.invincibleState.isTrig()) {
+            this.isHpFull = false;
+        }
         this.moveMode.update();
     }
 
