@@ -13,8 +13,8 @@ import java.awt.Graphics;
  */
 public class Wall extends Barrier {
 
-    public Wall(float x, float y, int width, int height) {
-        super("rect", x, y, width, height);
+    public Wall(String colliderType, float x, float y, int width, int height) {
+        super(colliderType, x, y, width, height);
         this.setType("Wall");
     }
 

@@ -253,6 +253,9 @@ public class Boss extends GameObject {
     @Override
     public void paintComponent(Graphics g) {
         if (this.startPaint) {
+            g.setColor(Color.BLACK);
+//            g.fillRect((int) (this.getGraph().left() - Global.viewX - 20), (int) (this.getGraph().top() - Global.viewY - 10), (int) this.getGraph().width() + 40, (int) this.getGraph().height() + 80);
+            g.fillOval((int) (this.getGraph().left() - Global.viewX - 40), (int) (this.getGraph().top() - Global.viewY - 20), (int) this.getGraph().width() + 80, (int) this.getGraph().height() + 150);
             bossHandAttackPaint(g);
             bossHandPaint(g);
             bossPaint(g);

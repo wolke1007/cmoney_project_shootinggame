@@ -36,38 +36,38 @@ public class Building extends GameObject {
         this.height = height;
         this.doorSides = doorSides;
     }
-    
-    public ArrayList<Wall> getWalls(){
+
+    public ArrayList<Wall> getWalls() {
         return this.walls;
     }
-    
-    public ArrayList<Door> getDoors(){
+
+    public ArrayList<Door> getDoors() {
         return this.doors;
     }
-    
-    public void genWalls(){ // 設定好該地圖 XY 後才建立牆壁，由 MapGenerator 呼叫
+
+    public void genWalls() { // 設定好該地圖 XY 後才建立牆壁，由 MapGenerator 呼叫
         int doorHeight = Global.DOOR_LENGTH;
         int wallX = (int) x;
         int wallY = (int) y;
         int wallHeight = (height - doorHeight) / 2;
         int wallWidth = Global.WALL_THICK; //牆壁寬度
-        this.walls.add(new Wall(wallX, wallY, wallWidth, wallHeight)); // 左上牆壁
-        this.walls.add(new Wall(wallX, wallY, this.width, wallWidth)); // 上方牆壁
-        this.walls.add(new Wall(wallX + this.width - wallWidth, wallY, wallWidth, wallHeight)); // 右上牆壁
-        this.walls.add(new Wall(wallX, wallY + wallHeight + doorHeight, wallWidth, wallHeight)); // 左下牆壁
-        this.walls.add(new Wall(wallX, wallY + this.height - wallWidth, this.width, wallWidth)); // 下方牆壁
-        this.walls.add(new Wall(wallX + this.width - wallWidth, wallY + wallHeight + doorHeight, wallWidth, wallHeight)); // 右下牆壁
+        this.walls.add(new Wall("rect", wallX, wallY, wallWidth, wallHeight)); // 左上牆壁
+        this.walls.add(new Wall("rect", wallX, wallY, this.width, wallWidth)); // 上方牆壁
+        this.walls.add(new Wall("rect", wallX + this.width - wallWidth, wallY, wallWidth, wallHeight)); // 右上牆壁
+        this.walls.add(new Wall("rect", wallX, wallY + wallHeight + doorHeight, wallWidth, wallHeight)); // 左下牆壁
+        this.walls.add(new Wall("rect", wallX, wallY + this.height - wallWidth, this.width, wallWidth)); // 下方牆壁
+        this.walls.add(new Wall("rect", wallX + this.width - wallWidth, wallY + wallHeight + doorHeight, wallWidth, wallHeight)); // 右下牆壁
     }
-    
-    public void genDoors(){
-        int leftDoorX = (int)this.walls.get(0).getCollider().left(); // 第 1 面牆固定是左上的牆壁
-        int leftDoorY = (int)this.walls.get(0).getCollider().bottom(); 
-        int rightDoorX = (int)this.walls.get(2).getCollider().left(); // 第 3 面牆固定是右上的牆壁
-        int rightDoorY = (int)this.walls.get(2).getCollider().bottom(); 
+
+    public void genDoors() {
+        int leftDoorX = (int) this.walls.get(0).getCollider().left(); // 第 1 面牆固定是左上的牆壁
+        int leftDoorY = (int) this.walls.get(0).getCollider().bottom();
+        int rightDoorX = (int) this.walls.get(2).getCollider().left(); // 第 3 面牆固定是右上的牆壁
+        int rightDoorY = (int) this.walls.get(2).getCollider().bottom();
         int doorWidth = Global.WALL_THICK; //與牆壁寬度相同
         int doorHeight = Global.DOOR_LENGTH;
-        for(int i = 0; i < this.doorSides.length; i++){
-            switch(this.doorSides[i]){
+        for (int i = 0; i < this.doorSides.length; i++) {
+            switch (this.doorSides[i]) {
                 case "left":
                     this.doors.add(new Door(leftDoorX + doorWidth, leftDoorY, doorWidth, doorHeight, "left")); // 左邊門
                     break;
@@ -77,20 +77,20 @@ public class Building extends GameObject {
             }
         }
     }
-    
-    public void close(String side){
-        int leftDoorX = (int)this.walls.get(0).getCollider().left(); // 第 1 面牆固定是左上的牆壁
-        int leftDoorY = (int)this.walls.get(0).getCollider().bottom(); 
-        int rightDoorX = (int)this.walls.get(2).getCollider().left(); // 第 3 面牆固定是右上的牆壁
-        int rightDoorY = (int)this.walls.get(2).getCollider().bottom(); 
+
+    public void close(String side) {
+        int leftDoorX = (int) this.walls.get(0).getCollider().left(); // 第 1 面牆固定是左上的牆壁
+        int leftDoorY = (int) this.walls.get(0).getCollider().bottom();
+        int rightDoorX = (int) this.walls.get(2).getCollider().left(); // 第 3 面牆固定是右上的牆壁
+        int rightDoorY = (int) this.walls.get(2).getCollider().bottom();
         int doorWidth = Global.WALL_THICK; //與牆壁寬度相同
         int doorHeight = Global.DOOR_LENGTH;
-        for(int d = 0; d < this.doors.size(); d++){
-            if(this.doors.get(d).name.equals(side)){
+        for (int d = 0; d < this.doors.size(); d++) {
+            if (this.doors.get(d).name.equals(side)) {
                 return; // 已經有這扇門了
             }
         }
-        switch(side){
+        switch (side) {
             case "left":
                 this.doors.add(new Door(leftDoorX, leftDoorY, doorWidth, doorHeight, "left")); // 左邊門
                 break;
@@ -99,10 +99,10 @@ public class Building extends GameObject {
                 break;
         }
     }
-    
-    public void open(String side){
-        for(int d = 0; d < this.doors.size(); d++){
-            if(this.doors.get(d).name.equals(side)){
+
+    public void open(String side) {
+        for (int d = 0; d < this.doors.size(); d++) {
+            if (this.doors.get(d).name.equals(side)) {
                 Door door = this.doors.get(d);
                 this.doors.get(d).open();
             }
@@ -115,7 +115,7 @@ public class Building extends GameObject {
 
     @Override
     public void update() {
-        for(int d = 0; d < this.doors.size(); d++){
+        for (int d = 0; d < this.doors.size(); d++) {
             this.doors.get(d).update();
         }
     }

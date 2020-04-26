@@ -62,6 +62,7 @@ public class Enemy extends GameObject {
     @Override
     public void paintComponent(Graphics g) {
         this.moveMode.paintComponent(g);
+        g.setColor(Color.BLACK);
         g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.getGraph().width(), 4);
         g.setColor(Color.RED);
         g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.getHpBarWidth(), 4);

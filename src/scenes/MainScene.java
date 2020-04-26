@@ -16,6 +16,7 @@ import event.EnterBuildingEvent;
 import event.Event;
 import event.KillAllEnemyEvent;
 import gameobj.Actor;
+import gameobj.Barrier;
 import gameobj.Boss.Boss;
 import gameobj.Door;
 import gameobj.ammo.Ammo;
@@ -63,6 +64,7 @@ public class MainScene extends Scene {
     private Event currentEvent;
     private ArrayList<Event> events;
     private Boss boss;
+    private Barrier bossBarrier;
     private boolean gameOver;
     private boolean nameTyped;
     private String name;
@@ -130,15 +132,17 @@ public class MainScene extends Scene {
         this.textBar.addScript(scripts);
         this.currentEvent = this.events.get(0);
         //boss
-        this.boss = new Boss("rect", 100f, 50f, this.actor, 60);
+        this.boss = new Boss("rect", this.actor.getCenterX() - 336f, 50f, this.actor, 60);
         this.allObjects.add(this.boss);
         this.boss.setAllObject(this.allObjects);
+//        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
+//        this.allObjects.add(this.bossBarrier);
         this.boss.setStartAttack(true);
         this.boss.setStartPaint(true);
         //boss end
-        genEnemies(100, 100, 600, 600, 5); //DEBUG 用
+        genEnemies(100, 450, 1500, 800, 5); //DEBUG 用
         this.scoreCal.gameStart();
-        this.textBar.play();
+//        this.textBar.play();
     }
 
     private void setNextEvent() {
@@ -243,7 +247,7 @@ public class MainScene extends Scene {
             case 1:
                 if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
-                    
+
                     this.textBar.play();
 //                    this.maps.getMaps().get(2).getBuildings().get(0).open("right");
                     String[] scripts = {"你聽聞隔壁房間傳來低吼"};
