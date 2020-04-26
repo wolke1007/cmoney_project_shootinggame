@@ -42,7 +42,7 @@ public class Global {
     private static final int HALF = 2;
     public static final int UNIT_MIN = 24 / Global.HALF;//子彈 像素
     // 地圖數量
-    public static final int MAP_QTY = 7;
+    public static final int MAP_QTY = 4;
     // 角色於地圖位置
 //    public static final int DEFAULT_ACTOR_X = (int) (FRAME_X / 3 - (UNIT_X * 2 / 3));
 //    public static final int DEFAULT_ACTOR_Y = (int) (FRAME_Y / 3 - (UNIT_Y * 2 / 3));

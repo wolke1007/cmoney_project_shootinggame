@@ -132,7 +132,7 @@ public class MainScene extends Scene {
         this.textBar.addScript(scripts);
         this.currentEvent = this.events.get(0);
         //boss
-        this.boss = new Boss("rect", this.actor.getCenterX() - 336f, 50f, this.actor, 60);
+        this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
         this.allObjects.add(this.boss);
         this.boss.setAllObject(this.allObjects);
 //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
