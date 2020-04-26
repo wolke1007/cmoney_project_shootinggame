@@ -12,7 +12,9 @@ import java.awt.Font;
 import renderer.Renderer;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import util.CommandSolver;
 import util.Global;
 import util.Record;
@@ -24,26 +26,36 @@ import util.ScoreCalculator;
  */
 public class RankScene extends Scene {
 
-    private Renderer renderer;
+    private Renderer backgroundRenderer;
+    private Renderer backgroundRenderer2;
+    private Renderer shadowRenderer;
+    private Renderer rankRenderer;
+    private Renderer returnBtnRenderer;
+    private Button returnBtn;
     private ScoreCalculator scoreCal;
     private ArrayList<Record> scoreList;
+    private String scoreType;
     private int printLimit;
-    private final String[] gameMode = {"endless", "campaign", "saving"};
-    Button backBtn;
-    Button endlessBtn;
-    Button campaignBtn;
-    Button savingBtn;
-    String scoreType;
+    private int rankContentTop;
+    private int rankContentLeft;
+    private int rankContentBottom;
+    private int rankContentRight;
+    private SimpleDateFormat sdf;
 
     public RankScene(SceneController sceneController) {
         super(sceneController);
-        this.renderer = new Renderer();
+        this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[0]);
+        this.backgroundRenderer2 = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[1]);
+        this.rankRenderer = new Renderer(new int[]{0}, 0, ImagePath.RANK_PAGE[0]);
+        this.returnBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BUTTON[0]);
+        this.returnBtn = new returnButton();
+        this.scoreType = "campaign";
         this.printLimit = 5; // 要顯示幾行歷史紀錄
-        this.backBtn = new BackButton();
-        this.campaignBtn = new CampaignButton();
-        this.savingBtn = new SavingButton();
-        this.endlessBtn = new EndlessButton();
-        this.scoreType = "null";
+        this.rankContentTop = (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(45));
+        this.rankContentLeft = (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(45));
+        this.rankContentBottom = (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(12));
+        this.rankContentRight = (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(5));
+        this.sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     }
 
     public abstract class Button {
@@ -54,46 +66,16 @@ public class RankScene extends Scene {
         public int right;
     }
 
-    public class BackButton extends Button {
+    public class returnButton extends Button {
 
-        public BackButton() {
-            super.left = 30;
-            super.top = Global.SCREEN_Y - 90;
-            super.right = super.left + 100;
-            super.bottom = super.top + 80;
-        }
-    }
-
-    public class EndlessButton extends Button {
-
-        public EndlessButton() {
-            int width = 150;
-            super.left = (Global.SCREEN_X * 1 / 3) - (Global.SCREEN_X * 1 / 3) / 2 - width / 2;
-            super.top = 100;
+        public returnButton() {
+            int height = 130;
+            int width  = 250;
+            int upDownposition = -5;
+            super.left = Global.SCREEN_X - width;
+            super.top = Global.SCREEN_Y - height + upDownposition;
             super.right = super.left + width;
-            super.bottom = super.top + 80;
-        }
-    }
-
-    public class CampaignButton extends Button {
-
-        public CampaignButton() {
-            int width = 150;
-            super.left = (Global.SCREEN_X * 2 / 3) - (Global.SCREEN_X * 1 / 3) / 2 - width / 2;
-            super.top = 100;
-            super.right = super.left + 100;
-            super.bottom = super.top + 80;
-        }
-    }
-
-    public class SavingButton extends Button {
-
-        public SavingButton() {
-            int width = 150;
-            super.left = (Global.SCREEN_X * 3 / 3) - (Global.SCREEN_X * 1 / 3) / 2 - width / 2;
-            super.top = 100;
-            super.right = super.left + 100;
-            super.bottom = super.top + 80;
+            super.bottom = super.top + height + upDownposition;
         }
     }
 
@@ -101,7 +83,7 @@ public class RankScene extends Scene {
     public void sceneBegin() {
         // 播放背景音樂
         this.scoreCal = ScoreCalculator.getInstance();
-        this.scoreList = this.scoreCal.getHistory(this.gameMode[0]);
+        this.scoreList = this.scoreCal.getHistory(this.scoreType);
         Global.log("this.scoreList: " + this.scoreList);
     }
 
@@ -125,72 +107,48 @@ public class RankScene extends Scene {
         return false;
     }
 
+    private float ratio(float num){
+        return num / 50f;
+    }
+
     private void paintEndlessScore(Graphics g) {
         int textGap = 60;
-        g.setColor(Color.WHITE);
+        int categoryGap1 = (int)((this.rankContentRight - this.rankContentLeft) * ratio(19));
+        int categoryGap2 = (int)((this.rankContentRight - this.rankContentLeft) * ratio(16) + 40 * ratio(16));
+        int leftOffset = (int)((this.rankContentRight - this.rankContentLeft) * ratio(5));
+        int topOffset = (int)((this.rankContentBottom - this.rankContentTop) * ratio(20));
+        g.setColor(Color.BLACK);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
         for (int i = 0; i < RankScene.this.scoreList.size(); i++) {
             if (i < RankScene.this.printLimit) {
                 Record record = RankScene.this.scoreList.get(i);
-                g.drawString(Integer.toString(i + 1) + ".", endlessBtn.left - 50, endlessBtn.bottom + 30 * (i + 2) + textGap);
-                g.drawString(record.getName(), endlessBtn.left, endlessBtn.bottom + 30 * (i + 2) + textGap);
-                g.drawString(Integer.toString(record.getScore()), endlessBtn.left + 400, endlessBtn.bottom + 30 * (i + 2) + textGap);
-                g.drawString(record.getDate().toString(), endlessBtn.left + 800, endlessBtn.bottom + 30 * (i + 2) + textGap);
+                g.drawString(Integer.toString(i + 1) + ".", this.rankContentLeft + leftOffset, this.rankContentTop + topOffset + i * textGap);
+                g.drawString(record.getName(), this.rankContentLeft + leftOffset + textGap, this.rankContentTop + topOffset + i * textGap);
+                g.drawString(Integer.toString(record.getScore()), this.rankContentLeft + leftOffset + categoryGap1, this.rankContentTop + topOffset + i * textGap);
+                g.drawString(this.sdf.format(record.getDate()),
+                        this.rankContentLeft + leftOffset + (2 * categoryGap2), this.rankContentTop + topOffset + i * textGap);
             }
         }
         g.setColor(Color.BLACK);
     }
-
+    
     @Override
     public void paint(Graphics g) {
-        this.renderer.setImage(ImagePath.RANK_PAGE[0]); // 背景圖
-        this.renderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y);
-
-        this.renderer.setImage(ImagePath.COMMON_BUTTON[0]);
-        if (cursorInBtn(this.backBtn)) {
-            this.renderer.paint(g, this.backBtn.left, this.backBtn.top, this.backBtn.right, this.backBtn.bottom); // 歷史紀錄按鈕
+        this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
+        this.backgroundRenderer2.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(49))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(49))
+                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(1))
+                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(1))); // 背景圖
+        this.rankRenderer.paint(g, this.rankContentLeft
+                , this.rankContentTop
+                , this.rankContentRight
+                , this.rankContentBottom);
+        if (cursorInBtn(this.returnBtn)) {
+            this.returnBtnRenderer.paint(g, this.returnBtn.left + 10, this.returnBtn.top + 10, this.returnBtn.right + 10, this.returnBtn.bottom + 10); // 開始按鈕
         } else {
-            this.renderer.paint(g, this.backBtn.left + 10, this.backBtn.top - 10, this.backBtn.right + 10, this.backBtn.bottom - 10); // 歷史紀錄按鈕
+            this.returnBtnRenderer.paint(g, this.returnBtn.left, this.returnBtn.top, this.returnBtn.right, this.returnBtn.bottom); // 開始按鈕
         }
-
-        this.renderer.setImage(ImagePath.RANK_PAGE[1]);
-        if (cursorInBtn(this.endlessBtn)) {
-            this.renderer.paint(g, this.endlessBtn.left, this.endlessBtn.top, this.endlessBtn.right, this.endlessBtn.bottom); // Endless mode 按鈕
-        } else {
-            this.renderer.paint(g, this.endlessBtn.left + 10, this.endlessBtn.top - 10, this.endlessBtn.right + 10, this.endlessBtn.bottom - 10); // Endless mode 按鈕
-        }
-
-        this.renderer.setImage(ImagePath.RANK_PAGE[2]);
-        if (cursorInBtn(this.campaignBtn)) {
-            this.renderer.paint(g, this.campaignBtn.left, this.campaignBtn.top, this.campaignBtn.right, this.campaignBtn.bottom); // Campaign mode 按鈕
-        } else {
-            this.renderer.paint(g, this.campaignBtn.left + 10, this.campaignBtn.top - 10, this.campaignBtn.right + 10, this.campaignBtn.bottom - 10); // Campaign mode 按鈕
-        }
-
-        this.renderer.setImage(ImagePath.RANK_PAGE[3]);
-        if (cursorInBtn(this.savingBtn)) {
-            this.renderer.paint(g, this.savingBtn.left, this.savingBtn.top, this.savingBtn.right, this.savingBtn.bottom); // Saving mode 按鈕
-        } else {
-            this.renderer.paint(g, this.savingBtn.left + 10, this.savingBtn.top - 10, this.savingBtn.right + 10, this.savingBtn.bottom - 10); // Saving mode 按鈕
-        }
-        g.setColor(Color.WHITE);
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-        g.drawString("Name", this.endlessBtn.left, this.endlessBtn.bottom + 50);
-        g.drawString("Score", this.endlessBtn.left + 400, this.endlessBtn.bottom + 50);
-        g.drawString("Date", this.endlessBtn.left + 800, this.endlessBtn.bottom + 50);
-        g.setColor(Color.BLACK);
-        if (this.scoreList == null) {
-            return;
-        }
-        if (this.scoreType.equals(RankScene.this.gameMode[0])) {
-            paintEndlessScore(g);
-        }
-        if (this.scoreType.equals(RankScene.this.gameMode[1])) {
-
-        }
-        if (this.scoreType.equals(RankScene.this.gameMode[2])) {
-
-        }
+        paintEndlessScore(g);
     }
 
     @Override
@@ -224,21 +182,9 @@ public class RankScene extends Scene {
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
             if (state == CommandSolver.MouseState.PRESSED) {
-                if (cursorInBtn(new BackButton())) {
+                if (cursorInBtn(new returnButton())) {
                     // Enter main scene
                     RankScene.super.sceneController.changeScene(new StartMenuScene(RankScene.super.sceneController));
-                }
-                if (cursorInBtn(new EndlessButton())) {
-                    // Enter score history scene
-                    RankScene.this.scoreType = RankScene.this.gameMode[0];
-                }
-                if (cursorInBtn(new CampaignButton())) {
-                    // Enter score history scene
-                    RankScene.this.scoreType = RankScene.this.gameMode[1];
-                }
-                if (cursorInBtn(new SavingButton())) {
-                    // Enter score history scene
-                    RankScene.this.scoreType = RankScene.this.gameMode[2];
                 }
             }
         }

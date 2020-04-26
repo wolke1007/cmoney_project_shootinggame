@@ -77,10 +77,10 @@ public class TextBar {
 
     public void paint(Graphics g) {
         if (this.play && ready()) {
-            g.setColor(Color.black);
+            g.setColor(Color.BLACK);
             g.fillRect(this.x, this.y, this.width, this.height);
             // 如果有稿可以印就會印出來
-            g.setColor(Color.white);
+            g.setColor(Color.WHITE);
             g.setFont(new Font("Microsoft YaHei", Font.BOLD, this.fontSize));
             String text = this.list.get(0);
             if (this.index < text.length()) {
@@ -99,7 +99,7 @@ public class TextBar {
                 }
             }
         }
-        g.setColor(Color.black);
+        g.setColor(Color.BLACK);
     }
 
 }

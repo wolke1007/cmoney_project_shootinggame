@@ -28,7 +28,6 @@ public class ScoreCalculator implements Serializable {
     private long currentTime;
     private boolean gameOver;
     
-    private ArrayList<Record> endlessGameScore;
     private ArrayList<Record> compaignGameScore;
     private ArrayList<Record> savingGameScore;
     private static FileInputStream fis;
@@ -39,7 +38,6 @@ public class ScoreCalculator implements Serializable {
         this.startTime = 0;
         this.endTime = 0;
         this.currentTime = 0;
-        this.endlessGameScore = new ArrayList<Record>();
         this.compaignGameScore = new ArrayList<Record>();
         this.savingGameScore = new ArrayList<Record>();
         this.gameOver = false;
@@ -136,7 +134,7 @@ public class ScoreCalculator implements Serializable {
     }
     
     public boolean isOnTop(int top){
-        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(), this.endlessGameScore) != -1 && inHistoryPostion(top, calculateScore(), this.endlessGameScore) <= top) {
+        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(), this.compaignGameScore) <= top) {
             return true;
         }
         return false;
@@ -146,9 +144,9 @@ public class ScoreCalculator implements Serializable {
         Global.log("enter endless addInHistoryIfInTop");
         if(isOnTop(top)){
             Record newRecord = new Record(calculateScore(), name);
-            this.endlessGameScore.add(newRecord);
+            this.compaignGameScore.add(newRecord);
             reset(); // reset score
-            sort(this.endlessGameScore);
+            sort(this.compaignGameScore);
             writeFile();
             return;
         }
@@ -178,9 +176,10 @@ public class ScoreCalculator implements Serializable {
     public ArrayList<Record> getHistory(String gameMode) {
         switch (gameMode) {
             case "endless":
-                sort(this.endlessGameScore);
-                return this.endlessGameScore;
+                sort(this.compaignGameScore);
+                return this.compaignGameScore;
             case "campaign":
+                sort(this.compaignGameScore);
                 return this.compaignGameScore;
             case "saving":
                 return this.savingGameScore;

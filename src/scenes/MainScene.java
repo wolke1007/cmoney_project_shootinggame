@@ -116,8 +116,6 @@ public class MainScene extends Scene {
         this.events = new ArrayList<Event>();
         this.textBar = new TextBar(0, (int) this.view.getY() - 7 + Global.HP_HEIGHT + 5, Global.SCREEN_X, 40);
         // --------------- 新增 Event start --------------- 
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
         String[] scripts = {"身為一名基地工程師",
             "一次在基地睡醒後發現基地所有人都消失了",
             "基地的緊急備用燈光處於開啟狀態",
@@ -126,6 +124,8 @@ public class MainScene extends Scene {
         };
         this.textBar.addScript(scripts);
         this.events.add(new DialogEvent(this.textBar, null));
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
         this.events.add(new KillAllEnemyEvent(this.allObjects, null));
         // ---------------  新增 Event end --------------- 
         setNextEvent();
@@ -247,9 +247,6 @@ public class MainScene extends Scene {
             case 1:
                 if (this.currentEvent.isTrig()) {
                     // 事件 1 觸發後做的事情
-
-                    this.textBar.play();
-//                    this.maps.getMaps().get(2).getBuildings().get(0).open("right");
                     String[] scripts = {"你聽聞隔壁房間傳來低吼"};
                     this.textBar.addScript(scripts);
                     this.textBar.play();
@@ -427,11 +424,11 @@ public class MainScene extends Scene {
 
     private void paintTime(Graphics g) {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        g.setColor(Color.white);
+        g.setColor(Color.WHITE);
         g.drawString(String.valueOf("Time: " + this.scoreCal.getCurrentTime() / 1000 / 60 + "\""
                 + this.scoreCal.getCurrentTime() / 1000 % 60 + "\"" + this.scoreCal.getCurrentTime() % 1000 / 100),
                 Global.HP_FRAME_WIDTH + 10, 30);
-        g.setColor(Color.black);
+        g.setColor(Color.BLACK);
     } // 分數顯示
 
     @Override
