@@ -238,11 +238,16 @@ public class MainScene extends Scene {
             case 11:
                 // 停止計時
                 this.scoreCal.gameOver();
-                scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊」",
-                    "醒來時已是怪物的樣貌",
-                    "但卻沒有辦法控制自己的行動",
-                    "此時念頭只有一個",
-                    "「剷除入侵者」"};
+                if(this.actor.getHp() == 100){
+                    scripts = new String[]{"有一件事我必需說",
+                        "我的薪水很高  真的很高"};
+                }else{
+                    scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊",
+                        "醒來時已是怪物的樣貌",
+                        "但卻沒有辦法控制自己的行動",
+                        "此時念頭只有一個...」",
+                        "「剷除入侵者!!!」"};
+                }
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
