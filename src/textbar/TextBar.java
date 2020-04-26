@@ -42,9 +42,9 @@ public class TextBar {
         this.width = width;
         this.height = height;
         this.textContent = "";
-        this.lineDelay = new Delay(100);
+        this.lineDelay = new Delay(70);
         this.lineDelay.cleanCounter();
-        this.charDelay = new Delay(10);
+        this.charDelay = new Delay(5);
         this.charDelay.start();
         this.play = false;
         this.index = 0;
