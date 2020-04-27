@@ -218,6 +218,7 @@ public class MainScene extends Scene {
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
+                AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
                 break;
             case 9:
                 this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
@@ -230,8 +231,9 @@ public class MainScene extends Scene {
                 // 生 BOSS start
                 this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
                 this.allObjects.add(this.boss);
+                this.allObjects.add(this.boss.getDarkBarrier());
                 this.boss.setAllObject(this.allObjects);
-        //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
+                //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
                 //        this.allObjects.add(this.bossBarrier);
                 this.boss.setStartAttack(true);
                 this.boss.setStartPaint(true);
@@ -240,10 +242,10 @@ public class MainScene extends Scene {
             case 11:
                 // 停止計時
                 this.scoreCal.gameOver();
-                if(this.actor.getHp() == 100){
+                if (this.actor.getHp() == 100) {
                     scripts = new String[]{"有一件事我必需說",
                         "我的薪水很高  真的很高"};
-                }else{
+                } else {
                     scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊",
                         "醒來時已是怪物的樣貌",
                         "但卻沒有辦法控制自己的行動",
@@ -387,7 +389,7 @@ public class MainScene extends Scene {
 
     public void enemyUpdate() { //敵人測試更新中
         for (int i = 0; i < this.enemys.size(); i++) {
-            if (this.enemys.get(i).getHp() <= 1) {
+            if (this.enemys.get(i).getIsRmove()) {
                 remove(this.enemys.get(i));
                 this.enemys.remove(this.enemys.get(i)); // 真實的刪除
                 i--;

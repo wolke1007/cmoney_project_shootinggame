@@ -22,6 +22,7 @@ public class AudioPath {
     private static final String COMMON = AudioPath.ROOT + "/common";
     private static final String EFFECT = AudioPath.ROOT + "/effect";
 
+    public static final String BUTTON_AUDIO = AudioPath.COMMON + "/buttonAudio";
     public static final String START_MENU_SCENE = AudioPath.BGM + "/start_highScore_scene(City_of_Jewels).wav";
     public static final String MAIN_SCENE = BGM + "/main_scene(Inescapable).wav";
     public static final String BOSS_FIGHT = BGM + "/boss_fight(Ghost_Chase_Thriller).wav";
@@ -36,6 +37,7 @@ public class AudioPath {
         AudioPath.ZOMBIE + "/moan09.wav",
         AudioPath.ZOMBIE + "/zombie_die(death_45).wav"};
     public static final String ZOMBIE_STEP_MOVE = AudioPath.ZOMBIE + "/zombieFootStep.wav";
+    public static final String ENEMY_DEAD = AudioPath.ZOMBIE + "/enemyDead.wav";
     public static final String[] ZOMBIE_BOSS_MOVES = {AudioPath.ZOMBIE_BOSS + "/boss_die(charger_die_01).wav"};
     public static final String[] COMMONS = {AudioPath.COMMON + "/button.wav"};
     public static final String[][] EFFECTS = {{AudioPath.EFFECT + "/attack" + "/bomb.wav",
@@ -50,6 +52,7 @@ public class AudioPath {
         AudioPath.BOSS + "/bossFireReady_1.wav",
         AudioPath.BOSS + "/bossFireReady_2.wav",
         AudioPath.BOSS + "/bossFireReady_3.wav",};
+    public static final String BOSS_ANGRY_SOUND = AudioPath.BOSS + "/bossAngrySound.wav";
     public static final String BOSS_FIRE_CONTINUE = AudioPath.BOSS + "/bossFireContinue.wav";
     public static final String BOSS_HAND_CONTINUE = AudioPath.BOSS + "/bossHandContinue.wav";
     public static final String BOSS_HAND_MOVE = AudioPath.BOSS + "/bossHandMove.wav";

@@ -43,7 +43,7 @@ public class Bullet extends ShootMode {
 
     public void setVectorMove() {
         this.vecterMove = new VectorCollision(getSelf(), 0, 0,
-                new String[]{"Map", "Ammo", "Actor"}, Global.INNER);
+                new String[]{"Map", "Ammo", "Actor", "Barrier"}, Global.INNER);
         this.vecterMove.setIsBackMove(false);
         this.vecterMove.setDivisor(5);
     }
