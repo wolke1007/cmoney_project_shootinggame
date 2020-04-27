@@ -78,12 +78,9 @@ public class MainScene extends Scene {
     private Renderer loadingPage;
     private Delay loadingDelay;
     private int loadingCount;
-    private Renderer evilPage;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
-        this.evilPage = new Renderer();
-        this.evilPage.setImage(ImagePath.EVIL_PAGE);
         this.loadingPage = new Renderer();
         this.loadingPage.setImage(ImagePath.LOADING_PAGE[0]);
         this.loadingDelay = new Delay(5);
@@ -200,7 +197,6 @@ public class MainScene extends Scene {
         if (!event.isTrig()) {
             return;
         }
-        Map map;
         String[] scripts;
         switch (event.getSerialNo()) {
             case 0:
@@ -224,8 +220,6 @@ public class MainScene extends Scene {
             case 2:
                 // 將箱子 remove 並產出怪物1
                 boxProduceEnemy(5, 1);
-                map = this.maps.getMaps().get(1);
-                map = null;
                 break;
             case 3:
                 scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
@@ -251,8 +245,6 @@ public class MainScene extends Scene {
                 break;
             case 6:
                 boxProduceEnemy(5, 2);
-                map = this.maps.getMaps().get(2);
-                map = null;
                 scripts = new String[]{"好像是不同的怪物，跑得更快了"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
@@ -293,7 +285,7 @@ public class MainScene extends Scene {
                     scripts = new String[]{"有一件事我必需說",
                         "我的薪水很高  真的很高",
                         "而且高的不得了"};
-                }else{
+                } else {
                     scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊",
                         "醒來時已是怪物的樣貌",
                         "但卻沒有辦法控制自己的行動",
@@ -386,14 +378,14 @@ public class MainScene extends Scene {
         g.setColor(Color.BLACK);
     }
 
-    private void removeInvisibleWall(){
-        if(this.view.getFocus().getBuildings().get(0).getDoors().get(0).isOpen() && 
-                this.view.getFocus().getBuildings().get(0).getDoors().get(0).getY() <= this.view.getFocus().getBuildings().get(0).getDoors().get(0).getOriginalY() - Global.DOOR_LENGTH){
+    private void removeInvisibleWall() {
+        if (this.view.getFocus().getBuildings().get(0).getDoors().get(0).isOpen()
+                && this.view.getFocus().getBuildings().get(0).getDoors().get(0).getY() <= this.view.getFocus().getBuildings().get(0).getDoors().get(0).getOriginalY() - Global.DOOR_LENGTH) {
             this.view.getFocus().getBuildings().get(0).getDoors().get(0).deleteInvisibleWall();
             remove(this.view.getFocus().getBuildings().get(0).getDoors().get(0).getInvisibleWall());
         }
     }
-    
+
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -422,7 +414,7 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        if(this.view.getFocus().getX() - this.view.getX() <= 15){ // 15 為切換房間時 view 移動的單位
+        if (this.view.getFocus().getX() - this.view.getX() <= 15) { // 15 為切換房間時 view 移動的單位
             this.actor.setAutoMove(false);
         }
         removeInvisibleWall();
@@ -488,8 +480,8 @@ public class MainScene extends Scene {
     public void remove(GameObject obj) { // 從 allObjects 與 view 中刪除
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
-        for(int i = 0; i < this.allObjects.size(); i++){
-            if(this.allObjects.get(i) == obj){
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            if (this.allObjects.get(i) == obj) {
                 Global.log("---------------- BUUGGGGG target object doesn't deleted ----------------");
             }
         }
@@ -715,9 +707,6 @@ public class MainScene extends Scene {
         }
         if (this.textBar.isPlaying()) {
             this.textBar.paint(g);
-        }
-        if (this.boss != null) {
-            this.evilPage.paint(g, (int)this.boss.getX(), (int) this.boss.getY(), 800, 500);
         }
     }
 

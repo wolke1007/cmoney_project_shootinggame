@@ -85,7 +85,6 @@ public class Actor extends GameObject {
 //        this.moveDelay = new Delay(this.actMoveSpeed);
 //        this.moveDelay.start();
 //    }//初始化用
-
     private float limitRange(float range) {
         if (range < 0) {
             return 0;
@@ -118,12 +117,12 @@ public class Actor extends GameObject {
 //            this.moveDelay.start();
 //        }
     }
-    
-    public void setAutoMove(boolean status){
+
+    public void setAutoMove(boolean status) {
         this.autoMove = status;
     }
-    
-    public boolean getAutoMove(){
+
+    public boolean getAutoMove() {
         return this.autoMove;
     }
 
@@ -133,7 +132,7 @@ public class Actor extends GameObject {
     }
 
     public void setMovementPressedStatus(int dir, boolean status) {
-        if(this.autoMove){
+        if (this.autoMove) {
             return;
         }
         this.movement.setPressedStatus(dir, status);
@@ -161,12 +160,12 @@ public class Actor extends GameObject {
     public void move() {
         this.movement.moving(10);
     }
-    
-    public void setMoveDelay(){
+
+    public void setMoveDelay() {
         this.moveDelay.start();
     }
-    
-    public boolean getMoveDelayTrig(){
+
+    public boolean getMoveDelayTrig() {
         return this.moveDelay.isTrig();
     }
 
@@ -175,7 +174,7 @@ public class Actor extends GameObject {
         if (!this.isStand && !this.autoMove) {
             move();
         }
-        if(this.moveDelay.isTrig() && this.autoMove && this.autoMoveCnt >= 0){
+        if (this.moveDelay.isTrig() && this.autoMove && this.autoMoveCnt >= 0) {
             this.movement.setPressedStatus(Global.UP, false);
             this.movement.setPressedStatus(Global.DOWN, false);
             this.movement.setPressedStatus(Global.LEFT, false);
@@ -183,7 +182,7 @@ public class Actor extends GameObject {
             this.movement.moving(7);
             Global.log("this.autoMoveCnt:" + this.autoMoveCnt);
             this.autoMoveCnt--;
-            if(this.autoMoveCnt == 0){
+            if (this.autoMoveCnt == 0) {
                 Global.log("------------ autoMoveCnt = 0 ------------");
                 this.autoMoveCnt = 20;
                 this.moveDelay.pause();
