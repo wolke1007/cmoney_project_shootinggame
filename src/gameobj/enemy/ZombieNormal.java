@@ -5,6 +5,8 @@
  */
 package gameobj.enemy;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import gameobj.GameObject;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -25,6 +27,7 @@ public class ZombieNormal extends MoveMode {
     private RendererToRotate renderer;//旋轉圖渲染器
     private Delay imageDelay;
     private int imageState;
+    private int deadImage;
     //圖片end
 
     //目標的血量控制
@@ -36,6 +39,8 @@ public class ZombieNormal extends MoveMode {
     private VectorCollision vectorMove;
     //移動分段
 
+    private String deadType;
+
     public ZombieNormal(GameObject self, GameObject target, int moveSpeed, String[] path) {
         super(self, target, moveSpeed);
         this.renderer = new RendererToRotate(path, self, getAngle());
@@ -43,6 +48,12 @@ public class ZombieNormal extends MoveMode {
         setVectorMove();
         setMoveSpeedDetail();
         this.imageState = 0;
+        this.deadImage = 0;
+        this.deadType = "Enemy";
+    }
+
+    public String getType() {
+        return this.deadType;
     }
 
     private void setAverageSpeed() {
@@ -94,7 +105,18 @@ public class ZombieNormal extends MoveMode {
         if (getSelf().getHp() >= 1) {
             move();
         } else {
-            getSelf().setXY(-100, -100);
+            this.deadType = "Map";
+            this.imageDelay.setDelayFrame(4);
+            if(this.deadImage == 0){
+                AudioResourceController.getInstance().play(AudioPath.ENEMY_DEAD);
+            }
+            if (this.imageDelay.isTrig()) {
+                this.renderer.setState(this.deadImage++ % 20 + 31);
+                if (this.deadImage > 20) {
+                    this.setIsRemove(true);
+                    getSelf().setXY(-100, -100);
+                }
+            }
         }
     }
 

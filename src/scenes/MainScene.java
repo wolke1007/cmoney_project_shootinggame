@@ -8,6 +8,8 @@ package scenes;
 import controllers.AudioPath;
 import controllers.AudioResourceController;
 import controllers.ImagePath;
+import controllers.ImageResourceController;
+import controllers.MusicResourceController;
 import controllers.SceneController;
 import effects.DeadEffect;
 import effects.Effect;
@@ -36,6 +38,7 @@ import util.Global;
 import util.CommandSolver;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import renderer.RendererToRotate;
 import textbar.TextBar;
 import util.MapGenerator;
 import util.ScoreCalculator;
@@ -72,9 +75,18 @@ public class MainScene extends Scene {
     private TextBar textBar; // 讀稿機
     private boolean grenadeReady;
     private Barrier box;
+    private GameObject loadngWall;
+    private Renderer loadingPage;
+    private Delay loadingDelay;
+    private int loadingCount;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
+        this.loadingPage = new Renderer();
+        this.loadingPage.setImage(ImagePath.LOADING_PAGE[0]);
+        this.loadingDelay = new Delay(5);
+        this.loadingDelay.start();
+        this.loadingCount = 0;
         this.mouseState = false;
         this.ammoState = false;
         this.grenadeReady = true;
@@ -89,13 +101,15 @@ public class MainScene extends Scene {
     private void allDelayControl() {
         this.stateChage = new Delay(30);
         this.stateChage.start();
-        this.enemyAudio = new Delay(180);
+        this.enemyAudio = new Delay(150);
         this.enemyAudio.start();
     }
 
     @Override
     public void sceneBegin() {
         // 開始背景音樂
+        MusicResourceController.getInstance().tryGetMusic(AudioPath.START_MUSIC).stop();
+        MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN).loop();
         this.gameOver = false;
         this.nameTyped = false;
         this.ammos = new ArrayList<>();
@@ -225,11 +239,14 @@ public class MainScene extends Scene {
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
+                AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
                 break;
             case 9:
                 this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
                 break;
             case 10:
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN).stop();
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).loop();
                 this.maps.getMaps().get(2).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
@@ -238,17 +255,19 @@ public class MainScene extends Scene {
                 // 生 BOSS start
                 this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
                 this.allObjects.add(this.boss);
+                this.allObjects.add(this.boss.getDarkBarrier());
                 this.boss.setAllObject(this.allObjects);
-        //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
+                //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
                 //        this.allObjects.add(this.bossBarrier);
                 this.boss.setStartAttack(true);
                 this.boss.setStartPaint(true);
                 // 生 BOSS end
                 break;
             case 11:
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
                 // 停止計時
                 this.scoreCal.gameOver();
-                if(this.actor.getHp() == 100){
+                if (this.actor.getHp() == 100) {
                     scripts = new String[]{"有一件事我必需說",
                         "我的薪水很高  真的很高",
                         "而且高的不得了"};
@@ -398,6 +417,10 @@ public class MainScene extends Scene {
             }
             Global.enemyAudio = false;
         }
+        if (this.actor.getHp() <= 0) {
+            Global.enemyAudio = false;
+            return;
+        }
         if (Global.enemyAudio && this.enemyAudio.isTrig()) {
             AudioResourceController.getInstance().play(AudioPath.ZOMBIE_STEP_MOVE);
         }
@@ -405,7 +428,7 @@ public class MainScene extends Scene {
 
     public void enemyUpdate() { //敵人測試更新中
         for (int i = 0; i < this.enemys.size(); i++) {
-            if (this.enemys.get(i).getHp() <= 1) {
+            if (this.enemys.get(i).getIsRmove()) {
                 remove(this.enemys.get(i));
                 this.enemys.remove(this.enemys.get(i)); // 真實的刪除
                 i--;
@@ -575,6 +598,56 @@ public class MainScene extends Scene {
 
     @Override
     public void paint(Graphics g) {
+        if (this.loadingCount < 37) {
+            this.loadingPage.paint(g, 0, 0, 1600, 900);
+            if (this.loadingDelay.isTrig()) {
+                if (this.loadingCount == 12) {
+                    for (int i = 0; i < ImagePath.ZOMBIE_NORMAL.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.ZOMBIE_NORMAL[i]);
+                    }
+                } else if (this.loadingCount == 13) {
+                    for (int i = 0; i < ImagePath.ZOMBIE_MONSTER.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.ZOMBIE_MONSTER[i]);
+                    }
+                } else if (this.loadingCount == 14) {
+                    for (int i = 0; i < ImagePath.BOSS_HEAD.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_HEAD[i]);
+                    }
+                } else if (this.loadingCount == 15) {
+                    for (int i = 0; i < ImagePath.BOSS_HEAD_FIRE.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_HEAD_FIRE[i]);
+                    }
+                } else if (this.loadingCount == 16) {
+                    for (int i = 0; i < ImagePath.BOSS_ATTACK_LEFTHAND.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_LEFTHAND[i]);
+                    }
+                } else if (this.loadingCount == 17) {
+                    for (int i = 0; i < ImagePath.BOSS_ATTACK_RIGHTHAND.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_RIGHTHAND[i]);
+                    }
+                } else if (this.loadingCount == 18) {
+                    for (int i = 0; i < ImagePath.BOSS_ATTACK_FIREBALL.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_FIREBALL[i]);
+                    }
+                } else if (this.loadingCount == 19) {
+                    for (int i = 0; i < ImagePath.BOSS_DARK_BARRIER.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_DARK_BARRIER[i]);
+                    }
+                } else if (this.loadingCount == 20) {
+                    for (int i = 0; i < ImagePath.BLOOD.length; i++) {
+                        ImageResourceController.getInstance().tryGetImage(ImagePath.BLOOD[i]);
+                    }
+                } else if (this.loadingCount == 21) {
+                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS);
+                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_RIGHT_HAND);
+                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_LEFT_HAND);
+                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_BOOM_CONTINUE);
+                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_END_BOMB);
+                }
+                this.loadingPage.setImage(ImagePath.LOADING_PAGE[this.loadingCount++ % 12]);
+            }
+            return;
+        }
         this.view.paint(g);
         paintHPbar(g);
         paintSmallMap(g);

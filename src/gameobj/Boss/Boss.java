@@ -8,6 +8,7 @@ package gameobj.Boss;
 import controllers.AudioPath;
 import controllers.AudioResourceController;
 import controllers.ImagePath;
+import gameobj.Barrier;
 import gameobj.GameObject;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -28,6 +29,8 @@ public class Boss extends GameObject {
     private boolean startPaint;//開始畫
     private boolean isDead;//是否死亡
     private boolean callEnemy;//召喚小怪
+    //目標
+    private GameObject target;
     //身體
     private Renderer renderer;
     //手
@@ -44,6 +47,8 @@ public class Boss extends GameObject {
     private BossAttack bossRightHand;
     //火球
     private BossAttack bossFire;
+    //阻擋的障礙物
+    private Barrier darkBarrier;
     //處發間隔控制
     private Delay nextTrig;
     private int stateMode;
@@ -55,9 +60,10 @@ public class Boss extends GameObject {
 
     public Boss(String colliderType, float x, float y, GameObject target, int moveSpeed) {
         super(colliderType, x, y, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6);
-        bossRendererToRotate(target);
+        this.target = target;
+        bossRendererToRotate(this.target);
         bossRenderer();
-        this.setHpPoint(500);
+        this.setHpPoint(100);
         delayDetail();
         setStartAttack(false);
         setStartPaint(false);
@@ -65,6 +71,12 @@ public class Boss extends GameObject {
         setCallEnemy(false);
         super.paintPriority = 0;
         setType("Boss");
+        this.darkBarrier = new Barrier("rect", this.getX() - 40, this.getY() - 20, 752, 460, ImagePath.BOSS_DARK_BARRIER, 0);
+//        AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
+    }
+
+    public Barrier getDarkBarrier() {
+        return this.darkBarrier;
     }
 
     private void bossRendererToRotate(GameObject target) {
@@ -195,6 +207,9 @@ public class Boss extends GameObject {
         this.setIsDead(true);
         this.bossEndDelay.start();
         if (this.bossEndDelay.isTrig()) {
+            if (this.bossEndCount == 0) {
+                AudioResourceController.getInstance().play(AudioPath.BOSS_DIE_SOUND);
+            }
             if (this.bossEndCount++ > 12) {
                 this.setXY(-10000, -10000);
             }
@@ -244,6 +259,13 @@ public class Boss extends GameObject {
             bossEnd();
             return;
         }
+        if (this.target.getHp() <= 0) {
+            this.setStartAttack(false);
+            this.bossFire.setXY(-10000, -10000);
+            this.bossHead.setXY(-10000, -10000);
+            this.bossLeftHand.setXY(-10000, -10000);
+            this.bossRightHand.setXY(-10000, -10000);
+        }
         if (this.getHpPercent() < 30) {
             this.nextTrig.setDelayFrame(30);
             this.bossRightHand.setMoveMultiple(6.5f);
@@ -273,6 +295,7 @@ public class Boss extends GameObject {
     @Override
     public void paintComponent(Graphics g) {
         if (this.startPaint) {
+            this.darkBarrier.paint(g);
             g.setColor(Color.BLACK);
             g.fillOval((int) (this.getGraph().left() - Global.viewX - 40), (int) (this.getGraph().top() - Global.viewY - 20), (int) this.getGraph().width() + 80, (int) this.getGraph().height() + 150);
             bossHandAttackPaint(g);

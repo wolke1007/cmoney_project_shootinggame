@@ -21,6 +21,7 @@ public abstract class MoveMode {
 
     private GameObject self;
     private GameObject target;
+    private boolean isRemove;
 
     //角度計算
     private Angle angle;
@@ -37,6 +38,15 @@ public abstract class MoveMode {
         setTarget(target);
         setAngle();
         setMoveSpeedDetail(moveSpeed);
+        setIsRemove(false);
+    }
+
+    public void setIsRemove(boolean isRemove) {
+        this.isRemove = isRemove;
+    }
+
+    public boolean getIsRemove() {
+        return this.isRemove;
     }
 
     public void setSelf(GameObject self) {
@@ -56,7 +66,6 @@ public abstract class MoveMode {
     }
 
     //移動delay控制
-
     private void setMoveSpeedDetail(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
@@ -105,7 +114,6 @@ public abstract class MoveMode {
     }
 
     //角度計算end
-
     public abstract void setAllObject(ArrayList<GameObject> list);
 
     public abstract void update();
