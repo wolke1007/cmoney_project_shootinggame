@@ -177,6 +177,9 @@ public class MainScene extends Scene {
                 break;
             case 1:
                 // 加入對話
+                this.maps.getMaps().get(0).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(1));
                 scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
                 this.textBar.addScript(scripts);
@@ -200,6 +203,8 @@ public class MainScene extends Scene {
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             case 5:
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(2));
                 scripts = new String[]{"「聽到快步衝刺的聲音」"};
                 this.textBar.addScript(scripts);
@@ -214,7 +219,6 @@ public class MainScene extends Scene {
                 this.textBar.play();
                 break;
             case 7:
-
                 break;
             case 8:
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
@@ -225,6 +229,8 @@ public class MainScene extends Scene {
                 this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
                 break;
             case 10:
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(3));
                 // 控制玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
                 // 控制玩家往前走 start
@@ -345,6 +351,11 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
+        Global.log("this.view.getX(): " + this.view.getX());
+        Global.log("this.view.getFocus().getX():  " + this.view.getFocus().getX());
+        if(this.view.getFocus().getX() - this.view.getX() <= 15){ // 15 為切換房間時 view 移動的單位
+            this.actor.setAutoMove(false);
+        }
         // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
         if (this.actor.getHp() <= actorDeadThreshold) {
             this.gameOver = true;

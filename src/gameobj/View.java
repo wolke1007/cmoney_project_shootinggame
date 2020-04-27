@@ -88,6 +88,10 @@ public class View extends GameObject {
     public void setStand(boolean isStand) {
     }
     
+    public Map getFocus(){
+        return (Map)this.focusOn;
+    }
+    
     public void setFocus(GameObject obj){
         this.focusOn = obj;
         this.moveDelay.restart();
