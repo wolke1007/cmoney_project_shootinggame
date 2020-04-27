@@ -34,6 +34,8 @@ public class Actor extends GameObject {
     private float moveSpeed; // per frame
     private float actMoveSpeed;
     private Move movement;
+    private boolean autoMove;
+    private int autoMoveCnt;
 
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
@@ -41,13 +43,16 @@ public class Actor extends GameObject {
         this.rotateRenderer = new RendererToRotate(path, this, getAngle());
         this.renderer = new Renderer();
         this.isStand = true;
-        setActorMoveSpeedDetail(moveSpeed);
+//        setActorMoveSpeedDetail(moveSpeed);
         this.movement = new Move(this);
         super.paintPriority = 0;
         setHpPoint(100);
         setType("Actor");
         this.effects = new ArrayList();
         this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y, this));
+        this.moveDelay = new Delay(2);
+        this.autoMove = false;
+        this.autoMoveCnt = 20;
     }//多載 建構子 當前版本
 
     //位置資訊
@@ -74,12 +79,12 @@ public class Actor extends GameObject {
     //角度計算end
 
     //角色移動相關資訊
-    private void setActorMoveSpeedDetail(float moveSpeed) {
-        this.moveSpeed = limitRange(moveSpeed);
-        this.actMoveSpeed = 60 - this.moveSpeed;
-        this.moveDelay = new Delay(this.actMoveSpeed);
-        this.moveDelay.start();
-    }//初始化用
+//    private void setActorMoveSpeedDetail(float moveSpeed) {
+//        this.moveSpeed = limitRange(moveSpeed);
+//        this.actMoveSpeed = 60 - this.moveSpeed;
+//        this.moveDelay = new Delay(this.actMoveSpeed);
+//        this.moveDelay.start();
+//    }//初始化用
 
     private float limitRange(float range) {
         if (range < 0) {
@@ -107,11 +112,19 @@ public class Actor extends GameObject {
 
     public void setStand(boolean isStand) {
         this.isStand = isStand;
-        if (this.isStand) {
-            this.moveDelay.stop();
-        } else {
-            this.moveDelay.start();
-        }
+//        if (this.isStand) {
+//            this.moveDelay.stop();
+//        } else {
+//            this.moveDelay.start();
+//        }
+    }
+    
+    public void setAutoMove(boolean status){
+        this.autoMove = status;
+    }
+    
+    public boolean getAutoMove(){
+        return this.autoMove;
     }
 
     @Override
@@ -120,6 +133,9 @@ public class Actor extends GameObject {
     }
 
     public void setMovementPressedStatus(int dir, boolean status) {
+        if(this.autoMove){
+            return;
+        }
         this.movement.setPressedStatus(dir, status);
     }
 
@@ -142,14 +158,38 @@ public class Actor extends GameObject {
         }
     }
 
-    private void move() {
+    public void move() {
         this.movement.moving(10);
+    }
+    
+    public void setMoveDelay(){
+        this.moveDelay.start();
+    }
+    
+    public boolean getMoveDelayTrig(){
+        return this.moveDelay.isTrig();
     }
 
     @Override
     public void update() {
-        if (!this.isStand && this.moveDelay.isTrig()) {
+        if (!this.isStand && !this.autoMove) {
             move();
+        }
+        if(this.moveDelay.isTrig() && this.autoMove && this.autoMoveCnt >= 0){
+            this.movement.setPressedStatus(Global.UP, false);
+            this.movement.setPressedStatus(Global.DOWN, false);
+            this.movement.setPressedStatus(Global.LEFT, false);
+            this.movement.setPressedStatus(Global.RIGHT, true);
+            this.movement.moving(7);
+            Global.log("this.autoMoveCnt:" + this.autoMoveCnt);
+            this.autoMoveCnt--;
+            if(this.autoMoveCnt == 0){
+                Global.log("------------ autoMoveCnt = 0 ------------");
+                this.autoMoveCnt = 20;
+                this.moveDelay.pause();
+                Global.log("this.moveDelay.isTrig():" + this.moveDelay.isTrig());
+                this.movement.setPressedStatus(Global.RIGHT, false);
+            }
         }
         // 需要先移動再 RenderToRotate 避免 Actor 的圖片跟不上碰撞框的移動
         // 以下一定要更新

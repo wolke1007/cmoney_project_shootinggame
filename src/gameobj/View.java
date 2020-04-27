@@ -37,7 +37,8 @@ public class View extends GameObject {
         Global.log("rec x" + super.x + " ,y" + super.y + " ,width:" + width + " ,height:" + height);
         this.width = width;
         this.height = height;
-        setViewMoveSpeedDetail(moveSpeed);
+        this.moveDelay = new Delay(1);
+        this.moveDelay.start();
         movement = new Move(this);
         sawObjects = new ArrayList<GameObject>();
         this.focusOn = focusOn;
@@ -75,7 +76,7 @@ public class View extends GameObject {
         }
         return false;
     }
-
+    
     public Move movement() {
         return this.movement;
     }
@@ -86,7 +87,16 @@ public class View extends GameObject {
 
     public void setStand(boolean isStand) {
     }
-
+    
+    public Map getFocus(){
+        return (Map)this.focusOn;
+    }
+    
+    public void setFocus(GameObject obj){
+        this.focusOn = obj;
+        this.moveDelay.restart();
+    }
+    
     private void setViewMoveSpeedDetail(float moveSpeed) {
         this.moveSpeed = limitRange(moveSpeed);
         this.actMoveSpeed = 60 - this.moveSpeed;
@@ -105,8 +115,21 @@ public class View extends GameObject {
 
     @Override
     public void update() {
-        float x = focusOn.getCenterX() - this.width / 2;
-        float y = focusOn.getCenterY() - this.height / 2;
+        float x = this.x;
+        float y = this.y;
+        if((focusOn.getCenterX() - this.width / 2) - this.x >= 0){
+            if(this.moveDelay.isTrig()){
+                x = this.x + 15;
+            }
+        }
+// 此遊戲 Y 軸不會動，這部分可以不用
+//        if((focusOn.getCenterY() - this.height / 2) - this.y >= 0){
+//            if(this.moveDelay.isTrig()){
+//                y = this.y + 10;
+//            }
+//        }else{
+//            y = focusOn.getCenterY() - this.height / 2;
+//        }
         if (x >= 0 && x + Global.VIEW_WIDTH <= (Global.MAP_WIDTH * Global.MAP_QTY)) {
             super.offsetX(x);
             Global.viewX = super.x;
@@ -115,8 +138,6 @@ public class View extends GameObject {
             super.offsetY(y);
             Global.viewY = super.y;
         }
-        // 判斷 focus target 是否有走進房間裡面，有的話只把該房間的 GameObject 印出來
-//        for
     }
 
     @Override

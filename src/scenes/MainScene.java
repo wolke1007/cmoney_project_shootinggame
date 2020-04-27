@@ -119,7 +119,6 @@ public class MainScene extends Scene {
         this.boxs = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
-        this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = Global.MAP_QTY;
         this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT);
         this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
@@ -130,6 +129,7 @@ public class MainScene extends Scene {
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
         mg.genSevenMaps(); // 產生 7 個橫向地圖
         addAllMapsToAllObjects();
+        this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.maps.getMaps().get(0));
         this.actor.setAllObjects(this.allObjects);
         this.scoreCal = ScoreCalculator.getInstance();
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
@@ -213,6 +213,10 @@ public class MainScene extends Scene {
                 break;
             case 1:
                 // 加入對話
+                this.maps.getMaps().get(0).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
+                this.view.setFocus(this.maps.getMaps().get(1));
                 scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
@@ -237,6 +241,10 @@ public class MainScene extends Scene {
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             case 5:
+                this.maps.getMaps().get(1).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
+                this.view.setFocus(this.maps.getMaps().get(2));
                 scripts = new String[]{"「聽到快步衝刺的聲音」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
@@ -250,7 +258,6 @@ public class MainScene extends Scene {
                 this.textBar.play();
                 break;
             case 7:
-
                 break;
             case 8:
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
@@ -264,10 +271,11 @@ public class MainScene extends Scene {
             case 10:
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN).stop();
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).loop();
-                // 控制玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
-                // 控制玩家往前走 start
-
-                // 控制玩家往前走 end
+                this.maps.getMaps().get(2).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
+                this.view.setFocus(this.maps.getMaps().get(3));
+                // 關門，生 BOSS，同時切 BOSS 戰鬥音樂
                 // 生 BOSS start
                 this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
                 this.allObjects.add(this.boss);
@@ -283,8 +291,9 @@ public class MainScene extends Scene {
                 this.scoreCal.gameOver();
                 if (this.actor.getHp() == 100) {
                     scripts = new String[]{"有一件事我必需說",
-                        "我的薪水很高  真的很高"};
-                } else {
+                        "我的薪水很高  真的很高",
+                        "而且高的不得了"};
+                }else{
                     scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊",
                         "醒來時已是怪物的樣貌",
                         "但卻沒有辦法控制自己的行動",
@@ -318,6 +327,7 @@ public class MainScene extends Scene {
                 ArrayList<Door> doors = map.getBuildings().get(j).getDoors();
                 for (int d = 0; d < doors.size(); d++) {
                     this.allObjects.add(doors.get(d));
+                    this.allObjects.add(doors.get(d).getInvisibleWall());
                 }
             }
         }
@@ -376,6 +386,14 @@ public class MainScene extends Scene {
         g.setColor(Color.BLACK);
     }
 
+    private void removeInvisibleWall(){
+        if(this.view.getFocus().getBuildings().get(0).getDoors().get(0).isOpen() && 
+                this.view.getFocus().getBuildings().get(0).getDoors().get(0).getY() <= this.view.getFocus().getBuildings().get(0).getDoors().get(0).getOriginalY() - Global.DOOR_LENGTH){
+            this.view.getFocus().getBuildings().get(0).getDoors().get(0).deleteInvisibleWall();
+            remove(this.view.getFocus().getBuildings().get(0).getDoors().get(0).getInvisibleWall());
+        }
+    }
+    
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -404,6 +422,10 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
+        if(this.view.getFocus().getX() - this.view.getX() <= 15){ // 15 為切換房間時 view 移動的單位
+            this.actor.setAutoMove(false);
+        }
+        removeInvisibleWall();
         // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
         if (this.actor.getHp() <= actorDeadThreshold) {
             this.gameOver = true;
@@ -466,6 +488,11 @@ public class MainScene extends Scene {
     public void remove(GameObject obj) { // 從 allObjects 與 view 中刪除
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
+        for(int i = 0; i < this.allObjects.size(); i++){
+            if(this.allObjects.get(i) == obj){
+                Global.log("---------------- BUUGGGGG target object doesn't deleted ----------------");
+            }
+        }
     } // 從 allObjects 與 view 中刪除
 
     public ArrayList<GameObject> getEnemy() {
