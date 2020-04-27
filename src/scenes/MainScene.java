@@ -52,6 +52,7 @@ public class MainScene extends Scene {
     private Actor actor;
     private ArrayList<Ammo> ammos;
     private ArrayList<Enemy> enemys;
+    private ArrayList<Barrier> boxs;
     private Maps maps;
     private View view;
     private ArrayList<GameObject> allObjects;
@@ -67,21 +68,22 @@ public class MainScene extends Scene {
     private Event currentEvent;
     private ArrayList<Event> events;
     private Boss boss;
-    private Barrier bossBarrier;
     private boolean gameOver;
     private boolean nameTyped;
     private String name;
     private int top; // 多少名次內可以進排行榜
     private TextBar textBar; // 讀稿機
     private boolean grenadeReady;
-    private Barrier box;
     private GameObject loadngWall;
     private Renderer loadingPage;
     private Delay loadingDelay;
     private int loadingCount;
+    private Renderer evilPage;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
+        this.evilPage = new Renderer();
+        this.evilPage.setImage(ImagePath.EVIL_PAGE);
         this.loadingPage = new Renderer();
         this.loadingPage.setImage(ImagePath.LOADING_PAGE[0]);
         this.loadingDelay = new Delay(5);
@@ -114,6 +116,7 @@ public class MainScene extends Scene {
         this.nameTyped = false;
         this.ammos = new ArrayList<>();
         this.enemys = new ArrayList<>();
+        this.boxs = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
@@ -132,8 +135,6 @@ public class MainScene extends Scene {
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         this.events = new ArrayList<Event>();
         this.textBar = new TextBar(0, (int) this.view.getY() - 7 + Global.HP_HEIGHT + 5, Global.SCREEN_X, 40);
-        this.box = new Barrier("rect", this.maps.getMaps().get(1).getCenterX(), this.maps.getMaps().get(1).getCenterY(), 150, 150, ImagePath.BARRIER, 1);
-        this.allObjects.add(this.box);
         eventSetup();
         this.scoreCal.gameStart();
     }
@@ -178,6 +179,23 @@ public class MainScene extends Scene {
         this.currentEvent = this.events.get(0);
     }
 
+    private void boxProduceEnemy(int quy, int type) {
+        ArrayList<Integer> x = new ArrayList<>();
+        ArrayList<Integer> y = new ArrayList<>();
+        for (int i = 0; i < this.boxs.size(); i++) {
+            x.add((int) this.boxs.get(i).getX());
+            y.add((int) this.boxs.get(i).getY());
+        }
+        for (int i = 0; i < this.boxs.size(); i++) {
+            this.remove(this.boxs.get(i));
+            this.boxs.remove(i);
+            i--;
+        }
+        for (int i = 0; i < x.size(); i++) {
+            this.genEnemies((int) x.get(i), (int) y.get(i), (int) x.get(i) + 150, (int) y.get(i) + 150, quy, type);
+        }
+    }
+
     private void afterEvent(Event event) {
         if (!event.isTrig()) {
             return;
@@ -186,8 +204,12 @@ public class MainScene extends Scene {
         String[] scripts;
         switch (event.getSerialNo()) {
             case 0:
+                genBox((int) this.maps.getMaps().get(1).getX() + 300,
+                        (int) this.maps.getMaps().get(1).getY(),
+                        (int) this.maps.getMaps().get(1).getX() + 1300,
+                        (int) this.maps.getMaps().get(1).getY() + 700,
+                        Global.random(4, 6));
                 this.maps.getMaps().get(0).getBuildings().get(0).open("right"); // 開啟地圖 0 的門
-                map = null;
                 break;
             case 1:
                 // 加入對話
@@ -197,11 +219,8 @@ public class MainScene extends Scene {
                 break;
             case 2:
                 // 將箱子 remove 並產出怪物1
-                remove(this.box);
-                this.box = null;
+                boxProduceEnemy(5, 1);
                 map = this.maps.getMaps().get(1);
-                //remove 箱子
-                genEnemies((int) map.getCenterX(), (int) map.getCenterY(), (int) map.getCenterX() + 150, (int) map.getCenterY() + 150, 5, 1);
                 map = null;
                 break;
             case 3:
@@ -210,6 +229,11 @@ public class MainScene extends Scene {
                 break;
             case 4:
                 // 事件 2 觸發後做的事情
+                genBox((int) this.maps.getMaps().get(2).getX() + 300,
+                        (int) this.maps.getMaps().get(2).getY(),
+                        (int) this.maps.getMaps().get(2).getX() + 1300,
+                        (int) this.maps.getMaps().get(2).getY() + 700,
+                        Global.random(7, 9));
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             case 5:
@@ -218,8 +242,8 @@ public class MainScene extends Scene {
                 this.textBar.play();
                 break;
             case 6:
+                boxProduceEnemy(5, 2);
                 map = this.maps.getMaps().get(2);
-                genEnemies((int) map.getCenterX(), (int) map.getCenterY(), (int) map.getCenterX() + 150, (int) map.getCenterY() + 150, 5, 2);
                 map = null;
                 scripts = new String[]{"好像是不同的怪物，跑得更快了"};
                 this.textBar.addScript(scripts);
@@ -249,8 +273,6 @@ public class MainScene extends Scene {
                 this.allObjects.add(this.boss);
                 this.allObjects.add(this.boss.getDarkBarrier());
                 this.boss.setAllObject(this.allObjects);
-                //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
-                //        this.allObjects.add(this.bossBarrier);
                 this.boss.setStartAttack(true);
                 this.boss.setStartPaint(true);
                 // 生 BOSS end
@@ -335,6 +357,18 @@ public class MainScene extends Scene {
         }
     } // 於指定區域生成敵人
 
+    private void genBox(int x1, int y1, int x2, int y2, int qty) {
+        for (int i = 0; i < qty; i++) {
+            float x, y, width = 150, height = 150;
+            do {
+                x = Global.random(x1, x2);
+                y = Global.random(y1, y2);
+            } while (!this.maps.canDeploy(x, y, width, height));
+            this.boxs.add(new Barrier("rect", x, y, (int) width, (int) height, ImagePath.BARRIER, 1));
+            this.allObjects.add(this.boxs.get(i));
+        }
+    }
+
     private void inputName(Graphics g) {
         g.setColor(Color.WHITE);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
@@ -345,6 +379,16 @@ public class MainScene extends Scene {
     @Override
     public void sceneUpdate() {
         this.view.update();
+        if (this.boss != null) {
+            if (this.boss.getCallEnemy()) {
+                Barrier bossBarrier = this.boss.getDarkBarrier();
+                this.genEnemies((int) bossBarrier.getX(),
+                        (int) (bossBarrier.getY() + bossBarrier.height()),
+                        (int) (bossBarrier.getX() + bossBarrier.width()),
+                        (int) (bossBarrier.getY() + bossBarrier.height() + 150), Global.random(5, 10), 3);
+                this.boss.setCallEnemy(false);
+            }
+        }
         Global.mapMouseX = Global.mouseX + Global.viewX;
         Global.mapMouseY = Global.mouseY + Global.viewY;
         ammoUpdate();//Ammo必須比敵人早更新
@@ -417,7 +461,7 @@ public class MainScene extends Scene {
             remove(this.boss);
             this.boss = null;
         }
-    } //敵人測試更新中
+    } //敵人更新
 
     public void remove(GameObject obj) { // 從 allObjects 與 view 中刪除
         this.allObjects.remove(obj);
@@ -500,7 +544,7 @@ public class MainScene extends Scene {
             }
         }
 //        System.out.println("ammo size: "+this.ammos.size());
-    } //子彈測試更新中
+    } //子彈更新
 
     private void paintSmallMap(Graphics g) { // 右上角小地圖
         int smallMapWidth = 200;
@@ -569,54 +613,62 @@ public class MainScene extends Scene {
         this.scoreCal.reset();
     }
 
+    private void loadingImageToReady() {
+        if (this.loadingCount == 12) {
+            for (int i = 0; i < ImagePath.ZOMBIE_NORMAL.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.ZOMBIE_NORMAL[i]);
+            }
+        } else if (this.loadingCount == 13) {
+            for (int i = 0; i < ImagePath.ZOMBIE_MONSTER.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.ZOMBIE_MONSTER[i]);
+            }
+        } else if (this.loadingCount == 14) {
+            for (int i = 0; i < ImagePath.BOSS_HEAD.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_HEAD[i]);
+            }
+        } else if (this.loadingCount == 15) {
+            for (int i = 0; i < ImagePath.BOSS_HEAD_FIRE.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_HEAD_FIRE[i]);
+            }
+        } else if (this.loadingCount == 16) {
+            for (int i = 0; i < ImagePath.BOSS_ATTACK_LEFTHAND.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_LEFTHAND[i]);
+            }
+        } else if (this.loadingCount == 17) {
+            for (int i = 0; i < ImagePath.BOSS_ATTACK_RIGHTHAND.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_RIGHTHAND[i]);
+            }
+        } else if (this.loadingCount == 18) {
+            for (int i = 0; i < ImagePath.BOSS_ATTACK_FIREBALL.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_FIREBALL[i]);
+            }
+        } else if (this.loadingCount == 19) {
+            for (int i = 0; i < ImagePath.BOSS_DARK_BARRIER.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_DARK_BARRIER[i]);
+            }
+        } else if (this.loadingCount == 20) {
+            for (int i = 0; i < ImagePath.BLOOD.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BLOOD[i]);
+            }
+        } else if (this.loadingCount == 21) {
+            ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS);
+            ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_RIGHT_HAND);
+            ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_LEFT_HAND);
+            ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_BOOM_CONTINUE);
+            ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_END_BOMB);
+        } else if (this.loadingCount == 22) {
+            for (int i = 0; i < ImagePath.BARRIER.length; i++) {
+                ImageResourceController.getInstance().tryGetImage(ImagePath.BARRIER[i]);
+            }
+        }
+    }
+
     @Override
     public void paint(Graphics g) {
         if (this.loadingCount < 37) {
             this.loadingPage.paint(g, 0, 0, 1600, 900);
             if (this.loadingDelay.isTrig()) {
-                if (this.loadingCount == 12) {
-                    for (int i = 0; i < ImagePath.ZOMBIE_NORMAL.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.ZOMBIE_NORMAL[i]);
-                    }
-                } else if (this.loadingCount == 13) {
-                    for (int i = 0; i < ImagePath.ZOMBIE_MONSTER.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.ZOMBIE_MONSTER[i]);
-                    }
-                } else if (this.loadingCount == 14) {
-                    for (int i = 0; i < ImagePath.BOSS_HEAD.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_HEAD[i]);
-                    }
-                } else if (this.loadingCount == 15) {
-                    for (int i = 0; i < ImagePath.BOSS_HEAD_FIRE.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_HEAD_FIRE[i]);
-                    }
-                } else if (this.loadingCount == 16) {
-                    for (int i = 0; i < ImagePath.BOSS_ATTACK_LEFTHAND.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_LEFTHAND[i]);
-                    }
-                } else if (this.loadingCount == 17) {
-                    for (int i = 0; i < ImagePath.BOSS_ATTACK_RIGHTHAND.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_RIGHTHAND[i]);
-                    }
-                } else if (this.loadingCount == 18) {
-                    for (int i = 0; i < ImagePath.BOSS_ATTACK_FIREBALL.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_ATTACK_FIREBALL[i]);
-                    }
-                } else if (this.loadingCount == 19) {
-                    for (int i = 0; i < ImagePath.BOSS_DARK_BARRIER.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_DARK_BARRIER[i]);
-                    }
-                } else if (this.loadingCount == 20) {
-                    for (int i = 0; i < ImagePath.BLOOD.length; i++) {
-                        ImageResourceController.getInstance().tryGetImage(ImagePath.BLOOD[i]);
-                    }
-                } else if (this.loadingCount == 21) {
-                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS);
-                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_RIGHT_HAND);
-                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_LEFT_HAND);
-                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_BOOM_CONTINUE);
-                    ImageResourceController.getInstance().tryGetImage(ImagePath.BOSS_END_BOMB);
-                }
+                loadingImageToReady();
                 this.loadingPage.setImage(ImagePath.LOADING_PAGE[this.loadingCount++ % 12]);
             }
             return;
@@ -637,6 +689,9 @@ public class MainScene extends Scene {
         if (this.textBar.isPlaying()) {
             this.textBar.paint(g);
         }
+        if (this.boss != null) {
+            this.evilPage.paint(g, (int)this.boss.getX(), (int) this.boss.getY(), 800, 500);
+        }
     }
 
     @Override
@@ -653,34 +708,38 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-            if (gameOver) {
-                return;
+            if (MainScene.this.loadingCount >= 37) {
+                if (gameOver) {
+                    return;
+                }
+                actorMoveRule(commandCode);
+                ammoModeChange(commandCode);
             }
-            actorMoveRule(commandCode);
-            ammoModeChange(commandCode);
         }
 
         @Override
         public void keyReleased(int commandCode, long trigTime) {
-            stopRule(commandCode);
-            if (gameOver) {
-                if (commandCode == Global.KEY_ENTER) {
-                    nameTyped = true;
+            if (MainScene.this.loadingCount >= 37) {
+                stopRule(commandCode);
+                if (gameOver) {
+                    if (commandCode == Global.KEY_ENTER) {
+                        nameTyped = true;
+                    }
+                    if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
+                        name = name.substring(0, name.length() - 1);
+                    } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
+                        name += (char) commandCode;
+                    }
+                    return;
                 }
-                if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
-                    name = name.substring(0, name.length() - 1);
-                } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
-                    name += (char) commandCode;
+                switch (commandCode) {
+                    case Global.KEY_SPACE:
+                        MainScene.this.stateChage.start();
+                        MainScene.this.actor.getRenderer().setState(0);
+                        MainScene.this.ammoState = true;
+                        MainScene.this.grenadeReady = true;
+                        break;
                 }
-                return;
-            }
-            switch (commandCode) {
-                case Global.KEY_SPACE:
-                    MainScene.this.stateChage.start();
-                    MainScene.this.actor.getRenderer().setState(0);
-                    MainScene.this.ammoState = true;
-                    MainScene.this.grenadeReady = true;
-                    break;
             }
         }
 
@@ -782,13 +841,15 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (state == CommandSolver.MouseState.PRESSED) {
-                MainScene.this.mouseState = true;
-                MainScene.this.stateChage.click();
-            } else if (state == CommandSolver.MouseState.DRAGGED) {
-                MainScene.this.mouseState = true;
-            } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
-                MainScene.this.mouseState = false;
+            if (MainScene.this.loadingCount >= 37) {
+                if (state == CommandSolver.MouseState.PRESSED) {
+                    MainScene.this.mouseState = true;
+                    MainScene.this.stateChage.click();
+                } else if (state == CommandSolver.MouseState.DRAGGED) {
+                    MainScene.this.mouseState = true;
+                } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
+                    MainScene.this.mouseState = false;
+                }
             }
         }
     }
