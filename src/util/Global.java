@@ -20,10 +20,11 @@ public class Global {
         }
     }
     // 視窗大小
-    public static final int FRAME_X = 1600;
+    public static final int EDGE = 8;
     public static final int FRAME_Y = 900;
     public static final int SCREEN_X = FRAME_X - 8 - 8;
-    public static final int SCREEN_Y = FRAME_Y - 31 - 8;
+    public static final int SCREEN_X = FRAME_X - EDGE - EDGE;
+    public static final int SCREEN_Y = FRAME_Y - 31 - EDGE;
     // 角色視野大小
     public static final int VIEW_WIDTH = SCREEN_X;
     public static final int VIEW_HEIGHT = SCREEN_Y;

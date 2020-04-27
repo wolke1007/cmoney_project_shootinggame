@@ -79,6 +79,9 @@ public class MainScene extends Scene {
     private Renderer loadingPage;
     private Delay loadingDelay;
     private int loadingCount;
+    private boolean printEnding;
+    private String endingPicPath;
+    private Renderer endingRenderer;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -96,6 +99,9 @@ public class MainScene extends Scene {
         allDelayControl();
         this.name = "";
         this.top = 5;
+        this.endingRenderer = new Renderer();
+        this.printEnding = false;
+        this.endingPicPath = "";
     }
 
     private void allDelayControl() {
@@ -136,6 +142,7 @@ public class MainScene extends Scene {
         this.allObjects.add(this.box);
         eventSetup();
         this.scoreCal.gameStart();
+        this.view.setFocus(this.maps.getMaps().get(0));
     }
 
     private void setNextEvent() {
@@ -172,7 +179,8 @@ public class MainScene extends Scene {
         // 第四張地圖
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(3).getBuildings().get(0)}, null)); // 10 // 玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
         this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 11 // 停止計時，或許需要輸入名字 //  加入對話
-        this.events.add(new DialogEvent(this.textBar, null)); // 12 // gameover
+        this.events.add(new DialogEvent(this.textBar, null)); // 12 // paint ending
+        this.events.add(new DialogEvent(this.textBar, null)); // 13 // gameover
         // ---------------  新增 Event end --------------- 
         setNextEvent();
         this.currentEvent = this.events.get(0);
@@ -247,7 +255,7 @@ public class MainScene extends Scene {
             case 10:
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN).stop();
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).loop();
-                this.maps.getMaps().get(2).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
+                this.maps.getMaps().get(2).getBuildings().get(0).close("right"); // 關閉地圖 2 的門
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(3));
@@ -267,21 +275,36 @@ public class MainScene extends Scene {
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
                 // 停止計時
                 this.scoreCal.gameOver();
-                if (this.actor.getHp() == 100) {
-                    scripts = new String[]{"有一件事我必需說",
-                        "我的薪水很高  真的很高",
-                        "而且高的不得了"};
-                }else{
+                if (this.actor.getHp() >= 100) {
+                    scripts = new String[]{"主角: 有一件事我必須說"};
+                } else {
                     scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊",
                         "醒來時已是怪物的樣貌",
                         "但卻沒有辦法控制自己的行動",
-                        "此時念頭只有一個...」",
-                        "「剷除入侵者!!!」"};
+                        "此時念頭只有一個...」"};
                 }
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
             case 12:
+                // 畫結局圖
+                if (this.actor.getHp() >= 100) {
+                    Global.log("set pic 0");
+                    this.endingRenderer.setImage(ImagePath.ENDING[1]);
+                    scripts = new String[]{"我的薪水太高了  真的非常的高",
+                        "而且高到不行"};
+                } else {
+                    Global.log("set pic 1");
+                    this.endingRenderer.setImage(ImagePath.ENDING[0]);
+                    // 需笑滿 6 秒
+                    scripts = new String[]{"「剷除入侵者!!!」", 
+                        "", "", "", "", ""};
+                }
+                this.printEnding = true;
+                this.textBar.addScript(scripts);
+                this.textBar.play();
+                break;
+            case 13:
                 // GG，設定為 true 會在 paint 那邊觸發輸入名字(如果需要的話)
                 this.gameOver = true;
                 break;
@@ -352,14 +375,14 @@ public class MainScene extends Scene {
         g.setColor(Color.BLACK);
     }
 
-    private void removeInvisibleWall(){
-        if(this.view.getFocus().getBuildings().get(0).getDoors().get(0).isOpen() && 
-                this.view.getFocus().getBuildings().get(0).getDoors().get(0).getY() <= this.view.getFocus().getBuildings().get(0).getDoors().get(0).getOriginalY() - Global.DOOR_LENGTH){
+    private void removeInvisibleWall() {
+        if (this.view.getFocus().getBuildings().get(0).getDoors().get(0).isOpen()
+                && this.view.getFocus().getBuildings().get(0).getDoors().get(0).getY() <= this.view.getFocus().getBuildings().get(0).getDoors().get(0).getOriginalY() - Global.DOOR_LENGTH) {
             this.view.getFocus().getBuildings().get(0).getDoors().get(0).deleteInvisibleWall();
             remove(this.view.getFocus().getBuildings().get(0).getDoors().get(0).getInvisibleWall());
         }
     }
-    
+
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -378,7 +401,7 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        if(this.view.getFocus().getX() - this.view.getX() <= 15){ // 15 為切換房間時 view 移動的單位
+        if (this.view.getFocus().getX() - this.view.getX() <= 15) { // 15 為切換房間時 view 移動的單位
             this.actor.setAutoMove(false);
         }
         removeInvisibleWall();
@@ -444,8 +467,8 @@ public class MainScene extends Scene {
     public void remove(GameObject obj) { // 從 allObjects 與 view 中刪除
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
-        for(int i = 0; i < this.allObjects.size(); i++){
-            if(this.allObjects.get(i) == obj){
+        for (int i = 0; i < this.allObjects.size(); i++) {
+            if (this.allObjects.get(i) == obj) {
                 Global.log("---------------- BUUGGGGG target object doesn't deleted ----------------");
             }
         }
@@ -654,6 +677,10 @@ public class MainScene extends Scene {
         paintTime(g);
         if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
+        }
+        if (this.printEnding) {
+            // print 結局圖片
+            this.endingRenderer.paint(g, (int) this.view.getFocus().getX() - Global.EDGE, (int) this.view.getFocus().getY(), (int) this.view.getFocus().getX() + Global.FRAME_X, (int) this.view.getFocus().getY() + Global.FRAME_Y);
         }
         if (this.gameOver && this.scoreCal.isOnTop(this.top)) { // 有在排名內才會要求輸入名字
             if (!this.scoreCal.isStopTiming() && this.gameOver) {

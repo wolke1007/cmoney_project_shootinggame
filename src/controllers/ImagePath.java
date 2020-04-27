@@ -193,4 +193,5 @@ public class ImagePath {
         ImagePath.ROOT + "/boss/boss_fireBall_6.png",
         ImagePath.ROOT + "/boss/boss_fireBall_7.png"};
     public static final String[] BOSS_DARK_BARRIER = {ImagePath.ROOT + "/boss/bossDarkBarrier.png"};
+    public static final String[] ENDING = {ImagePath.ROOT + "/bad_ending.png", ImagePath.ROOT + "/good_ending.png"};
 }

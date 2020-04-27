@@ -102,13 +102,13 @@ public class MapGenerator {
     }
 
     public void genSevenMaps() {
-        this.mapPool.add(pattern_5(new Map(ImagePath.BACKGROUND[Global.random(0, ImagePath.BACKGROUND.length - 1)], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT)));
-        for (int i = 0; i < Global.MAP_QTY - 1; i++) {
+        for (int i = 0; i < Global.MAP_QTY; i++) {
             this.mapPool.add(pattern_5(new Map(ImagePath.BACKGROUND[Global.random(0, ImagePath.BACKGROUND.length - 1)], 0, 0, Global.MAP_WIDTH, Global.MAP_HEIGHT)));
         }
        for (int i = 0; i < this.mapPool.size(); i++) {
             // 固定使用第一組背景圖
             this.mapPool.get(i).setX((float) Global.MAP_WIDTH * i);
+            Global.log("map"+i+ " x:" + this.mapPool.get(i).getX());
             this.maps.add(this.mapPool.get(i));
         }
         updateAllBarriersBuildingsXY();
