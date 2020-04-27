@@ -102,7 +102,6 @@ public class MainScene extends Scene {
         this.enemys = new ArrayList<>();
         this.actor = new Actor("circle", (float) Global.DEFAULT_ACTOR_X, (float) Global.DEFAULT_ACTOR_Y, 60, ImagePath.ACTOR1);
         this.allObjects.add(this.actor); // 讓 allObjects 的第一個物件為 actor
-        this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.actor);
         int mapLength = Global.MAP_QTY;
         this.maps = new Maps(0f, 0f, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT, mapLength * Global.MAP_WIDTH, Global.MAP_HEIGHT);
         this.allObjects.add(maps); // 讓 allObjects 的第二個物件為 maps
@@ -113,6 +112,7 @@ public class MainScene extends Scene {
         MapGenerator mg = new MapGenerator(Global.MAP_QTY, this.maps);
         mg.genSevenMaps(); // 產生 7 個橫向地圖
         addAllMapsToAllObjects();
+        this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.maps.getMaps().get(0));
         this.actor.setAllObjects(this.allObjects);
         this.scoreCal = ScoreCalculator.getInstance();
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
@@ -177,6 +177,7 @@ public class MainScene extends Scene {
                 break;
             case 1:
                 // 加入對話
+                this.view.setFocus(this.maps.getMaps().get(1));
                 scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
@@ -199,6 +200,7 @@ public class MainScene extends Scene {
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             case 5:
+                this.view.setFocus(this.maps.getMaps().get(2));
                 scripts = new String[]{"「聽到快步衝刺的聲音」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
@@ -223,6 +225,7 @@ public class MainScene extends Scene {
                 this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
                 break;
             case 10:
+                this.view.setFocus(this.maps.getMaps().get(3));
                 // 控制玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
                 // 控制玩家往前走 start
 
@@ -242,7 +245,8 @@ public class MainScene extends Scene {
                 this.scoreCal.gameOver();
                 if(this.actor.getHp() == 100){
                     scripts = new String[]{"有一件事我必需說",
-                        "我的薪水很高  真的很高"};
+                        "我的薪水很高  真的很高",
+                        "而且高的不得了"};
                 }else{
                     scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊",
                         "醒來時已是怪物的樣貌",
