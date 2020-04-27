@@ -23,6 +23,8 @@ public class Door extends Barrier {
     private Delay delay;
     private float closeDoorY;
     private Renderer renderer;
+    private Wall wall;
+    private float originalY; // 初始時的下死點
     
     public Door(float x, float y, int width, int height, String name) {
         super("rect", x, y, width, height);
@@ -33,14 +35,34 @@ public class Door extends Barrier {
         this.delay.start();
         this.closeDoorY = this.y;
         this.renderer = r(ImagePath.DOOR[0]);
+        this.wall = new Wall("rect", (int)this.x, (int)this.y, (int)super.width(), (int)super.height());
+        this.originalY = this.y;
+    }
+    
+    public float getOriginalY(){
+        return this.originalY;
+    }
+    
+    public boolean isOpen(){
+        return this.open;
     }
     
     public void open(){
+        Global.log("door been open");
         this.open = true;
     }
     
     public void close(){
+        Global.log("door been close");
         this.open = false;
+    }
+    
+    public Wall getInvisibleWall(){
+        return this.wall;
+    }
+    
+    public void deleteInvisibleWall(){ // TODO work around  因為刪不掉所以直接移出視窗外，哎呀.....
+        this.wall.setXY(-100, -100);
     }
     
     @Override

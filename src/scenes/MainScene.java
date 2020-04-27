@@ -203,6 +203,7 @@ public class MainScene extends Scene {
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             case 5:
+                this.maps.getMaps().get(1).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(2));
@@ -229,13 +230,11 @@ public class MainScene extends Scene {
                 this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
                 break;
             case 10:
+                this.maps.getMaps().get(2).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(3));
-                // 控制玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
-                // 控制玩家往前走 start
-
-                // 控制玩家往前走 end
+                // 關門，生 BOSS，同時切 BOSS 戰鬥音樂
                 // 生 BOSS start
                 this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
                 this.allObjects.add(this.boss);
@@ -287,6 +286,7 @@ public class MainScene extends Scene {
                 ArrayList<Door> doors = map.getBuildings().get(j).getDoors();
                 for (int d = 0; d < doors.size(); d++) {
                     this.allObjects.add(doors.get(d));
+                    this.allObjects.add(doors.get(d).getInvisibleWall());
                 }
             }
         }
@@ -333,6 +333,14 @@ public class MainScene extends Scene {
         g.setColor(Color.BLACK);
     }
 
+    private void removeInvisibleWall(){
+        if(this.view.getFocus().getBuildings().get(0).getDoors().get(0).isOpen() && 
+                this.view.getFocus().getBuildings().get(0).getDoors().get(0).getY() <= this.view.getFocus().getBuildings().get(0).getDoors().get(0).getOriginalY() - Global.DOOR_LENGTH){
+            this.view.getFocus().getBuildings().get(0).getDoors().get(0).deleteInvisibleWall();
+            remove(this.view.getFocus().getBuildings().get(0).getDoors().get(0).getInvisibleWall());
+        }
+    }
+    
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -351,11 +359,10 @@ public class MainScene extends Scene {
             }
         }
         zombieFootStepAudio();
-        Global.log("this.view.getX(): " + this.view.getX());
-        Global.log("this.view.getFocus().getX():  " + this.view.getFocus().getX());
         if(this.view.getFocus().getX() - this.view.getX() <= 15){ // 15 為切換房間時 view 移動的單位
             this.actor.setAutoMove(false);
         }
+        removeInvisibleWall();
         // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
         if (this.actor.getHp() <= actorDeadThreshold) {
             this.gameOver = true;
@@ -414,6 +421,11 @@ public class MainScene extends Scene {
     public void remove(GameObject obj) { // 從 allObjects 與 view 中刪除
         this.allObjects.remove(obj);
         this.view.removeSeen(obj);
+        for(int i = 0; i < this.allObjects.size(); i++){
+            if(this.allObjects.get(i) == obj){
+                Global.log("---------------- BUUGGGGG target object doesn't deleted ----------------");
+            }
+        }
     } // 從 allObjects 與 view 中刪除
 
     public ArrayList<GameObject> getEnemy() {
