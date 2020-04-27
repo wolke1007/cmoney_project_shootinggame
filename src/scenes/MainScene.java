@@ -71,6 +71,7 @@ public class MainScene extends Scene {
     private int top; // 多少名次內可以進排行榜
     private TextBar textBar; // 讀稿機
     private boolean grenadeReady;
+    private Barrier box;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -117,34 +118,10 @@ public class MainScene extends Scene {
         this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         this.events = new ArrayList<Event>();
         this.textBar = new TextBar(0, (int) this.view.getY() - 7 + Global.HP_HEIGHT + 5, Global.SCREEN_X, 40);
-        // --------------- 新增 Event start --------------- 
-        String[] scripts = {"身為一名基地工程師",
-            "一次在基地睡醒後發現基地所有人都消失了",
-            "基地的緊急備用燈光處於開啟狀態",
-            "你判斷鍋爐核心區應該有問題因此前去查看",
-            "但你發現遇到的可不是什麼工程問題......"
-        };
-        this.textBar.addScript(scripts);
-        this.events.add(new DialogEvent(this.textBar, null));
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null));
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null));
-        this.events.add(new KillAllEnemyEvent(this.allObjects, null));
-        // ---------------  新增 Event end --------------- 
-        setNextEvent();
-        this.textBar.addScript(scripts);
-        this.currentEvent = this.events.get(0);
-        //boss
-        this.boss = new Boss("rect", this.actor.getCenterX() - 336f, 50f, this.actor, 60);
-        this.allObjects.add(this.boss);
-        this.boss.setAllObject(this.allObjects);
-//        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
-//        this.allObjects.add(this.bossBarrier);
-        this.boss.setStartAttack(true);
-        this.boss.setStartPaint(true);
-        //boss end
-        genEnemies(100, 450, 1500, 800, 5); //DEBUG 用
+        this.box = new Barrier("rect", this.maps.getMaps().get(1).getCenterX(), this.maps.getMaps().get(1).getCenterY(), 150, 150, ImagePath.BARRIER, 1);
+        this.allObjects.add(this.box);
+        eventSetup();
         this.scoreCal.gameStart();
-//        this.textBar.play();
     }
 
     private void setNextEvent() {
@@ -153,6 +130,135 @@ public class MainScene extends Scene {
             this.events.get(i).setSerialNo(i);
             this.events.get(i + 1).setSerialNo(i + 1);
         }
+    }
+
+    private void eventSetup() {
+        // --------------- 新增 Event start --------------- 
+        // 第一張地圖
+        String[] scripts = {"身為一名基地工程師",
+            "一次在基地睡醒後發現基地所有人都消失了",
+            "基地的緊急備用燈光處於開啟狀態",
+            "你判斷鍋爐核心區應該有問題因此前去查看",
+            "但你發現遇到的可不是什麼工程問題......"
+        };
+        this.textBar.addScript(scripts);
+        this.events.add(new DialogEvent(this.textBar, null)); // 0 // 開門
+        // 第二張地圖
+        this.textBar.play();
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null)); // 1 // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 2 // 將箱子 remove 並產出怪物1
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 3 // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 4 // 開門
+        // 第三張地圖
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null)); // 5 // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 6 // 於房間最右側產出怪物2  // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 7 //  加入對話
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 8 // 不做事
+        this.events.add(new DialogEvent(this.textBar, null)); // 9 //開門
+        // 第四張地圖
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(3).getBuildings().get(0)}, null)); // 10 // 玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 11 // 停止計時，或許需要輸入名字 //  加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 12 // gameover
+        // ---------------  新增 Event end --------------- 
+        setNextEvent();
+        this.currentEvent = this.events.get(0);
+    }
+
+    private void afterEvent(Event event) {
+        if (!event.isTrig()) {
+            return;
+        }
+        Map map;
+        String[] scripts;
+        switch (event.getSerialNo()) {
+            case 0:
+                this.maps.getMaps().get(0).getBuildings().get(0).open("right"); // 開啟地圖 0 的門
+                map = null;
+                break;
+            case 1:
+                // 加入對話
+                scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
+                this.textBar.addScript(scripts);
+                this.textBar.play();
+                break;
+            case 2:
+                // 將箱子 remove 並產出怪物1
+                remove(this.box);
+                this.box = null;
+                map = this.maps.getMaps().get(1);
+                //remove 箱子
+                genEnemies((int) map.getCenterX(), (int) map.getCenterY(), (int) map.getCenterX() + 150, (int) map.getCenterY() + 150, 5, 1);
+                map = null;
+                break;
+            case 3:
+                scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
+                this.textBar.addScript(scripts);
+                break;
+            case 4:
+                // 事件 2 觸發後做的事情
+                this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
+                break;
+            case 5:
+                scripts = new String[]{"「聽到快步衝刺的聲音」"};
+                this.textBar.addScript(scripts);
+                this.textBar.play();
+                break;
+            case 6:
+                map = this.maps.getMaps().get(2);
+                genEnemies((int) map.getCenterX(), (int) map.getCenterY(), (int) map.getCenterX() + 150, (int) map.getCenterY() + 150, 5, 2);
+                map = null;
+                scripts = new String[]{"好像是不同的怪物，跑得更快了"};
+                this.textBar.addScript(scripts);
+                this.textBar.play();
+                break;
+            case 7:
+
+                break;
+            case 8:
+                scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
+                this.textBar.addScript(scripts);
+                this.textBar.play();
+                break;
+            case 9:
+                this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
+                break;
+            case 10:
+                // 控制玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
+                // 控制玩家往前走 start
+
+                // 控制玩家往前走 end
+                // 生 BOSS start
+                this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
+                this.allObjects.add(this.boss);
+                this.boss.setAllObject(this.allObjects);
+        //        this.bossBarrier = new Barrier("rect", this.boss.getX() - 40, this.boss.getY() - 20, (int) this.boss.width() + 80, (int) this.boss.height() + 150);
+                //        this.allObjects.add(this.bossBarrier);
+                this.boss.setStartAttack(true);
+                this.boss.setStartPaint(true);
+                // 生 BOSS end
+                break;
+            case 11:
+                // 停止計時
+                this.scoreCal.gameOver();
+                if(this.actor.getHp() == 100){
+                    scripts = new String[]{"有一件事我必需說",
+                        "我的薪水很高  真的很高"};
+                }else{
+                    scripts = new String[]{"「因為戰鬥過程被怪物咬傷，主角意識逐漸模糊",
+                        "醒來時已是怪物的樣貌",
+                        "但卻沒有辦法控制自己的行動",
+                        "此時念頭只有一個...」",
+                        "「剷除入侵者!!!」"};
+                }
+                this.textBar.addScript(scripts);
+                this.textBar.play();
+                break;
+            case 12:
+                // GG，設定為 true 會在 paint 那邊觸發輸入名字(如果需要的話)
+                this.gameOver = true;
+                break;
+        }
+        Global.log("event " + event.getSerialNo() + " trigger, event type:" + event.getClass().getName());
     }
 
     private void addAllMapsToAllObjects() {
@@ -176,7 +282,7 @@ public class MainScene extends Scene {
         }
     }
 
-    public void genEnemies(int x1, int y1, int x2, int y2, int qty) { // 於指定區域生成敵人
+    public void genEnemies(int x1, int y1, int x2, int y2, int qty, int type) { // 於指定區域生成敵人
         for (int i = 0; i < qty; i++) {
             float x;
             float y;
@@ -186,8 +292,24 @@ public class MainScene extends Scene {
                 x = Global.random(x1, x2);
                 y = Global.random(y1, y2);
             } while (!this.maps.canDeploy(x, y, width, height));
-            Enemy enemy = new Enemy("circle", x, y, 5,
-                    this.actor, Global.random(1, 2));
+            Enemy enemy;
+            switch (type) {
+                case 1:
+                    // 普通怪
+                    enemy = new Enemy("circle", x, y, 5,
+                            this.actor, 1);
+                    break;
+                case 2:
+                    // 衝刺怪
+                    enemy = new Enemy("circle", x, y, 5,
+                            this.actor, 2);
+                    break;
+                default:
+                    // 隨機生成
+                    enemy = new Enemy("circle", x, y, 5,
+                            this.actor, Global.random(1, 2));
+                    break;
+            }
             this.enemys.add(enemy);
             this.allObjects.add(enemy);
             enemy.setAllObject(this.allObjects);
@@ -238,32 +360,7 @@ public class MainScene extends Scene {
             return; // 如果再也沒有事件，則直接跳出判斷
         }
         this.currentEvent.update();
-        switch (this.currentEvent.getSerialNo()) {
-            case 0:
-                if (this.currentEvent.isTrig()) {
-                    // 事件 0 觸發後做的事情
-                    this.maps.getMaps().get(1).getBuildings().get(0).open("right");
-                    Global.log("event 0 trigger");
-                }
-                break;
-            case 1:
-                if (this.currentEvent.isTrig()) {
-                    // 事件 1 觸發後做的事情
-                    String[] scripts = {"你聽聞隔壁房間傳來低吼"};
-                    this.textBar.addScript(scripts);
-                    this.textBar.play();
-                    Global.log("event 1 trigger");
-                }
-                break;
-            case 2:
-                if (this.currentEvent.isTrig()) {
-                    // 事件 2 觸發後做的事情
-                    this.gameOver = true;
-                    Global.log("end scene");
-                }
-                break;
-            // 後面以此類推
-        }
+        afterEvent(this.currentEvent);
         if (this.currentEvent.isTrig()) {
             this.currentEvent.setTrig(false); // 關閉 trig 並置換 event 成下一個
             this.currentEvent = this.currentEvent.getNext();
@@ -295,6 +392,11 @@ public class MainScene extends Scene {
                 this.enemys.remove(this.enemys.get(i)); // 真實的刪除
                 i--;
             }
+        }
+        if (this.boss != null && this.boss.getIsDead()) {
+            Global.log("remove boss");
+            remove(this.boss);
+            this.boss = null;
         }
     } //敵人測試更新中
 
@@ -444,7 +546,7 @@ public class MainScene extends Scene {
         Global.log("main scene end");
         Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
         Global.viewY = 0f;
-        this.scoreCal.addInHistoryIfOnTop(this.top, this.name);
+        this.scoreCal.addInHistoryIfOnTop(this.top, this.name); // 如果分數有進前幾名，則新增至排行榜中
         this.scoreCal.reset();
     }
 

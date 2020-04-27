@@ -52,7 +52,7 @@ public class KillAllEnemyEvent implements Event {
             return; 
         }
         for(int i = 0; i < this.allObjects.size(); i++){
-            if(this.allObjects.get(i).getType().equals("Enemy")){
+            if(this.allObjects.get(i).getType().equals("Enemy") || this.allObjects.get(i).getType().equals("Boss")){
                 return;
             }
         }
