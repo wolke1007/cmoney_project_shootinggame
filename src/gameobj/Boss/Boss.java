@@ -28,6 +28,8 @@ public class Boss extends GameObject {
     private boolean startPaint;//開始畫
     private boolean isDead;//是否死亡
     private boolean callEnemy;//召喚小怪
+    //目標
+    private GameObject target;
     //身體
     private Renderer renderer;
     //手
@@ -55,9 +57,10 @@ public class Boss extends GameObject {
 
     public Boss(String colliderType, float x, float y, GameObject target, int moveSpeed) {
         super(colliderType, x, y, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6);
-        bossRendererToRotate(target);
+        this.target = target;
+        bossRendererToRotate(this.target);
         bossRenderer();
-        this.setHpPoint(500);
+        this.setHpPoint(100);
         delayDetail();
         setStartAttack(false);
         setStartPaint(false);
@@ -195,6 +198,9 @@ public class Boss extends GameObject {
         this.setIsDead(true);
         this.bossEndDelay.start();
         if (this.bossEndDelay.isTrig()) {
+            if (this.bossEndCount == 0) {
+                AudioResourceController.getInstance().play(AudioPath.BOSS_DIE_SOUND);
+            }
             if (this.bossEndCount++ > 12) {
                 this.setXY(-10000, -10000);
             }
@@ -243,6 +249,13 @@ public class Boss extends GameObject {
         if (this.getHp() <= 0) {
             bossEnd();
             return;
+        }
+        if (this.target.getHp() <= 0) {
+            this.setStartAttack(false);
+            this.bossFire.setXY(-10000, -10000);
+            this.bossHead.setXY(-10000, -10000);
+            this.bossLeftHand.setXY(-10000, -10000);
+            this.bossRightHand.setXY(-10000, -10000);
         }
         if (this.getHpPercent() < 30) {
             this.nextTrig.setDelayFrame(30);

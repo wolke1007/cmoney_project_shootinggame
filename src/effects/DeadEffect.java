@@ -5,6 +5,8 @@
  */
 package effects;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import controllers.ImagePath;
 import gameobj.Actor;
 import java.awt.Graphics;
@@ -34,6 +36,7 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
     private final int dragDistanceLimit = 500;
     private final int handSizeLimit = 500;
     private int playTimes;
+    private int actorDeadSound;
 
     public DeadEffect(int width, int height, Actor actor) {
         this.width = width;
@@ -45,6 +48,7 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
         this.dragDistance = 0;
         this.delay = new Delay(1);
         this.playTimes = 0;
+        this.actorDeadSound = 0;
     }
 
     @Override
@@ -54,9 +58,12 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
 
     @Override
     public void update() {
-        if(this.playTimes == 0){
+        if (this.playTimes == 0) {
             this.run = true;
-        }else{
+            if (this.actorDeadSound++ == 0) {
+                AudioResourceController.getInstance().play(AudioPath.ACTOR_DEAD_BLOODDRAG);
+            }
+        } else {
             this.run = false;
         }
     }

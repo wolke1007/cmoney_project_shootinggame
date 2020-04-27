@@ -88,7 +88,7 @@ public class MainScene extends Scene {
     private void allDelayControl() {
         this.stateChage = new Delay(30);
         this.stateChage.start();
-        this.enemyAudio = new Delay(180);
+        this.enemyAudio = new Delay(150);
         this.enemyAudio.start();
     }
 
@@ -278,6 +278,10 @@ public class MainScene extends Scene {
                 break;
             }
             Global.enemyAudio = false;
+        }
+        if (this.actor.getHp() <= 0) {
+            Global.enemyAudio = false;
+            return;
         }
         if (Global.enemyAudio && this.enemyAudio.isTrig()) {
             AudioResourceController.getInstance().play(AudioPath.ZOMBIE_STEP_MOVE);
