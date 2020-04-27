@@ -253,7 +253,7 @@ public class MainScene extends Scene {
                 break;
             case 6:
                 boxProduceEnemy(5, 2);
-                scripts = new String[]{"好像是不同的怪物，跑得更快了"};
+                scripts = new String[]{"「好像是不同的怪物，跑得更快了」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
