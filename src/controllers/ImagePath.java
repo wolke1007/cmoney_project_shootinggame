@@ -14,14 +14,26 @@ import util.Global;
 public class ImagePath {
 
     private static final String ROOT = "/resources";
-
+    private static final String LOADINGPAGE = ImagePath.ROOT + "/loadingPage";
     // 圖片庫    
 //    public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png",
 //        ImagePath.ROOT + "/background2.png",
 //        ImagePath.ROOT + "/background3.png"};
     public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png"};
     public static final String[] DOOR = {ImagePath.ROOT + "/originalDoor.png"};
-
+    public static final String[] LOADING_PAGE = {
+        ImagePath.LOADINGPAGE + "/loadingPage_1.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_2.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_3.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_4.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_5.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_6.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_7.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_8.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_9.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_10.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_11.png",
+        ImagePath.LOADINGPAGE + "/loadingPage_12.png"};
     public static final String[] BARRIER = {ImagePath.ROOT + "/barrier.png", ImagePath.ROOT + "/box.png"};
     public static final String[] ACTOR1 = {ImagePath.ROOT + "/selfActor.png", ImagePath.ROOT + "/selfActor_grenade.png"};
     public static final String[] BULLET = {ImagePath.ROOT + "/fire_start.png", ImagePath.ROOT + "/bullet_fire_small.png"};

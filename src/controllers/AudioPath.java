@@ -22,10 +22,13 @@ public class AudioPath {
     private static final String COMMON = AudioPath.ROOT + "/common";
     private static final String EFFECT = AudioPath.ROOT + "/effect";
 
+    public static final String START_MUSIC = AudioPath.BGM + "/startMusic.wav";
+    public static final String GAME_BEGIN = AudioPath.BGM + "/gameBegin.wav";
+    public static final String BOSS_FIGHT = AudioPath.BGM + "/bossFight.wav";
     public static final String BUTTON_AUDIO = AudioPath.COMMON + "/buttonAudio";
-    public static final String START_MENU_SCENE = AudioPath.BGM + "/start_highScore_scene(City_of_Jewels).wav";
-    public static final String MAIN_SCENE = BGM + "/main_scene(Inescapable).wav";
-    public static final String BOSS_FIGHT = BGM + "/boss_fight(Ghost_Chase_Thriller).wav";
+//    public static final String START_MENU_SCENE = AudioPath.BGM + "/start_highScore_scene(City_of_Jewels).wav";
+//    public static final String MAIN_SCENE = BGM + "/main_scene(Inescapable).wav";
+//    public static final String BOSS_FIGHT = BGM + "/boss_fight(Ghost_Chase_Thriller).wav";
     public static final String[] ACTOR_MOVES = {AudioPath.ACTOR + "/running1.wav"};
     public static final String[] ZOMBIE_MOVES = {AudioPath.ZOMBIE + "/flesh_impact_bullet1.wav",
         AudioPath.ZOMBIE + "/flesh_impact_bullet2.wav",

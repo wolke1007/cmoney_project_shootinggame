@@ -5,8 +5,11 @@
  */
 package scenes;
 
+import controllers.AudioPath;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import controllers.SceneController;
+import java.applet.AudioClip;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import renderer.Renderer;
@@ -32,6 +35,9 @@ public class WelcomeScene extends Scene {
         this.titleRenderer = new Renderer(new int[]{0}, 0, ImagePath.WELCOME_PAGE[0]);
         this.pressBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.WELCOME_PAGE[1]);
         this.pressBtn = new pressButton();
+        MusicResourceController.getInstance().tryGetMusic(AudioPath.START_MUSIC);
+        MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN);
+        MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT);
     }
 
     public abstract class Button {
@@ -46,7 +52,7 @@ public class WelcomeScene extends Scene {
 
         public pressButton() {
             int height = 80;
-            int width  = 150;
+            int width = 150;
             int upDownposition = -20;
             super.left = Global.SCREEN_X / 2 - width;
             super.top = Global.SCREEN_Y / 2 - height + upDownposition;
@@ -58,6 +64,7 @@ public class WelcomeScene extends Scene {
     @Override
     public void sceneBegin() {
         // 播放背景音樂
+        MusicResourceController.getInstance().tryGetMusic(AudioPath.START_MUSIC).loop();
     }
 
     @Override
@@ -84,8 +91,7 @@ public class WelcomeScene extends Scene {
     public void paint(Graphics g) {
         int titleHeight = 200;
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
-        this.titleRenderer.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 19 / 20)
-                , 10, (Global.SCREEN_X - Global.SCREEN_X * 1 / 20), 10 + titleHeight); // 背景圖
+        this.titleRenderer.paint(g, (Global.SCREEN_X - Global.SCREEN_X * 19 / 20), 10, (Global.SCREEN_X - Global.SCREEN_X * 1 / 20), 10 + titleHeight); // 背景圖
         if (cursorInBtn(this.pressBtn)) {
             this.pressBtnRenderer.paint(g, this.pressBtn.left + 10, this.pressBtn.top + 10, this.pressBtn.right + 10, this.pressBtn.bottom + 10); // 開始按鈕
         } else {

@@ -5,7 +5,9 @@
  */
 package scenes;
 
+import controllers.AudioPath;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import controllers.SceneController;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -62,7 +64,7 @@ public class StartMenuScene extends Scene {
     public class rankButton extends Button {
 
         public rankButton() {
-            
+
             super.left = (Global.SCREEN_X - (StartMenuScene.this.buttonWidth * 3 + StartMenuScene.this.buttonGap * 2)) / 2;
             super.top = upDownPosition;
             super.right = left + StartMenuScene.this.buttonWidth;
