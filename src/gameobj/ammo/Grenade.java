@@ -5,6 +5,8 @@
  */
 package gameobj.ammo;
 
+import controllers.AudioPath;
+import controllers.AudioResourceController;
 import controllers.ImagePath;
 import gameobj.GameObject;
 import java.awt.Graphics;
@@ -21,7 +23,7 @@ import util.VectorCollision;
  * @author F-NB
  */
 public class Grenade extends ShootMode {
-
+    
     private RendererToRotate renderer;//旋轉圖渲染器
     private Renderer rendererEffect;//爆炸特效圖
     private Delay effectDelay;
@@ -29,12 +31,14 @@ public class Grenade extends ShootMode {
     private int attackRange;
     private ArrayList<GameObject> allObjects;
     private GameObject self;
-
+    
     private AverageSpeed averageSpeed;
     private int countdown;//計數
     private int moveDistance;//移動距離倍數 3 -> 4 -> 5 -> 4 -> 3 -> 2 -> 1 -> 0 
     private VectorCollision vectorMove;
-
+    
+    private boolean grenadeBombAudio;
+    
     public Grenade(GameObject self, GameObject start, float moveSpeed, String[] path) {
         super(start, moveSpeed);
         setSelf(self);
@@ -49,52 +53,57 @@ public class Grenade extends ShootMode {
         setMoveDistance(3);
         setEffectDelay();
         setAttackRange(150);
+        this.grenadeBombAudio = true;
         setType("Grenade");
     }
-
+    
+    public void setGrenadeBombAudio(boolean grenadeBombAudio) {
+        this.grenadeBombAudio = grenadeBombAudio;
+    }
+    
     private void setAttackRange(int attackRange) {
         this.attackRange = attackRange;
     }
-
+    
     public void setVectorMove() {
         this.vectorMove = new VectorCollision(getSelf(), 0, 0,
                 new String[]{"Map", "Ammo", "Actor", "Enemy", "Barrier"}, Global.INNER);
         this.vectorMove.setIsBackMove(false);
         this.vectorMove.setDivisor(5f);
     }
-
+    
     public void setSelf(GameObject self) {
         this.self = self;
     }
-
+    
     public GameObject getSelf() {
         return this.self;
     }
-
+    
     private void setCountdown(int countdown) {
         this.countdown = countdown;
     }
-
+    
     private int getCountdown() {
         return this.countdown;
     }
-
+    
     private void setMoveDistance(int moveDistance) {
         this.moveDistance = moveDistance;
     }
-
+    
     private void plusMoveDistance() {
         this.moveDistance++;
     }
-
+    
     private void lessMoveDistance() {
         this.moveDistance--;
     }
-
+    
     private int getMoveDistance() {
         return this.moveDistance;
     }
-
+    
     private void setEffectDelay() {
         if (this.effectDelay == null) {
             this.effectDelay = new Delay(2);
@@ -115,8 +124,9 @@ public class Grenade extends ShootMode {
         float y = getStart().getCenterY() - getSelf().height() / 2f;
         getSelf().setXY(x, y);
         setEffectDelay();
+        this.setGrenadeBombAudio(true);
     }
-
+    
     private void setAerageSpeed() {
         if (this.averageSpeed == null) {
             this.averageSpeed = new AverageSpeed(getSelf().getCenterX(), getSelf().getCenterY(), Global.mapMouseX, Global.mapMouseY, 50, false);
@@ -133,7 +143,7 @@ public class Grenade extends ShootMode {
         this.allObjects = list;
         this.vectorMove.setAllObjects(list);
     }
-
+    
     @Override
     public boolean update() {
         if (this.getMoveDelay().isTrig()) {
@@ -152,15 +162,19 @@ public class Grenade extends ShootMode {
             this.countdown++;
             if (this.vectorMove.getIsCollision() || getMoveDistance() == 0) {//撞上障礙物 或 不能再移動
                 if (this.delayCount == 0) {
+                    if (this.grenadeBombAudio) {
+                        AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_BOMB);
+                        this.setGrenadeBombAudio(false);
+                    }
                     for (int i = 0; i < this.allObjects.size(); i++) {
                         if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - getSelf().getCenterX(), 2)
                                 + Math.pow(this.allObjects.get(i).getCenterY() - getSelf().getCenterY(), 2)) < this.attackRange) {
-                        if (this.allObjects.get(i).getType().equals("Actor")) {
-                            continue;
-                        }
-                        this.allObjects.get(i).subtractHp();
-                        this.allObjects.get(i).subtractHp();
-                        this.allObjects.get(i).subtractHp();
+                            if (this.allObjects.get(i).getType().equals("Actor")) {
+                                continue;
+                            }
+                            this.allObjects.get(i).subtractHp();
+                            this.allObjects.get(i).subtractHp();
+                            this.allObjects.get(i).subtractHp();
                         }
                     }
                 }
@@ -179,7 +193,7 @@ public class Grenade extends ShootMode {
         }
         return true;
     }
-
+    
     @Override
     public void paintComponent(Graphics g) {
         if (this.getCountdown() != -1) {
@@ -196,5 +210,5 @@ public class Grenade extends ShootMode {
                     (this.delayCount / 5) * 150 + 150);
         }
     }
-
+    
 }
