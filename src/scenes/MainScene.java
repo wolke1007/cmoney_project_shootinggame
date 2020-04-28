@@ -291,7 +291,7 @@ public class MainScene extends Scene {
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(2));
-                scripts = new String[]{"看起來與剛剛房間的怪物不同，這種跑步好快!"};
+                scripts = new String[]{"看起來與剛剛房間的怪物不同，這變種殭屍跑速好快!"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
@@ -321,7 +321,7 @@ public class MainScene extends Scene {
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(3));
-                scripts = new String[]{"又是一群殭屍!"};
+                scripts = new String[]{"又是一群殭屍!", "讓我來好好的試試看剛撿到手榴彈的威力吧"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
@@ -330,7 +330,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(Global.random(3, 4), 3);
                 break;
             case 11:
-                scripts = new String[]{"讓我來好好的試試看剛撿到手榴彈的威力吧"};
+                scripts = new String[]{"手榴彈效果卓越", "(手榴彈沒有數量限制)"};
                 this.textBar.addScript(scripts);
                 break;
             case 12:
@@ -350,7 +350,7 @@ public class MainScene extends Scene {
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(4));
-                scripts = new String[]{"大批的殭屍!! 要好好善用手榴彈了!!"};
+                scripts = new String[]{"大批的殭屍!!", "要好好善用手榴彈了!!"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
