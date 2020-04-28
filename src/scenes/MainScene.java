@@ -243,6 +243,7 @@ public class MainScene extends Scene {
         String[] scripts;
         switch (event.getSerialNo()) {
             case 0:
+//                this.loadingCount = 39; // DEBUG
                 genBox((int) this.maps.getMaps().get(1).getX() + 300,
                         (int) this.maps.getMaps().get(1).getY(),
                         (int) this.maps.getMaps().get(1).getX() + 1300,
@@ -266,7 +267,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(2, 1);
                 break;
             case 3:
-//                this.loadingCount++;
+                this.loadingCount++;
                 scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
                 this.textBar.addScript(scripts);
                 break;
@@ -296,7 +297,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(5, 2);
                 break;
             case 7:
-//                this.loadingCount++;
+                this.loadingCount++;
                 scripts = new String[]{"「可以使用步槍(按鍵2)」"};
                 this.textBar.addScript(scripts);
                 break;
