@@ -246,14 +246,14 @@ public class MainScene extends Scene {
                 this.view.setFocus(this.maps.getMaps().get(1));
                 scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
                 this.textBar.addScript(scripts);
-                this.textBar.play();
+                this.textBar.play(); 
                 break;
             case 2:
                 // 將箱子 remove 並產出怪物1
                 boxProduceEnemy(5, 1);
                 break;
             case 3:
-                this.loadingCount++;
+//                this.loadingCount++;
                 scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
                 this.textBar.addScript(scripts);
                 break;
@@ -274,7 +274,7 @@ public class MainScene extends Scene {
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(2));
-                scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
+                scripts = new String[]{"「撿起其中一隻怪物身上背著的步槍」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
@@ -283,8 +283,8 @@ public class MainScene extends Scene {
                 boxProduceEnemy(5, 2);
                 break;
             case 7:
-                this.loadingCount++;
-                scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
+//                this.loadingCount++;
+                scripts = new String[]{"「可以使用步槍(按鍵2)」"};
                 this.textBar.addScript(scripts);
                 break;
             case 8:
@@ -304,7 +304,7 @@ public class MainScene extends Scene {
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(3));
-                scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
+                scripts = new String[]{"又是一群殭屍!"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
@@ -313,7 +313,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(Global.random(3, 4), 3);
                 break;
             case 11:
-                scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
+                scripts = new String[]{"「撿起怪物身上的手榴彈(空白鍵使用)」"};
                 this.textBar.addScript(scripts);
                 break;
             case 12:
@@ -333,7 +333,7 @@ public class MainScene extends Scene {
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(4));
-                scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
+                scripts = new String[]{"大批的殭屍!! 要好好善用手榴彈了!!"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
@@ -348,7 +348,7 @@ public class MainScene extends Scene {
                 break;
             case 16:
                 AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
-                scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
+                scripts = new String[]{"「聽到下一間房間傳來低吼聲」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
@@ -404,7 +404,7 @@ public class MainScene extends Scene {
                     MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_EVIL_SMILE_SOUND).play();
                     // 需笑滿 6 秒
                     scripts = new String[]{"「剷除入侵者!!!」",
-                        "", "", "", "", ""};
+                        "",""};
                 }
                 this.printEnding = true;
                 this.textBar.addScript(scripts);
@@ -539,7 +539,7 @@ public class MainScene extends Scene {
         removeInvisibleWall();
         // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
         if (this.actor.getHp() <= actorDeadThreshold) {
-            this.loadingCount = 40;
+            this.loadingCount = 40; // 40  是鎖槍 + 鎖手榴彈 // 39 全開
             this.gameOver = true;
             this.gameOverEffect.update();
         }

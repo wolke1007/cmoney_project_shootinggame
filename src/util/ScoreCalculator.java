@@ -137,7 +137,6 @@ public class ScoreCalculator implements Serializable {
     }
     
     public boolean isOnTop(int top, float HP){
-        Global.log("calculateScore(float HP):"+calculateScore(HP));
         if (inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) <= top) {
             return true;
         }
