@@ -5,12 +5,15 @@
  */
 package scenes;
 
+import controllers.AudioPath;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import controllers.SceneController;
 import renderer.Renderer;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import util.CommandSolver;
+import util.Delay;
 import util.Global;
 
 /**
@@ -25,8 +28,10 @@ public class InfoScene extends Scene {
     private Renderer infoRenderer;
     private Renderer returnBtnRenderer;
     private Button skipBtn;
+    private boolean isOnBtn;
+    private Delay changeImage;
+    private int changeCount;
 
-    
     public InfoScene(SceneController sceneController) {
         super(sceneController);
         this.backgroundRenderer = new Renderer(new int[]{0}, 0, ImagePath.COMMON_BACKGROUND[0]);
@@ -35,6 +40,10 @@ public class InfoScene extends Scene {
         this.infoRenderer = new Renderer(new int[]{0}, 0, ImagePath.INFO_PAGE[0]);
         this.returnBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.INFO_PAGE[1]);
         this.skipBtn = new returnButton();
+        this.isOnBtn = true;
+        this.changeImage = new Delay(30);
+        this.changeImage.start();
+        this.changeCount = 0;
     }
 
     public abstract class Button {
@@ -48,12 +57,12 @@ public class InfoScene extends Scene {
     public class returnButton extends Button {
 
         public returnButton() {
-            int height = 130;
-            int width  = 250;
+            int height = 117;
+            int width = 328;
             int upDownposition = -5;
-            super.left = Global.SCREEN_X - width;
+            super.left = Global.SCREEN_X - width + upDownposition;
             super.top = Global.SCREEN_Y - height + upDownposition;
-            super.right = super.left + width;
+            super.right = super.left + width + upDownposition;
             super.bottom = super.top + height + upDownposition;
         }
     }
@@ -65,6 +74,15 @@ public class InfoScene extends Scene {
 
     @Override
     public void sceneUpdate() {
+        if (cursorInBtn(this.skipBtn)) {
+            this.returnBtnRenderer.setImage(ImagePath.INFO_PAGE[3]);
+        } else if (this.changeImage.isTrig()) {
+            if (this.changeCount++ % 2 == 0) {
+                this.returnBtnRenderer.setImage(ImagePath.INFO_PAGE[1]);
+            } else {
+                this.returnBtnRenderer.setImage(ImagePath.INFO_PAGE[2]);
+            }
+        }
     }
 
     @Override
@@ -78,35 +96,27 @@ public class InfoScene extends Scene {
         int btnLeft = btn.left;
         int btnRight = btn.right;
         if (Global.mouseY > btnTop && Global.mouseY < btnBottom && Global.mouseX > btnLeft && Global.mouseX < btnRight) {
+            if (this.isOnBtn) {
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BUTTON_AUDIO).play();
+                this.isOnBtn = false;
+            }
             return true;
         }
+        this.isOnBtn = true;
         return false;
     }
-    
-    private float ratio(float num){
+
+    private float ratio(float num) {
         return num / 50f;
     }
 
     @Override
     public void paint(Graphics g) {
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
-        this.backgroundRenderer2.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(49))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(49))
-                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(1))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(1))); // 背景圖
-        this.shadowRenderer.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(44))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(45))
-                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(6))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(5))); // 背景圖
-        this.infoRenderer.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(39))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(40))
-                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(11))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(12))); // 背景圖
-        if (cursorInBtn(this.skipBtn)) {
-            this.returnBtnRenderer.paint(g, this.skipBtn.left + 10, this.skipBtn.top + 10, this.skipBtn.right + 10, this.skipBtn.bottom + 10); // 開始按鈕
-        } else {
-            this.returnBtnRenderer.paint(g, this.skipBtn.left, this.skipBtn.top, this.skipBtn.right, this.skipBtn.bottom); // 開始按鈕
-        }
+        this.backgroundRenderer2.paint(g, (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(49)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(49)), (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(1)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(1))); // 背景圖
+        this.shadowRenderer.paint(g, (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(44)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(45)), (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(6)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(5))); // 背景圖
+        this.infoRenderer.paint(g, (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(39)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(40)), (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(11)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(12))); // 背景圖
+        this.returnBtnRenderer.paint(g, this.skipBtn.left, this.skipBtn.top, this.skipBtn.right, this.skipBtn.bottom); // 開始按鈕
     }
 
     @Override

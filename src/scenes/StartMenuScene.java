@@ -13,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import renderer.Renderer;
 import util.CommandSolver;
+import util.Delay;
 import util.Global;
 
 /**
@@ -32,6 +33,9 @@ public class StartMenuScene extends Scene {
     private int buttonWidth;
     private int buttonHeight;
     private int buttonGap;
+    private boolean isOnBtn;
+    private Delay changeImage;
+    private int changeCount;
 
     public StartMenuScene(SceneController sceneController) {
         super(sceneController);
@@ -40,12 +44,16 @@ public class StartMenuScene extends Scene {
         this.rankBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[0]);
         this.startBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[3]);
         this.introBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.MENU_PAGE[6]);
-        this.buttonWidth = 300;
+        this.buttonWidth = 200;
         this.buttonHeight = this.buttonWidth / 2;
         this.buttonGap = 60;
         this.rankBtn = new rankButton();
         this.startBtn = new startButton();
         this.introBtn = new introButton();
+        this.isOnBtn = true;
+        this.changeImage = new Delay(30);
+        this.changeImage.start();
+        this.changeCount = 0;
     }
 
     public int getBtnGap() {
@@ -54,41 +62,34 @@ public class StartMenuScene extends Scene {
 
     public abstract class Button {
 
-        public int top;
-        public int bottom;
-        public int left;
-        public int right;
-        public int upDownPosition = 230;
+        int height = 117;
+        int width = 328;
+        public int upDownPosition = -80;
+        public int left = Global.SCREEN_X / 2 - width / 2;
+        public int top = Global.SCREEN_Y / 2 - height / 2 + upDownPosition;
+        public int right = Global.SCREEN_X / 2 + width / 2;
+        public int bottom = Global.SCREEN_Y / 2 + height / 2 + upDownPosition;
     }
 
     public class rankButton extends Button {
 
         public rankButton() {
-
-            super.left = (Global.SCREEN_X - (StartMenuScene.this.buttonWidth * 3 + StartMenuScene.this.buttonGap * 2)) / 2;
-            super.top = upDownPosition;
-            super.right = left + StartMenuScene.this.buttonWidth;
-            super.bottom = top + StartMenuScene.this.buttonHeight;
+            super.left = super.left - StartMenuScene.this.buttonWidth * 2/*(Global.SCREEN_X - (StartMenuScene.this.buttonWidth * 3 + StartMenuScene.this.buttonGap * 2)) / 2*/;
+            super.right = super.right - StartMenuScene.this.buttonWidth * 2/*left + StartMenuScene.this.buttonWidth*/;
         }
     }
 
     public class startButton extends Button {
 
         public startButton() {
-            super.left = StartMenuScene.this.rankBtn.right + StartMenuScene.this.buttonGap;
-            super.top = upDownPosition;
-            super.right = left + StartMenuScene.this.buttonWidth;
-            super.bottom = top + StartMenuScene.this.buttonHeight;
         }
     }
 
     public class introButton extends Button {
 
         public introButton() {
-            super.left = StartMenuScene.this.startBtn.right + StartMenuScene.this.buttonGap;
-            super.top = upDownPosition;
-            super.right = left + StartMenuScene.this.buttonWidth;
-            super.bottom = top + StartMenuScene.this.buttonHeight;
+            super.left = super.left + StartMenuScene.this.buttonWidth * 2 /*StartMenuScene.this.startBtn.right + StartMenuScene.this.buttonGap*/;
+            super.right = super.right + StartMenuScene.this.buttonWidth * 2/*left + StartMenuScene.this.buttonWidth*/;
         }
     }
 
@@ -99,6 +100,50 @@ public class StartMenuScene extends Scene {
 
     @Override
     public void sceneUpdate() {
+        if (!cursorInBtn(this.rankBtn) && !cursorInBtn(this.startBtn) && !cursorInBtn(this.introBtn)) {
+            this.isOnBtn = true;
+        }
+        this.changeImage.start();
+        if (cursorInBtn(this.rankBtn)) {
+            this.rankBtnRenderer.setImage(ImagePath.MENU_PAGE[2]);
+            if (this.isOnBtn) {
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BUTTON_AUDIO).play();
+                this.isOnBtn = false;
+            }
+        } else if (this.changeImage.isTrig()) {
+            if (this.changeCount++ % 2 == 0) {
+                this.rankBtnRenderer.setImage(ImagePath.MENU_PAGE[0]);
+            } else {
+                this.rankBtnRenderer.setImage(ImagePath.MENU_PAGE[1]);
+            }
+        }
+        if (cursorInBtn(this.startBtn)) {
+            this.startBtnRenderer.setImage(ImagePath.MENU_PAGE[5]);
+            if (this.isOnBtn) {
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BUTTON_AUDIO).play();
+                this.isOnBtn = false;
+            }
+        } else if (this.changeImage.isTrig()) {
+            if (this.changeCount++ % 2 == 0) {
+                this.startBtnRenderer.setImage(ImagePath.MENU_PAGE[3]);
+            } else {
+                this.startBtnRenderer.setImage(ImagePath.MENU_PAGE[4]);
+            }
+        }
+        if (cursorInBtn(this.introBtn)) {
+            this.introBtnRenderer.setImage(ImagePath.MENU_PAGE[8]);
+            if (this.isOnBtn) {
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BUTTON_AUDIO).play();
+                this.isOnBtn = false;
+            }
+        } else if (this.changeImage.isTrig()) {
+            if (this.changeCount++ % 2 == 0) {
+                this.introBtnRenderer.setImage(ImagePath.MENU_PAGE[6]);
+            } else {
+                this.introBtnRenderer.setImage(ImagePath.MENU_PAGE[7]);
+            }
+        }
+
     }
 
     @Override
@@ -122,21 +167,9 @@ public class StartMenuScene extends Scene {
         int secondEdge = 20;
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
         this.backgroundRenderer2.paint(g, secondEdge, secondEdge, Global.SCREEN_X - secondEdge, Global.SCREEN_Y - secondEdge); // 背景圖
-        if (cursorInBtn(this.startBtn)) {
-            this.startBtnRenderer.paint(g, this.startBtn.left + 10, this.startBtn.top + 10, this.startBtn.right + 10, this.startBtn.bottom + 10); // 開始按鈕
-        } else {
-            this.startBtnRenderer.paint(g, this.startBtn.left, this.startBtn.top, this.startBtn.right, this.startBtn.bottom); // 開始按鈕
-        }
-        if (cursorInBtn(this.rankBtn)) {
-            this.rankBtnRenderer.paint(g, this.rankBtn.left + 10, this.rankBtn.top + 10, this.rankBtn.right + 10, this.rankBtn.bottom + 10); // 歷史紀錄按鈕
-        } else {
-            this.rankBtnRenderer.paint(g, this.rankBtn.left, this.rankBtn.top, this.rankBtn.right, this.rankBtn.bottom); // 歷史紀錄按鈕
-        }
-        if (cursorInBtn(this.introBtn)) {
-            this.introBtnRenderer.paint(g, this.introBtn.left + 10, this.introBtn.top + 10, this.introBtn.right + 10, this.introBtn.bottom + 10); // 歷史紀錄按鈕
-        } else {
-            this.introBtnRenderer.paint(g, this.introBtn.left, this.introBtn.top, this.introBtn.right, this.introBtn.bottom); // 歷史紀錄按鈕
-        }
+        this.startBtnRenderer.paint(g, this.startBtn.left, this.startBtn.top, this.startBtn.right, this.startBtn.bottom); // 開始按鈕
+        this.rankBtnRenderer.paint(g, this.rankBtn.left, this.rankBtn.top, this.rankBtn.right, this.rankBtn.bottom); // 歷史紀錄按鈕
+        this.introBtnRenderer.paint(g, this.introBtn.left, this.introBtn.top, this.introBtn.right, this.introBtn.bottom); // 歷史紀錄按鈕
     }
 
     @Override

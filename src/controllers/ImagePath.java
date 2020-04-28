@@ -142,7 +142,8 @@ public class ImagePath {
     public static final String[] BUILDING = {ImagePath.ROOT + "/originalRoom.png"};
     public static final String[] WELCOME_PAGE = {ImagePath.ROOT + "/title.png",
         ImagePath.ROOT + "/press_1.png", ImagePath.ROOT + "/press_2.png", ImagePath.ROOT + "/press_3.png"};
-    public static final String[] MENU_PAGE = {ImagePath.ROOT + "/rank_1.png", ImagePath.ROOT + "/rank_2.png", ImagePath.ROOT + "/rank_3.png",
+    public static final String[] MENU_PAGE = {
+        ImagePath.ROOT + "/rank_1.png", ImagePath.ROOT + "/rank_2.png", ImagePath.ROOT + "/rank_3.png",
         ImagePath.ROOT + "/start_1.png", ImagePath.ROOT + "/start_2.png", ImagePath.ROOT + "/start_3.png",
         ImagePath.ROOT + "/intro_1.png", ImagePath.ROOT + "/intro_2.png", ImagePath.ROOT + "/intro_3.png"};
     public static final String[] INTRO_PAGE = {ImagePath.ROOT + "/keyBoradOperationInfo.png"};
@@ -154,7 +155,8 @@ public class ImagePath {
     public static final String[] BLOOD = {ImagePath.ROOT + "/low_hp_1.png",
         ImagePath.ROOT + "/take_damage.png",
         ImagePath.ROOT + "/hand.png",
-        ImagePath.ROOT + "/blood_drag.png"};
+        ImagePath.ROOT + "/blood_drag.png",
+        ImagePath.ROOT + "/low_hp.png"};
     public static final String BOSS = ImagePath.ROOT + "/boss/boss_1.png";
     public static final String BOSS_RIGHT_HAND = ImagePath.ROOT + "/boss/boos_hand_right_origine.png";
     public static final String BOSS_LEFT_HAND = ImagePath.ROOT + "/boss/boos_hand_left_origine.png";

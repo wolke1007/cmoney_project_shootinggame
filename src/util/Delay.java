@@ -20,11 +20,15 @@ public class Delay {
         this.counter = this.delayFrame;
         this.isPause = true;
     }
-    
-    public void cleanCounter(){
+
+    public void setCounter(float counter) {
+        this.counter = counter;
+    }
+
+    public void cleanCounter() {
         this.counter = 0;
     }
-    
+
     public void setDelayFrame(float delayFrame) {
         this.delayFrame = delayFrame;
     }

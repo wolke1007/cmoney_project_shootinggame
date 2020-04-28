@@ -18,14 +18,14 @@ import util.Global;
  * @author F-NB
  */
 public class Enemy extends GameObject {
-    
+
     private MoveMode moveMode;
     private GameObject target;
     private boolean isHpFull;
     private Delay invincibleState;
     private float hp;
     private boolean isRemove;
-    
+
     public Enemy(String colliderType, float x, float y, float hp, GameObject target, int kind) {
         super(colliderType, x, y, Global.UNIT_MIN * 8, Global.UNIT_MIN * 8, Global.UNIT_MIN * 4, Global.UNIT_MIN * 4);
         this.getCollider().setCenter(this.getCollider().width() / 2, this.getCollider().height() / 2);
@@ -42,38 +42,38 @@ public class Enemy extends GameObject {
         this.setIsRemove(false);
         super.paintPriority = 1;
     }
-    
+
     public void setIsRemove(boolean isRemove) {
         this.isRemove = isRemove;
     }
-    
+
     public boolean getIsRmove() {
         return this.isRemove;
     }
-    
+
     public void setTarget(GameObject target) {
         this.target = target;
     }
-    
+
     public GameObject getTarget() {
         return this.target;
     }
-    
+
     public void selectKind(int kind) {
         switch (kind) {
             case 1:
-                this.moveMode = new ZombieNormal(this, getTarget(), 59, ImagePath.ZOMBIE_NORMAL);
+                this.moveMode = new ZombieNormal(this, getTarget(), 60, ImagePath.ZOMBIE_NORMAL);
                 break;
             case 2:
                 this.moveMode = new ZombieShock(this, getTarget(), 60, ImagePath.ZOMBIE_MONSTER);
                 break;
         }
     }
-    
+
     public void setAllObject(ArrayList<GameObject> list) {
         this.moveMode.setAllObject(list);
     }
-    
+
     @Override
     public void update() {
         if (this.isHpFull) {
@@ -85,7 +85,7 @@ public class Enemy extends GameObject {
         this.moveMode.update();
         this.setIsRemove(this.moveMode.getIsRemove());
     }
-    
+
     @Override
     public void paintComponent(Graphics g) {
         this.moveMode.paintComponent(g);
@@ -95,7 +95,7 @@ public class Enemy extends GameObject {
         g.fillRect((int) (this.getX() - Global.viewX), (int) (this.getY() - Global.viewY) - 8, (int) this.getHpBarWidth(), 4);
         g.setColor(Color.BLACK);
     }
-    
+
     @Override
     public void setDir(int dir) {
     }//方向用不到

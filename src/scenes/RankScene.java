@@ -5,7 +5,9 @@
  */
 package scenes;
 
+import controllers.AudioPath;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import controllers.SceneController;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import util.CommandSolver;
+import util.Delay;
 import util.Global;
 import util.Record;
 import util.ScoreCalculator;
@@ -41,6 +44,9 @@ public class RankScene extends Scene {
     private int rankContentBottom;
     private int rankContentRight;
     private SimpleDateFormat sdf;
+    private boolean isOnBtn;
+    private Delay changeImage;
+    private int changeCount;
 
     public RankScene(SceneController sceneController) {
         super(sceneController);
@@ -51,11 +57,15 @@ public class RankScene extends Scene {
         this.returnBtn = new returnButton();
         this.scoreType = "campaign";
         this.printLimit = 5; // 要顯示幾行歷史紀錄
-        this.rankContentTop = (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(45));
-        this.rankContentLeft = (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(45));
-        this.rankContentBottom = (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(12));
-        this.rankContentRight = (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(5));
+        this.rankContentTop = (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(45));
+        this.rankContentLeft = (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(45));
+        this.rankContentBottom = (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(12));
+        this.rankContentRight = (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(5));
         this.sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        this.isOnBtn = true;
+        this.changeImage = new Delay(30);
+        this.changeImage.start();
+        this.changeCount = 0;
     }
 
     public abstract class Button {
@@ -69,12 +79,12 @@ public class RankScene extends Scene {
     public class returnButton extends Button {
 
         public returnButton() {
-            int height = 130;
-            int width  = 250;
+            int height = 117;
+            int width = 328;
             int upDownposition = -5;
-            super.left = Global.SCREEN_X - width;
+            super.left = Global.SCREEN_X - width + upDownposition;
             super.top = Global.SCREEN_Y - height + upDownposition;
-            super.right = super.left + width;
+            super.right = super.left + width + upDownposition;
             super.bottom = super.top + height + upDownposition;
         }
     }
@@ -89,6 +99,15 @@ public class RankScene extends Scene {
 
     @Override
     public void sceneUpdate() {
+        if (cursorInBtn(this.returnBtn)) {
+            this.returnBtnRenderer.setImage(ImagePath.COMMON_BUTTON[2]);
+        } else if (this.changeImage.isTrig()) {
+            if (this.changeCount++ % 2 == 0) {
+                this.returnBtnRenderer.setImage(ImagePath.COMMON_BUTTON[0]);
+            } else {
+                this.returnBtnRenderer.setImage(ImagePath.COMMON_BUTTON[1]);
+            }
+        }
     }
 
     @Override
@@ -102,21 +121,26 @@ public class RankScene extends Scene {
         int btnLeft = btn.left;
         int btnRight = btn.right;
         if (Global.mouseY > btnTop && Global.mouseY < btnBottom && Global.mouseX > btnLeft && Global.mouseX < btnRight) {
+            if (this.isOnBtn) {
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BUTTON_AUDIO).play();
+                this.isOnBtn = false;
+            }
             return true;
         }
+        this.isOnBtn = true;
         return false;
     }
 
-    private float ratio(float num){
+    private float ratio(float num) {
         return num / 50f;
     }
 
     private void paintEndlessScore(Graphics g) {
         int textGap = 60;
-        int categoryGap1 = (int)((this.rankContentRight - this.rankContentLeft) * ratio(19));
-        int categoryGap2 = (int)((this.rankContentRight - this.rankContentLeft) * ratio(16) + 40 * ratio(16));
-        int leftOffset = (int)((this.rankContentRight - this.rankContentLeft) * ratio(5));
-        int topOffset = (int)((this.rankContentBottom - this.rankContentTop) * ratio(20));
+        int categoryGap1 = (int) ((this.rankContentRight - this.rankContentLeft) * ratio(19));
+        int categoryGap2 = (int) ((this.rankContentRight - this.rankContentLeft) * ratio(16) + 40 * ratio(16));
+        int leftOffset = (int) ((this.rankContentRight - this.rankContentLeft) * ratio(5));
+        int topOffset = (int) ((this.rankContentBottom - this.rankContentTop) * ratio(20));
         g.setColor(Color.BLACK);
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
         for (int i = 0; i < RankScene.this.scoreList.size(); i++) {
@@ -131,23 +155,17 @@ public class RankScene extends Scene {
         }
         g.setColor(Color.BLACK);
     }
-    
+
     @Override
     public void paint(Graphics g) {
         this.backgroundRenderer.paint(g, 0, 0, Global.SCREEN_X, Global.SCREEN_Y); // 背景圖
-        this.backgroundRenderer2.paint(g, (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(49))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(49))
-                , (int)(Global.SCREEN_X - Global.SCREEN_X * ratio(1))
-                , (int)(Global.SCREEN_Y - Global.SCREEN_Y * ratio(1))); // 背景圖
-        this.rankRenderer.paint(g, this.rankContentLeft
-                , this.rankContentTop
-                , this.rankContentRight
-                , this.rankContentBottom);
-        if (cursorInBtn(this.returnBtn)) {
-            this.returnBtnRenderer.paint(g, this.returnBtn.left + 10, this.returnBtn.top + 10, this.returnBtn.right + 10, this.returnBtn.bottom + 10); // 開始按鈕
-        } else {
-            this.returnBtnRenderer.paint(g, this.returnBtn.left, this.returnBtn.top, this.returnBtn.right, this.returnBtn.bottom); // 開始按鈕
-        }
+        this.backgroundRenderer2.paint(g, (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(49)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(49)), (int) (Global.SCREEN_X - Global.SCREEN_X * ratio(1)), (int) (Global.SCREEN_Y - Global.SCREEN_Y * ratio(1))); // 背景圖
+        this.rankRenderer.paint(g, this.rankContentLeft, this.rankContentTop, this.rankContentRight, this.rankContentBottom);
+//        if (cursorInBtn(this.returnBtn)) {
+//            this.returnBtnRenderer.paint(g, this.returnBtn.left + 10, this.returnBtn.top + 10, this.returnBtn.right + 10, this.returnBtn.bottom + 10); // 開始按鈕
+//        } else {
+        this.returnBtnRenderer.paint(g, this.returnBtn.left, this.returnBtn.top, this.returnBtn.right, this.returnBtn.bottom); // 開始按鈕
+//        }
         paintEndlessScore(g);
     }
 

@@ -25,7 +25,7 @@ public class AudioPath {
     public static final String START_MUSIC = AudioPath.BGM + "/startMusic.wav";
     public static final String GAME_BEGIN = AudioPath.BGM + "/gameBegin.wav";
     public static final String BOSS_FIGHT = AudioPath.BGM + "/bossFight.wav";
-    public static final String BUTTON_AUDIO = AudioPath.COMMON + "/buttonAudio";
+    public static final String BUTTON_AUDIO = AudioPath.COMMON + "/buttonAudio.wav";
 //    public static final String START_MENU_SCENE = AudioPath.BGM + "/start_highScore_scene(City_of_Jewels).wav";
 //    public static final String MAIN_SCENE = BGM + "/main_scene(Inescapable).wav";
 //    public static final String BOSS_FIGHT = BGM + "/boss_fight(Ghost_Chase_Thriller).wav";
@@ -43,11 +43,11 @@ public class AudioPath {
     public static final String ENEMY_DEAD = AudioPath.ZOMBIE + "/enemyDead.wav";
     public static final String[] ZOMBIE_BOSS_MOVES = {AudioPath.ZOMBIE_BOSS + "/boss_die(charger_die_01).wav"};
     public static final String[] COMMONS = {AudioPath.COMMON + "/button.wav"};
-    public static final String[][] EFFECTS = {{AudioPath.EFFECT + "/attack" + "/bomb.wav",
-        AudioPath.EFFECT + "/attack" + "/minigun_fire.wav",
-        AudioPath.EFFECT + "/attack" + "/smg_fire_1.wav"},
-    {AudioPath.EFFECT + "/dying" + "/heartbeats.wav"},
-    {AudioPath.EFFECT + "/speedup" + "/speedup_bgm.wav"}};
+//    public static final String[][] EFFECTS = {{AudioPath.EFFECT + "/attack" + "/bomb.wav",
+//        AudioPath.EFFECT + "/attack" + "/minigun_fire.wav",
+//        AudioPath.EFFECT + "/attack" + "/smg_fire_1.wav"},
+//    {AudioPath.EFFECT + "/dying" + "/heartbeats.wav"},
+//    {AudioPath.EFFECT + "/speedup" + "/speedup_bgm.wav"}};
     public static final String AMMO_GUN_FIRE = AudioPath.AMMO + "/gunFire.wav";
     public static final String AMMO_GRENADE_READY = AudioPath.AMMO + "/grenadeReady.wav";
     public static final String AMMO_GRENADE_BOMB = AudioPath.AMMO + "/grenadeSoundBomb.wav";
@@ -62,4 +62,7 @@ public class AudioPath {
     public static final String BOSS_ATTACK_BOMB = AudioPath.BOSS + "/bossAttackBomb.wav";
     public static final String BOSS_DIE_SOUND = AudioPath.BOSS + "/bossDieSound.wav";
     public static final String ACTOR_DEAD_BLOODDRAG = AudioPath.ACTOR + "/actorDeadBloodDrag.wav";
+    public static final String ACTOR_EVIL_SMILE_SOUND = AudioPath.ACTOR + "/evilSmileSound.wav";
+    public static final String ACTOR_VICTORY_SOUND = AudioPath.ACTOR + "/victorySound.wav";
+    public static final String ACTOR_HEART_BEATS = AudioPath.EFFECT + "/heartBeats.wav";
 }

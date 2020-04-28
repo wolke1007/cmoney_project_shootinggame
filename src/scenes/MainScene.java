@@ -239,7 +239,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(2).getY(),
                         (int) this.maps.getMaps().get(2).getX() + 1300,
                         (int) this.maps.getMaps().get(2).getY() + 700,
-                        Global.random(7, 9));
+                        Global.random(1, 1));
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             case 5:
@@ -252,12 +252,12 @@ public class MainScene extends Scene {
                 this.textBar.play();
                 break;
             case 6:
-                boxProduceEnemy(5, 2);
                 scripts = new String[]{"好像是不同的怪物，跑得更快了"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
             case 7:
+                boxProduceEnemy(5, 2);
                 break;
             case 8:
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
@@ -302,16 +302,19 @@ public class MainScene extends Scene {
                 break;
             case 12:
                 // 畫結局圖
+                this.loadingCount = 38;
                 if (this.actor.getHp() >= 100) {
                     Global.log("set pic 0");
                     this.endingRenderer.setImage(ImagePath.ENDING[1]);
+                    MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_VICTORY_SOUND).play();
                     scripts = new String[]{"我的薪水太高了  真的非常的高",
                         "而且高到不行"};
                 } else {
                     Global.log("set pic 1");
                     this.endingRenderer.setImage(ImagePath.ENDING[0]);
+                    MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_EVIL_SMILE_SOUND).play();
                     // 需笑滿 6 秒
-                    scripts = new String[]{"「剷除入侵者!!!」", 
+                    scripts = new String[]{"「剷除入侵者!!!」",
                         "", "", "", "", ""};
                 }
                 this.printEnding = true;
@@ -443,6 +446,7 @@ public class MainScene extends Scene {
         removeInvisibleWall();
         // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
         if (this.actor.getHp() <= actorDeadThreshold) {
+            this.loadingCount = 38;
             this.gameOver = true;
             this.gameOverEffect.update();
         }
@@ -702,6 +706,11 @@ public class MainScene extends Scene {
             for (int i = 0; i < ImagePath.BARRIER.length; i++) {
                 ImageResourceController.getInstance().tryGetImage(ImagePath.BARRIER[i]);
             }
+        } else if (this.loadingCount == 23) {
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_EVIL_SMILE_SOUND);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_VICTORY_SOUND);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_HEART_BEATS);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT);
         }
     }
 
@@ -751,10 +760,10 @@ public class MainScene extends Scene {
 
         @Override
         public void keyPressed(int commandCode, long trigTime) {
-            if (MainScene.this.loadingCount >= 37) {
-                if (gameOver) {
-                    return;
-                }
+            if (gameOver) {
+                return;
+            }
+            if (MainScene.this.loadingCount == 37) {
                 actorMoveRule(commandCode);
                 ammoModeChange(commandCode);
             }
@@ -762,19 +771,20 @@ public class MainScene extends Scene {
 
         @Override
         public void keyReleased(int commandCode, long trigTime) {
-            if (MainScene.this.loadingCount >= 37) {
-                stopRule(commandCode);
-                if (gameOver) {
-                    if (commandCode == Global.KEY_ENTER) {
-                        nameTyped = true;
-                    }
-                    if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
-                        name = name.substring(0, name.length() - 1);
-                    } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
-                        name += (char) commandCode;
-                    }
-                    return;
+
+            stopRule(commandCode);
+            if (gameOver) {
+                if (commandCode == Global.KEY_ENTER) {
+                    nameTyped = true;
                 }
+                if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
+                    name = name.substring(0, name.length() - 1);
+                } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
+                    name += (char) commandCode;
+                }
+                return;
+            }
+            if (MainScene.this.loadingCount == 37) {
                 switch (commandCode) {
                     case Global.KEY_SPACE:
                         MainScene.this.stateChage.start();
@@ -884,7 +894,7 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (MainScene.this.loadingCount >= 37) {
+            if (MainScene.this.loadingCount == 37) {
                 if (state == CommandSolver.MouseState.PRESSED) {
                     MainScene.this.mouseState = true;
                     MainScene.this.stateChage.click();
@@ -893,6 +903,9 @@ public class MainScene extends Scene {
                 } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
                     MainScene.this.mouseState = false;
                 }
+            }
+            if (MainScene.this.loadingCount == 38) {
+                MainScene.this.mouseState = false;
             }
         }
     }
