@@ -536,7 +536,7 @@ public class MainScene extends Scene {
         removeInvisibleWall();
         // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
         if (this.actor.getHp() <= actorDeadThreshold) {
-            this.loadingCount = 38;
+            this.loadingCount = 40;
             this.gameOver = true;
             this.gameOverEffect.update();
         }
