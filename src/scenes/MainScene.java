@@ -260,7 +260,7 @@ public class MainScene extends Scene {
                 this.view.setFocus(this.maps.getMaps().get(1));
                 scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
                 this.textBar.addScript(scripts);
-                this.textBar.play(); 
+                this.textBar.play();
                 break;
             case 2:
                 // 將箱子 remove 並產出怪物1
@@ -307,7 +307,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(3).getY(),
                         (int) this.maps.getMaps().get(3).getX() + 1300,
                         (int) this.maps.getMaps().get(3).getY() + 700,
-                        /*Global.random(3, 5)*/ 2);
+                        Global.random(3, 5));
                 this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 3 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -336,7 +336,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(4).getY(),
                         (int) this.maps.getMaps().get(4).getX() + 1300,
                         (int) this.maps.getMaps().get(4).getY() + 700,
-                        /*Global.random(7, 9)*/ 2);
+                        Global.random(7, 9));
                 this.maps.getMaps().get(3).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 4 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -418,7 +418,7 @@ public class MainScene extends Scene {
                     MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_EVIL_SMILE_SOUND).play();
                     // 需笑滿 6 秒
                     scripts = new String[]{"「剷除入侵者!!!」",
-                        "",""};
+                        "", ""};
                 }
                 this.printEnding = true;
                 this.textBar.addScript(scripts);
@@ -456,7 +456,7 @@ public class MainScene extends Scene {
     }
 
     public void genEnemies(int x1, int y1, int x2, int y2, int qty, int type) { // 於指定區域生成敵人
-        float hp = 10;
+        float hp = 8;
         for (int i = 0; i < qty; i++) {
             float x;
             float y;

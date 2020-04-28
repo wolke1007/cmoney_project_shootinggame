@@ -65,7 +65,7 @@ public class Boss extends GameObject {
         this.target = target;
         bossRendererToRotate(this.target);
         bossRenderer();
-        this.setHpPoint(200);
+        this.setHpPoint(1000);
         delayDetail();
         setStartAttack(false);
         setStartPaint(false);
