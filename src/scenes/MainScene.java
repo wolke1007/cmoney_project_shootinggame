@@ -234,7 +234,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(1).getY(),
                         (int) this.maps.getMaps().get(1).getX() + 1300,
                         (int) this.maps.getMaps().get(1).getY() + 700,
-                        Global.random(7, 9));
+                        2);
                 this.maps.getMaps().get(0).getBuildings().get(0).open("right"); // 開啟地圖 0 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 2 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -253,6 +253,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(5, 1);
                 break;
             case 3:
+                this.loadingCount++;
                 scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
                 this.textBar.addScript(scripts);
                 break;
@@ -262,7 +263,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(2).getY(),
                         (int) this.maps.getMaps().get(2).getX() + 1300,
                         (int) this.maps.getMaps().get(2).getY() + 700,
-                        Global.random(3, 5));
+                        2);
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 2 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -279,9 +280,10 @@ public class MainScene extends Scene {
                 break;
             case 6:
                 // 將箱子 remove 並產出怪物1
-                boxProduceEnemy(5, 1);
+                boxProduceEnemy(5, 2);
                 break;
             case 7:
+                this.loadingCount++;
                 scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
                 this.textBar.addScript(scripts);
                 break;
@@ -308,7 +310,7 @@ public class MainScene extends Scene {
                 break;
             case 10:
                 // 將箱子 remove 並產出怪物1
-                boxProduceEnemy(5, 1);
+                boxProduceEnemy(Global.random(3, 4), 3);
                 break;
             case 11:
                 scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
@@ -320,7 +322,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(4).getY(),
                         (int) this.maps.getMaps().get(4).getX() + 1300,
                         (int) this.maps.getMaps().get(4).getY() + 700,
-                        Global.random(3, 5));
+                        Global.random(7, 9));
                 this.maps.getMaps().get(3).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 4 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -337,7 +339,7 @@ public class MainScene extends Scene {
                 break;
             case 14:
                 // 將箱子 remove 並產出怪物1
-                boxProduceEnemy(5, 1);
+                boxProduceEnemy(Global.random(5, 7), 3);
                 break;
             case 15:
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
@@ -384,7 +386,7 @@ public class MainScene extends Scene {
                 break;
             case 20:
                 // 畫結局圖
-                this.loadingCount = 38;
+                this.loadingCount = 40;
                 if (this.actor.getHp() >= 100) {
                     this.easterEgg = true; // 進入彩蛋結局
                     Global.log("set pic 0");
@@ -855,10 +857,8 @@ public class MainScene extends Scene {
             if (gameOver) {
                 return;
             }
-            if (MainScene.this.loadingCount == 37) {
-                actorMoveRule(commandCode);
-                ammoModeChange(commandCode);
-            }
+            actorMoveRule(commandCode);
+            ammoModeChange(commandCode);
         }
 
         @Override
@@ -876,18 +876,19 @@ public class MainScene extends Scene {
                 }
                 return;
             }
-            if (MainScene.this.loadingCount == 37) {
-                switch (commandCode) {
-                    case Global.KEY_SPACE:
+
+            switch (commandCode) {
+                case Global.KEY_SPACE:
+                    if (MainScene.this.loadingCount == 39) {
                         MainScene.this.stateChage.start();
                         MainScene.this.actor.getRenderer().setState(0);
                         MainScene.this.ammoState = true;
                         MainScene.this.grenadeReady = true;
-                        break;
-                    case Global.KEY_CONTROL:
-                        MainScene.this.isIntroPaint = false;
-                        break;
-                }
+                    }
+                    break;
+                case Global.KEY_CONTROL:
+                    MainScene.this.isIntroPaint = false;
+                    break;
             }
         }
 
@@ -955,29 +956,37 @@ public class MainScene extends Scene {
         private void ammoModeChange(int commandCode) {
             switch (commandCode) {
                 case Global.KEY_1:
-                    if (MainScene.this.stateChage.getDelayFrame() == 5) {
-                        MainScene.this.stateChage.setDelayFrame(30);
-                        MainScene.this.stateChage.start();
-                        MainScene.this.stateChage.click();
+                    if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
+                        if (MainScene.this.stateChage.getDelayFrame() == 5) {
+                            MainScene.this.stateChage.setDelayFrame(30);
+                            MainScene.this.stateChage.start();
+                            MainScene.this.stateChage.click();
+                        }
                     }
                     break;
                 case Global.KEY_2:
-                    if (MainScene.this.stateChage.getDelayFrame() == 30) {
-                        MainScene.this.stateChage.setDelayFrame(5);
-                        MainScene.this.stateChage.start();
-                        MainScene.this.stateChage.click();
+                    if (MainScene.this.loadingCount >= 38 && MainScene.this.loadingCount <= 39) {
+                        if (MainScene.this.stateChage.getDelayFrame() == 30) {
+                            MainScene.this.stateChage.setDelayFrame(5);
+                            MainScene.this.stateChage.start();
+                            MainScene.this.stateChage.click();
+                        }
                     }
                     break;
                 case Global.KEY_SPACE:
-                    MainScene.this.stateChage.stop();
-                    MainScene.this.actor.getRenderer().setState(1);
-                    if (MainScene.this.grenadeReady) {
-                        AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
-                        MainScene.this.grenadeReady = false;
+                    if (MainScene.this.loadingCount == 39) {
+                        MainScene.this.stateChage.stop();
+                        MainScene.this.actor.getRenderer().setState(1);
+                        if (MainScene.this.grenadeReady) {
+                            AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
+                            MainScene.this.grenadeReady = false;
+                        }
                     }
                     break;
                 case Global.KEY_CONTROL:
-                    MainScene.this.isIntroPaint = true;
+                    if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
+                        MainScene.this.isIntroPaint = true;
+                    }
                     break;
             }
         }
@@ -992,7 +1001,7 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (MainScene.this.loadingCount == 37) {
+            if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
                 if (state == CommandSolver.MouseState.PRESSED) {
                     MainScene.this.mouseState = true;
                     MainScene.this.stateChage.click();
@@ -1002,7 +1011,7 @@ public class MainScene extends Scene {
                     MainScene.this.mouseState = false;
                 }
             }
-            if (MainScene.this.loadingCount == 38) {
+            if (MainScene.this.loadingCount == 40) {
                 MainScene.this.mouseState = false;
             }
         }
