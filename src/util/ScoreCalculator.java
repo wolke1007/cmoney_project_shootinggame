@@ -47,31 +47,30 @@ public class ScoreCalculator implements Serializable {
     }
     
     public void gameStart() {
-        this.startTime = System.currentTimeMillis();
-        this.currentTime = this.endTime - this.startTime;
+//        this.startTime = System.currentTimeMillis();
+//        this.currentTime = this.endTime - this.startTime;
     }
     
     public boolean isStopTiming(){
         return this.gameOver;
     }
 
-    public void gameOver(int actorHP){
+    public void gameOver(){
         this.gameOver = true;
-        this.endHP = actorHP;
     }
     
     public void reset(){
-        this.startTime = 0;
-        this.endTime = 0;
-        this.currentTime = 0;
+//        this.startTime = 0;
+//        this.endTime = 0;
+//        this.currentTime = 0;
         this.gameOver = false;
     }
     
     public long getCurrentTime(){
-        if(!this.gameOver){
-            this.endTime = System.currentTimeMillis();
-        }
-        this.currentTime = this.endTime - this.startTime;
+//        if(!this.gameOver){
+//            this.endTime = System.currentTimeMillis();
+//        }
+//        this.currentTime = this.endTime - this.startTime;
         return this.currentTime;
     }
 
@@ -138,7 +137,8 @@ public class ScoreCalculator implements Serializable {
     }
     
     public boolean isOnTop(int top, float HP){
-        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) <= top) {
+        Global.log("calculateScore(float HP):"+calculateScore(HP));
+        if (inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) <= top) {
             return true;
         }
         return false;
