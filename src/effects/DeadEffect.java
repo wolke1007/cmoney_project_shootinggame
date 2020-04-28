@@ -33,7 +33,7 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
     private Renderer bloodRenderer;
     private Delay delay;
     private int dragDistance;
-    private final int dragDistanceLimit = 500;
+    private final int dragDistanceLimit = 700;
     private final int handSizeLimit = 500;
     private int playTimes;
     private int actorDeadSound;
@@ -55,16 +55,17 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
     public boolean getRun() {
         return this.run;
     }
+    
+    public void setRun(boolean status){
+        this.run = status;
+    }
 
     @Override
     public void update() {
-        if (this.playTimes == 0) {
-            this.run = true;
+        if (this.playTimes == 0 && this.run == true) {
             if (this.actorDeadSound++ == 0) {
                 AudioResourceController.getInstance().play(AudioPath.ACTOR_DEAD_BLOODDRAG);
             }
-        } else {
-            this.run = false;
         }
     }
 
@@ -100,10 +101,10 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
                     0, 0, 287, this.dragDistance);
         } // 血跡
         this.handRenderer.paint(g, this.x1, this.y1, this.x2, this.y2);
-//        if (this.dragDistance >= this.dragDistanceLimit) {
-//            this.playTimes++;
-//            this.run = false;
-//            Global.log("this.run set to false");
-//        }
+        if (this.dragDistance >= this.dragDistanceLimit) {
+            this.playTimes++;
+            this.run = false;
+            Global.log("deadeffect this.run set to false");
+        }
     }
 }

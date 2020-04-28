@@ -59,7 +59,6 @@ public class MainScene extends Scene {
     private Renderer hpFrameRenderer;
     private Renderer hpRenderer;
     private ScoreCalculator scoreCal;
-    private Effect gameOverEffect;
     private Delay stateChage;
     private boolean mouseState;//滑鼠狀態
     private boolean ammoState;//Ammo切換
@@ -158,7 +157,6 @@ public class MainScene extends Scene {
         this.view = new View(60, Global.VIEW_WIDTH, Global.VIEW_HEIGHT, this.maps.getMaps().get(0));
         this.actor.setAllObjects(this.allObjects);
         this.scoreCal = ScoreCalculator.getInstance();
-        this.gameOverEffect = new DeadEffect(200, 200, this.actor);
         this.events = new ArrayList<Event>();
         this.textBar = new TextBar(0, (int) this.view.getY() - 7 + Global.HP_HEIGHT + 5, Global.SCREEN_X, 40);
         eventSetup();
@@ -555,10 +553,10 @@ public class MainScene extends Scene {
         }
         removeInvisibleWall();
         // 角色死亡後的行為  start  // 若不想切回主畫面則註解這一段
-        if (this.actor.getHp() <= actorDeadThreshold) {
+        this.actor.update();
+        if (this.actor.getHp() <= this.actorDeadThreshold && !this.actor.getDeadEffectRun()) {
             this.loadingCount = 40; // 40  是鎖槍 + 鎖手榴彈 // 39 全開
             this.gameOver = true;
-            this.gameOverEffect.update();
         }
         // 角色死亡後的行為 end
         if (this.gameOver) {
@@ -838,9 +836,6 @@ public class MainScene extends Scene {
         paintHPbar(g);
         paintSmallMap(g);
 //        paintTime(g); // 畫倒數時間
-        if (this.gameOverEffect.getRun()) {
-            this.gameOverEffect.paint(g);
-        }
         if (this.printEnding) {
             // print 結局圖片
             this.endingRenderer.paint(g, (int) this.view.getFocus().getX() - Global.EDGE, (int) this.view.getFocus().getY(), (int) this.view.getFocus().getX() + Global.FRAME_X, (int) this.view.getFocus().getY() + Global.FRAME_Y);

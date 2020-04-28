@@ -7,6 +7,7 @@ package gameobj;
 
 import effects.Effect;
 import effects.LowHpEffect;
+import effects.DeadEffect;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import renderer.Renderer;
@@ -36,6 +37,7 @@ public class Actor extends GameObject {
     private Move movement;
     private boolean autoMove;
     private int autoMoveCnt;
+    private int deadEffectCnt;
 
     public Actor(String colliderType, float x, float y, int moveSpeed, String[] path) {//src => Global.ACTOR
         super(colliderType, x, y, Global.UNIT_X, Global.UNIT_Y, Global.UNIT_X, Global.UNIT_Y);
@@ -49,15 +51,21 @@ public class Actor extends GameObject {
         setHpPoint(100);
         setType("Actor");
         this.effects = new ArrayList();
-        this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.FRAME_X, Global.FRAME_Y, this));
+        this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.FRAME_X, Global.FRAME_Y, this)); // TODO 互相持有，這種寫法不對
+        this.effects.add(new DeadEffect(200, 200, this)); // TODO 互相持有，這種寫法不對
         this.moveDelay = new Delay(2);
         this.autoMove = false;
         this.autoMoveCnt = 20;
+        this.deadEffectCnt = 0;
     }//多載 建構子 當前版本
 
     //位置資訊
     public void setAllObjects(ArrayList<GameObject> list) {
         this.movement.setAllObjects(list);
+    }
+    
+    public boolean getDeadEffectRun(){
+        return this.effects.get(1).getRun(); // 寫死第二個 effect 是死亡特效
     }
 
     //位置資訊end
@@ -171,6 +179,10 @@ public class Actor extends GameObject {
 
     @Override
     public void update() {
+        if(this.getHp() <= 0 && this.deadEffectCnt++ == 0){
+            DeadEffect effect = (DeadEffect)this.effects.get(1);
+            effect.setRun(true);
+        }
         if (!this.isStand && !this.autoMove) {
             move();
         }
