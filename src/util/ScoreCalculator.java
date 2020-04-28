@@ -117,7 +117,7 @@ public class ScoreCalculator implements Serializable {
     }
 
     private int inHistoryPostion(int inTopNum, int score, ArrayList<Record> list) {
-        if(score == 0){
+        if(score <= 0){
             return -1;
         }
         sort(list);
