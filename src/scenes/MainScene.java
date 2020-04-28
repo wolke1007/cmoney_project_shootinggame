@@ -82,6 +82,9 @@ public class MainScene extends Scene {
     private String endingPicPath;
     private Renderer endingRenderer;
     private boolean easterEgg;
+    private Renderer intro;
+    private Renderer introShadow;
+    private boolean isIntroPaint;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -96,6 +99,11 @@ public class MainScene extends Scene {
         this.allObjects = new ArrayList<GameObject>();
         this.hpFrameRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[0]);
         this.hpRenderer = new Renderer(0, new int[0], 0, ImagePath.HP[2]); // HP 第三張圖是 debug 用
+        this.intro = new Renderer();
+        this.intro.setImage(ImagePath.INTRO_PAGE[0]);
+        this.introShadow = new Renderer();
+        this.introShadow.setImage(ImagePath.COMMON_BACKGROUND[2]);
+        this.isIntroPaint = false;
         allDelayControl();
         this.name = "";
         this.top = 5;
@@ -369,6 +377,7 @@ public class MainScene extends Scene {
     }
 
     public void genEnemies(int x1, int y1, int x2, int y2, int qty, int type) { // 於指定區域生成敵人
+        float hp = 10;
         for (int i = 0; i < qty; i++) {
             float x;
             float y;
@@ -382,17 +391,17 @@ public class MainScene extends Scene {
             switch (type) {
                 case 1:
                     // 普通怪
-                    enemy = new Enemy("circle", x, y, 5,
+                    enemy = new Enemy("circle", x, y, hp,
                             this.actor, 1);
                     break;
                 case 2:
                     // 衝刺怪
-                    enemy = new Enemy("circle", x, y, 5,
+                    enemy = new Enemy("circle", x, y, hp,
                             this.actor, 2);
                     break;
                 default:
                     // 隨機生成
-                    enemy = new Enemy("circle", x, y, 5,
+                    enemy = new Enemy("circle", x, y, hp,
                             this.actor, Global.random(1, 2));
                     break;
             }
@@ -415,7 +424,7 @@ public class MainScene extends Scene {
     }
 
     private void inputName(Graphics g) {
-        if(!this.easterEgg){
+        if (!this.easterEgg) {
             g.setColor(Color.WHITE);
         }
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
@@ -763,6 +772,10 @@ public class MainScene extends Scene {
         if (this.textBar.isPlaying()) {
             this.textBar.paint(g);
         }
+        if (this.isIntroPaint) {
+            this.introShadow.paint(g, (int) this.view.getCenterX() - 645, (int) this.view.getCenterY() - 297, (int) this.view.getCenterX() + 645, (int) this.view.getCenterY() + 297);
+            this.intro.paint(g, (int) this.view.getCenterX() - 582, (int) this.view.getCenterY() - 262, (int) this.view.getCenterX() + 582, (int) this.view.getCenterY() + 262);
+        }
     }
 
     @Override
@@ -810,6 +823,9 @@ public class MainScene extends Scene {
                         MainScene.this.actor.getRenderer().setState(0);
                         MainScene.this.ammoState = true;
                         MainScene.this.grenadeReady = true;
+                        break;
+                    case Global.KEY_CONTROL:
+                        MainScene.this.isIntroPaint = false;
                         break;
                 }
             }
@@ -899,6 +915,9 @@ public class MainScene extends Scene {
                         AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
                         MainScene.this.grenadeReady = false;
                     }
+                    break;
+                case Global.KEY_CONTROL:
+                    MainScene.this.isIntroPaint = true;
                     break;
             }
         }

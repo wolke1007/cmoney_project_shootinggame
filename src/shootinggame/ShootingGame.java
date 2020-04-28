@@ -39,7 +39,9 @@ public class ShootingGame {
             {KeyEvent.VK_9, 57},
             {KeyEvent.VK_SPACE, Global.KEY_SPACE},
             {KeyEvent.VK_ENTER, Global.KEY_ENTER},
-            {KeyEvent.VK_BACK_SPACE, Global.KEY_BACK_SPACE},};
+            {KeyEvent.VK_BACK_SPACE, Global.KEY_BACK_SPACE},
+            {KeyEvent.VK_CONTROL, Global.KEY_CONTROL}
+        };
         GameKernel gk = new GameKernel.Builder(gi, Global.LIMIT_DELTA_TIME, Global.MILLISEC_PER_UPDATE)
                 .initListener(commands)
                 .enableMouseTrack(gi)

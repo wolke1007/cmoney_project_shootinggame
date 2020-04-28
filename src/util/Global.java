@@ -64,6 +64,8 @@ public class Global {
     public static final int KEY_SPACE = 0;
     public static final int KEY_ENTER = -1;
     public static final int KEY_BACK_SPACE = -2;
+    //操作
+    public static final int KEY_CONTROL = -3;
     // 步伐
     public static final int[] STEPS_WALK_NORMAL = {0, 1, 2, 1};
     public static final int[] STEPS_WALK_SHORT = {0, 2};
