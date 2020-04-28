@@ -56,7 +56,7 @@ public class LowHpEffect implements Effect {
         if (this.actor.getHp() <= 0) {
             this.heartBeats.stop();
             this.imagePath = ImagePath.BLOOD[0];
-        }else if (this.actor.getHp() <= 15f) {
+        }else if (this.actor.getHp() <= 30f) {
             this.x = (int) Global.viewX;
             this.y = (int) Global.viewY;
             this.run = true;
