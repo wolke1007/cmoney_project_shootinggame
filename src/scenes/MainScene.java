@@ -85,6 +85,9 @@ public class MainScene extends Scene {
     private Renderer intro;
     private Renderer introShadow;
     private boolean isIntroPaint;
+    private Renderer ammoPistol;
+    private Renderer ammoRifle;
+    private Renderer ammoGrenade;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -111,6 +114,16 @@ public class MainScene extends Scene {
         this.printEnding = false;
         this.endingPicPath = "";
         this.easterEgg = false;
+        ammoImageLoading();
+    }
+
+    private void ammoImageLoading() {
+        this.ammoPistol = new Renderer();
+        this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
+        this.ammoRifle = new Renderer();
+        this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+        this.ammoGrenade = new Renderer();
+        this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
     }
 
     private void allDelayControl() {
@@ -250,7 +263,7 @@ public class MainScene extends Scene {
                 break;
             case 2:
                 // 將箱子 remove 並產出怪物1
-                boxProduceEnemy(5, 1);
+                boxProduceEnemy(2, 1);
                 break;
             case 3:
 //                this.loadingCount++;
@@ -293,7 +306,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(3).getY(),
                         (int) this.maps.getMaps().get(3).getX() + 1300,
                         (int) this.maps.getMaps().get(3).getY() + 700,
-                        Global.random(3, 5));
+                        /*Global.random(3, 5)*/ 2);
                 this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 3 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -322,7 +335,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(4).getY(),
                         (int) this.maps.getMaps().get(4).getX() + 1300,
                         (int) this.maps.getMaps().get(4).getY() + 700,
-                        Global.random(7, 9));
+                        /*Global.random(7, 9)*/ 2);
                 this.maps.getMaps().get(3).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 4 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -837,6 +850,20 @@ public class MainScene extends Scene {
         if (this.textBar.isPlaying()) {
             this.textBar.paint(g);
         }
+        int tmpX = (int) this.view.getX();
+        int tmpY = (int) this.view.getY();
+        int dx = 50;
+        int width = 140;
+        int height = 115;
+        if (this.loadingCount >= 37 && this.loadingCount <= 39) {
+            this.ammoPistol.paint(g, tmpX, tmpY + 850 - height, tmpX + width, tmpY + 850);
+        }
+        if (this.loadingCount >= 38 && this.loadingCount <= 39) {
+            this.ammoRifle.paint(g, tmpX + width - dx, tmpY + 850 - height, tmpX + width * 2 - dx, tmpY + 850);
+        }
+        if (this.loadingCount == 39) {
+            this.ammoGrenade.paint(g, tmpX + width * 2 - dx * 2, tmpY + 850 - height, tmpX + width * 3 - dx * 2, tmpY + 850);
+        }
         if (this.isIntroPaint) {
             this.introShadow.paint(g, (int) this.view.getCenterX() - 645, (int) this.view.getCenterY() - 297, (int) this.view.getCenterX() + 645, (int) this.view.getCenterY() + 297);
             this.intro.paint(g, (int) this.view.getCenterX() - 582, (int) this.view.getCenterY() - 262, (int) this.view.getCenterX() + 582, (int) this.view.getCenterY() + 262);
@@ -860,13 +887,15 @@ public class MainScene extends Scene {
             if (gameOver) {
                 return;
             }
+            if (MainScene.this.actor.getAutoMove()) {
+                return;
+            }
             actorMoveRule(commandCode);
             ammoModeChange(commandCode);
         }
 
         @Override
         public void keyReleased(int commandCode, long trigTime) {
-
             stopRule(commandCode);
             if (gameOver) {
                 if (commandCode == Global.KEY_ENTER) {
@@ -879,7 +908,25 @@ public class MainScene extends Scene {
                 }
                 return;
             }
-
+            if (MainScene.this.actor.getAutoMove()) {
+                if (MainScene.this.actor.getRenderer().getState() == 1) {
+                    if (MainScene.this.loadingCount == 39) {
+                        MainScene.this.stateChage.start();
+                        MainScene.this.actor.getRenderer().setState(0);
+                        MainScene.this.ammoState = true;
+                        MainScene.this.grenadeReady = true;
+                        if (MainScene.this.stateChage.getDelayFrame() == 30) {
+                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
+                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+                        } else if (MainScene.this.stateChage.getDelayFrame() == 5) {
+                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
+                        }
+                        MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
+                    }
+                }
+                return;
+            }
             switch (commandCode) {
                 case Global.KEY_SPACE:
                     if (MainScene.this.loadingCount == 39) {
@@ -887,6 +934,14 @@ public class MainScene extends Scene {
                         MainScene.this.actor.getRenderer().setState(0);
                         MainScene.this.ammoState = true;
                         MainScene.this.grenadeReady = true;
+                        if (MainScene.this.stateChage.getDelayFrame() == 30) {
+                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
+                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+                        } else if (MainScene.this.stateChage.getDelayFrame() == 5) {
+                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
+                        }
+                        MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
                     }
                     break;
                 case Global.KEY_CONTROL:
@@ -964,6 +1019,8 @@ public class MainScene extends Scene {
                             MainScene.this.stateChage.setDelayFrame(30);
                             MainScene.this.stateChage.start();
                             MainScene.this.stateChage.click();
+                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
+                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
                         }
                     }
                     break;
@@ -973,6 +1030,8 @@ public class MainScene extends Scene {
                             MainScene.this.stateChage.setDelayFrame(5);
                             MainScene.this.stateChage.start();
                             MainScene.this.stateChage.click();
+                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
                         }
                     }
                     break;
@@ -983,6 +1042,9 @@ public class MainScene extends Scene {
                         if (MainScene.this.grenadeReady) {
                             AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
                             MainScene.this.grenadeReady = false;
+                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+                            MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[1]);
                         }
                     }
                     break;
@@ -1004,6 +1066,10 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
+            if (MainScene.this.actor.getAutoMove()) {
+                MainScene.this.mouseState = false;
+                return;
+            }
             if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
                 if (state == CommandSolver.MouseState.PRESSED) {
                     MainScene.this.mouseState = true;

@@ -65,7 +65,7 @@ public class Boss extends GameObject {
         this.target = target;
         bossRendererToRotate(this.target);
         bossRenderer();
-        this.setHpPoint(500);
+        this.setHpPoint(200);
         delayDetail();
         setStartAttack(false);
         setStartPaint(false);
@@ -281,7 +281,7 @@ public class Boss extends GameObject {
             this.bossFire.setMoveMultiple(6f);
         }
         bossHeadUpdate();
-        if (this.startAttack && this.countStartAttack++ > 150) {
+        if (this.startAttack && this.countStartAttack++ > 200) {
             bossAttackSwitch();
             boosRightHaneUpdate();
             boosLeftHandUpdate();
