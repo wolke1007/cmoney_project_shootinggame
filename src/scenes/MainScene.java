@@ -561,11 +561,13 @@ public class MainScene extends Scene {
         }
         // 角色死亡後的行為 end
         if (this.gameOver) {
+            this.actor.getLowHpEffect().getHeartBeatDelay().stop();
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
             if(this.lastEventNo == 21 && this.nameTyped){
-                MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
+                MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
             if(this.lastEventNo != 21){
-                MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
+                MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
         }
         // Event 控制 start

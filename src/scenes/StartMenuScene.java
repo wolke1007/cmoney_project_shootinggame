@@ -150,7 +150,7 @@ public class StartMenuScene extends Scene {
     public void sceneEnd() {
         // 停止播放背景音樂
     }
-
+    
     private boolean cursorInBtn(Button btn) {
         int btnTop = btn.top;
         int btnBottom = btn.bottom;

@@ -70,7 +70,11 @@ public class LowHpEffect implements Effect {
     public void setImg(String src) {
         this.imagePath = src;
     }
-
+    
+    public Delay getHeartBeatDelay(){
+        return this.heartBeats;
+    }
+    
     @Override
     public void paint(Graphics g) {
         this.renderer.setImage(this.imagePath);

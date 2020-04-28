@@ -67,6 +67,10 @@ public class Actor extends GameObject {
     public boolean getDeadEffectRun(){
         return this.effects.get(1).getRun(); // 寫死第二個 effect 是死亡特效
     }
+    
+    public LowHpEffect getLowHpEffect(){
+        return (LowHpEffect)this.effects.get(0); // 寫死第一個 effect 是低血量特效
+    }
 
     //位置資訊end
     //角度計算
