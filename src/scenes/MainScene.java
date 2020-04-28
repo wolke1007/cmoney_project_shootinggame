@@ -237,6 +237,7 @@ public class MainScene extends Scene {
                         Global.random(7, 9));
                 this.maps.getMaps().get(0).getBuildings().get(0).open("right"); // 開啟地圖 0 的門
                 break;
+            ////////////////////////////////////////////////////////////////////////// 第 2 張地圖 /////////////////////////////////////////////////////////////////////////
             case 1:
                 // 加入對話
                 this.maps.getMaps().get(0).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
@@ -264,42 +265,101 @@ public class MainScene extends Scene {
                         Global.random(3, 5));
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
+            ////////////////////////////////////////////////////////////////////////// 第 2 張地圖 /////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////// 第 3 張地圖 /////////////////////////////////////////////////////////////////////////
             case 5:
+                // 加入對話
                 this.maps.getMaps().get(1).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(2));
-                scripts = new String[]{"「聽到快步衝刺的聲音」"};
+                scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
             case 6:
-                scripts = new String[]{"好像是不同的怪物，跑得更快了"};
+                // 將箱子 remove 並產出怪物1
+                boxProduceEnemy(5, 1);
+                break;
+            case 7:
+                scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
+                this.textBar.addScript(scripts);
+                break;
+            case 8:
+                // 事件 2 觸發後做的事情
+                genBox((int) this.maps.getMaps().get(3).getX() + 300,
+                        (int) this.maps.getMaps().get(3).getY(),
+                        (int) this.maps.getMaps().get(3).getX() + 1300,
+                        (int) this.maps.getMaps().get(3).getY() + 700,
+                        Global.random(3, 5));
+                this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
+                break;
+            ////////////////////////////////////////////////////////////////////////// 第 3 張地圖 /////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////// 第 4 張地圖 /////////////////////////////////////////////////////////////////////////
+            case 9:
+                // 加入對話
+                this.maps.getMaps().get(2).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
+                this.view.setFocus(this.maps.getMaps().get(3));
+                scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
-            case 7:
-                boxProduceEnemy(5, 2);
+            case 10:
+                // 將箱子 remove 並產出怪物1
+                boxProduceEnemy(5, 1);
                 break;
-            case 8:
+            case 11:
+                scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
+                this.textBar.addScript(scripts);
+                break;
+            case 12:
+                // 事件 2 觸發後做的事情
+                genBox((int) this.maps.getMaps().get(4).getX() + 300,
+                        (int) this.maps.getMaps().get(4).getY(),
+                        (int) this.maps.getMaps().get(4).getX() + 1300,
+                        (int) this.maps.getMaps().get(4).getY() + 700,
+                        Global.random(3, 5));
+                this.maps.getMaps().get(3).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
+                break;
+            ////////////////////////////////////////////////////////////////////////// 第 4 張地圖 /////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////// 第 5 張地圖 /////////////////////////////////////////////////////////////////////////
+            case 13:
+                // 加入對話
+                this.maps.getMaps().get(3).getBuildings().get(0).close("right"); // 關閉地圖 0 的門
+                this.actor.setAutoMove(true);
+                this.actor.setMoveDelay();
+                this.view.setFocus(this.maps.getMaps().get(4));
+                scripts = new String[]{"嗯? 這箱子之前是放在這邊的嘛?"};
+                this.textBar.addScript(scripts);
+                this.textBar.play();
+                break;
+            case 14:
+                // 將箱子 remove 並產出怪物1
+                boxProduceEnemy(5, 1);
+                break;
+            case 15:
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
                 break;
-            case 9:
-                this.maps.getMaps().get(2).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
+            case 16:
                 break;
-            case 10:
+            case 17:
+                this.maps.getMaps().get(4).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
+                break;
+            case 18:
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN).stop();
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).loop();
-                this.maps.getMaps().get(2).getBuildings().get(0).close("right"); // 關閉地圖 2 的門
+                this.maps.getMaps().get(4).getBuildings().get(0).close("right"); // 關閉地圖 2 的門
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
-                this.view.setFocus(this.maps.getMaps().get(3));
+                this.view.setFocus(this.maps.getMaps().get(5));
                 // 關門，生 BOSS，同時切 BOSS 戰鬥音樂
                 // 生 BOSS start
-                this.boss = new Boss("rect", this.maps.getMaps().get(3).getCenterX() - 336f, 50f, this.actor, 60);
+                this.boss = new Boss("rect", this.maps.getMaps().get(5).getCenterX() - 336f, 50f, this.actor, 60);
                 this.allObjects.add(this.boss);
                 this.allObjects.add(this.boss.getDarkBarrier());
                 this.boss.setAllObject(this.allObjects);
@@ -307,7 +367,7 @@ public class MainScene extends Scene {
                 this.boss.setStartPaint(true);
                 // 生 BOSS end
                 break;
-            case 11:
+            case 19:
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
                 // 停止計時
                 this.scoreCal.gameOver();
@@ -322,7 +382,7 @@ public class MainScene extends Scene {
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
-            case 12:
+            case 20:
                 // 畫結局圖
                 this.loadingCount = 38;
                 if (this.actor.getHp() >= 100) {
@@ -345,7 +405,7 @@ public class MainScene extends Scene {
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
-            case 13:
+            case 21:
                 // GG，設定為 true 會在 paint 那邊觸發輸入名字(如果需要的話)
                 this.scoreCal.gameOver();
                 this.gameOver = true;
