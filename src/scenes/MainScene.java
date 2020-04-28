@@ -212,7 +212,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(1).getY(),
                         (int) this.maps.getMaps().get(1).getX() + 1300,
                         (int) this.maps.getMaps().get(1).getY() + 700,
-                        Global.random(4, 6));
+                        Global.random(7, 9));
                 this.maps.getMaps().get(0).getBuildings().get(0).open("right"); // 開啟地圖 0 的門
                 break;
             case 1:
@@ -239,7 +239,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(2).getY(),
                         (int) this.maps.getMaps().get(2).getX() + 1300,
                         (int) this.maps.getMaps().get(2).getY() + 700,
-                        Global.random(1, 1));
+                        Global.random(3, 5));
                 this.maps.getMaps().get(1).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             case 5:

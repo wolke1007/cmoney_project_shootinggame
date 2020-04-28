@@ -31,6 +31,8 @@ public class Boss extends GameObject {
     private boolean callEnemy;//召喚小怪
     //目標
     private GameObject target;
+    //boss
+    private int countStartAttack;
     //身體
     private Renderer renderer;
     //手
@@ -72,7 +74,7 @@ public class Boss extends GameObject {
         super.paintPriority = 0;
         setType("Boss");
         this.darkBarrier = new Barrier("rect", this.getX() - 40, this.getY() - 20, 752, 460, ImagePath.BOSS_DARK_BARRIER, 0);
-//        AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
+        this.countStartAttack = 0;
     }
 
     public Barrier getDarkBarrier() {
@@ -247,6 +249,7 @@ public class Boss extends GameObject {
                     }
                     break;
                 case 3:
+                    AudioResourceController.getInstance().play(AudioPath.BOSS_CALL_ENEMY);
                     this.setCallEnemy(true);
                     break;
             }
@@ -278,7 +281,7 @@ public class Boss extends GameObject {
             this.bossFire.setMoveMultiple(6f);
         }
         bossHeadUpdate();
-        if (this.startAttack) {
+        if (this.startAttack && this.countStartAttack++ > 150) {
             bossAttackSwitch();
             boosRightHaneUpdate();
             boosLeftHandUpdate();
@@ -296,8 +299,8 @@ public class Boss extends GameObject {
     public void paintComponent(Graphics g) {
         if (this.startPaint) {
             this.darkBarrier.paint(g);
-            g.setColor(Color.BLACK);
-            g.fillOval((int) (this.getGraph().left() - Global.viewX - 40), (int) (this.getGraph().top() - Global.viewY - 20), (int) this.getGraph().width() + 80, (int) this.getGraph().height() + 150);
+//            g.setColor(Color.BLACK);
+//            g.fillOval((int) (this.getGraph().left() - Global.viewX - 40), (int) (this.getGraph().top() - Global.viewY - 20), (int) this.getGraph().width() + 80, (int) this.getGraph().height() + 150);
             bossHandAttackPaint(g);
             bossHandPaint(g);
             bossPaint(g);

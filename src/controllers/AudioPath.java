@@ -60,6 +60,7 @@ public class AudioPath {
     public static final String BOSS_HAND_CONTINUE = AudioPath.BOSS + "/bossHandContinue.wav";
     public static final String BOSS_HAND_MOVE = AudioPath.BOSS + "/bossHandMove.wav";
     public static final String BOSS_ATTACK_BOMB = AudioPath.BOSS + "/bossAttackBomb.wav";
+    public static final String BOSS_CALL_ENEMY = AudioPath.BOSS + "/bossCallEnemy.wav";
     public static final String BOSS_DIE_SOUND = AudioPath.BOSS + "/bossDieSound.wav";
     public static final String ACTOR_DEAD_BLOODDRAG = AudioPath.ACTOR + "/actorDeadBloodDrag.wav";
     public static final String ACTOR_EVIL_SMILE_SOUND = AudioPath.ACTOR + "/evilSmileSound.wav";

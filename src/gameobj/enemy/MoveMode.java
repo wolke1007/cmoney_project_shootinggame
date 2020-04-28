@@ -113,7 +113,10 @@ public abstract class MoveMode {
         return this.angle.getAngle();
     }
 
+    public abstract String getType();
+
     //角度計算end
+
     public abstract void setAllObject(ArrayList<GameObject> list);
 
     public abstract void update();
