@@ -49,7 +49,7 @@ public class Actor extends GameObject {
         setHpPoint(100);
         setType("Actor");
         this.effects = new ArrayList();
-        this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.SCREEN_X, Global.SCREEN_Y, this));
+        this.effects.add(new LowHpEffect((int) this.x, (int) this.y, Global.FRAME_X, Global.FRAME_Y, this));
         this.moveDelay = new Delay(2);
         this.autoMove = false;
         this.autoMoveCnt = 20;
