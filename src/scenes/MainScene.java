@@ -81,6 +81,7 @@ public class MainScene extends Scene {
     private boolean printEnding;
     private String endingPicPath;
     private Renderer endingRenderer;
+    private boolean easterEgg;
 
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -101,6 +102,7 @@ public class MainScene extends Scene {
         this.endingRenderer = new Renderer();
         this.printEnding = false;
         this.endingPicPath = "";
+        this.easterEgg = false;
     }
 
     private void allDelayControl() {
@@ -304,12 +306,14 @@ public class MainScene extends Scene {
                 // 畫結局圖
                 this.loadingCount = 38;
                 if (this.actor.getHp() >= 100) {
+                    this.easterEgg = true; // 進入彩蛋結局
                     Global.log("set pic 0");
                     this.endingRenderer.setImage(ImagePath.ENDING[1]);
                     MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_VICTORY_SOUND).play();
                     scripts = new String[]{"我的薪水太高了  真的非常的高",
                         "而且高到不行"};
                 } else {
+                    this.easterEgg = false; // 進入正常結局
                     Global.log("set pic 1");
                     this.endingRenderer.setImage(ImagePath.ENDING[0]);
                     MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_EVIL_SMILE_SOUND).play();
@@ -399,9 +403,11 @@ public class MainScene extends Scene {
     }
 
     private void inputName(Graphics g) {
-        g.setColor(Color.WHITE);
+        if(!this.easterEgg){
+            g.setColor(Color.WHITE);
+        }
         g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-        g.drawString("Enter Your English Name: " + this.name, Global.SCREEN_X / 2 - 300, Global.SCREEN_Y / 2);
+        g.drawString("Enter Your English Name: " + this.name, Global.SCREEN_X / 2 - 300, Global.SCREEN_Y * 1 / 3);
         g.setColor(Color.BLACK);
     }
 
