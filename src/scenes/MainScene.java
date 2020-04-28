@@ -181,7 +181,8 @@ public class MainScene extends Scene {
             "一次在基地睡醒後發現基地所有人都消失了",
             "基地的緊急備用燈光處於開啟狀態",
             "你判斷鍋爐核心區應該有問題因此前去查看",
-            "但你發現遇到的可不是什麼工程問題......"
+            "但你發現遇到的可不是什麼工程問題......",
+            "「按住 Ctrl 鍵可回顧剛剛不想讀的操作介紹」"
         };
         this.textBar.addScript(scripts);
         this.events.add(new DialogEvent(this.textBar, null)); // 0 // 開門
@@ -268,7 +269,9 @@ public class MainScene extends Scene {
                 break;
             case 3:
                 this.loadingCount++;
-                scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服"};
+                scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服",
+                    "「撿起其中一隻怪物身上背著的步槍」", 
+                    "「可以使用步槍(按鍵2)」"};
                 this.textBar.addScript(scripts);
                 break;
             case 4:
@@ -288,7 +291,7 @@ public class MainScene extends Scene {
                 this.actor.setAutoMove(true);
                 this.actor.setMoveDelay();
                 this.view.setFocus(this.maps.getMaps().get(2));
-                scripts = new String[]{"「撿起其中一隻怪物身上背著的步槍」"};
+                scripts = new String[]{"看起來與剛剛房間的怪物不同，這種跑步好快!"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
                 break;
@@ -298,7 +301,7 @@ public class MainScene extends Scene {
                 break;
             case 7:
                 this.loadingCount++;
-                scripts = new String[]{"「可以使用步槍(按鍵2)」"};
+                scripts = new String[]{"「撿起怪物身上的手榴彈」(空白鍵使用)", "「貌似這種手榴彈只對怪物產生作用」"};
                 this.textBar.addScript(scripts);
                 break;
             case 8:
@@ -327,7 +330,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(Global.random(3, 4), 3);
                 break;
             case 11:
-                scripts = new String[]{"「撿起怪物身上的手榴彈(空白鍵使用)」"};
+                scripts = new String[]{"讓我來好好的試試看剛撿到手榴彈的威力吧"};
                 this.textBar.addScript(scripts);
                 break;
             case 12:
@@ -409,7 +412,7 @@ public class MainScene extends Scene {
                     Global.log("set pic 0");
                     this.endingRenderer.setImage(ImagePath.ENDING[1]);
                     MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_VICTORY_SOUND).play();
-                    scripts = new String[]{"我的薪水太高了  真的非常的高",
+                    scripts = new String[]{"我的薪水太高了，真的非常的高",
                         "而且高到不行"};
                 } else {
                     this.easterEgg = false; // 進入正常結局
@@ -418,7 +421,7 @@ public class MainScene extends Scene {
                     MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_EVIL_SMILE_SOUND).play();
                     // 需笑滿 6 秒
                     scripts = new String[]{"「剷除入侵者!!!」",
-                        "", ""};
+                        ""};
                 }
                 this.printEnding = true;
                 this.textBar.addScript(scripts);
