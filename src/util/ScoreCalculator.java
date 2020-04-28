@@ -95,8 +95,9 @@ public class ScoreCalculator implements Serializable {
         return scoreCal;
     }
 
-    public int calculateScore() {
-        return (int)((Global.PIVOT_TIME / (this.endTime - this.startTime)) * 1000L); // 概念上是超過當初設定的 pivotTime 則分數是 0 分
+    private int calculateScore(float HP) {
+//        return (int)((Global.PIVOT_TIME / (this.endTime - this.startTime)) * 1000L); // 概念上是超過當初設定的 pivotTime 則分數是 0 分
+        return (int)(HP / 100f * 1000f);
         // 乘以 1000 只是為了讓數字看起來比較好看XD
     }
 
@@ -133,17 +134,17 @@ public class ScoreCalculator implements Serializable {
         return -1;
     }
     
-    public boolean isOnTop(int top){
-        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(), this.compaignGameScore) <= top) {
+    public boolean isOnTop(int top, float HP){
+        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) <= top) {
             return true;
         }
         return false;
     }
 
-    public void addInHistoryIfOnTop(int top, String name) {
+    public void addInHistoryIfOnTop(int top, String name, float HP) {
         Global.log("enter endless addInHistoryIfInTop");
-        if(isOnTop(top)){
-            Record newRecord = new Record(calculateScore(), name);
+        if(isOnTop(top, HP)){
+            Record newRecord = new Record(calculateScore(HP), name);
             this.compaignGameScore.add(newRecord);
             reset(); // reset score
             sort(this.compaignGameScore);

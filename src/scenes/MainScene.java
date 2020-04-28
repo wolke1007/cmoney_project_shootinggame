@@ -452,7 +452,7 @@ public class MainScene extends Scene {
         }
         // 角色死亡後的行為 end
         if (this.gameOver) {
-            if (!this.scoreCal.isOnTop(this.top)) {
+            if (!this.scoreCal.isOnTop(this.top, this.actor.getHp())) {
                 MainScene.super.sceneController.changeScene(new StartMenuScene(MainScene.super.sceneController));
             }
             if (this.nameTyped) {
@@ -655,7 +655,7 @@ public class MainScene extends Scene {
         Global.log("main scene end");
         Global.viewX = 0f; // 將 view 給 reset 回最左上角，不然後面印出來的圖片會偏掉
         Global.viewY = 0f;
-        this.scoreCal.addInHistoryIfOnTop(this.top, this.name); // 如果分數有進前幾名，則新增至排行榜中
+        this.scoreCal.addInHistoryIfOnTop(this.top, this.name, this.actor.getHp()); // 如果分數有進前幾名，則新增至排行榜中
         this.scoreCal.reset();
     }
 
@@ -735,7 +735,7 @@ public class MainScene extends Scene {
             // print 結局圖片
             this.endingRenderer.paint(g, (int) this.view.getFocus().getX() - Global.EDGE, (int) this.view.getFocus().getY(), (int) this.view.getFocus().getX() + Global.FRAME_X, (int) this.view.getFocus().getY() + Global.FRAME_Y);
         }
-        if (this.gameOver && this.scoreCal.isOnTop(this.top)) { // 有在排名內才會要求輸入名字
+        if (this.gameOver && this.scoreCal.isOnTop(this.top, this.actor.getHp())) { // 有在排名內才會要求輸入名字
             if (!this.scoreCal.isStopTiming() && this.gameOver) {
                 this.scoreCal.gameOver(); // 停止計時
             }
