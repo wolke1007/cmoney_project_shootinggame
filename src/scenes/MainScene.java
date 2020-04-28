@@ -339,15 +339,18 @@ public class MainScene extends Scene {
                 break;
             case 14:
                 // 將箱子 remove 並產出怪物1
+                scripts = new String[]{"「怪物源源不絕的湧上」"};
+                this.textBar.addScript(scripts);
+                this.textBar.play();
                 boxProduceEnemy(Global.random(5, 7), 3);
                 break;
             case 15:
+                break;
+            case 16:
+                AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
                 scripts = new String[]{"「你聽到下一間房間傳來低吼聲」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
-                AudioResourceController.getInstance().play(AudioPath.BOSS_ANGRY_SOUND);
-                break;
-            case 16:
                 break;
             case 17:
                 this.maps.getMaps().get(4).getBuildings().get(0).open("right"); // 開啟地圖 2 的門
