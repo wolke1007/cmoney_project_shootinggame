@@ -323,6 +323,7 @@ public class MainScene extends Scene {
                 break;
             case 13:
                 // GG，設定為 true 會在 paint 那邊觸發輸入名字(如果需要的話)
+                this.scoreCal.gameOver();
                 this.gameOver = true;
                 break;
         }
@@ -717,7 +718,7 @@ public class MainScene extends Scene {
     @Override
     public void paint(Graphics g) {
         if (this.loadingCount < 37) {
-            this.loadingPage.paint(g, 0, 0, 1600, 900);
+            this.loadingPage.paint(g, 0, 0, Global.FRAME_X, Global.FRAME_Y);
             if (this.loadingDelay.isTrig()) {
                 loadingImageToReady();
                 this.loadingPage.setImage(ImagePath.LOADING_PAGE[this.loadingCount++ % 12]);
@@ -727,7 +728,7 @@ public class MainScene extends Scene {
         this.view.paint(g);
         paintHPbar(g);
         paintSmallMap(g);
-        paintTime(g);
+//        paintTime(g); // 畫倒數時間
         if (this.gameOverEffect.getRun()) {
             this.gameOverEffect.paint(g);
         }

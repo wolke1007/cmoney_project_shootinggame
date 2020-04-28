@@ -27,6 +27,8 @@ public class ScoreCalculator implements Serializable {
     private long endTime;
     private long currentTime;
     private boolean gameOver;
+    private int fullHP;
+    private int endHP;
     
     private ArrayList<Record> compaignGameScore;
     private ArrayList<Record> savingGameScore;
@@ -41,11 +43,12 @@ public class ScoreCalculator implements Serializable {
         this.compaignGameScore = new ArrayList<Record>();
         this.savingGameScore = new ArrayList<Record>();
         this.gameOver = false;
+        this.fullHP = 100;
     }
     
     public void gameStart() {
-        this.startTime = System.currentTimeMillis();
-        this.currentTime = this.endTime - this.startTime;
+//        this.startTime = System.currentTimeMillis();
+//        this.currentTime = this.endTime - this.startTime;
     }
     
     public boolean isStopTiming(){
@@ -54,21 +57,20 @@ public class ScoreCalculator implements Serializable {
 
     public void gameOver(){
         this.gameOver = true;
-        this.endTime = System.currentTimeMillis();
     }
     
     public void reset(){
-        this.startTime = 0;
-        this.endTime = 0;
-        this.currentTime = 0;
+//        this.startTime = 0;
+//        this.endTime = 0;
+//        this.currentTime = 0;
         this.gameOver = false;
     }
     
     public long getCurrentTime(){
-        if(!this.gameOver){
-            this.endTime = System.currentTimeMillis();
-        }
-        this.currentTime = this.endTime - this.startTime;
+//        if(!this.gameOver){
+//            this.endTime = System.currentTimeMillis();
+//        }
+//        this.currentTime = this.endTime - this.startTime;
         return this.currentTime;
     }
 
@@ -135,7 +137,8 @@ public class ScoreCalculator implements Serializable {
     }
     
     public boolean isOnTop(int top, float HP){
-        if (this.endTime != 0 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) <= top) {
+        Global.log("calculateScore(float HP):"+calculateScore(HP));
+        if (inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) != -1 && inHistoryPostion(top, calculateScore(HP), this.compaignGameScore) <= top) {
             return true;
         }
         return false;
