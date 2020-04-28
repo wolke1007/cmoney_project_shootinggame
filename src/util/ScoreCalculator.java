@@ -27,6 +27,8 @@ public class ScoreCalculator implements Serializable {
     private long endTime;
     private long currentTime;
     private boolean gameOver;
+    private int fullHP;
+    private int endHP;
     
     private ArrayList<Record> compaignGameScore;
     private ArrayList<Record> savingGameScore;
@@ -41,6 +43,7 @@ public class ScoreCalculator implements Serializable {
         this.compaignGameScore = new ArrayList<Record>();
         this.savingGameScore = new ArrayList<Record>();
         this.gameOver = false;
+        this.fullHP = 100;
     }
     
     public void gameStart() {
@@ -52,9 +55,9 @@ public class ScoreCalculator implements Serializable {
         return this.gameOver;
     }
 
-    public void gameOver(){
+    public void gameOver(int actorHP){
         this.gameOver = true;
-        this.endTime = System.currentTimeMillis();
+        this.endHP = actorHP;
     }
     
     public void reset(){

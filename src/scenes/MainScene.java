@@ -208,6 +208,7 @@ public class MainScene extends Scene {
         String[] scripts;
         switch (event.getSerialNo()) {
             case 0:
+                this.scoreCal.gameOver((int)this.actor.getHp());
                 genBox((int) this.maps.getMaps().get(1).getX() + 300,
                         (int) this.maps.getMaps().get(1).getY(),
                         (int) this.maps.getMaps().get(1).getX() + 1300,
@@ -288,7 +289,7 @@ public class MainScene extends Scene {
             case 11:
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
                 // 停止計時
-                this.scoreCal.gameOver();
+                this.scoreCal.gameOver((int)this.actor.getHp());
                 if (this.actor.getHp() >= 100) {
                     scripts = new String[]{"主角: 有一件事我必須說"};
                 } else {
@@ -728,7 +729,7 @@ public class MainScene extends Scene {
         }
         if (this.gameOver && this.scoreCal.isOnTop(this.top, this.actor.getHp())) { // 有在排名內才會要求輸入名字
             if (!this.scoreCal.isStopTiming() && this.gameOver) {
-                this.scoreCal.gameOver(); // 停止計時
+                this.scoreCal.gameOver((int)this.actor.getHp()); // 停止計時
             }
             inputName(g);
         }

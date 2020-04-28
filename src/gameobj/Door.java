@@ -72,6 +72,7 @@ public class Door extends Barrier {
             this.offset(0, -20);
         }
         if(!this.open && this.delay.isTrig() && this.closeDoorY > this.y){
+//            this.offset(0, 2);
             this.offset(0, 2);
         }
     }
