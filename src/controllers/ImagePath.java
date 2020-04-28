@@ -15,6 +15,7 @@ public class ImagePath {
 
     private static final String ROOT = "/resources";
     private static final String LOADINGPAGE = ImagePath.ROOT + "/loadingPage";
+    private static final String AMMO = ImagePath.ROOT + "/ammo";
     // 圖片庫    
 //    public static final String[] BACKGROUND = {ImagePath.ROOT + "/background1.png",
 //        ImagePath.ROOT + "/background2.png",
@@ -196,4 +197,7 @@ public class ImagePath {
         ImagePath.ROOT + "/boss/boss_fireBall_7.png"};
     public static final String[] BOSS_DARK_BARRIER = {ImagePath.ROOT + "/boss/bossDarkBarrier.png"};
     public static final String[] ENDING = {ImagePath.ROOT + "/bad_ending.png", ImagePath.ROOT + "/good_ending.png"};
+    public static final String[] AMMO_PISTOL = {ImagePath.AMMO + "/ammoVirtual_(1).png", ImagePath.AMMO + "/ammo_(1).png"};
+    public static final String[] AMMO_RIFLE = {ImagePath.AMMO + "/ammoVirtual_(2).png", ImagePath.AMMO + "/ammo_(2).png"};
+    public static final String[] AMMO_GRENADE = {ImagePath.AMMO + "/ammoVirtual_(3).png", ImagePath.AMMO + "/ammo_(3).png"};
 }
