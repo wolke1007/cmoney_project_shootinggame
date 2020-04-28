@@ -164,23 +164,35 @@ public class MainScene extends Scene {
         };
         this.textBar.addScript(scripts);
         this.events.add(new DialogEvent(this.textBar, null)); // 0 // 開門
-        // 第二張地圖
+        // 第二張地圖 //目的在拿步槍
         this.textBar.play();
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(1).getBuildings().get(0)}, null)); // 1 // 加入對話
         this.events.add(new DialogEvent(this.textBar, null)); // 2 // 將箱子 remove 並產出怪物1
         this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 3 // 加入對話
         this.events.add(new DialogEvent(this.textBar, null)); // 4 // 開門
-        // 第三張地圖
+        // 第三張地圖 //目的在拿手榴彈
+        this.textBar.play();
         this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(2).getBuildings().get(0)}, null)); // 5 // 加入對話
-        this.events.add(new DialogEvent(this.textBar, null)); // 6 // 於房間最右側產出怪物2  // 加入對話
-        this.events.add(new DialogEvent(this.textBar, null)); // 7 //  加入對話
-        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 8 // 不做事
-        this.events.add(new DialogEvent(this.textBar, null)); // 9 //開門
-        // 第四張地圖
-        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(3).getBuildings().get(0)}, null)); // 10 // 玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
-        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 11 // 停止計時，或許需要輸入名字 //  加入對話
-        this.events.add(new DialogEvent(this.textBar, null)); // 12 // paint ending
-        this.events.add(new DialogEvent(this.textBar, null)); // 13 // gameover
+        this.events.add(new DialogEvent(this.textBar, null)); // 6 // 將箱子 remove 並產出怪物2
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 7 // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 8 // 開門
+        // 第四張地圖  // 打綜合怪物(少)
+        this.textBar.play();
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(3).getBuildings().get(0)}, null)); // 9 // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 10 // 將箱子 remove 並產出怪物1
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 11 // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 12 // 開門
+        // 第五張地圖  // 打綜合怪物(多)
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(4).getBuildings().get(0)}, null)); // 13 // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 14 // 於房間最右側產出怪物2  // 加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 15 //  加入對話
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 16 // 不做事
+        this.events.add(new DialogEvent(this.textBar, null)); // 17 //開門
+        // 第六張地圖 // 打王
+        this.events.add(new EnterBuildingEvent(new GameObject[]{this.actor, this.maps.getMaps().get(5).getBuildings().get(0)}, null)); // 18 // 玩家往前走，關門，生 BOSS，同時切 BOSS 戰鬥音樂
+        this.events.add(new KillAllEnemyEvent(this.allObjects, null)); // 19 // 停止計時，或許需要輸入名字 //  加入對話
+        this.events.add(new DialogEvent(this.textBar, null)); // 20 // paint ending
+        this.events.add(new DialogEvent(this.textBar, null)); // 21 // gameover
         // ---------------  新增 Event end --------------- 
         setNextEvent();
         this.currentEvent = this.events.get(0);
