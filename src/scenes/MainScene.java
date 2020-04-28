@@ -834,7 +834,7 @@ public class MainScene extends Scene {
         }
         this.view.paint(g);
         paintHPbar(g);
-        paintSmallMap(g);
+//        paintSmallMap(g);
 //        paintTime(g); // 畫倒數時間
         if (this.printEnding) {
             // print 結局圖片
