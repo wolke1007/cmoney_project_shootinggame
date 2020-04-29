@@ -33,14 +33,16 @@ public class ShootingGame {
             {KeyEvent.VK_S, 'S'}, {KeyEvent.VK_T, 'T'}, {KeyEvent.VK_U, 'U'},
             {KeyEvent.VK_V, 'V'}, {KeyEvent.VK_W, 'W'}, {KeyEvent.VK_X, 'X'},
             {KeyEvent.VK_Y, 'Y'}, {KeyEvent.VK_Z, 'Z'},
-            {KeyEvent.VK_0, 48}, {KeyEvent.VK_1, 49}, {KeyEvent.VK_2, 50}, 
-            {KeyEvent.VK_3, 51}, {KeyEvent.VK_4, 52}, {KeyEvent.VK_5, 53}, 
-            {KeyEvent.VK_6, 54}, {KeyEvent.VK_7, 55}, {KeyEvent.VK_8, 56}, 
+            {KeyEvent.VK_0, 48}, {KeyEvent.VK_1, 49}, {KeyEvent.VK_2, 50},
+            {KeyEvent.VK_3, 51}, {KeyEvent.VK_4, 52}, {KeyEvent.VK_5, 53},
+            {KeyEvent.VK_6, 54}, {KeyEvent.VK_7, 55}, {KeyEvent.VK_8, 56},
             {KeyEvent.VK_9, 57},
             {KeyEvent.VK_SPACE, Global.KEY_SPACE},
             {KeyEvent.VK_ENTER, Global.KEY_ENTER},
             {KeyEvent.VK_BACK_SPACE, Global.KEY_BACK_SPACE},
-            {KeyEvent.VK_CONTROL, Global.KEY_CONTROL}
+            {KeyEvent.VK_CONTROL, Global.KEY_CONTROL},
+            {KeyEvent.VK_LEFT, 37}, {KeyEvent.VK_UP, 38},
+            {KeyEvent.VK_RIGHT, 39}, {KeyEvent.VK_DOWN, 40}
         };
         GameKernel gk = new GameKernel.Builder(gi, Global.LIMIT_DELTA_TIME, Global.MILLISEC_PER_UPDATE)
                 .initListener(commands)

@@ -60,6 +60,9 @@ public class Boss extends GameObject {
     private Delay bossEndDelay;
     private int bossEndCount;
 
+    //easter eggs彩蛋
+    private boolean isEasterEggs;
+
     public Boss(String colliderType, float x, float y, GameObject target, int moveSpeed) {
         super(colliderType, x, y, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6, Global.UNIT_MIN * 56, Global.UNIT_MIN * 25 + 6);
         this.target = target;
@@ -75,6 +78,11 @@ public class Boss extends GameObject {
         setType("Boss");
         this.darkBarrier = new Barrier("rect", this.getX() - 40, this.getY() - 20, 752, 460, ImagePath.BOSS_DARK_BARRIER, 0);
         this.countStartAttack = 0;
+        this.isEasterEggs = false;
+    }
+
+    public void setIsEasterEggs(boolean isEasterEggs) {
+        this.isEasterEggs = isEasterEggs;
     }
 
     public Barrier getDarkBarrier() {
@@ -159,6 +167,9 @@ public class Boss extends GameObject {
     public void bossFireUpdate() {
         if (this.nextTrig.isTrig() && this.bossFire.getX() != -10000) {
             this.bossHead.getRenderer().setImage(ImagePath.BOSS_HEAD);
+            if (this.isEasterEggs) {
+                this.bossHead.getRenderer().setImage(ImagePath.TEACHER_HEAD);
+            }
             this.bossFire.setIsMove(true);
         }
         if (this.bossFire.getIsMove() && this.bossFire.getEffectCount() == 0) {
@@ -239,6 +250,9 @@ public class Boss extends GameObject {
                     if (this.bossFire.getX() == -10000) {
                         this.bossFire.setNewStart();
                         this.bossHead.getRenderer().setImage(ImagePath.BOSS_HEAD_FIRE);
+                        if (this.isEasterEggs) {
+                            this.bossHead.getRenderer().setImage(ImagePath.TEACHER_HEAD_FIRE);
+                        }
                         if (this.nextTrig.getDelayFrame() == 200) {
                             AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[0]);
                         } else if (this.nextTrig.getDelayFrame() == 100) {

@@ -93,7 +93,8 @@ public class MainScene extends Scene {
     private boolean isOnBtn;
     private Delay changeImage;
     private int changeCount;
-    
+    private int teacherEasterEggsNum;
+
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.loadingPage = new Renderer();
@@ -126,19 +127,24 @@ public class MainScene extends Scene {
         this.changeImage = new Delay(30);
         this.changeImage.start();
         this.changeCount = 0;
+        this.teacherEasterEggsNum = 0;
     }
-    
+
     public abstract class Button {
 
         public int top;
         public int bottom;
         public int left;
         public int right;
+
         public abstract void setLeft(int x);
+
         public abstract void setTop(int y);
+
         public abstract void setRight(int x);
+
         public abstract void setBottom(int y);
-                
+
     }
 
     public class pressButton extends Button {
@@ -146,7 +152,7 @@ public class MainScene extends Scene {
         int height;
         int width;
         int upDownposition;
-        
+
         public pressButton() {
             this.height = 117;
             this.width = 328;
@@ -156,30 +162,30 @@ public class MainScene extends Scene {
             super.right = -500;
             super.bottom = -500;
         }
-        
-        public void setLeft(int x){
+
+        public void setLeft(int x) {
             super.left = x;
         }
-        
-        public void setTop(int y){
+
+        public void setTop(int y) {
             super.top = y;
         }
-        
-        public void setRight(int x){
-            super.right = x ;
+
+        public void setRight(int x) {
+            super.right = x;
         }
-        
-        public void setBottom(int y){
+
+        public void setBottom(int y) {
             super.bottom = y;
         }
     }
-    
+
     private boolean cursorInBtn(Button btn) {
         int btnTop = btn.top;
         int btnBottom = btn.bottom;
         int btnLeft = btn.left;
         int btnRight = btn.right;
-        Global.log(btnTop+","+btnBottom+","+btnLeft+","+btnRight);
+        Global.log(btnTop + "," + btnBottom + "," + btnLeft + "," + btnRight);
         if (Global.mouseY > btnTop - Global.viewY && Global.mouseY < btnBottom - Global.viewY && Global.mouseX > btnLeft - Global.viewX && Global.mouseX < btnRight - Global.viewX) {
             if (this.isOnBtn) {
                 MusicResourceController.getInstance().tryGetMusic(AudioPath.BUTTON_AUDIO).play();
@@ -341,7 +347,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(2, 1);
                 break;
             case 3:
-                this.loadingCount++;
+                this.loadingCount = 38;
                 scripts = new String[]{"剛剛那些怪物到底是...", "有幾個怪物還穿著基地工作服",
                     "「撿起其中一隻怪物身上背著的步槍」",
                     "「可以使用步槍(按鍵2)」"};
@@ -373,7 +379,7 @@ public class MainScene extends Scene {
                 boxProduceEnemy(5, 2);
                 break;
             case 7:
-                this.loadingCount++;
+                this.loadingCount = 39;
                 scripts = new String[]{"「撿起怪物身上的手榴彈」(空白鍵使用)", "「貌似這種手榴彈只對怪物產生作用」"};
                 this.textBar.addScript(scripts);
                 break;
@@ -639,14 +645,14 @@ public class MainScene extends Scene {
             this.actor.getLowHpEffect().getHeartBeatDelay().stop();
             MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
             MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN).stop();
-            if(this.lastEventNo == 21 && this.nameTyped){
+            if (this.lastEventNo == 21 && this.nameTyped) {
                 MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
-            if(this.lastEventNo != 21){
-                this.playAgainBtn.setLeft((int)this.view.getCenterX() - 270 + 135);
-                this.playAgainBtn.setTop((int)this.view.getCenterY() - 135 + 67);
-                this.playAgainBtn.setRight((int)this.view.getCenterX() + 270 - 135);
-                this.playAgainBtn.setBottom((int)this.view.getCenterY() + 135 - 67);
+            if (this.lastEventNo != 21) {
+                this.playAgainBtn.setLeft((int) this.view.getCenterX() - 270 + 135);
+                this.playAgainBtn.setTop((int) this.view.getCenterY() - 135 + 67);
+                this.playAgainBtn.setRight((int) this.view.getCenterX() + 270 - 135);
+                this.playAgainBtn.setBottom((int) this.view.getCenterY() + 135 - 67);
                 if (cursorInBtn(this.playAgainBtn)) {
                     this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[3]);
                 } else if (this.changeImage.isTrig()) {
@@ -669,6 +675,19 @@ public class MainScene extends Scene {
             this.currentEvent = this.currentEvent.getNext();
         }
         // Event 控制 end
+        if (this.teacherEasterEggsNum == 439) {
+            teacherEasterEggs();
+        }
+    }
+
+    public void teacherEasterEggs() {
+        if (this.loadingCount != 40) {
+            this.loadingCount = 39;
+            this.actor.setFullHp();
+            if (this.boss != null) {
+                this.boss.setIsEasterEggs(true);
+            }
+        }
     }
 
     public void zombieFootStepAudio() { //zombie foot step audio
@@ -935,7 +954,7 @@ public class MainScene extends Scene {
             this.endingRenderer.paint(g, (int) this.view.getFocus().getX() - Global.EDGE, (int) this.view.getFocus().getY(), (int) this.view.getFocus().getX() + Global.FRAME_X, (int) this.view.getFocus().getY() + Global.FRAME_Y);
         }
         this.lastEventNo = this.currentEvent != null ? this.currentEvent.getSerialNo() : this.lastEventNo;
-        if(this.gameOver){
+        if (this.gameOver) {
             this.playAgainBtnRenderer.paint(g, this.playAgainBtn.left, this.playAgainBtn.top, this.playAgainBtn.right, this.playAgainBtn.bottom); // 重新遊戲按鈕
         }
         if (this.gameOver && this.lastEventNo == 21) {
@@ -997,6 +1016,70 @@ public class MainScene extends Scene {
 
         }
 
+        private void teacherEasterEggs(int commandCode) {
+            if (MainScene.this.teacherEasterEggsNum == 0) {
+                if (commandCode == 38) {
+                    MainScene.this.teacherEasterEggsNum = 38;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 38) {
+                if (commandCode == 38) {
+                    MainScene.this.teacherEasterEggsNum = 76;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 76) {
+                if (commandCode == 40) {
+                    MainScene.this.teacherEasterEggsNum = 116;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 116) {
+                if (commandCode == 40) {
+                    MainScene.this.teacherEasterEggsNum = 156;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 156) {
+                if (commandCode == 37) {
+                    MainScene.this.teacherEasterEggsNum = 193;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 193) {
+                if (commandCode == 39) {
+                    MainScene.this.teacherEasterEggsNum = 232;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 232) {
+                if (commandCode == 37) {
+                    MainScene.this.teacherEasterEggsNum = 269;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 269) {
+                if (commandCode == 39) {
+                    MainScene.this.teacherEasterEggsNum = 308;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 308) {
+                if (commandCode == 66) {
+                    MainScene.this.teacherEasterEggsNum = 374;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            } else if (MainScene.this.teacherEasterEggsNum == 374) {
+                if (commandCode == 65) {
+                    MainScene.this.teacherEasterEggsNum = 439;
+                    return;
+                }
+                MainScene.this.teacherEasterEggsNum = 0;
+            }
+        }
+
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
@@ -1050,6 +1133,9 @@ public class MainScene extends Scene {
                 case Global.KEY_CONTROL:
                     MainScene.this.isIntroPaint = false;
                     break;
+            }
+            if (!(MainScene.this.actor.getHp() <= 0)) {
+                teacherEasterEggs(commandCode);
             }
         }
 

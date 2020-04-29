@@ -79,6 +79,10 @@ public abstract class GameObject {
         return this.hpBarWidth;
     }
 
+    public void setFullHp() {
+        this.hpBarWidth = this.getGraph().width();;
+    }
+
     public float getHp() {
         this.hp = this.hpBarWidth / this.dividend;
         return this.hp;

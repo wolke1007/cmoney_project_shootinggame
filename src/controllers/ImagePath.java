@@ -167,10 +167,18 @@ public class ImagePath {
         ImagePath.ROOT + "/boss/boss_head.png",
         ImagePath.ROOT + "/boss/boss_head.png",
         ImagePath.ROOT + "/boss/boss_head.png"};
+    public static final String[] TEACHER_HEAD = {
+        ImagePath.ROOT + "/boss/teacherHead.png",
+        ImagePath.ROOT + "/boss/teacherHead.png",
+        ImagePath.ROOT + "/boss/teacherHead.png"};
     public static final String[] BOSS_HEAD_FIRE = {
         ImagePath.ROOT + "/boss/boss_head_fire_1.png",
         ImagePath.ROOT + "/boss/boss_head_fire_2.png",
         ImagePath.ROOT + "/boss/boss_head_fire_3.png"};
+    public static final String[] TEACHER_HEAD_FIRE = {
+        ImagePath.ROOT + "/boss/teacherHead_1.png",
+        ImagePath.ROOT + "/boss/teacherHead_2.png",
+        ImagePath.ROOT + "/boss/teacherHead_3.png"};
     public static final String[] BOSS_ATTACK_LEFTHAND = {
         ImagePath.ROOT + "/boss/boos_hand_left.png",
         ImagePath.ROOT + "/boss/boos_hand_left.png",
