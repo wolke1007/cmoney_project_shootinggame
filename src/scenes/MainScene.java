@@ -637,6 +637,7 @@ public class MainScene extends Scene {
         if (this.gameOver) {
             this.actor.getLowHpEffect().getHeartBeatDelay().stop();
             MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.GAME_BEGIN).stop();
             if(this.lastEventNo == 21 && this.nameTyped){
                 MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
@@ -654,7 +655,6 @@ public class MainScene extends Scene {
                         this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[2]);
                     }
                 }
-//                MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
         }
         // Event 控制 start
