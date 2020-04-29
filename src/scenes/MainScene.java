@@ -88,6 +88,11 @@ public class MainScene extends Scene {
     private Renderer ammoRifle;
     private Renderer ammoGrenade;
     private int lastEventNo;
+    private Renderer playAgainBtnRenderer;
+    private Button playAgainBtn;
+    private boolean isOnBtn;
+    private Delay changeImage;
+    private int changeCount;
     
     public MainScene(SceneController sceneController) {
         super(sceneController);
@@ -115,6 +120,75 @@ public class MainScene extends Scene {
         this.endingPicPath = "";
         this.easterEgg = false;
         ammoImageLoading();
+        this.playAgainBtn = new pressButton();
+        this.playAgainBtnRenderer = new Renderer(new int[]{0}, 0, ImagePath.WELCOME_PAGE[1]);
+        this.isOnBtn = true;
+        this.changeImage = new Delay(30);
+        this.changeImage.start();
+        this.changeCount = 0;
+    }
+    
+    public abstract class Button {
+
+        public int top;
+        public int bottom;
+        public int left;
+        public int right;
+        public abstract void setLeft(int x);
+        public abstract void setTop(int y);
+        public abstract void setRight(int x);
+        public abstract void setBottom(int y);
+                
+    }
+
+    public class pressButton extends Button {
+
+        int height;
+        int width;
+        int upDownposition;
+        
+        public pressButton() {
+            this.height = 117;
+            this.width = 328;
+            this.upDownposition = -30;
+            super.left = -500;
+            super.top = -500;
+            super.right = -500;
+            super.bottom = -500;
+        }
+        
+        public void setLeft(int x){
+            super.left = x;
+        }
+        
+        public void setTop(int y){
+            super.top = y;
+        }
+        
+        public void setRight(int x){
+            super.right = x ;
+        }
+        
+        public void setBottom(int y){
+            super.bottom = y;
+        }
+    }
+    
+    private boolean cursorInBtn(Button btn) {
+        int btnTop = btn.top;
+        int btnBottom = btn.bottom;
+        int btnLeft = btn.left;
+        int btnRight = btn.right;
+        Global.log(btnTop+","+btnBottom+","+btnLeft+","+btnRight);
+        if (Global.mouseY > btnTop - Global.viewY && Global.mouseY < btnBottom - Global.viewY && Global.mouseX > btnLeft - Global.viewX && Global.mouseX < btnRight - Global.viewX) {
+            if (this.isOnBtn) {
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BUTTON_AUDIO).play();
+                this.isOnBtn = false;
+            }
+            return true;
+        }
+        this.isOnBtn = true;
+        return false;
     }
     
     private void ammoImageLoading() {
@@ -567,7 +641,20 @@ public class MainScene extends Scene {
                 MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
             if(this.lastEventNo != 21){
-                MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
+                this.playAgainBtn.setLeft((int)this.view.getCenterX() - 270 + 135);
+                this.playAgainBtn.setTop((int)this.view.getCenterY() - 135 + 67);
+                this.playAgainBtn.setRight((int)this.view.getCenterX() + 270 - 135);
+                this.playAgainBtn.setBottom((int)this.view.getCenterY() + 135 - 67);
+                if (cursorInBtn(this.playAgainBtn)) {
+                    this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[3]);
+                } else if (this.changeImage.isTrig()) {
+                    if (this.changeCount++ % 2 == 0) {
+                        this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[1]);
+                    } else {
+                        this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[2]);
+                    }
+                }
+//                MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
         }
         // Event 控制 start
@@ -847,6 +934,9 @@ public class MainScene extends Scene {
             this.endingRenderer.paint(g, (int) this.view.getFocus().getX() - Global.EDGE, (int) this.view.getFocus().getY(), (int) this.view.getFocus().getX() + Global.FRAME_X, (int) this.view.getFocus().getY() + Global.FRAME_Y);
         }
         this.lastEventNo = this.currentEvent != null ? this.currentEvent.getSerialNo() : this.lastEventNo;
+        if(this.gameOver){
+            this.playAgainBtnRenderer.paint(g, this.playAgainBtn.left, this.playAgainBtn.top, this.playAgainBtn.right, this.playAgainBtn.bottom); // 重新遊戲按鈕
+        }
         if (this.gameOver && this.lastEventNo == 21) {
             if (!this.scoreCal.isGameOver() && this.gameOver) {
                 Global.log("this.scoreCal.gameOver()");
@@ -1090,6 +1180,12 @@ public class MainScene extends Scene {
             }
             if (MainScene.this.loadingCount == 40) {
                 MainScene.this.mouseState = false;
+            }
+            if (state == CommandSolver.MouseState.PRESSED) {
+                if (cursorInBtn(playAgainBtn)) {
+                    // Back to Welcome scene
+                    MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
+                }
             }
         }
     }
