@@ -48,7 +48,7 @@ import util.ScoreCalculator;
  * @author Cloud-Razer
  */
 public class MainScene extends Scene {
-    
+
     private Actor actor;
     private ArrayList<Ammo> ammos;
     private ArrayList<Enemy> enemys;
@@ -88,7 +88,7 @@ public class MainScene extends Scene {
     private Renderer ammoRifle;
     private Renderer ammoGrenade;
     private int lastEventNo;
-    
+
     public MainScene(SceneController sceneController) {
         super(sceneController);
         this.loadingPage = new Renderer();
@@ -116,7 +116,7 @@ public class MainScene extends Scene {
         this.easterEgg = false;
         ammoImageLoading();
     }
-    
+
     private void ammoImageLoading() {
         this.ammoPistol = new Renderer();
         this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
@@ -125,14 +125,14 @@ public class MainScene extends Scene {
         this.ammoGrenade = new Renderer();
         this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
     }
-    
+
     private void allDelayControl() {
         this.stateChage = new Delay(30);
         this.stateChage.start();
         this.enemyAudio = new Delay(150);
         this.enemyAudio.start();
     }
-    
+
     @Override
     public void sceneBegin() {
         // 開始背景音樂
@@ -164,7 +164,7 @@ public class MainScene extends Scene {
         this.scoreCal.gameStart();
         this.view.setFocus(this.maps.getMaps().get(0));
     }
-    
+
     private void setNextEvent() {
         for (int i = 0; i < this.events.size() - 1; i++) {
             this.events.get(i).setNext(this.events.get(i + 1));
@@ -172,7 +172,7 @@ public class MainScene extends Scene {
             this.events.get(i + 1).setSerialNo(i + 1);
         }
     }
-    
+
     private void eventSetup() {
         // --------------- 新增 Event start --------------- 
         // 第一張地圖
@@ -218,7 +218,7 @@ public class MainScene extends Scene {
         setNextEvent();
         this.currentEvent = this.events.get(0);
     }
-    
+
     private void boxProduceEnemy(int quy, int type) {
         ArrayList<Integer> x = new ArrayList<>();
         ArrayList<Integer> y = new ArrayList<>();
@@ -235,7 +235,7 @@ public class MainScene extends Scene {
             this.genEnemies((int) x.get(i), (int) y.get(i), (int) x.get(i) + 150, (int) y.get(i) + 150, quy, type);
         }
     }
-    
+
     private void afterEvent(Event event) {
         if (!event.isTrig()) {
             return;
@@ -338,7 +338,7 @@ public class MainScene extends Scene {
                         (int) this.maps.getMaps().get(4).getY(),
                         (int) this.maps.getMaps().get(4).getX() + 1300,
                         (int) this.maps.getMaps().get(4).getY() + 700,
-                        Global.random(7, 9));
+                        Global.random(5, 7));
                 this.maps.getMaps().get(3).getBuildings().get(0).open("right"); // 開啟地圖 1 的門
                 break;
             ////////////////////////////////////////////////////////////////////////// 第 4 張地圖 /////////////////////////////////////////////////////////////////////////
@@ -358,7 +358,7 @@ public class MainScene extends Scene {
                 scripts = new String[]{"「怪物源源不絕的湧上」"};
                 this.textBar.addScript(scripts);
                 this.textBar.play();
-                boxProduceEnemy(Global.random(5, 7), 3);
+                boxProduceEnemy(Global.random(3, 7), 3);
                 break;
             case 15:
                 break;
@@ -434,7 +434,7 @@ public class MainScene extends Scene {
         }
         Global.log("event " + event.getSerialNo() + " trigger, event type:" + event.getClass().getName());
     }
-    
+
     private void addAllMapsToAllObjects() {
         for (int i = 0; i < this.maps.getMaps().size(); i++) {
             Map map = this.maps.get(i);
@@ -456,7 +456,7 @@ public class MainScene extends Scene {
             }
         }
     }
-    
+
     public void genEnemies(int x1, int y1, int x2, int y2, int qty, int type) { // 於指定區域生成敵人
         float hp = 8;
         for (int i = 0; i < qty; i++) {
@@ -503,7 +503,7 @@ public class MainScene extends Scene {
             this.allObjects.add(this.boxs.get(i));
         }
     }
-    
+
     private void inputName(Graphics g) {
         if (!this.easterEgg) {
             g.setColor(Color.WHITE);
@@ -512,7 +512,7 @@ public class MainScene extends Scene {
         g.drawString("Enter Your English Name: " + this.name, Global.SCREEN_X / 2 - 300, Global.SCREEN_Y * 1 / 3);
         g.setColor(Color.BLACK);
     }
-    
+
     private void removeInvisibleWall() {
         if (this.view.getFocus().getBuildings().get(0).getDoors().get(0).isOpen()
                 && this.view.getFocus().getBuildings().get(0).getDoors().get(0).getY() <= this.view.getFocus().getBuildings().get(0).getDoors().get(0).getOriginalY() - Global.DOOR_LENGTH) {
@@ -520,7 +520,7 @@ public class MainScene extends Scene {
             remove(this.view.getFocus().getBuildings().get(0).getDoors().get(0).getInvisibleWall());
         }
     }
-    
+
     @Override
     public void sceneUpdate() {
         this.view.update();
@@ -561,12 +561,13 @@ public class MainScene extends Scene {
         }
         // 角色死亡後的行為 end
         if (this.gameOver) {
+            this.loadingCount = 40;
             this.actor.getLowHpEffect().getHeartBeatDelay().stop();
             MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT).stop();
-            if(this.lastEventNo == 21 && this.nameTyped){
+            if (this.lastEventNo == 21 && this.nameTyped) {
                 MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
-            if(this.lastEventNo != 21){
+            if (this.lastEventNo != 21) {
                 MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
             }
         }
@@ -582,7 +583,7 @@ public class MainScene extends Scene {
         }
         // Event 控制 end
     }
-    
+
     public void zombieFootStepAudio() { //zombie foot step audio
         for (int i = 0; i < this.view.getSaw().size(); i++) {
             if (this.view.getSaw().get(i).getType().equals("Enemy")) {
@@ -634,7 +635,7 @@ public class MainScene extends Scene {
         }
         return allEnemy;
     }
-    
+
     public void ammoUpdate() { //子彈測試更新中
         if (this.ammoState) {
             boolean create = true;
@@ -734,7 +735,7 @@ public class MainScene extends Scene {
         }
         // 畫敵人 end
         g.setColor(Color.BLACK);
-        
+
     } // 右上角小地圖
 
     private void paintHPbar(Graphics g) {
@@ -772,7 +773,7 @@ public class MainScene extends Scene {
         }
         this.scoreCal.reset();
     }
-    
+
     private void loadingImageToReady() {
         if (this.loadingCount == 12) {
             for (int i = 0; i < ImagePath.ZOMBIE_NORMAL.length; i++) {
@@ -827,7 +828,7 @@ public class MainScene extends Scene {
             MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT);
         }
     }
-    
+
     @Override
     public void paint(Graphics g) {
         if (this.loadingCount < 37) {
@@ -877,19 +878,19 @@ public class MainScene extends Scene {
             this.intro.paint(g, (int) this.view.getCenterX() - 582, (int) this.view.getCenterY() - 262, (int) this.view.getCenterX() + 582, (int) this.view.getCenterY() + 262);
         }
     }
-    
+
     @Override
     public CommandSolver.KeyListener getKeyListener() {
         return new MyKeyListener();
     }
-    
+
     @Override
     public CommandSolver.MouseCommandListener getMouseListener() {
         return new MyMouseListener();
     }
-    
+
     public class MyKeyListener implements CommandSolver.KeyListener {
-        
+
         @Override
         public void keyPressed(int commandCode, long trigTime) {
             if (gameOver) {
@@ -898,10 +899,14 @@ public class MainScene extends Scene {
             if (MainScene.this.actor.getAutoMove()) {
                 return;
             }
+            if (MainScene.this.actor.getHp() <= 0) {
+                return;
+            }
             actorMoveRule(commandCode);
             ammoModeChange(commandCode);
+
         }
-        
+
         @Override
         public void keyReleased(int commandCode, long trigTime) {
             stopRule(commandCode);
@@ -937,7 +942,7 @@ public class MainScene extends Scene {
             }
             switch (commandCode) {
                 case Global.KEY_SPACE:
-                    if (MainScene.this.loadingCount == 39) {
+                    if (!(MainScene.this.actor.getHp() <= 0) && MainScene.this.loadingCount == 39) {
                         MainScene.this.stateChage.start();
                         MainScene.this.actor.getRenderer().setState(0);
                         MainScene.this.ammoState = true;
@@ -957,13 +962,13 @@ public class MainScene extends Scene {
                     break;
             }
         }
-        
+
         private void setDirAndPressedStatus(Actor actor, int dir, boolean status) {
             actor.setStand(false);
             actor.setDir(dir);
             actor.setMovementPressedStatus(dir, status);
         }
-        
+
         private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
             actor.setStand(false);
             if (actor.getHp() <= actorDeadThreshold) {
@@ -1018,7 +1023,7 @@ public class MainScene extends Scene {
                     break;
             }
         }
-        
+
         private void ammoModeChange(int commandCode) {
             switch (commandCode) {
                 case Global.KEY_1:
@@ -1063,18 +1068,22 @@ public class MainScene extends Scene {
                     break;
             }
         }
-        
+
         @Override
         public void keyTyped(char c, long trigTime) {
         }
-        
+
     }
-    
+
     public class MyMouseListener implements CommandSolver.MouseCommandListener {
-        
+
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
             if (MainScene.this.actor.getAutoMove()) {
+                MainScene.this.mouseState = false;
+                return;
+            }
+            if (MainScene.this.actor.getHp() <= 0) {
                 MainScene.this.mouseState = false;
                 return;
             }
@@ -1087,9 +1096,6 @@ public class MainScene extends Scene {
                 } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
                     MainScene.this.mouseState = false;
                 }
-            }
-            if (MainScene.this.loadingCount == 40) {
-                MainScene.this.mouseState = false;
             }
         }
     }

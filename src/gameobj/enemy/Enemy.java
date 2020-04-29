@@ -65,7 +65,7 @@ public class Enemy extends GameObject {
                 this.moveMode = new ZombieNormal(this, getTarget(), Global.random(59, 60), ImagePath.ZOMBIE_NORMAL);
                 break;
             case 2:
-                this.moveMode = new ZombieShock(this, getTarget(), Global.random(59, 60), ImagePath.ZOMBIE_MONSTER);
+                this.moveMode = new ZombieShock(this, getTarget(), 60, ImagePath.ZOMBIE_MONSTER);
                 break;
         }
     }

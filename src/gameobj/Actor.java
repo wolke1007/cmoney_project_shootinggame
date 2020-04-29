@@ -170,7 +170,7 @@ public class Actor extends GameObject {
     }
 
     public void move() {
-        this.movement.moving(10);
+        this.movement.moving(5);
     }
 
     public void setMoveDelay() {

@@ -41,7 +41,7 @@ public class LowHpEffect implements Effect {
         this.run = false;
         this.actor = actor;
         this.renderer = new Renderer();
-        this.heartBeats = new Delay(60);
+        this.heartBeats = new Delay(30);
         this.heartBeats.stop();
         this.heartBeatsCount = 0;
     }
