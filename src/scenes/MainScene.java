@@ -1169,6 +1169,12 @@ public class MainScene extends Scene {
 
         @Override
         public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
+            if (state == CommandSolver.MouseState.PRESSED) {
+                if (cursorInBtn(playAgainBtn)) {
+                    // Back to Welcome scene
+                    MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
+                }
+            }
             if (MainScene.this.actor.getAutoMove()) {
                 MainScene.this.mouseState = false;
                 return;
@@ -1189,12 +1195,6 @@ public class MainScene extends Scene {
             }
             if (MainScene.this.loadingCount == 40) {
                 MainScene.this.mouseState = false;
-            }
-            if (state == CommandSolver.MouseState.PRESSED) {
-                if (cursorInBtn(playAgainBtn)) {
-                    // Back to Welcome scene
-                    MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
-                }
             }
         }
     }
