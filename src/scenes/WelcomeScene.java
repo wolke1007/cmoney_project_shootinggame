@@ -72,6 +72,7 @@ public class WelcomeScene extends Scene {
     @Override
     public void sceneBegin() {
         // 播放背景音樂
+        Global.log("enter welcome scene");
         MusicResourceController.getInstance().tryGetMusic(AudioPath.START_MUSIC).loop();
     }
 
