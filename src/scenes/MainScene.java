@@ -654,12 +654,12 @@ public class MainScene extends Scene {
                 this.playAgainBtn.setRight((int) this.view.getCenterX() + 270 - 135);
                 this.playAgainBtn.setBottom((int) this.view.getCenterY() + 135 - 67);
                 if (cursorInBtn(this.playAgainBtn)) {
-                    this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[3]);
+                    this.playAgainBtnRenderer.setImage(ImagePath.PLAY_AGAIN[3]);
                 } else if (this.changeImage.isTrig()) {
                     if (this.changeCount++ % 2 == 0) {
-                        this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[1]);
+                        this.playAgainBtnRenderer.setImage(ImagePath.PLAY_AGAIN[1]);
                     } else {
-                        this.playAgainBtnRenderer.setImage(ImagePath.WELCOME_PAGE[2]);
+                        this.playAgainBtnRenderer.setImage(ImagePath.PLAY_AGAIN[2]);
                     }
                 }
             }
@@ -685,7 +685,7 @@ public class MainScene extends Scene {
             this.loadingCount = 39;
             this.actor.setFullHp();
             if (this.boss != null) {
-                this.boss.setIsEasterEggs(true);
+//                this.boss.setIsEasterEggs(true);
             }
         }
     }

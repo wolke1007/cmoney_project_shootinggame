@@ -55,8 +55,8 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
     public boolean getRun() {
         return this.run;
     }
-    
-    public void setRun(boolean status){
+
+    public void setRun(boolean status) {
         this.run = status;
     }
 
