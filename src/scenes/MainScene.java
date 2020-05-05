@@ -776,7 +776,8 @@ public class MainScene extends Scene {
         }
         if (this.mouseState) {
             if (this.stateChage.isTrig()) {
-                AudioResourceController.getInstance().play(AudioPath.AMMO_GUN_FIRE);
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GUN_FIRE).play();
+//                AudioResourceController.getInstance().play(AudioPath.AMMO_GUN_FIRE);
                 boolean create = true;
                 if (this.ammos == null) {
                     Ammo ammo = new Ammo("circle", this.actor.getCenterX() - Global.UNIT_MIN, this.actor.getCenterY() - Global.UNIT_MIN, this.actor, 1);
@@ -932,6 +933,24 @@ public class MainScene extends Scene {
             MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_VICTORY_SOUND);
             MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_HEART_BEATS);
             MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIGHT);
+        } else if (this.loadingCount == 24) {
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_DEAD_BLOODDRAG);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GUN_FIRE);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GRENADE_READY);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GRENADE_BOMB);
+        } else if (this.loadingCount == 25) {
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_HAND_CONTINUE);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIRE_CONTINUE);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_DIE_SOUND);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_HAND_MOVE);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_CALL_ENEMY);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_ATTACK_BOMB);
+        } else if (this.loadingCount == 26) {
+            for (int i = 0; i < AudioPath.BOSS_FIRE_READY.length; i++) {
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIRE_READY[i]);
+            }
+        } else if (this.loadingCount == 27) {
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.ENEMY_DEAD);
         }
     }
 
@@ -1229,7 +1248,8 @@ public class MainScene extends Scene {
                         MainScene.this.stateChage.stop();
                         MainScene.this.actor.getRenderer().setState(1);
                         if (MainScene.this.grenadeReady) {
-                            AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
+                            MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GRENADE_READY).play();
+//                            AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
                             MainScene.this.grenadeReady = false;
                             MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
                             MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);

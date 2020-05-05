@@ -8,6 +8,7 @@ package gameobj.Boss;
 import controllers.AudioPath;
 import controllers.AudioResourceController;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import gameobj.GameObject;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -207,7 +208,8 @@ public class BossAttack extends GameObject {
                     }
                 } else {//如果有撞到，先扣血，再放特效
                     if (this.effectCount == 0) {
-                        AudioResourceController.getInstance().play(AudioPath.BOSS_ATTACK_BOMB);
+                        MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_ATTACK_BOMB).play();
+//                        AudioResourceController.getInstance().play(AudioPath.BOSS_ATTACK_BOMB);
                         this.effectDelay.click();
                         for (int i = 0; i < this.allObjects.size(); i++) {//扣血
                             if (Math.sqrt(Math.pow(this.allObjects.get(i).getCenterX() - this.getCenterX(), 2)

@@ -8,6 +8,7 @@ package effects;
 import controllers.AudioPath;
 import controllers.AudioResourceController;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import gameobj.Actor;
 import java.awt.Graphics;
 import renderer.Renderer;
@@ -64,7 +65,8 @@ public class DeadEffect implements Effect { // 此效果因時機點特殊，不
     public void update() {
         if (this.playTimes == 0 && this.run == true) {
             if (this.actorDeadSound++ == 0) {
-                AudioResourceController.getInstance().play(AudioPath.ACTOR_DEAD_BLOODDRAG);
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.ACTOR_DEAD_BLOODDRAG).play();
+//                AudioResourceController.getInstance().play(AudioPath.ACTOR_DEAD_BLOODDRAG);
             }
         }
     }

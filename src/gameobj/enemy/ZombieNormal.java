@@ -6,6 +6,7 @@
 package gameobj.enemy;
 
 import controllers.AudioPath;
+import controllers.MusicResourceController;
 import controllers.AudioResourceController;
 import gameobj.GameObject;
 import java.awt.Color;
@@ -108,7 +109,8 @@ public class ZombieNormal extends MoveMode {
             this.deadType = "Map";
             this.imageDelay.setDelayFrame(4);
             if(this.deadImage == 0){
-                AudioResourceController.getInstance().play(AudioPath.ENEMY_DEAD);
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.ENEMY_DEAD).play();
+//                AudioResourceController.getInstance().play(AudioPath.ENEMY_DEAD);
             }
             if (this.imageDelay.isTrig()) {
                 this.renderer.setState(this.deadImage++ % 20 + 31);

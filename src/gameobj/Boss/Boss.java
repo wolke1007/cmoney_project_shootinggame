@@ -8,6 +8,7 @@ package gameobj.Boss;
 import controllers.AudioPath;
 import controllers.AudioResourceController;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import gameobj.Barrier;
 import gameobj.GameObject;
 import java.awt.Color;
@@ -149,7 +150,8 @@ public class Boss extends GameObject {
             this.bossLeftHand.setIsMove(true);
         }
         if (this.bossLeftHand.getIsMove() && this.bossLeftHand.getEffectCount() == 0) {
-            AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_CONTINUE);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_HAND_CONTINUE).play();
+//            AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_CONTINUE);
         }
         this.bossLeftHand.update();
     }
@@ -159,7 +161,8 @@ public class Boss extends GameObject {
             this.bossRightHand.setIsMove(true);
         }
         if (this.bossRightHand.getIsMove() && this.bossRightHand.getEffectCount() == 0) {
-            AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_CONTINUE);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_HAND_CONTINUE).play();
+//            AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_CONTINUE);
         }
         this.bossRightHand.update();
     }
@@ -173,7 +176,8 @@ public class Boss extends GameObject {
             this.bossFire.setIsMove(true);
         }
         if (this.bossFire.getIsMove() && this.bossFire.getEffectCount() == 0) {
-            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_CONTINUE);
+            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIRE_CONTINUE).play();
+//            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_CONTINUE);
         }
         this.bossFire.update();
     }
@@ -221,7 +225,8 @@ public class Boss extends GameObject {
         this.bossEndDelay.start();
         if (this.bossEndDelay.isTrig()) {
             if (this.bossEndCount == 0) {
-                AudioResourceController.getInstance().play(AudioPath.BOSS_DIE_SOUND);
+                MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_DIE_SOUND).play();
+//                AudioResourceController.getInstance().play(AudioPath.BOSS_DIE_SOUND);
             }
             if (this.bossEndCount++ > 12) {
                 this.setXY(-10000, -10000);
@@ -237,13 +242,15 @@ public class Boss extends GameObject {
                     this.setCallEnemy(false);
                     if (this.bossRightHand.getX() == -10000) {
                         this.bossRightHand.setNewStart();
-                        AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_MOVE);
+                        MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_HAND_MOVE).play();
+//                        AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_MOVE);
                     }
                     break;
                 case 1:
                     if (this.bossLeftHand.getX() == -10000) {
                         this.bossLeftHand.setNewStart();
-                        AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_MOVE);
+                        MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_HAND_MOVE).play();
+//                        AudioResourceController.getInstance().play(AudioPath.BOSS_HAND_MOVE);
                     }
                     break;
                 case 2:
@@ -254,16 +261,20 @@ public class Boss extends GameObject {
                             this.bossHead.getRenderer().setImage(ImagePath.TEACHER_HEAD_FIRE);
                         }
                         if (this.nextTrig.getDelayFrame() == 200) {
-                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[0]);
+                            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIRE_READY[0]).play();
+//                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[0]);
                         } else if (this.nextTrig.getDelayFrame() == 100) {
-                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[1]);
+                            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIRE_READY[1]).play();
+//                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[1]);
                         } else if (this.nextTrig.getDelayFrame() == 30) {
-                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[2]);
+                            MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_FIRE_READY[2]).play();
+//                            AudioResourceController.getInstance().play(AudioPath.BOSS_FIRE_READY[2]);
                         }
                     }
                     break;
                 case 3:
-                    AudioResourceController.getInstance().play(AudioPath.BOSS_CALL_ENEMY);
+                    MusicResourceController.getInstance().tryGetMusic(AudioPath.BOSS_CALL_ENEMY).play();
+//                    AudioResourceController.getInstance().play(AudioPath.BOSS_CALL_ENEMY);
                     this.setCallEnemy(true);
                     break;
             }

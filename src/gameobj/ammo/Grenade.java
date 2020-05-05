@@ -8,6 +8,7 @@ package gameobj.ammo;
 import controllers.AudioPath;
 import controllers.AudioResourceController;
 import controllers.ImagePath;
+import controllers.MusicResourceController;
 import gameobj.GameObject;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -163,7 +164,8 @@ public class Grenade extends ShootMode {
             if (this.vectorMove.getIsCollision() || getMoveDistance() == 0) {//撞上障礙物 或 不能再移動
                 if (this.delayCount == 0) {
                     if (this.grenadeBombAudio) {
-                        AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_BOMB);
+                        MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GRENADE_BOMB).play();
+//                        AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_BOMB);
                         this.setGrenadeBombAudio(false);
                     }
                     for (int i = 0; i < this.allObjects.size(); i++) {
