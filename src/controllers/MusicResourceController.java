@@ -8,6 +8,8 @@ package controllers;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import util.Global;
 
 /**
@@ -16,22 +18,11 @@ import util.Global;
  */
 public class MusicResourceController {
 
-    private static class KeyPair {
-
-        private String path;
-        private AudioClip music;
-
-        public KeyPair(String path, AudioClip music) {
-            this.path = path;
-            this.music = music;
-        }
-    }
-
     private static MusicResourceController mrc;
-    private ArrayList<KeyPair> musicPairs;
+    private Map<String, AudioClip> musicPairs;
 
     private MusicResourceController() {
-        this.musicPairs = new ArrayList<>();
+        this.musicPairs = new HashMap<>();
     }
 
     public static MusicResourceController getInstance() {
@@ -40,35 +31,25 @@ public class MusicResourceController {
         }
         return MusicResourceController.mrc;
     }
-    
-    public AudioClip tryGetMusic(String path){
-        KeyPair pair = findKeyPair(path);
-         if (pair == null) {
-            return addMusic(path);
+
+    public AudioClip tryGetMusic(String path) {
+        if (this.musicPairs.containsKey(path)) {
+            return this.musicPairs.get(path);
         }
-         return pair.music;
+        return addMusic(path);
     }
-    
+
     private AudioClip addMusic(String path) {
         try {
             if (Global.IS_DEBUG) {
-                System.out.println("load img from: " + path);
+                System.out.println("load music from: " + path);
             }
             AudioClip music = Applet.newAudioClip(getClass().getResource(path));
-            this.musicPairs.add(new KeyPair(path, music));
+            this.musicPairs.put(path, music);
             return music;
         } catch (Exception e) {
         }
         return null;
     }
-    
-     private KeyPair findKeyPair(String path) {
-        for (int i = 0; i < musicPairs.size(); i++) {
-            KeyPair pair = musicPairs.get(i);
-            if (pair.path.equals(path)) {
-                return pair;
-            }
-        }
-        return null;
-    }
+
 }

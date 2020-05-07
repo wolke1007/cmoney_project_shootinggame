@@ -64,7 +64,7 @@ public class StartMenuScene extends Scene {
 
         int height = 117;
         int width = 328;
-        public int upDownPosition = -80;
+        private int upDownPosition = -80;
         public int left = Global.SCREEN_X / 2 - width / 2;
         public int top = Global.SCREEN_Y / 2 - height / 2 + upDownPosition;
         public int right = Global.SCREEN_X / 2 + width / 2;

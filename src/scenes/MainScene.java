@@ -987,19 +987,23 @@ public class MainScene extends Scene {
         if (this.textBar.isPlaying()) {
             this.textBar.paint(g);
         }
+        paintOfAmmoImage(g);
+    }
+
+    public void paintOfAmmoImage(Graphics g) {
         int tmpX = (int) this.view.getX();
-        int tmpY = (int) this.view.getY();
         int dx = 50;
+        int dy = 40;
         int width = 140;
         int height = 115;
         if (this.loadingCount >= 37 && this.loadingCount <= 39) {
-            this.ammoPistol.paint(g, tmpX, tmpY + 850 - height, tmpX + width, tmpY + 850);
+            this.ammoPistol.paint(g, tmpX, Global.FRAME_Y - dy - height, tmpX + width, Global.FRAME_Y - dy);
         }
         if (this.loadingCount >= 38 && this.loadingCount <= 39) {
-            this.ammoRifle.paint(g, tmpX + width - dx, tmpY + 850 - height, tmpX + width * 2 - dx, tmpY + 850);
+            this.ammoRifle.paint(g, tmpX + width - dx, Global.FRAME_Y - dy - height, tmpX + width * 2 - dx, Global.FRAME_Y - dy);
         }
         if (this.loadingCount == 39) {
-            this.ammoGrenade.paint(g, tmpX + width * 2 - dx * 2, tmpY + 850 - height, tmpX + width * 3 - dx * 2, tmpY + 850);
+            this.ammoGrenade.paint(g, tmpX + width * 2 - dx * 2, Global.FRAME_Y - dy - height, tmpX + width * 3 - dx * 2, Global.FRAME_Y - dy);
         }
         if (this.isIntroPaint) {
             this.introShadow.paint(g, (int) this.view.getCenterX() - 645, (int) this.view.getCenterY() - 297, (int) this.view.getCenterX() + 645, (int) this.view.getCenterY() + 297);
@@ -1009,299 +1013,294 @@ public class MainScene extends Scene {
 
     @Override
     public CommandSolver.KeyListener getKeyListener() {
-        return new MyKeyListener();
+        return new CommandSolver.KeyListener() {
+
+            @Override
+            public void keyPressed(int commandCode, long trigTime) {
+                if (gameOver) {
+                    return;
+                }
+                if (MainScene.this.actor.getAutoMove()) {
+                    return;
+                }
+                if (MainScene.this.actor.getHp() <= 0) {
+                    return;
+                }
+                actorMoveRule(commandCode);
+                ammoModeChange(commandCode);
+            }
+
+            private void teacherEasterEggs(int commandCode) {
+                if (MainScene.this.teacherEasterEggsNum == 0) {
+                    if (commandCode == 38) {
+                        MainScene.this.teacherEasterEggsNum = 38;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 38) {
+                    if (commandCode == 38) {
+                        MainScene.this.teacherEasterEggsNum = 76;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 76) {
+                    if (commandCode == 40) {
+                        MainScene.this.teacherEasterEggsNum = 116;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 116) {
+                    if (commandCode == 40) {
+                        MainScene.this.teacherEasterEggsNum = 156;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 156) {
+                    if (commandCode == 37) {
+                        MainScene.this.teacherEasterEggsNum = 193;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 193) {
+                    if (commandCode == 39) {
+                        MainScene.this.teacherEasterEggsNum = 232;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 232) {
+                    if (commandCode == 37) {
+                        MainScene.this.teacherEasterEggsNum = 269;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 269) {
+                    if (commandCode == 39) {
+                        MainScene.this.teacherEasterEggsNum = 308;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 308) {
+                    if (commandCode == 66) {
+                        MainScene.this.teacherEasterEggsNum = 374;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                } else if (MainScene.this.teacherEasterEggsNum == 374) {
+                    if (commandCode == 65) {
+                        MainScene.this.teacherEasterEggsNum = 439;
+                        return;
+                    }
+                    MainScene.this.teacherEasterEggsNum = 0;
+                }
+            }
+
+            @Override
+            public void keyReleased(int commandCode, long trigTime) {
+                stopRule(commandCode);
+                if (gameOver) {
+                    if (commandCode == Global.KEY_ENTER) {
+                        nameTyped = true;
+                    }
+                    if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
+                        name = name.substring(0, name.length() - 1);
+                    } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
+                        name += (char) commandCode;
+                    }
+                    return;
+                }
+                if (MainScene.this.actor.getAutoMove()) {
+                    if (MainScene.this.actor.getRenderer().getState() == 1) {
+                        if (MainScene.this.loadingCount == 39) {
+                            MainScene.this.stateChage.start();
+                            MainScene.this.actor.getRenderer().setState(0);
+                            MainScene.this.ammoState = true;
+                            MainScene.this.grenadeReady = true;
+                            if (MainScene.this.stateChage.getDelayFrame() == 30) {
+                                MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
+                                MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+                            } else if (MainScene.this.stateChage.getDelayFrame() == 5) {
+                                MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                                MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
+                            }
+                            MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
+                        }
+                    }
+                    return;
+                }
+                switch (commandCode) {
+                    case Global.KEY_SPACE:
+                        if (!(MainScene.this.actor.getHp() <= 0) && MainScene.this.loadingCount == 39) {
+                            MainScene.this.stateChage.start();
+                            MainScene.this.actor.getRenderer().setState(0);
+                            MainScene.this.ammoState = true;
+                            MainScene.this.grenadeReady = true;
+                            if (MainScene.this.stateChage.getDelayFrame() == 30) {
+                                MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
+                                MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+                            } else if (MainScene.this.stateChage.getDelayFrame() == 5) {
+                                MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                                MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
+                            }
+                            MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
+                        }
+                        break;
+                    case Global.KEY_CONTROL:
+                        MainScene.this.isIntroPaint = false;
+                        break;
+                }
+                if (!(MainScene.this.actor.getHp() <= 0)) {
+                    teacherEasterEggs(commandCode);
+                }
+            }
+
+            private void setDirAndPressedStatus(Actor actor, int dir, boolean status) {
+                actor.setStand(false);
+                actor.setDir(dir);
+                actor.setMovementPressedStatus(dir, status);
+            }
+
+            private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
+                actor.setStand(false);
+                if (actor.getHp() <= actorDeadThreshold) {
+                    return;
+                }
+                switch (commandCode) {
+                    case Global.UP:
+                        if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
+                            setDirAndPressedStatus(actor, Global.UP, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
+                        break;
+                    case Global.DOWN:
+                        if (!(actor.getCollider().bottom() > Global.mapEdgeDown)) {
+                            setDirAndPressedStatus(actor, Global.DOWN, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
+                        break;
+                    case Global.LEFT:
+                        if (!(actor.getCollider().left() < Global.mapEdgeLeft)) {
+                            setDirAndPressedStatus(actor, Global.LEFT, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
+                        break;
+                    case Global.RIGHT:
+                        if (!(actor.getCollider().right() > Global.mapEdgeRight)) {
+                            setDirAndPressedStatus(actor, Global.RIGHT, true);
+                        } else {
+                            stopRule(commandCode);
+                        }
+                        break;
+                }
+            } // 當角色的視野沒碰到牆壁時移動邏輯
+
+            private void stopRule(int commandCode) {
+                actor.setStand(true);
+                switch (commandCode) {
+                    case Global.UP:
+                        setDirAndPressedStatus(actor, Global.UP, false);
+                        break;
+                    case Global.DOWN:
+                        setDirAndPressedStatus(actor, Global.DOWN, false);
+                        break;
+                    case Global.LEFT:
+                        setDirAndPressedStatus(actor, Global.LEFT, false);
+                        break;
+                    case Global.RIGHT:
+                        setDirAndPressedStatus(actor, Global.RIGHT, false);
+                        break;
+                }
+            }
+
+            private void ammoModeChange(int commandCode) {
+                switch (commandCode) {
+                    case Global.KEY_1:
+                        if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
+                            if (MainScene.this.stateChage.getDelayFrame() == 5) {
+                                MainScene.this.stateChage.setDelayFrame(30);
+                                MainScene.this.stateChage.start();
+                                MainScene.this.stateChage.click();
+                                MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
+                                MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+                            }
+                        }
+                        break;
+                    case Global.KEY_2:
+                        if (MainScene.this.loadingCount >= 38 && MainScene.this.loadingCount <= 39) {
+                            if (MainScene.this.stateChage.getDelayFrame() == 30) {
+                                MainScene.this.stateChage.setDelayFrame(5);
+                                MainScene.this.stateChage.start();
+                                MainScene.this.stateChage.click();
+                                MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                                MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
+                            }
+                        }
+                        break;
+                    case Global.KEY_SPACE:
+                        if (MainScene.this.loadingCount == 39) {
+                            MainScene.this.stateChage.stop();
+                            MainScene.this.actor.getRenderer().setState(1);
+                            if (MainScene.this.grenadeReady) {
+                                MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GRENADE_READY).play();
+//                            AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
+                                MainScene.this.grenadeReady = false;
+                                MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
+                                MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
+                                MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[1]);
+                            }
+                        }
+                        break;
+                    case Global.KEY_CONTROL:
+                        if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
+                            MainScene.this.isIntroPaint = true;
+                        }
+                        break;
+                }
+            }
+
+            @Override
+            public void keyTyped(char c, long trigTime) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
     }
 
     @Override
     public CommandSolver.MouseCommandListener getMouseListener() {
-        return new MyMouseListener();
-    }
+        return new CommandSolver.MouseCommandListener() {
 
-    public class MyKeyListener implements CommandSolver.KeyListener {
-
-        @Override
-        public void keyPressed(int commandCode, long trigTime) {
-            if (gameOver) {
-                return;
-            }
-            if (MainScene.this.actor.getAutoMove()) {
-                return;
-            }
-            if (MainScene.this.actor.getHp() <= 0) {
-                return;
-            }
-            actorMoveRule(commandCode);
-            ammoModeChange(commandCode);
-
-        }
-
-        private void teacherEasterEggs(int commandCode) {
-            if (MainScene.this.teacherEasterEggsNum == 0) {
-                if (commandCode == 38) {
-                    MainScene.this.teacherEasterEggsNum = 38;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 38) {
-                if (commandCode == 38) {
-                    MainScene.this.teacherEasterEggsNum = 76;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 76) {
-                if (commandCode == 40) {
-                    MainScene.this.teacherEasterEggsNum = 116;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 116) {
-                if (commandCode == 40) {
-                    MainScene.this.teacherEasterEggsNum = 156;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 156) {
-                if (commandCode == 37) {
-                    MainScene.this.teacherEasterEggsNum = 193;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 193) {
-                if (commandCode == 39) {
-                    MainScene.this.teacherEasterEggsNum = 232;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 232) {
-                if (commandCode == 37) {
-                    MainScene.this.teacherEasterEggsNum = 269;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 269) {
-                if (commandCode == 39) {
-                    MainScene.this.teacherEasterEggsNum = 308;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 308) {
-                if (commandCode == 66) {
-                    MainScene.this.teacherEasterEggsNum = 374;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            } else if (MainScene.this.teacherEasterEggsNum == 374) {
-                if (commandCode == 65) {
-                    MainScene.this.teacherEasterEggsNum = 439;
-                    return;
-                }
-                MainScene.this.teacherEasterEggsNum = 0;
-            }
-        }
-
-        @Override
-        public void keyReleased(int commandCode, long trigTime) {
-            stopRule(commandCode);
-            if (gameOver) {
-                if (commandCode == Global.KEY_ENTER) {
-                    nameTyped = true;
-                }
-                if (!nameTyped && commandCode == Global.KEY_BACK_SPACE && name.length() > 0) {
-                    name = name.substring(0, name.length() - 1);
-                } else if (!nameTyped && commandCode != Global.KEY_BACK_SPACE) {
-                    name += (char) commandCode;
-                }
-                return;
-            }
-            if (MainScene.this.actor.getAutoMove()) {
-                if (MainScene.this.actor.getRenderer().getState() == 1) {
-                    if (MainScene.this.loadingCount == 39) {
-                        MainScene.this.stateChage.start();
-                        MainScene.this.actor.getRenderer().setState(0);
-                        MainScene.this.ammoState = true;
-                        MainScene.this.grenadeReady = true;
-                        if (MainScene.this.stateChage.getDelayFrame() == 30) {
-                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
-                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
-                        } else if (MainScene.this.stateChage.getDelayFrame() == 5) {
-                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
-                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
-                        }
-                        MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
-                    }
-                }
-                return;
-            }
-            switch (commandCode) {
-                case Global.KEY_SPACE:
-                    if (!(MainScene.this.actor.getHp() <= 0) && MainScene.this.loadingCount == 39) {
-                        MainScene.this.stateChage.start();
-                        MainScene.this.actor.getRenderer().setState(0);
-                        MainScene.this.ammoState = true;
-                        MainScene.this.grenadeReady = true;
-                        if (MainScene.this.stateChage.getDelayFrame() == 30) {
-                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
-                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
-                        } else if (MainScene.this.stateChage.getDelayFrame() == 5) {
-                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
-                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
-                        }
-                        MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[0]);
-                    }
-                    break;
-                case Global.KEY_CONTROL:
-                    MainScene.this.isIntroPaint = false;
-                    break;
-            }
-            if (!(MainScene.this.actor.getHp() <= 0)) {
-                teacherEasterEggs(commandCode);
-            }
-        }
-
-        private void setDirAndPressedStatus(Actor actor, int dir, boolean status) {
-            actor.setStand(false);
-            actor.setDir(dir);
-            actor.setMovementPressedStatus(dir, status);
-        }
-
-        private void actorMoveRule(int commandCode) { // 當角色的視野沒碰到牆壁時移動邏輯
-            actor.setStand(false);
-            if (actor.getHp() <= actorDeadThreshold) {
-                return;
-            }
-            switch (commandCode) {
-                case Global.UP:
-                    if (!(actor.getCollider().top() < Global.mapEdgeUp)) {
-                        setDirAndPressedStatus(actor, Global.UP, true);
-                    } else {
-                        stopRule(commandCode);
-                    }
-                    break;
-                case Global.DOWN:
-                    if (!(actor.getCollider().bottom() > Global.mapEdgeDown)) {
-                        setDirAndPressedStatus(actor, Global.DOWN, true);
-                    } else {
-                        stopRule(commandCode);
-                    }
-                    break;
-                case Global.LEFT:
-                    if (!(actor.getCollider().left() < Global.mapEdgeLeft)) {
-                        setDirAndPressedStatus(actor, Global.LEFT, true);
-                    } else {
-                        stopRule(commandCode);
-                    }
-                    break;
-                case Global.RIGHT:
-                    if (!(actor.getCollider().right() > Global.mapEdgeRight)) {
-                        setDirAndPressedStatus(actor, Global.RIGHT, true);
-                    } else {
-                        stopRule(commandCode);
-                    }
-                    break;
-            }
-        } // 當角色的視野沒碰到牆壁時移動邏輯
-
-        private void stopRule(int commandCode) {
-            actor.setStand(true);
-            switch (commandCode) {
-                case Global.UP:
-                    setDirAndPressedStatus(actor, Global.UP, false);
-                    break;
-                case Global.DOWN:
-                    setDirAndPressedStatus(actor, Global.DOWN, false);
-                    break;
-                case Global.LEFT:
-                    setDirAndPressedStatus(actor, Global.LEFT, false);
-                    break;
-                case Global.RIGHT:
-                    setDirAndPressedStatus(actor, Global.RIGHT, false);
-                    break;
-            }
-        }
-
-        private void ammoModeChange(int commandCode) {
-            switch (commandCode) {
-                case Global.KEY_1:
-                    if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
-                        if (MainScene.this.stateChage.getDelayFrame() == 5) {
-                            MainScene.this.stateChage.setDelayFrame(30);
-                            MainScene.this.stateChage.start();
-                            MainScene.this.stateChage.click();
-                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[1]);
-                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
-                        }
-                    }
-                    break;
-                case Global.KEY_2:
-                    if (MainScene.this.loadingCount >= 38 && MainScene.this.loadingCount <= 39) {
-                        if (MainScene.this.stateChage.getDelayFrame() == 30) {
-                            MainScene.this.stateChage.setDelayFrame(5);
-                            MainScene.this.stateChage.start();
-                            MainScene.this.stateChage.click();
-                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
-                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[1]);
-                        }
-                    }
-                    break;
-                case Global.KEY_SPACE:
-                    if (MainScene.this.loadingCount == 39) {
-                        MainScene.this.stateChage.stop();
-                        MainScene.this.actor.getRenderer().setState(1);
-                        if (MainScene.this.grenadeReady) {
-                            MusicResourceController.getInstance().tryGetMusic(AudioPath.AMMO_GRENADE_READY).play();
-//                            AudioResourceController.getInstance().play(AudioPath.AMMO_GRENADE_READY);
-                            MainScene.this.grenadeReady = false;
-                            MainScene.this.ammoPistol.setImage(ImagePath.AMMO_PISTOL[0]);
-                            MainScene.this.ammoRifle.setImage(ImagePath.AMMO_RIFLE[0]);
-                            MainScene.this.ammoGrenade.setImage(ImagePath.AMMO_GRENADE[1]);
-                        }
-                    }
-                    break;
-                case Global.KEY_CONTROL:
-                    if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
-                        MainScene.this.isIntroPaint = true;
-                    }
-                    break;
-            }
-        }
-
-        @Override
-        public void keyTyped(char c, long trigTime) {
-        }
-
-    }
-
-    public class MyMouseListener implements CommandSolver.MouseCommandListener {
-
-        @Override
-        public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
-            if (state == CommandSolver.MouseState.PRESSED) {
-                if (cursorInBtn(playAgainBtn)) {
-                    // Back to Welcome scene
-                    MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
-                }
-            }
-            if (MainScene.this.actor.getAutoMove()) {
-                MainScene.this.mouseState = false;
-                return;
-            }
-            if (MainScene.this.actor.getHp() <= 0) {
-                MainScene.this.mouseState = false;
-                return;
-            }
-            if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
+            @Override
+            public void mouseTrig(MouseEvent e, CommandSolver.MouseState state, long trigTime) {
                 if (state == CommandSolver.MouseState.PRESSED) {
-                    MainScene.this.mouseState = true;
-                    MainScene.this.stateChage.click();
-                } else if (state == CommandSolver.MouseState.DRAGGED) {
-                    MainScene.this.mouseState = true;
-                } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
+                    if (cursorInBtn(playAgainBtn)) {
+                        // Back to Welcome scene
+                        MainScene.super.sceneController.changeScene(new WelcomeScene(MainScene.super.sceneController));
+                    }
+                }
+                if (MainScene.this.actor.getAutoMove()) {
+                    MainScene.this.mouseState = false;
+                    return;
+                }
+                if (MainScene.this.actor.getHp() <= 0) {
+                    MainScene.this.mouseState = false;
+                    return;
+                }
+                if (MainScene.this.loadingCount >= 37 && MainScene.this.loadingCount <= 39) {
+                    if (state == CommandSolver.MouseState.PRESSED) {
+                        MainScene.this.mouseState = true;
+                        MainScene.this.stateChage.click();
+                    } else if (state == CommandSolver.MouseState.DRAGGED) {
+                        MainScene.this.mouseState = true;
+                    } else if (state == CommandSolver.MouseState.CLICKED || state == CommandSolver.MouseState.MOVED || state == CommandSolver.MouseState.RELEASED) {
+                        MainScene.this.mouseState = false;
+                    }
+                }
+                if (MainScene.this.loadingCount == 40) {
                     MainScene.this.mouseState = false;
                 }
             }
-            if (MainScene.this.loadingCount == 40) {
-                MainScene.this.mouseState = false;
-            }
-        }
+        };
     }
 }
