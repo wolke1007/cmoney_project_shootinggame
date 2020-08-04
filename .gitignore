@@ -1,5 +1,7 @@
 build/
 nbproject/private/*
+.vscode/
+.idea
 build.xml
 mainfest.mf
 /dist/
