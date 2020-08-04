@@ -29,7 +29,7 @@ public class TextBar {
     private String textContent;
     private Delay lineDelay;
     private Delay charDelay;
-    private boolean play;
+    private boolean isPlaying;
     private int index;
     private String text;
     private int fontSize;
@@ -43,12 +43,10 @@ public class TextBar {
         this.height = height;
         this.textContent = "";
         this.lineDelay = new Delay(70);
-//        this.lineDelay = new Delay(1);
         this.lineDelay.cleanCounter();
         this.charDelay = new Delay(5);
-//        this.charDelay = new Delay(1);
         this.charDelay.start();
-        this.play = false;
+        this.isPlaying = false;
         this.index = 0;
         this.text = "";
         this.fontSize = 30;
@@ -70,15 +68,15 @@ public class TextBar {
     }
 
     public void play() {
-        this.play = this.ready() ? true : false;
+        this.isPlaying = this.ready() ? true : false;
     }
 
     public boolean isPlaying() {
-        return this.play;
+        return this.isPlaying;
     }
 
     public void paint(Graphics g) {
-        if (this.play && ready()) {
+        if (this.isPlaying && ready()) {
             g.setColor(Color.BLACK);
             g.fillRect(this.x, this.y, this.width, this.height);
             // 如果有稿可以印就會印出來
